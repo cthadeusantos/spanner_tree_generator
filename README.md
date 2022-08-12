@@ -1,13 +1,142 @@
-# spanner_tree_generator
+- [1. Links importante e trabalhos feitos](#1-links-importante-e-trabalhos-feitos)
+- [2. Project Architecture](#2-project-architecture)
+  - [2.1. Pre-requisites](#21-pre-requisites)
+  - [2.2. External Dependencies](#22-external-dependencies)
+  - [2.3. Instructions to build and execute this project](#23-instructions-to-build-and-execute-this-project)
+  - [2.4. Directory Structure](#24-directory-structure)
+  - [2.5. Internal Tools](#25-internal-tools)
+- [3. Authorship Information](#3-authorship-information)
 
-### executables
-* main_paralelo -> Receive a graph (file .txt), and executes parallel brute-force algorithm.
-* main_run_all - > Receive a graph (file .txt), and executes brute-force sequential, brute-force parallel, heuristic 1 and 2 strategies.
-* main_run_all2 -> Receive a graph (file .txt), and executes brute-force sequential, heuristics 1 and 2.
+# Problema de T-Admissibility <!-- omit in toc -->
 
-### Generator of Graphs
-* Setup parameters in generator.py file. Path to store the graphs must be created in advance.
+Este projeto é um conjunto de soluções para o problema de T-admissibility em grafos. O paper base publicado pelo grupo está publicado neste [link](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). Neste repositório estamos armazenando o código utilizado como base nas publicações do grupo e para a construção das dissertações/tese dos alunos.
 
-### executable .sh
-* exec_compare.sh -> Executes the graphs with sequential algorithm comparing it to heuristics H1, H2 and parallel algorithm. (Built by running "make build_compare")
-* exec_compare_heu.sh -> Executes the graphs with heuristics strategies comparing them against two lower bounds (Built by running "make build_compare_heu")
+* Versão: 0.0 (12/08/2022)
+
+## 1. Links importante e trabalhos feitos
+
+* Link para [este repositório](https://github.com/cthadeusantos/spanner_tree_generator). 
+* [Quadro Kanban](https://github.com/users/cthadeusantos/projects/1/views/1) de tarefas relacionadas.
+    * As atividades são relacionadas em cards que podem ter tarefas detalhadas na descrição. 
+* Trabalhos em andamento:
+  * *TODO*
+* Trabalhos concluídos:
+  * [Publicação base](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) do problema com os primeiros resultados.
+
+## 2. Project Architecture
+
+This is a science project made for a computational environment without a graphical user interface (GUI). You should be able to build and execute this project under any linux distribution using just the terminal. Any scripts or applications that does provide an user interface are *optional* and only designed for presentation purposes. The commands presented in this document assume that you use a Debian/Ubuntu distribution.
+
+As a science project, each main application is built so it solves an instance in a single execution in a deterministic way. The idea is that each execution should be independent and done in a controlled environment, therefore the results are precise and replicable.
+
+### 2.1. Pre-requisites 
+
+The compiler used for every C/C++ component is gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2). They are managed by [Make](https://www.gnu.org/software/make/). These are the only pre-requisites to build and execute everything. Use the following commands to install them if necessary:
+  
+```bash
+sudo apt update
+sudo apt install build-essential
+``` 
+
+The following bullets denote the pre-requisites to develop the project.
+
+* The main text editor is [Visual Studio Code](https://code.visualstudio.com/) under Windows 10 with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) hosting Ubuntu 20.04 or direct under Lubuntu 20.04 LTS.
+* The configuration of the text editor is in the `.vscode` folder at the root of the repository. Anyone developing this project should install [WSL-Remote extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) for VSCode. Optionally, the developer may use the following extensions to aid the developing process:
+  * [C/C++ Microsoft extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+  * [Better C/C++ Syntax](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+  * [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one).
+  * [C++ TestMate](https://marketplace.visualstudio.com/items?itemName=matepek.vscode-catch2-test-adapter).
+  * [Doxygen Document Generator](https://marketplace.visualstudio.com/items?itemName=cschlosser.doxdocgen).
+  * [IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode).
+  * [Python for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
+* Any folder or file generated by your IDE, text editor or any personal tool that isn't VS code should be added to the `.gitignore` file in the root.
+  * Use this tool if necessary: https://www.toptal.com/developers/gitignore
+* All python scripts are executed with Python3 (Python 3.8.5). Their dependencies are listed in the script itself. You will need to install pip3 to obtain them.
+    * Pip3 itself: `sudo apt-get install python3-pip`
+    * PrettyTable: `sudo pip3 install -U prettytable`
+    * Matplotlib: `pip3 install matplotlib`
+* This project uses [Doxygen](https://www.doxygen.nl/index.html) to document the source code. . It is worth noting that VStudio Code has native support for doxygen. To install doxygen:
+  * Quick install: ```sudo apt-get install doxygen```
+  * Doxygen may use graphviz, latex, dvips, and gs. You should install each one of these tools to build the documentation **correctly**.
+    * Quick install: ```sudo apt-get install graphviz texlive-full ghostscript-x```
+
+### 2.2. External Dependencies
+
+* LaTeX is the main tool to devise any scientific material to be published using this project. The primary platform to host such material is [Overleaf](https://www.overleaf.com/project). 
+
+### 2.3. Instructions to build and execute this project
+
+**TODO**
+
+* The entire build setup is managed with `make` through a `makefile` in the root of this repository. 
+* You may build, execute examples, clean, and do other commands through the VSCode itself using the configured tasks (shortcut `ctrl + shift + b`). They will call some make rules from the makefile in the root.
+* Each C/C++ component (source, test, profile, microbenchmark) has two makefiles called `build.mk` and `run.mk` designed to build and execute respectivelly. They're not intended to be executed by themselves, instead they're called by the `makefile` in the root.
+  * Every `run.mk` makefile should provide rules and examples on how to execute each app. They are based on executions that were made through the project.
+  * The `build.mk` has the base commands to build the respective component.
+* The source has two build setups:
+  * `release` - Used to attain proper results to publish.
+  * `debug` - Used through the development to test and catch bugs.
+* The following commands are provided by the `makefile` in the root:
+  * `make all` - Clean the binaries of the source code in release mode and compile them again.
+  * `make build` or `make` - Build the source code in release mode.
+  * `make run` - Run some basic examples with each source application in release setup.
+  * `make debug` - Build the source code in debug mode.
+  * `make test` - Build the test component.
+  * `make test-all` - Run every test.
+  * `make doc` - Generate the source documentation.
+  * `make clean-doc` - Clean the source documentation.
+* Additionally, you may build, run, and clean each component using the following commands:
+  * `make build-X`, `make run-X`, `make clean-X` - Will build, run, or clean the component **X**, which may be `release`, `debug`, or `test`.
+* Application usage instructions is documented in its main source file. Always check the `run.mk` for examples.
+  * Some instructions should be seen by passing `--help` in the commmand line to most applications. Also, reflected in the source documentation available at `doc/source_doc.html`. 
+  * In *release* mode, all applications only use the `stdout` stream. Applications may generate some logging information in *debug mode* through `stderr` stream, this behaviour is controled in the `src/Debug.h` header.
+* To debug the source code with VSCode and [GDB](https://www.sourceware.org/gdb/), select the *app* that you intend to debug in the upper part of the *Run and Debug* tab (shortcut `ctrl + shift + D`) and execute its rule with the shortcut `F5`. **The developer may need to alter input/output redirection in the `.vscode/launch.json` file**. The default configuration is set to use the `workspace/debug.in` file as input and output the stdout to `workspace/debug.out`. The stderr is printed to the console.
+* The source code is tested with the help of a testing component available at `test/` folder. This component consists of multiple unit test applications that uses the source code as a blackbox. 
+  * Details about its structure, build configuration, and execution can be found in `/doc/test_doc.md`.
+  * It may use the available instances contained in `instances/` folder. 
+  * It is intended to catch errors only, do not try to use this component for performance test.
+  * As mentioned above, you can use `make test && make test-all` to build and execute every test.
+  * You may use the [C++ test mate extension](https://marketplace.visualstudio.com/items?itemName=matepek.vscode-catch2-test-adapter) for VS code if you have trouble configuring any individual tests with the `test/run.mk` or if you need GUI support. The extension also allows to easily attach [GDB](https://www.sourceware.org/gdb/) to the execution. 
+* To gather results to publish, each source application can be executed through the script `execution-battery.py` located in the tools folder. The script was designed to perform execution batteries while keeping the best solution found. Usage instructions are in the tool itself.
+  
+### 2.4. Directory Structure
+
+The project is structured as follows:
+
+* `src/`  -- Contain the source code of the project. Detailed usage instruction, description, and run examples for each app can be found across the makefile, source code iteself, and in the source documentation.
+* `build/` -- Store temporary build files and any binary application generated by the compiler during code compilation.
+* `external/` -- External code (libraries) used in this project alongside some related git submodules.
+* `tools/`  -- Internal tools used in this project. Usually, a script in python that helps visualizing instances or manipulation them. Their usage is documented inside the tool script itself. 
+* `instances/` -- Contain the instance data set. You may find information about the instance format inside the `doc/` folder. It is recommended to keep each instance with unique name across the project. Internal tools or a main app itself may use these names to map solutions.
+* `documents/` -- Contain some documentation about the project. You can find the instance specification format here for example. It is important to note that the documentation of each internal tool is located at the `/tools/` directory with the tool itself. Examples and intructions of any application or component usage should be in the main source code itself alongside the respective makefile.
+  * `documents/doxygen/` - Constain documentation about the source code. 
+  * `documents/figure/` - Any image or graphic generated specifically for the project.
+  * `documents/related-paper/` - Some useful papers related to the project.
+  * `documents/devised/` - Works and papers that has been done as a result of this project.
+* `results/` -- Full result summaries and its respective output obtained through the execution of each main application that composes this project. This folder store any important execution data.
+  * `results/bks/` - The best known solution (bks) for each instance that was attained across every application test through this project. 
+* `workspace/` -- A folder that isn't organized at all. May have auxiliary files and scripts for automation. May have some results to be reviewed or temporary execution data.
+
+### 2.5. Internal Tools
+
+This project has internal tools to support development. Usage examples and detailed description should be inside the tool itself. The user is encouraged to read the entire description before using them. They are available at the `tools/` directory.
+
+* `loader.py` - A module that is used by `execution-battery.py`, `execution-battery-analyser.py`, and `bks_summary.py`. Doesn't contain any script code that can run by itself. This class provides the code necessary to load the files generated for each problem related to this project (like the output and input files).
+* `execution-battery.py` - This script will automize the execution of any main application through multiple independent runs with a list of instances to be solved given as input. It will maintain the problem best solution for each instance and inform if anything went wrong through.
+* `execution-battery-analyzer.py` - Will analyse the log generated by the `execution-battery.py` to devise a result summary. It will iterate over each file generated in the previous script to create the final result table. The result is displayed in a way that can be easily manipulated for publishing.
+* `execution-battery-figure.py` - Tool made to devise graphics based on any number of result summaries generated by `execution-battery-analyzer.py`.
+* `bks_summary.py` - This script will update the summary file of the bks attained through the project summary at the results folder. It will create a file inside the `result/bks/` directory with tables that provide easy access to the bks information. 
+* `list_files.py` - A simple script that receives a directory to output a list of files inside. The output will be printed at the console. May receive a filter by file extension.
+
+## 3. Authorship Information
+
+*TODO*
+
+* Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Orientador]**
+* Leandro Santiago de Araújo (leandro@ic.uff.br) **[Orientador]**
+* Carlos Thadeu (colocar e-mail uff) 
+* Fernanda Couto (fernandavdc@ufrrj.br)
+* Daniel Juvetude (deljuven@ymail.com)
+* Anderson Zudio (azudio@id.uff.br)
+
+If you want to inquire about this project, you may e-mail any of the authors listed above.
