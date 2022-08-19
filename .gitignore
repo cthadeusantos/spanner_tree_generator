@@ -33,3 +33,10 @@
 
 #Python
 *.pyc
+
+#VScode settings
+.vscode/
+
+#OLD STRUCTURE FILES
+#this directory will be delete after structure changes are OK
+.old_struct/

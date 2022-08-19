@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 400, 39604
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 138340
+Resposta H1 = 5
+Tempo H1 micro seg= 2.75053e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 816.5
+
+GRAFO 1: 400, 40045
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 53897.8
+Resposta H1 = 6
+Tempo H1 micro seg= 2.10198e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 839.25
+
+GRAFO 2: 400, 39747
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 54538
+Resposta H1 = 5
+Tempo H1 micro seg= 2.38702e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 827.75
+
+GRAFO 3: 400, 39684
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 53769.2
+Resposta H1 = 7
+Tempo H1 micro seg= 2.40421e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 829
+
+GRAFO 4: 400, 39996
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 54226.5
+Resposta H1 = 6
+Tempo H1 micro seg= 2.28346e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 849.25
+
+GRAFO 5: 400, 40005
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 54338.2
+Resposta H1 = 7
+Tempo H1 micro seg= 2.33359e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 833.75
+
+GRAFO 6: 400, 40023
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 56888.5
+Resposta H1 = 6
+Tempo H1 micro seg= 2.39782e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 828.75
+
+GRAFO 7: 400, 39887
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 55624.2
+Resposta H1 = 5
+Tempo H1 micro seg= 2.40739e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 851.75
+
+GRAFO 8: 400, 39984
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 56273
+Resposta H1 = 5
+Tempo H1 micro seg= 2.40297e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 820
+
+GRAFO 9: 400, 39853
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 56631.2
+Resposta H1 = 6
+Tempo H1 micro seg= 2.40855e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 826.5

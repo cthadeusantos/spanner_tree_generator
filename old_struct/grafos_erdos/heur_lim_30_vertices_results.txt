@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 30, 224
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 657.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2079
+Resposta H2 = 4
+Tempo H2 micro seg= 37
+
+GRAFO 1: 30, 229
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 645
+Resposta H1 = 5
+Tempo H1 micro seg= 2351.5
+Resposta H2 = 4
+Tempo H2 micro seg= 33.25
+
+GRAFO 2: 30, 212
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 609
+Resposta H1 = 4
+Tempo H1 micro seg= 2709.25
+Resposta H2 = 4
+Tempo H2 micro seg= 32.5
+
+GRAFO 3: 30, 206
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 586.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2278.5
+Resposta H2 = 4
+Tempo H2 micro seg= 32.5
+
+GRAFO 4: 30, 217
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 620.25
+Resposta H1 = 4
+Tempo H1 micro seg= 2971.5
+Resposta H2 = 4
+Tempo H2 micro seg= 36.25
+
+GRAFO 5: 30, 206
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 601.25
+Resposta H1 = 5
+Tempo H1 micro seg= 2432.5
+Resposta H2 = 4
+Tempo H2 micro seg= 31.5
+
+GRAFO 6: 30, 238
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 1421
+Resposta H1 = 4
+Tempo H1 micro seg= 1835.5
+Resposta H2 = 4
+Tempo H2 micro seg= 32.25
+
+GRAFO 7: 30, 208
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 607
+Resposta H1 = 5
+Tempo H1 micro seg= 2341.25
+Resposta H2 = 4
+Tempo H2 micro seg= 30.5
+
+GRAFO 8: 30, 223
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 622.75
+Resposta H1 = 5
+Tempo H1 micro seg= 2425
+Resposta H2 = 4
+Tempo H2 micro seg= 30.25
+
+GRAFO 9: 30, 214
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 603.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2094.25
+Resposta H2 = 4
+Tempo H2 micro seg= 30.75

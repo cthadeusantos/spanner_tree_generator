@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 392048
+Resposta H1 = 4
+Tempo H1 micro seg= 1.79184e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1791.5
+
+GRAFO 1: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 283447
+Resposta H1 = 4
+Tempo H1 micro seg= 1.21947e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1803.25
+
+GRAFO 2: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 281320
+Resposta H1 = 4
+Tempo H1 micro seg= 1.32823e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 2542
+
+GRAFO 3: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 281904
+Resposta H1 = 4
+Tempo H1 micro seg= 1.37349e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1819.75
+
+GRAFO 4: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 291656
+Resposta H1 = 4
+Tempo H1 micro seg= 1.37656e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1840
+
+GRAFO 5: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 284926
+Resposta H1 = 4
+Tempo H1 micro seg= 1.36216e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1850.75
+
+GRAFO 6: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 278226
+Resposta H1 = 4
+Tempo H1 micro seg= 1.3286e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1789.25
+
+GRAFO 7: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 282948
+Resposta H1 = 4
+Tempo H1 micro seg= 1.25351e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1770
+
+GRAFO 8: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 278998
+Resposta H1 = 4
+Tempo H1 micro seg= 1.2768e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 1814.5
+
+GRAFO 9: 800, 153600
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 281534
+Resposta H1 = 4
+Tempo H1 micro seg= 1.24581e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 4824

@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 700, 121978
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 203297
+Resposta H1 = 5
+Tempo H1 micro seg= 1.98539e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2984.75
+
+GRAFO 1: 700, 122452
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 214376
+Resposta H1 = 8
+Tempo H1 micro seg= 2.08892e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3949.25
+
+GRAFO 2: 700, 122224
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 467368
+Resposta H1 = 6
+Tempo H1 micro seg= 3.12366e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5254.25
+
+GRAFO 3: 700, 122653
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 262840
+Resposta H1 = 5
+Tempo H1 micro seg= 3.16041e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3699
+
+GRAFO 4: 700, 122369
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 389977
+Resposta H1 = 6
+Tempo H1 micro seg= 3.09051e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 3679.5
+
+GRAFO 5: 700, 122424
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 353387
+Resposta H1 = 6
+Tempo H1 micro seg= 3.06226e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4306.25
+
+GRAFO 6: 700, 122662
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 213110
+Resposta H1 = 6
+Tempo H1 micro seg= 3.00454e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 3676
+
+GRAFO 7: 700, 122781
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 260570
+Resposta H1 = 6
+Tempo H1 micro seg= 3.12014e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 2973
+
+GRAFO 8: 700, 122764
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 311534
+Resposta H1 = 5
+Tempo H1 micro seg= 2.96245e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3959
+
+GRAFO 9: 700, 122162
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 330056
+Resposta H1 = 5
+Tempo H1 micro seg= 3.31987e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4229.75

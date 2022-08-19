@@ -15,8 +15,8 @@ This project is a set of solutions for the T-admissibility problem in graphs. Th
 
 ## 1. Links importante e trabalhos feitos
 
-* Link para [este repositório](https://github.com/cthadeusantos/spanner_tree_generator). 
-* [Quadro Kanban](https://github.com/users/cthadeusantos/projects/1/views/1) de tarefas relacionadas.
+* Link to [this repository](https://github.com/cthadeusantos/spanner_tree_generator). 
+* Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1).
     * As atividades são relacionadas em cards que podem ter tarefas detalhadas na descrição. 
 * Trabalhos em andamento:
   * *TODO*
@@ -40,7 +40,7 @@ sudo apt install build-essential
 
 The following bullets denote the pre-requisites to develop the project.
 
-* The main text editor is [Visual Studio Code](https://code.visualstudio.com/) under Lubuntu 20.04 LTS or Windows 10 with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) hosting Ubuntu 20.04 LTS.
+* The main text editor is [Visual Studio Code](https://code.visualstudio.com/) under lubuntu 22.04.1 LTS or Windows 10 with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) hosting Ubuntu 20.04 LTS.
 * The configuration of the text editor is in the `.vscode` folder at the root of the repository. Anyone developing this project should install [WSL-Remote extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) for VSCode. Optionally, the developer may use the following extensions to aid the developing process:
   * [C/C++ Microsoft extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
   * [Better C/C++ Syntax](https://marketplace.visualstudio.com/items?itemName=jeff-hykin.better-cpp-syntax).
@@ -135,5 +135,5 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br)
 * Daniel Juvetude (deljuven@ymail.com)
-* Carlos Thadeu (**TODO** colocar e-mail uff) 
+* Carlos Thadeu (carlosthadeu@id.uff.br) 
 * Anderson Zudio (azudio@id.uff.br)

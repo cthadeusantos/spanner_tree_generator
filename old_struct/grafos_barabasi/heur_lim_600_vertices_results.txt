@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 222001
+Resposta H1 = 4
+Tempo H1 micro seg= 5.21788e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1003.25
+
+GRAFO 1: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 132729
+Resposta H1 = 4
+Tempo H1 micro seg= 4.79415e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1005.75
+
+GRAFO 2: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 141334
+Resposta H1 = 4
+Tempo H1 micro seg= 4.40666e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1065.5
+
+GRAFO 3: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 140830
+Resposta H1 = 4
+Tempo H1 micro seg= 5.18693e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1046.25
+
+GRAFO 4: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 147488
+Resposta H1 = 4
+Tempo H1 micro seg= 4.93864e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1062.5
+
+GRAFO 5: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 145647
+Resposta H1 = 4
+Tempo H1 micro seg= 5.35596e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1044.5
+
+GRAFO 6: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 144379
+Resposta H1 = 4
+Tempo H1 micro seg= 5.26358e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1033.5
+
+GRAFO 7: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 144727
+Resposta H1 = 4
+Tempo H1 micro seg= 4.76976e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1047.75
+
+GRAFO 8: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 145262
+Resposta H1 = 4
+Tempo H1 micro seg= 5.2354e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1044.25
+
+GRAFO 9: 600, 86400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 145068
+Resposta H1 = 4
+Tempo H1 micro seg= 4.74983e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 1046.25

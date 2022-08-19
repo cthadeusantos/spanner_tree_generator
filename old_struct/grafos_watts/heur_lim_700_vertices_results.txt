@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 302336
+Resposta H1 = 7
+Tempo H1 micro seg= 2.12077e+07
+Resposta H2 = 8
+Tempo H2 micro seg= 2966.5
+
+GRAFO 1: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 190772
+Resposta H1 = 7
+Tempo H1 micro seg= 1.99815e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 2254
+
+GRAFO 2: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 194239
+Resposta H1 = 7
+Tempo H1 micro seg= 1.99397e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2797.25
+
+GRAFO 3: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 190748
+Resposta H1 = 8
+Tempo H1 micro seg= 1.90244e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2833.75
+
+GRAFO 4: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 193937
+Resposta H1 = 7
+Tempo H1 micro seg= 1.92748e+07
+Resposta H2 = 8
+Tempo H2 micro seg= 2818
+
+GRAFO 5: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 190786
+Resposta H1 = 6
+Tempo H1 micro seg= 1.96491e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2723.75
+
+GRAFO 6: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 195763
+Resposta H1 = 9
+Tempo H1 micro seg= 1.98811e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2766.25
+
+GRAFO 7: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 196707
+Resposta H1 = 8
+Tempo H1 micro seg= 1.97553e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 2300.75
+
+GRAFO 8: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 195538
+Resposta H1 = 8
+Tempo H1 micro seg= 1.9313e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 2777
+
+GRAFO 9: 700, 98000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 192963
+Resposta H1 = 7
+Tempo H1 micro seg= 1.91972e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 2703
