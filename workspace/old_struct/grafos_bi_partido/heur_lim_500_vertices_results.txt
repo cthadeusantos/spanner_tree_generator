@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 500, 18662
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 190241
+Resposta H1 = 11
+Tempo H1 micro seg= 4.90718e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 1983.75
+
+GRAFO 1: 500, 18563
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 187895
+Resposta H1 = 9
+Tempo H1 micro seg= 5.09556e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 2050
+
+GRAFO 2: 500, 18780
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 205228
+Resposta H1 = 11
+Tempo H1 micro seg= 5.57832e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 1878.5
+
+GRAFO 3: 500, 18495
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 204346
+Resposta H1 = 13
+Tempo H1 micro seg= 5.47802e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 2507.5
+
+GRAFO 4: 500, 18774
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 254569
+Resposta H1 = 7
+Tempo H1 micro seg= 5.42739e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 2112.5
+
+GRAFO 5: 500, 18762
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 207938
+Resposta H1 = 11
+Tempo H1 micro seg= 4.92e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 1753.75
+
+GRAFO 6: 500, 18911
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 201047
+Resposta H1 = 11
+Tempo H1 micro seg= 5.11218e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 1952.25
+
+GRAFO 7: 500, 18570
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 194183
+Resposta H1 = 9
+Tempo H1 micro seg= 5.07539e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 1924.75
+
+GRAFO 8: 500, 18652
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 194336
+Resposta H1 = 9
+Tempo H1 micro seg= 5.20299e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 1978
+
+GRAFO 9: 500, 18774
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 200388
+Resposta H1 = 11
+Tempo H1 micro seg= 5.69536e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 1812

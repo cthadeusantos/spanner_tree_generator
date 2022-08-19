@@ -1,0 +1,18 @@
+---                               #An example of execution battery input
+
+name: string                      #The name of the execution battery.
+problem: string                   #The problem that will be loaded in the loader.py.
+description: string               #Optional parameter. A simple description of the execution battery for log purposes.
+exec: string                      #The executable name.
+default_args: string              #Optional parameter. The argument line that will be passed to every execution, unless overriden [see below]. 
+default_timelimit: integer        #Hard time limit in seconds for the executable. The script will close the application if it takes that long to execute a single run. May be overriden [see below].
+default_starting_seed: integer    #Optional parameter. Seed to start the battery. Each individual run of the specified instance will start with this seed and the script will increment it by 1 for every subsequent execution. For example, the first execution will have this seed, the next one will be seed+1, and so on. May be overriden [see below].
+default_iterations: integer       #The number of runs that each instance will be executed. May be overriden [see below].
+instance_list:                    #List that should contain what instances will be executed with their respective configuration to override the parameters above if necessary.
+- instance: string                #The instance that will be executed in this battery. This name is required. But the parameters below it are all optional. The user may use them to override the defaults.
+  timelimit: integer              #Optional parameter to override the default timelimit in seconds.
+  iterations: integer             #Optional parameter to override the default quantity of executions.
+  args: string                    #Optional parameter to override the default argument list that will be passed to the executable.
+  starting_seed: integer          #Optional parameter to override the default starting seed. This will be used only for the respective instance.
+
+...                               #End of this document

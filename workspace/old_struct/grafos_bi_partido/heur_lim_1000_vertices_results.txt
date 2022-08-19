@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 1000, 75267
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 2.37739e+06
+Resposta H1 = 11
+Tempo H1 micro seg= 4.31289e+07
+Resposta H2 = 11
+Tempo H2 micro seg= 8051.75
+
+GRAFO 1: 1000, 75128
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.99599e+06
+Resposta H1 = 9
+Tempo H1 micro seg= 4.26913e+07
+Resposta H2 = 13
+Tempo H2 micro seg= 8195.75
+
+GRAFO 2: 1000, 74970
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.88367e+06
+Resposta H1 = 9
+Tempo H1 micro seg= 5.07762e+07
+Resposta H2 = 11
+Tempo H2 micro seg= 8110
+
+GRAFO 3: 1000, 75040
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 2.0072e+06
+Resposta H1 = 7
+Tempo H1 micro seg= 4.25136e+07
+Resposta H2 = 9
+Tempo H2 micro seg= 8279.5
+
+GRAFO 4: 1000, 74737
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.87719e+06
+Resposta H1 = 13
+Tempo H1 micro seg= 4.04378e+07
+Resposta H2 = 9
+Tempo H2 micro seg= 8106.75
+
+GRAFO 5: 1000, 74940
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.89135e+06
+Resposta H1 = 11
+Tempo H1 micro seg= 3.84227e+07
+Resposta H2 = 11
+Tempo H2 micro seg= 8053.75
+
+GRAFO 6: 1000, 75214
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.99134e+06
+Resposta H1 = 9
+Tempo H1 micro seg= 4.14133e+07
+Resposta H2 = 9
+Tempo H2 micro seg= 7997
+
+GRAFO 7: 1000, 74983
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.9116e+06
+Resposta H1 = 9
+Tempo H1 micro seg= 4.26705e+07
+Resposta H2 = 13
+Tempo H2 micro seg= 8013.75
+
+GRAFO 8: 1000, 75394
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.99663e+06
+Resposta H1 = 11
+Tempo H1 micro seg= 4.07712e+07
+Resposta H2 = 9
+Tempo H2 micro seg= 7591.75
+
+GRAFO 9: 1000, 74992
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 1.8961e+06
+Resposta H1 = 11
+Tempo H1 micro seg= 3.56276e+07
+Resposta H2 = 9
+Tempo H2 micro seg= 8203.5

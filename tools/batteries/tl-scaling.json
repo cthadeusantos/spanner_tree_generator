@@ -1,0 +1,43 @@
+{
+    "name": "tl-scaling",
+    "problem": "tsp",
+    "exec": "app_TSP",
+    "default_args": "",
+    "default_timelimit": 70,
+    "default_starting_seed": 1,
+    "default_iterations": 30,
+    "instance_list": [     
+        {
+            "instance" : "01_berlin52.tsp",
+            "args": "-tl 10"
+        },   
+        {
+            "instance" : "02_kroD100.tsp",
+            "args": "-tl 10"
+        },  
+        {
+            "instance" : "03_pr226.tsp",
+            "args": "-tl 10"
+        },   
+        {
+            "instance" : "04_lin318.tsp",
+            "args": "-tl 10"
+        },   
+        {
+            "instance" : "05_TRP-S500-R1.tsp",
+            "args": "-tl 10"
+        },  
+        {
+            "instance" : "06_d657.tsp",
+            "args": "-tl 10"
+        },  
+        {
+            "instance" : "07_rat784.tsp",
+            "args": "-tl 10"
+        }, 
+        {
+            "instance" : "08_TRP-S1000-R1.tsp",
+            "args": "-tl 10"
+        }
+    ]
+}

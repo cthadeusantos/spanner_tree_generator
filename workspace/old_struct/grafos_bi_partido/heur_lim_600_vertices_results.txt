@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 600, 27170
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 345751
+Resposta H1 = 9
+Tempo H1 micro seg= 7.97551e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 2741
+
+GRAFO 1: 600, 26755
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 332049
+Resposta H1 = 11
+Tempo H1 micro seg= 8.44978e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 2754.5
+
+GRAFO 2: 600, 27062
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 363440
+Resposta H1 = 9
+Tempo H1 micro seg= 8.31048e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 2815
+
+GRAFO 3: 600, 27279
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 380947
+Resposta H1 = 11
+Tempo H1 micro seg= 8.50842e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 2866.25
+
+GRAFO 4: 600, 27075
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 376736
+Resposta H1 = 9
+Tempo H1 micro seg= 9.57715e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 2700.25
+
+GRAFO 5: 600, 26909
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 366484
+Resposta H1 = 11
+Tempo H1 micro seg= 8.48308e+06
+Resposta H2 = 11
+Tempo H2 micro seg= 2956.75
+
+GRAFO 6: 600, 27268
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 362487
+Resposta H1 = 11
+Tempo H1 micro seg= 8.99974e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 2832.75
+
+GRAFO 7: 600, 27111
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 356448
+Resposta H1 = 11
+Tempo H1 micro seg= 9.17267e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 2867.75
+
+GRAFO 8: 600, 26819
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 349350
+Resposta H1 = 9
+Tempo H1 micro seg= 8.59861e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 2648.75
+
+GRAFO 9: 600, 26919
+Novo limite inferior = 3
+Tempo maxCircleTime micro seg= 356588
+Resposta H1 = 13
+Tempo H1 micro seg= 8.90213e+06
+Resposta H2 = 9
+Tempo H2 micro seg= 2885

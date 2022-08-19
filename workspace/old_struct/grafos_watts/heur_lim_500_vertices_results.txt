@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 212270
+Resposta H1 = 6
+Tempo H1 micro seg= 5.37e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1305.75
+
+GRAFO 1: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 86128
+Resposta H1 = 6
+Tempo H1 micro seg= 4.96595e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1549.25
+
+GRAFO 2: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 86122
+Resposta H1 = 8
+Tempo H1 micro seg= 4.88118e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1308
+
+GRAFO 3: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 86218.8
+Resposta H1 = 6
+Tempo H1 micro seg= 5.06469e+06
+Resposta H2 = 7
+Tempo H2 micro seg= 1353.75
+
+GRAFO 4: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 89915.2
+Resposta H1 = 8
+Tempo H1 micro seg= 5.0151e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1302.25
+
+GRAFO 5: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 88170.5
+Resposta H1 = 7
+Tempo H1 micro seg= 5.35606e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1276
+
+GRAFO 6: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 89633.8
+Resposta H1 = 6
+Tempo H1 micro seg= 5.25911e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 1340.25
+
+GRAFO 7: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 89116.8
+Resposta H1 = 7
+Tempo H1 micro seg= 5.25472e+06
+Resposta H2 = 5
+Tempo H2 micro seg= 1413.25
+
+GRAFO 8: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 89681.5
+Resposta H1 = 7
+Tempo H1 micro seg= 5.51945e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1282.25
+
+GRAFO 9: 500, 50000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 88098.2
+Resposta H1 = 7
+Tempo H1 micro seg= 5.21025e+06
+Resposta H2 = 6
+Tempo H2 micro seg= 1372

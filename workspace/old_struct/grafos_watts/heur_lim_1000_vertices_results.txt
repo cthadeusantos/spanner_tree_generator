@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 579064
+Resposta H1 = 7
+Tempo H1 micro seg= 5.83367e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5549
+
+GRAFO 1: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 450286
+Resposta H1 = 6
+Tempo H1 micro seg= 6.49528e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 5834.75
+
+GRAFO 2: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 448426
+Resposta H1 = 8
+Tempo H1 micro seg= 6.10295e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 5644.25
+
+GRAFO 3: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 445491
+Resposta H1 = 6
+Tempo H1 micro seg= 6.1204e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5676
+
+GRAFO 4: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 446336
+Resposta H1 = 8
+Tempo H1 micro seg= 6.64499e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5554.5
+
+GRAFO 5: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 447825
+Resposta H1 = 6
+Tempo H1 micro seg= 5.96184e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 5571.5
+
+GRAFO 6: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 447026
+Resposta H1 = 8
+Tempo H1 micro seg= 6.84225e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5522.5
+
+GRAFO 7: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 445965
+Resposta H1 = 6
+Tempo H1 micro seg= 6.51686e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5469.5
+
+GRAFO 8: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 445097
+Resposta H1 = 6
+Tempo H1 micro seg= 5.98816e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 5408.25
+
+GRAFO 9: 1000, 200000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 448965
+Resposta H1 = 8
+Tempo H1 micro seg= 6.81374e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 5420.25

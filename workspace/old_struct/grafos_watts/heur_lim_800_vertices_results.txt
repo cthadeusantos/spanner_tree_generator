@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 367770
+Resposta H1 = 9
+Tempo H1 micro seg= 3.23179e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3881
+
+GRAFO 1: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 274699
+Resposta H1 = 7
+Tempo H1 micro seg= 3.30151e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3752
+
+GRAFO 2: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 278142
+Resposta H1 = 8
+Tempo H1 micro seg= 3.44586e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 3770.25
+
+GRAFO 3: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 275418
+Resposta H1 = 7
+Tempo H1 micro seg= 3.18407e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3845
+
+GRAFO 4: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 284462
+Resposta H1 = 7
+Tempo H1 micro seg= 3.17774e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3839
+
+GRAFO 5: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 274398
+Resposta H1 = 7
+Tempo H1 micro seg= 3.06831e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3607.5
+
+GRAFO 6: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 281292
+Resposta H1 = 7
+Tempo H1 micro seg= 3.13181e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3653
+
+GRAFO 7: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 266578
+Resposta H1 = 8
+Tempo H1 micro seg= 3.11264e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 3202.75
+
+GRAFO 8: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 268223
+Resposta H1 = 5
+Tempo H1 micro seg= 3.09778e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 3726.5
+
+GRAFO 9: 800, 128000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 284312
+Resposta H1 = 9
+Tempo H1 micro seg= 3.15604e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 3801.75

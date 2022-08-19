@@ -1,0 +1,43 @@
+{
+    "name": "preliminar-brkga",
+    "problem": "tsp",
+    "exec": "app_TSP",
+    "default_args": "-tl 5",
+    "default_timelimit": 150,
+    "default_starting_seed": 1,
+    "default_iterations": 30,
+    "instance_list": [
+        {
+            "instance" : "01_berlin52.tsp",
+            "args": "-tl 120 -tg 8761"
+        },   
+        {
+            "instance" : "02_kroD100.tsp",
+            "args": "-tl 120 -tg 30182"
+        },  
+        {
+            "instance" : "03_pr226.tsp",
+            "args": "-tl 120 -tg 272238"
+        },   
+        {
+            "instance" : "04_lin318.tsp",
+            "args": "-tl 120 -tg 136750"
+        },   
+        {
+            "instance" : "05_TRP-S500-R1.tsp",
+            "args": "-tl 120 -tg 41069"
+        },  
+        {
+            "instance" : "06_d657.tsp",
+            "args": "-tl 120 -tg 310208"
+        },  
+        {
+            "instance" : "07_rat784.tsp",
+            "args": "-tl 120 -tg 68399"
+        }, 
+        {
+            "instance" : "08_TRP-S1000-R1.tsp",
+            "args": "-tl 120 -tg 119904"
+        }
+    ]
+}

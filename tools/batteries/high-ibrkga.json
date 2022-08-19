@@ -1,0 +1,300 @@
+{
+    "name": "preliminar-ibrkga",
+    "description": "Extending the results for higher precisions with ibrkga.",
+    "problem": "tsp",
+    "exec": "app_TSP2",
+    "default_args": "-tl 5",
+    "default_timelimit": 150,
+    "default_starting_seed": 1,
+    "default_iterations": 30,
+    "instance_list": [  
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 4194304 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 8388608 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 16777216 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 33554432 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 67108864 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 134217728 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 536870912 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "01_berlin52.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 8761"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 4194304 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 8388608 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 16777216 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 33554432 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 67108864 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 134217728 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 536870912 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "02_kroD100.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 30182"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 4194304 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 8388608 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 16777216 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 33554432 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 67108864 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 134217728 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 536870912 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "03_pr226.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 272238"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 4194304 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 8388608 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 16777216 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 33554432 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 67108864 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 134217728 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 536870912 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "04_lin318.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 136750"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 4194304 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 8388608 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 16777216 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 33554432 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 67108864 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 134217728 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 536870912 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "05_TRP-S500-R1.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 41069"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 4194304 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 8388608 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 16777216 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 33554432 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 67108864 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 134217728 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 536870912 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "06_d657.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 310208"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 4194304 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 8388608 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 16777216 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 33554432 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 67108864 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 134217728 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 536870912 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "07_rat784.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 68399"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 4194304 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 8388608 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 16777216 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 33554432 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 67108864 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 134217728 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 536870912 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 1073741824 -tl 120 -tg 119904"
+        },
+        {
+            "instance": "08_TRP-S1000-R1.tsp",
+            "args": "-p 2147483647 -tl 120 -tg 119904"
+        }
+    ]
+}

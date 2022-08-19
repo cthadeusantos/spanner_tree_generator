@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 453258
+Resposta H1 = 4
+Tempo H1 micro seg= 1.7739e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2360.5
+
+GRAFO 1: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 377504
+Resposta H1 = 4
+Tempo H1 micro seg= 1.95098e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 3227.75
+
+GRAFO 2: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 373180
+Resposta H1 = 4
+Tempo H1 micro seg= 1.91667e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2225
+
+GRAFO 3: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 370177
+Resposta H1 = 4
+Tempo H1 micro seg= 1.73103e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2267.5
+
+GRAFO 4: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 370981
+Resposta H1 = 4
+Tempo H1 micro seg= 1.98934e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2269
+
+GRAFO 5: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 375582
+Resposta H1 = 4
+Tempo H1 micro seg= 1.7636e+07
+Resposta H2 = 5
+Tempo H2 micro seg= 3184
+
+GRAFO 6: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 370428
+Resposta H1 = 4
+Tempo H1 micro seg= 1.96835e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2229.75
+
+GRAFO 7: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 368444
+Resposta H1 = 4
+Tempo H1 micro seg= 1.73092e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2333
+
+GRAFO 8: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 373764
+Resposta H1 = 4
+Tempo H1 micro seg= 1.76185e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2211
+
+GRAFO 9: 900, 194400
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 377010
+Resposta H1 = 4
+Tempo H1 micro seg= 1.95173e+07
+Resposta H2 = 4
+Tempo H2 micro seg= 2196

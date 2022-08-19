@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 900, 202616
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 694736
+Resposta H1 = 5
+Tempo H1 micro seg= 6.15646e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 5103.5
+
+GRAFO 1: 900, 201608
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 443310
+Resposta H1 = 5
+Tempo H1 micro seg= 4.56018e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4796.25
+
+GRAFO 2: 900, 202230
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 355702
+Resposta H1 = 7
+Tempo H1 micro seg= 4.56543e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4675
+
+GRAFO 3: 900, 201860
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 364451
+Resposta H1 = 6
+Tempo H1 micro seg= 4.61794e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4614
+
+GRAFO 4: 900, 202247
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 356063
+Resposta H1 = 6
+Tempo H1 micro seg= 4.65171e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4612
+
+GRAFO 5: 900, 202261
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 369068
+Resposta H1 = 7
+Tempo H1 micro seg= 4.78736e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4917
+
+GRAFO 6: 900, 201880
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 367547
+Resposta H1 = 7
+Tempo H1 micro seg= 4.88329e+07
+Resposta H2 = 7
+Tempo H2 micro seg= 4885.5
+
+GRAFO 7: 900, 202889
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 471746
+Resposta H1 = 6
+Tempo H1 micro seg= 6.3719e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4601
+
+GRAFO 8: 900, 202130
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 379763
+Resposta H1 = 7
+Tempo H1 micro seg= 4.4046e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4680.5
+
+GRAFO 9: 900, 201995
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 367092
+Resposta H1 = 6
+Tempo H1 micro seg= 4.59626e+07
+Resposta H2 = 6
+Tempo H2 micro seg= 4565.25

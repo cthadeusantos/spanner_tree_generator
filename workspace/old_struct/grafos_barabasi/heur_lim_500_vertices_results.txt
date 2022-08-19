@@ -1,0 +1,86 @@
+novo limite: para cada e in G, calcula o menor ciclo que contenha e (C(e)), o limite é MAX(C(e)) - 1
+antigo limite: girth(G) - 1
+
+TAXA ACERTO H1 Sobre o novo limite: 0
+TAXA ACERTO H2 Sobre o novo limite: 0
+
+
+GRAFO 0: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 92590.2
+Resposta H1 = 4
+Tempo H1 micro seg= 2.61317e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 755.25
+
+GRAFO 1: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 92982
+Resposta H1 = 4
+Tempo H1 micro seg= 2.45248e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 762.25
+
+GRAFO 2: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 92796.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2.71694e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 755.25
+
+GRAFO 3: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 95226.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2.17822e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 753.25
+
+GRAFO 4: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 94413.5
+Resposta H1 = 4
+Tempo H1 micro seg= 2.19652e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 761.75
+
+GRAFO 5: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 93971
+Resposta H1 = 4
+Tempo H1 micro seg= 2.92828e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 742.25
+
+GRAFO 6: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 93948.8
+Resposta H1 = 4
+Tempo H1 micro seg= 2.83839e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 756.25
+
+GRAFO 7: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 94505
+Resposta H1 = 4
+Tempo H1 micro seg= 2.50667e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 784
+
+GRAFO 8: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 93908
+Resposta H1 = 4
+Tempo H1 micro seg= 2.63454e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 755.75
+
+GRAFO 9: 500, 60000
+Novo limite inferior = 2
+Tempo maxCircleTime micro seg= 93735.2
+Resposta H1 = 4
+Tempo H1 micro seg= 2.45482e+06
+Resposta H2 = 4
+Tempo H2 micro seg= 743.5
