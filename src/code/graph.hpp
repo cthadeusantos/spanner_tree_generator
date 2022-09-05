@@ -7,7 +7,7 @@
 class Graph
 {
 private:
-    std::vector<std::vector<int> > graph;
+    std::vector<std::vector<int>> graph;
     int qtdVertices;
     int qtdArestas;
 public:

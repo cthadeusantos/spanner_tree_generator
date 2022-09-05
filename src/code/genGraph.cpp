@@ -4,6 +4,12 @@
 
 #include<iostream>
 
+//! Build a line graph
+/*!
+    Build a line graph with N vertices
+    \param g a graph instance
+    \param n a integer
+*/
 void GenGraph::line(Graph& g, int n)
 {
     for(int i=0; i<n-1; ++i){
@@ -11,12 +17,26 @@ void GenGraph::line(Graph& g, int n)
     }
 }
 
+
+//! Build a cycle graph
+/*!
+    Build a cycle graph with N vertices
+    \param g a graph instance that represents a graph   
+    \param n a integer that represents a number of vertices
+*/
 void GenGraph::cycle(Graph& g, int n)
 {
     line(g, n);
     g.add_aresta(0, n-1);
 }
 
+//! Build a potent cycle
+/*!
+    Build a cycle graph with N vertices
+    \param g a graph instance
+    \param n an integer
+    \param p an integer
+*/
 void GenGraph::potentCycle(Graph& g, int n, int p)
 {
     Graph gAux(n);
@@ -33,17 +53,37 @@ void GenGraph::potentCycle(Graph& g, int n, int p)
     }
 }
 
-
+//! Generate an random number
+/*!
+    Generate an random number between B and  (B - A + 1)
+    \param a an integer
+    \param b an integer
+    \return an integer
+*/
 int GenGraph::random(int a, int b)
 {
+    srand ( time(NULL) ); //to give a different seed
     return (int)rand()%(b-a + 1) + a;
 }
 
+//! Generate an floating-point random number
+/*!
+    Generate an floating-point random number between 0(inclusive) and 1 (exclusive)
+    \return a double
+*/
 double GenGraph::random_01()
 {
+    srand ( time(NULL) ); //to give a different seed
     return ((double) rand() / (RAND_MAX));
 }
 
+//! Generate a graph
+/*!
+    Generate a graph randomically, the number of vertices was defined previously and 
+    the user define a probalility index 
+    \param g a graph instance
+    \param p a double
+*/
 void GenGraph::generate_graph(Graph& g, double p)
 {
     //Frontier f;
@@ -67,6 +107,16 @@ void GenGraph::generate_graph(Graph& g, double p)
     //f.printAdjList(g, "teste");
 }
 
+//! Generate a defined number of graphs with triangles
+/*!
+    Generate a defined list of graphs randomically generate with vertices number defined randomically
+    between two values entered by the user and probability too. 
+    \param list a graph instance
+    \param vMin an integer
+    \param vMax an integer
+    \param qtd a integer
+    \param p a double
+*/
 void GenGraph::generate_list_graph(std::vector<Graph>& list, int vMin, int vMax, int qtd, double p)
 {
     bool flag_igual = false; // evita a criação de grafos indenticos
@@ -90,6 +140,16 @@ void GenGraph::generate_list_graph(std::vector<Graph>& list, int vMin, int vMax,
     }
 }
 
+//! Generate a defined number of graphs without triangles
+/*!
+    Generate a defined list of graphs randomically without triangles generate with vertices number defined randomically
+    between two values entered by the user and probability too. 
+    \param list a vector of vertices a from graph
+    \param vMin an integer
+    \param vMax an integer
+    \param qtd a integer
+    \param p a double
+*/
 void GenGraph::generate_list_graph_without_triangle(std::vector<Graph>& list, int vMin, int vMax, int qtd, double p)
 {
     Frontier f;
@@ -103,6 +163,12 @@ void GenGraph::generate_list_graph_without_triangle(std::vector<Graph>& list, in
     }
 }
 
+//! ?
+/*!
+    ? 
+    \param list a vertices list
+    \param g a graph instance
+*/
 void GenGraph::sub_graph_cycle(std::vector<Graph>& list, Graph& g)
 {
     std::vector<int> ciclo;
@@ -112,7 +178,7 @@ void GenGraph::sub_graph_cycle(std::vector<Graph>& list, Graph& g)
     
     int qtd = ciclo.size();
 
-    for(int i=0; i < qtd-1; ++i){
+    for(int i = 0; i < qtd - 1; ++i){
         OpBasic::copy(newGraph, g);
         newGraph.remove_aresta(ciclo[i], ciclo[i+1]);
         list.push_back(newGraph);
@@ -123,6 +189,13 @@ void GenGraph::sub_graph_cycle(std::vector<Graph>& list, Graph& g)
     list.push_back(newGraph);
 }
 
+//! ?
+/*!
+    ? 
+    \param list a vertices list
+    \param g a graph instance
+    \param ciclo a vector 
+*/
 void GenGraph::sub_graph_cycle(std::vector<Graph>& list, Graph& g, std::vector<int> ciclo)
 {
     Graph newGraph;    
@@ -200,6 +273,6 @@ void GenGraph::remove_triangles(Graph& g)
             }
            
         }
-        
+
     }
 }

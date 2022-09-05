@@ -11,6 +11,9 @@
 #define INF_VALUE std::numeric_limits<int>::max()
 #define INF "inf"
 
+/*!
+ * Input and output operations (files and screen)
+ */
 class Frontier
 {
 private:

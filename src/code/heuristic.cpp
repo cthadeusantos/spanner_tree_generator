@@ -299,6 +299,14 @@ Graph Heuristic::heuristica_1_tree(Graph& g)
     return tree;
 }
 
+//! Sort vertices by degree (high to low)
+/*!
+    Sort the vertices in descending degree, from the highest degree to lowest degree 
+    \param a vector that represents a vertices list 
+    \param began an integer that represents an initial vertex
+    \param end an integer that represents the vertex quantity at graph
+    \param g a graph instance that represents a graph
+*/
 void Heuristic::my_quicksort(std::vector<int>& vertices, int began, int end, Graph& g)
 {
 	int i, j, pivo, aux;
@@ -330,7 +338,13 @@ void Heuristic::my_quicksort(std::vector<int>& vertices, int began, int end, Gra
 		my_quicksort(vertices, i, end, g);
 }
 
-
+//! ????????????????????
+/*!
+    ?????????????????
+    \param tree a instance tree that represents a tree
+    \param g a graph instance that represents a graph
+    \param v an integer that represents the vertex
+*/
 int Heuristic::func_aux_h2(Graph& tree, Graph& g, int v)
 {
     int count = 0;
