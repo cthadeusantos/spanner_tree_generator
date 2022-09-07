@@ -5,6 +5,7 @@
 .DEFAULT_GOAL := build
 
 SRC_DIR := ./src
+INSTANCE_DIR := ./instances
 WORKSPACE_DIR := ./workspace
 DOC_DIR := ./documents/doxygen
 BUILD_DIR := ./build
@@ -20,13 +21,13 @@ DEBUG_FLAGS := -g
 #SRC_INCLUDE := -I ${EXTERNAL_DIR}/
 
 #--Applications--
-TADM_SEQ-OLD := app_SEQ-OLD
+SEQ-OLD := app_SEQ-OLD
 app_SEQ-OLD_FILES := old/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
-TADM_PAR-OLD := app_PAR-OLD
+PAR-OLD := app_PAR-OLD
 app_PAR-OLD_FILES := old/main_paralelo.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
-TADM_BF-SEQ := app_BF-SEQ
+BF-SEQ := app_BF-SEQ
 app_BF-SEQ_FILES := new/main_BF-SEQ.cpp
-ALL_APP := ${TADM_SEQ-OLD} ${TADM_PAR-OLD} ${TADM_BF-SEQ}
+ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ}
 
 #--Main rule names--
 RELEASE_BUILD := build-release
@@ -94,7 +95,7 @@ MKDIR_P := mkdir -p
 
 #--Execution rules--
 .PHONY: ${RELEASE_RUN} ${DEBUG_RUN}
-#include ${SRC_DIR}/run.mk
+include ${SRC_DIR}/run.mk
 
 #--Dependency rules--
 -include $(RELEASE_DEPS)

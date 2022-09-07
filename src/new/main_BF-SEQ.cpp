@@ -47,14 +47,8 @@ void usage(const char* app_name){
 /**
  * @brief Auxiliary function to parse the contents of the command line arguments. 
  * @details This is a simple auxiliary function that will parse the args from the command line. You may see the entire specification at the terminal using the -help argument.
- * Will exit the application if there's no arguments.
  */
 void parseArgs(int argc, char** argv){ 
-	if(argc < 2){
-		usage(argv[0]);
-		exit(0);
-	}
-
 	for(int i = 1; i < argc; ++i){
 		std::string arg(argv[i]);
 		DEBUG std::cerr << "Received param: " << arg << '\n';
