@@ -1,23 +1,42 @@
+/**
+ * @file opBasic.hpp
+ * @brief Basic functions to operate over graphs.
+ */
+
 #ifndef OP_BASIC_HPP_
 #define OP_BASIC_HPP_
 
 #include "graph.hpp"
-//#include <tuple>
 #include <vector>
 #include <limits>
 #include <stack> // pilha
 #include <queue> // fila
 #include <algorithm> // std::find
 #include <string>
-// #include <tuple>
 
-#define INF_VALUE std::numeric_limits<int>::max()
+/** 
+  * @addtogroup opBasicDefs
+  * Some definitions declared in opBasic.hpp.
+  *  @{ 
+  */
+///Alias for integer infinity.
+#define INF_VALUE std::numeric_limits<int>::max(); //-2^32 - 1 até 2^32 - 1 [-2147483647 até 2147483647]
+///String alias for infinity.
 #define INF "inf"
+/**
+ * }@
+ */
 
+/**
+ * @brief Class that encapsulates some basic operations for graphs.
+ * @details This class holds some implementations to deal with graphs.
+ * You can, for example, determine if a graph has a cycle or not through this class.
+ */
 class OpBasic
 {
+
 private:
-    static bool cyclic(Graph& g, int v);
+    static bool cyclic(Graph& g, int v); ///< Returns true if the graph contains a cycle, else false.
     static void clear(std::queue<int>& q);
     static void clear(std::stack<int>& s);
     static bool pertence(int x, std::vector<int>& v);
@@ -34,7 +53,7 @@ public:
     OpBasic() { }
     ~OpBasic() { }
 
-    static bool is_cyclic(Graph& g);
+    static bool is_cyclic(Graph& g); ///< Check if graph has a cycle
     static bool is_tree(Graph& g);
     static std::vector<int> diference_edge(Graph& g, Graph& t);
     static int distance(Graph& g, int v, int u);

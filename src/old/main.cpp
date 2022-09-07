@@ -1,22 +1,20 @@
-#include "code/graph.hpp"
-#include "code/frontier.hpp"
-#include "code/opBasic.hpp"
-#include "code/genGraph.hpp"
-#include "code/heuristic.hpp"
-//#include "code/strech.hpp"
-#include <iostream>
-#include <ctime>
+#include <algorithm> // std::find
 #include <cstdlib>
-#include <tuple>
-
-#include <sys/stat.h>
-#include <sys/types.h> // mkdir
-
-#include <thread>  // std::thread
+#include <ctime>
+#include <iostream>
 #include <mutex>   // std::mutex
 #include <semaphore.h> // sem_t, sem_init, sem_wait, sem_post, sem_destroy
 #include <sstream> // std::stringstream
-#include <algorithm> // std::find
+#include <sys/stat.h>
+#include <sys/types.h> // mkdir
+#include <thread>  // std::thread
+#include <tuple>
+
+#include "code/frontier.hpp"
+#include "code/genGraph.hpp"
+#include "code/graph.hpp"
+#include "code/heuristic.hpp"
+#include "code/opBasic.hpp"
 
 int index_global =  INF_VALUE;
 int total_arv = 0;
@@ -76,7 +74,6 @@ int main(int argc, char const *argv[])
     printf("Digite a quantidade de threads que irão rodar ao mesmo tempo (cores): ");
     scanf("%d", &qtd_core);
 
-    
     if( graph_type == 's')
     {
         dictName += "noTri_";

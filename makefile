@@ -20,11 +20,13 @@ DEBUG_FLAGS := -g
 #SRC_INCLUDE := -I ${EXTERNAL_DIR}/
 
 #--Applications--
-TADM_SEQ := app_SEQ
-app_SEQ_FILES := main.cpp $(subst ${SRC_DIR}/,,$(shell find ${SRC_DIR}/code/ -name *.cpp))
-TADM_PAR := app_PAR
-app_PAR_FILES := main_paralelo.cpp $(subst ${SRC_DIR}/,,$(shell find ${SRC_DIR}/code/ -name *.cpp))
-ALL_APP := ${TADM_SEQ} ${TADM_PAR}
+TADM_SEQ-OLD := app_SEQ-OLD
+app_SEQ-OLD_FILES := old/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
+TADM_PAR-OLD := app_PAR-OLD
+app_PAR-OLD_FILES := old/main_paralelo.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
+TADM_BF-SEQ := app_BF-SEQ
+app_BF-SEQ_FILES := new/main_BF-SEQ.cpp
+ALL_APP := ${TADM_SEQ-OLD} ${TADM_PAR-OLD} ${TADM_BF-SEQ}
 
 #--Main rule names--
 RELEASE_BUILD := build-release
@@ -45,7 +47,7 @@ build: ${RELEASE_BUILD}
 run: ${RELEASE_RUN}
 debug: ${DEBUG_BUILD}
 clean: ${RELEASE_CLEAN} ${DEBUG_CLEAN}
-doc: ${BUILD_DOC}
+doc: ${DOC_BUILD}
 
 #--Build rules--
 .PHONY: ${RELEASE_BUILD} ${DEBUG_BUILD} ${DOC_BUILD}

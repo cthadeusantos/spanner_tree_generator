@@ -1,18 +1,23 @@
-#include "opBasic.hpp"
-#include <stack>
-#include <queue>
+/**
+ * @file opBasic.cpp
+ * @brief Implementation opBasic.hpp.
+ */
 
 #include <iostream>
+#include <queue>
+#include <stack>
 
 #include "frontier.hpp"
+#include "opBasic.hpp"
 
-//! Returns true if the graph contains a cycle, else false.
-/*!
-    Seek cycles at graph start from vertex v 
-    Returns true if the graph contains a cycle, else false.
-    \param g a graph instance that represents a graph
-    \param v an integer that represents a start vertex 
-*/
+/**
+ * @details Seek cycles at graph start from vertex v.
+ * Returns true if the graph contains a cycle, else false. 
+ * @param g a graph instance that represents a graph
+ * @param v an integer that represents a start vertex 
+ * @return true the graph contains a cycle.
+ * @return false the graph doesn't contain a cycle.
+ */
 bool OpBasic::cyclic(Graph& g, int v)
 {
     std::stack<int> my_stack;
@@ -48,12 +53,13 @@ bool OpBasic::cyclic(Graph& g, int v)
     return false;
 }
 
-//! Check if graph has a cycle
-/*!
-    Check if graph has a cycle
-    Returns true if the graph contains a cycle, else false.
-    \param g a graph instance that represents a graph
-*/
+/**
+ * @details Check if graph has a cycle
+ * Returns true if the graph contains a cycle, else false.
+ * @param g a graph instance that represents a graph
+ * @return true if the graph has a cycle.
+ * @return false the graph don't have a cycle.
+ */
 bool OpBasic::is_cyclic(Graph& g){
     
     for(int i=0; i < g.getQtdVertices(); ++i){
