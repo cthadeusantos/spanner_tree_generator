@@ -5,14 +5,26 @@
  */
 
 #include <iostream>
+#include <regex>
+#include <cstdlib>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "Debug.h"
 
+#include "ctfunctions.cpp"
+
+#include "code/frontier.hpp"
+#include "code/genGraph.hpp"
+#include "code/graph.hpp"
+#include "code/heuristic.hpp"
+#include "code/opBasic.hpp"
+
 ///Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
-#define DEBUG
+	#define DEBUG
 #else
-#define DEBUG while(false)
+	#define DEBUG while(false)
 #endif
 
 /**
@@ -22,6 +34,8 @@
  */
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
+
+
 /**
  * }@
  */
@@ -51,6 +65,7 @@ void usage(const char* app_name){
 void parseArgs(int argc, char** argv){ 
 	for(int i = 1; i < argc; ++i){
 		std::string arg(argv[i]);
+
 		DEBUG std::cerr << "Received param: " << arg << '\n';
 		if(arg == "-h" || arg == "--help"){
 			usage(argv[0]);
@@ -60,20 +75,33 @@ void parseArgs(int argc, char** argv){
 			seed = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed seed to: " << seed << '\n';
 		}
-		else{
+		else {
 			DEBUG std::cerr << "Unknown param: " << arg << "\n";
 			exit(1);
-		}
-	}
+		};
+	};
 };
 
 /// @brief  The main method
 int main(int argc, char** argv){
-    DEBUG std::cerr << "Solving with sequential brute force.\n";
+    DEBUG std::cerr << "Creating new graphs.\n";
 	parseArgs(argc, argv); //Will setup globals
+	//std::cout << argv[0];
+    //std::cin.get();
+	
+	std::string filename;
+	std::string dirname;
+	std::string auxiliary;
+	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
+	std::string DIR_BASE = argv[0];
+	std::string DIR_INSTANCES = DIR_BASE + "/instances/";
+	std::string DIR_RESULTS = DIR_BASE + "/results/"; 
 
 	DEBUG std::cerr << "Reading the graph\n";
 	//TODO: Leitura do grafo
+	Graph graph;
+    graph = read_graph_file();
+	std::cout << "Maior graud => " << graph.getQtdVertices() << std::endl;
 
 	DEBUG std::cerr << "Solving with brute force\n";
 	//TODO: Chamar a força bruta para o grafo de entrada
@@ -83,4 +111,4 @@ int main(int argc, char** argv){
 	std::cout << "Resposta exemplo" << std::endl;
 
     return 0;
-}
+};

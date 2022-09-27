@@ -202,3 +202,17 @@ int Graph::qtd_vertex_grau(int grau)
     }
     return count;
 }
+
+
+/*
+    Methods created by Carlos Thadeu
+*/
+
+
+void Graph::create(int dimension)
+{
+    for (int x = 0; x < dimension; x++){
+        ++qtdVertices;
+        graph.push_back(std::vector<int>());
+    }
+}

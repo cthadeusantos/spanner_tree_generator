@@ -3,7 +3,6 @@
 
 #include <vector>
 
-
 class Graph
 {
 private:
@@ -15,6 +14,7 @@ public:
     Graph();
     ~Graph();
 
+    void create(int dimension);
     void add_vertex();
     void add_aresta(int v, int u);
     void add_aresta(std::vector<int> arestas);
