@@ -2,7 +2,7 @@
 #define HEURISTIC_HPP
 
 #include "graph.hpp"
-#include "strech.hpp"
+#include "stretch.hpp"
 #include "opBasic.hpp"
 
 class Heuristic

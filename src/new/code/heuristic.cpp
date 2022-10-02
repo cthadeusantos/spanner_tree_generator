@@ -3,7 +3,7 @@
 int Heuristic::heuristica_1(Graph& g)
 {
     //Frontier f;
-    Strech strech;
+    Stretch stretch;
     int n = g.getQtdVertices();
     std::vector<int> vertex_list(n);
     for( int i = 0; i < n; ++i)
@@ -42,12 +42,12 @@ int Heuristic::heuristica_1(Graph& g)
         f.write(v, "", " ");
     }
 */
-    return strech.find_factor(g, tree);
+    return stretch.find_factor(g, tree);
 }
 
 int Heuristic::heuristica_2(Graph& g)
 {
-    Strech strech;
+    Stretch stretch;
     Graph tree(g.getQtdVertices());
     int raiz = g.vertice_maior_grau();
     std::vector<int> lista;
@@ -85,7 +85,7 @@ int Heuristic::heuristica_2(Graph& g)
         lista_relativa_vertice.clear();
     }
 
-    return strech.find_factor(g, tree);
+    return stretch.find_factor(g, tree);
 }
 
 Graph Heuristic::heuristica_2_global(Graph& g)
@@ -93,12 +93,12 @@ Graph Heuristic::heuristica_2_global(Graph& g)
     std::vector<int> vertices_maiores_grau = g.vertices_de_maior_grau();
     Graph tree;
     Graph right_tree;
-    Strech strech;
+    Stretch stretch;
     int index = INF_VALUE;
     int new_index = 0;
     for(int vertice : vertices_maiores_grau) {
         tree = heuristica_2_tree(g, vertice);
-        new_index = strech.find_factor(g, tree);
+        new_index = stretch.find_factor(g, tree);
 
         if(new_index < index) {
             index = new_index;
@@ -261,7 +261,7 @@ Graph Heuristic::heuristica_2_tree(Graph& g, int raiz)
 Graph Heuristic::heuristica_1_tree(Graph& g)
 {
     //Frontier f;
-    Strech strech;
+    Stretch stretch;
     int n = g.getQtdVertices();
     std::vector<int> vertex_list(n);
     for( int i = 0; i < n; ++i)

@@ -1,5 +1,7 @@
+#include <limits>
 #ifndef GRAPH_HPP_
 #define GRAPH_HPP_
+#define INF_VALUE std::numeric_limits<int>::max()
 
 #include <vector>
 
@@ -9,6 +11,7 @@ private:
     std::vector<std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
+    int stretch_index = INF_VALUE;
 public:
     Graph(int n);
     Graph();
@@ -28,6 +31,10 @@ public:
     int vertice_maior_grau();
     std::vector<int> vertices_de_maior_grau();
 
+    // Assing stretch index calculated to stretch_index attribute
+    void set_stretch_index(int value);
+    // Get stretch index attribute
+    int get_stretch_index();
 
     // retorna o próximo vertice do grafo. se v for o maior, retorna o 0;
     int next_vertex(int v);

@@ -1,5 +1,11 @@
 #include "frontier.hpp"
 
+//! Constructor
+/*!
+    Open input and output files
+    \param name_in input file name
+    \param name_out output file name
+*/
 Frontier::Frontier(const char* name_in, const char* name_out)
 {
     in.open(name_in);
@@ -14,6 +20,12 @@ Frontier::Frontier(const char* name_in, const char* name_out)
     }
 }
 
+//! Constructor
+/*!
+    Open input and output files
+    \param name_in input file name
+    \param name_out output file name
+*/
 Frontier::Frontier(std::string name_in, std::string name_out)
 {
     in.open(name_in);
@@ -28,6 +40,10 @@ Frontier::Frontier(std::string name_in, std::string name_out)
     }
 }
 
+//! Destructor
+/*!
+    Close input & output files
+*/
 Frontier::~Frontier()
 {
     if(in.is_open()){
@@ -39,6 +55,10 @@ Frontier::~Frontier()
     
 }
 
+//! Close files
+/*!
+    Close input & output files
+*/
 void Frontier::close()
 {
     if(in.is_open()){
@@ -49,6 +69,13 @@ void Frontier::close()
     }
 }
 
+//! Print the adjacency list
+/*!
+    Print the adjacency list
+    \param g a graph instance
+    \param msg a string
+    \param out an output stream
+*/
 void Frontier::printAdjList(Graph g, std::string msg, std::ostream& out)
 {
     out << msg << std::endl;
@@ -65,6 +92,13 @@ void Frontier::printAdjList(Graph g, std::string msg, std::ostream& out)
     out << std::endl;
 }
 
+//! Print the adjacency matrix - first method
+/*!
+    Print the adjacency matrix plot vertices, edges and matrix
+    \param g a graph instance
+    \param msg a string
+    \param out an output stream
+*/
 void Frontier::printAdjMat(Graph g,std::string msg, std::ostream& out)
 {
     out << msg << std::endl;
@@ -86,6 +120,17 @@ void Frontier::printAdjMat(Graph g,std::string msg, std::ostream& out)
     }
 }
 
+/*
+    REVIEW printAdjMat & printAdjMat2 when
+    optimization the code
+*/
+//! Print the adjacency matrix - second method
+/*!
+    Print the adjacency matrix plot matrix
+    \param g a graph instance
+    \param msg a string
+    \param out an output stream
+*/
 void Frontier::printAdjMat_2(Graph g,std::string msg, std::ostream& out)
 {
     out << msg << std::endl;
@@ -105,6 +150,14 @@ void Frontier::printAdjMat_2(Graph g,std::string msg, std::ostream& out)
     out << std::endl;
 }
 
+//! Read data to the graph
+/*!
+    User define adjacency matrix order then add or not edges
+    if edge(i,j) has value 1, there is edge,
+    any other value , there is not edge.
+
+    \param g a graph instance
+*/
 void Frontier::read(Graph& g)
 {
     int ordem;
@@ -127,6 +180,12 @@ void Frontier::read(Graph& g)
     }
 }
 
+//! ?
+/*!
+    ?
+    \param g a graph instance
+    \param my_in ?
+*/
 void Frontier::read(Graph& g, std::ifstream& my_in)
 {
     int ordem;
@@ -149,12 +208,22 @@ void Frontier::read(Graph& g, std::ifstream& my_in)
     }
 }
 
+//! Show an error message and exit
+/*!
+    Show an error message and exit
+    \param msg a string
+*/
 void Frontier::msg_error(const std::string& msg){
     std::cerr << msg << std::endl;
     exit(-1);
 }
 
-void Frontier::print(Strech& s)
+//! Show stretch index and tree at screen
+/*!
+    Show stretch index and tree at screen
+    \param s a strech instance
+*/
+void Frontier::print(Stretch& s)
 {
     out << "index = " << s.getIndex() << std::endl;
     out << "Arvore: " << std::endl;
@@ -163,6 +232,13 @@ void Frontier::print(Strech& s)
 
 }
 
+//! Print ??
+/*!
+    Print ??
+    \param value an integer
+    \param str a string
+    \param out an output stream
+*/
 void Frontier::print(int value, std::string str,  std::ostream& out)
 {
     if ( is_inf(value) ){
@@ -172,7 +248,13 @@ void Frontier::print(int value, std::string str,  std::ostream& out)
     }
 }
 
-
+//! Print ??
+/*!
+    Print ??
+    \param value a double
+    \param str a string
+    \param out an output stream
+*/
 void Frontier::print(double value, std::string str, std::ostream& out)
 {
     if ( is_inf(value) ){
@@ -182,11 +264,24 @@ void Frontier::print(double value, std::string str, std::ostream& out)
     }
 }
 
+//! Check if infinity
+/*!
+    Check if infinity
+    \param value an integer
+    \return a boolean
+*/
 bool Frontier::is_inf(int value)
 {
     return value == INF_VALUE ? true : false;
 }
 
+//! Print ??
+/*!
+    Print ?
+    \param vetor a vector
+    \param str a string
+    \param out an output stream
+*/
 void Frontier::print(std::vector<int> vetor, std::string str,std::ostream& out)
 {
     if( vetor.empty() ){
@@ -202,6 +297,14 @@ void Frontier::print(std::vector<int> vetor, std::string str,std::ostream& out)
     
 }
 
+//! Write at file
+/*!
+    Write at file
+    \param value an integer
+    \param msg a string
+    \param end a string
+    \param out an output stream
+*/
 void Frontier::write(int value, std::string msg, std::string end, std::ostream& out)
 {
     out << msg;
@@ -214,6 +317,14 @@ void Frontier::write(int value, std::string msg, std::string end, std::ostream& 
     out << end;
 }
 
+//! Write at file
+/*!
+    Write at file
+    \param value a double
+    \param msg a string
+    \param end a string
+    \param out an output stream
+*/
 void Frontier::write(double value, std::string msg, std::string end, std::ostream& out)
 {
     out << msg;

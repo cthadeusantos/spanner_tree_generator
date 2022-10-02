@@ -1,11 +1,18 @@
-#include "strech.hpp"
+#include "stretch.hpp"
 #include "opBasic.hpp"
 #include "genGraph.hpp"
 #include "frontier.hpp"
 
 #include <tuple>
 
-void Strech::find_index(Graph& g)
+/**
+ * @details Find a stretch index from a graph.
+ * Returns a integer that represents a stretch index.
+ * That's the main method, the sequential t-admissibility algorithm.
+ * @param g a graph instance that represents a graph.
+ * @return a integer the graph contains a cycle.
+ */
+void Stretch::find_index(Graph& g)
 {
     int prox_vizinho[g.getQtdVertices()];
     int ult_colocado[g.getQtdVertices()];
@@ -59,11 +66,12 @@ void Strech::find_index(Graph& g)
             }
         }
     }
-
     this->total_arv = arv;
+    g.set_stretch_index(index);
+    //return index;
 }
 
-void Strech::find_index_edge(Graph& g)
+void Stretch::find_index_edge(Graph& g)
 {
     Frontier f;
     int n = g.getQtdVertices();
@@ -116,7 +124,7 @@ void Strech::find_index_edge(Graph& g)
     this->total_arv = arv;
 }
 
-void Strech::find_index_pararell(Graph& g, int raiz, int start, int end)
+void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
 {
     int prox_vizinho[g.getQtdVertices()];
     int ult_colocado[g.getQtdVertices()];
@@ -156,7 +164,7 @@ void Strech::find_index_pararell(Graph& g, int raiz, int start, int end)
                 ult_colocado[v] = u;
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                        int f = Strech::find_factor(g, tree);
+                        int f = Stretch::find_factor(g, tree);
                         // ++arv;
                         if(f < index){
                             //mtx.lock(); // LOCK
@@ -178,7 +186,7 @@ void Strech::find_index_pararell(Graph& g, int raiz, int start, int end)
 }
 
 // CONTINUAR AQUI
-void Strech::find_index_thread(Graph& g)
+void Stretch::find_index_thread(Graph& g)
 {
 
     int raiz = -1;
@@ -193,7 +201,7 @@ void Strech::find_index_thread(Graph& g)
     //std::thread vetor_th[g.adjList(raiz).size()];
     int limite = g.adjList(raiz).size()-1;
     for(int i=0; i < limite; ++i){
-        //vetor_th[i] = std::thread(&Strech::find_index_pararell, this, g, raiz, i, i+1);
+        //vetor_th[i] = std::thread(&Stretch::find_index_pararell, this, g, raiz, i, i+1);
     }
 
     for(int i=0; i < limite; ++i){
@@ -202,7 +210,7 @@ void Strech::find_index_thread(Graph& g)
 */
     /*
     for(int v=0; v < limite; ++v){
-        vetor_th.push_back(std::thread (&Strech::find_index_pararell, this, g, raiz, v, v+1) );
+        vetor_th.push_back(std::thread (&Stretch::find_index_pararell, this, g, raiz, v, v+1) );
         // vetor_th.push_back(std::thread (g, raiz, v, v+1)  );
     }
 
@@ -212,7 +220,7 @@ void Strech::find_index_thread(Graph& g)
     */
 }
 
-int Strech::find_factor(Graph& g, Graph& tree)
+int Stretch::find_factor(Graph& g, Graph& tree)
 {
     std::vector<int> list = OpBasic::diference_edge(g, tree);
     std::vector<int>::iterator it;
@@ -232,7 +240,7 @@ int Strech::find_factor(Graph& g, Graph& tree)
     return factor;
 }
 
-void Strech::find_index_cycle(Graph& g, int m)
+void Stretch::find_index_cycle(Graph& g, int m)
 {
     std::vector<Graph> l;
     int index_menor = INF_VALUE;
@@ -251,7 +259,7 @@ void Strech::find_index_cycle(Graph& g, int m)
     index = index_menor;
 }
 
-int Strech::lowerBound(Graph& g)
+int Stretch::lowerBound(Graph& g)
 {
     return OpBasic::maxLowerCicle(g) - 1;
 }

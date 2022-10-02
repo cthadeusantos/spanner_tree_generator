@@ -81,7 +81,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_CREATE",
-            "args": [ "<", "${workspaceFolder}/workspace/debug.in", ">", "${workspaceFolder}/workspace/debug.out", "-notri", "--degree", "-min=8", "-max=15", "-qty=8", "-prob=0.85", "-thd=2"],
+            "args": [ "<", "${workspaceFolder}/workspace/debug.in", ">", "${workspaceFolder}/workspace/debug.out", "-tri", "--degree", "-min=5", "-max=8", "-qty=8", "-prob=0.85", "-thd=2"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

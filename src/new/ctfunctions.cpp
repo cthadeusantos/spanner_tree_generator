@@ -4,22 +4,23 @@
 //#include <stdio.h>
 #include <string.h>
 #include "code/graph.hpp"
+#include "code/opBasic.hpp"
 
 #include "Debug.h"
 
-///Basic debugging controller. See Debug.h for details.
+/// Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
-	#define DEBUG
+#define DEBUG
 #else
-	#define DEBUG while(false)
+#define DEBUG while (false)
 #endif
 
 #ifdef WINDOWS
-	#include <direct.h>
-	#define GetCurrentDir _getcwd
+#include <direct.h>
+#define GetCurrentDir _getcwd
 #else
-	#include <unistd.h>
-	#define GetCurrentDir getcwd
+#include <unistd.h>
+#define GetCurrentDir getcwd
 #endif
 
 
@@ -30,27 +31,39 @@
    return current_working_dir;
 }; */
 
-std::string get_enviroment_var(const char *enviroment_var) {
-	const char *tmp = getenv(enviroment_var);
-	std::string env_var(tmp ? tmp : "");
-	if (env_var.empty()) {
-		std::cerr << "[ERROR] No such variable DIR_TADM found!" << std::endl;
-		exit(EXIT_FAILURE);
-	}
-	return env_var;
+std::string get_enviroment_var(const char *enviroment_var)
+{
+    const char *tmp = getenv(enviroment_var);
+    std::string env_var(tmp ? tmp : "");
+    if (env_var.empty())
+    {
+        std::cerr << "[ERROR] No such variable DIR_TADM found!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return env_var;
 };
 
-void create_directory(std::string auxiliary){
-	if (mkdir(auxiliary.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1){
-		std::cerr << "Error : " << strerror(errno) << std::endl;
-	} else {
-		DEBUG std::cerr << "Directory created!\n";
-	}
+void create_directory(std::string auxiliary)
+{
+    if (mkdir(auxiliary.c_str(), S_IRUSR | S_IWUSR | S_IXUSR) == -1)
+    {
+        std::cerr << "Error : " << strerror(errno) << std::endl;
+    }
+    else
+    {
+        DEBUG std::cerr << "Directory created!\n";
+    }
 }
 
-Graph read_graph_file(){
-    
-	char Ch = ' ';
+/**
+ * @details Read a graph file using redirections.
+ * @param g a graph instance that represents a graph.
+ * @return a integer the graph contains a cycle.
+ */
+Graph read_graph_file()
+{
+
+    char Ch = ' ';
     std::string value_str = "";
     int dimension = 0;
     int row = 0;
@@ -64,28 +77,45 @@ Graph read_graph_file(){
         if ((Ch == '\n') || (Ch == ' '))
         {
             LetterCount = 0;
-            if (value_str.size()){
-                if (WordCount++ == 0){
+            if (value_str.size())
+            {
+                if (WordCount++ == 0)
+                {
                     dimension = std::stoi(value_str);
                     graph.create(dimension);
-                } else {
-                    if (std::stoi(value_str)){
+                }
+                else
+                {
+                    if (std::stoi(value_str))
+                    {
+                        if (col >= dimension || row >=dimension){
+                            printf("Ponto de parada");
+                        }
                         graph.add_aresta(row, col);
                     }
-                    if (col++ >= dimension){
+                    col++;
+                    if (col >= dimension)
+                    {
                         col = 0;
-                        if (row++ >= dimension){
-                            row = dimension - 1;
+                        row++;
+                        if (row >= dimension)
+                        {
+                            row = 0;
                         }
                     }
                 }
                 value_str = "";
             }
         }
-        else {
+        else
+        {
             value_str += Ch;
             ++LetterCount;
         }
     }
     return graph;
+}
+
+void save_results_brute_force(){
+    
 }

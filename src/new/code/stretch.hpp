@@ -5,7 +5,7 @@
 #include <thread>
 #include <mutex>
 
-class Strech
+class Stretch
 {
 private:
     int index;
@@ -21,8 +21,8 @@ private:
     int lowerBound(Graph& g);
 
 public:
-    Strech() { index = -1; tree = Graph(); total_arv=0; }
-    ~Strech() { }
+    Stretch() { index = -1; tree = Graph(); total_arv=0; }
+    ~Stretch() { }
 
     void find_index(Graph& g);
     void find_index_thread(Graph& g);

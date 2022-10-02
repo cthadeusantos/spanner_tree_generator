@@ -10,6 +10,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <ctime>
+
 #include "Debug.h"
 
 #include "ctfunctions.cpp"
@@ -19,6 +21,7 @@
 #include "code/graph.hpp"
 #include "code/heuristic.hpp"
 #include "code/opBasic.hpp"
+#include "code/stretch.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
@@ -89,22 +92,35 @@ int main(int argc, char** argv){
 	//std::cout << argv[0];
     //std::cin.get();
 	
-	std::string filename;
-	std::string dirname;
-	std::string auxiliary;
+	//std::string filename;
+	//std::string dirname;
+	//std::string auxiliary;
 	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
-	std::string DIR_BASE = argv[0];
-	std::string DIR_INSTANCES = DIR_BASE + "/instances/";
-	std::string DIR_RESULTS = DIR_BASE + "/results/"; 
+	//std::string DIR_BASE = argv[0];
+	//std::string DIR_INSTANCES = DIR_BASE + "/instances/";
+	//std::string DIR_RESULTS = DIR_BASE + "/results/"; 
 
 	DEBUG std::cerr << "Reading the graph\n";
 	//TODO: Leitura do grafo
 	Graph graph;
     graph = read_graph_file();
-	std::cout << "Maior graud => " << graph.getQtdVertices() << std::endl;
+	std::cout << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 
-	DEBUG std::cerr << "Solving with brute force\n";
+	DEBUG std::cerr << "Solving with brute force - wait!\n";
 	//TODO: Chamar a força bruta para o grafo de entrada
+
+	Stretch acme; // Lonney Tunes rocks!
+	
+	time_t time_begin = 0;
+    time_t time_end = 0;
+    double tempo_total = 0;
+	
+	time(&time_begin);
+	acme.find_index(graph);
+	time(&time_end);
+
+    DEBUG std::cerr << "Stretch index calculated: " << graph.get_stretch_index() << "\n";
+	DEBUG std::cerr << "Running time (in seconds): " << difftime(time_end, time_begin) << "\n";
 
 	DEBUG std::cerr << "Outputing the solution\n";
 	//TODO: Imprimir no std::out a saida

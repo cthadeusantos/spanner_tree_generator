@@ -2,7 +2,7 @@
 #define FRONTIER_HPP_
 
 #include "graph.hpp"
-#include "strech.hpp"
+#include "stretch.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -39,7 +39,7 @@ public:
     void printAdjList(Graph g,std::string msg, std::ostream& out=std::cout);
     void printAdjMat(Graph g,std::string msg, std::ostream& out=std::cout);
     void printAdjMat_2(Graph g,std::string msg, std::ostream& out=std::cout);
-    void print(Strech& s);
+    void print(Stretch& s);
     void print(std::vector<int> vetor, std::string str="",std::ostream& out=std::cout);
     void print(int value, std::string str="", std::ostream& out=std::cout);
     void print(double value, std::string str="", std::ostream& out=std::cout);

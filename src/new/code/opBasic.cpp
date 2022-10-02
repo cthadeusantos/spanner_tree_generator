@@ -1,11 +1,19 @@
-#include "opBasic.hpp"
 #include <stack>
 #include <queue>
 
 #include <iostream>
 
 #include "frontier.hpp"
+#include "opBasic.hpp"
 
+/**
+ * @details Seek cycles at graph start from vertex v.
+ * Returns true if the graph contains a cycle, else false. 
+ * @param g a graph instance that represents a graph
+ * @param v an integer that represents a start vertex 
+ * @return true the graph contains a cycle.
+ * @return false the graph doesn't contain a cycle.
+ */
 bool OpBasic::cyclic(Graph& g, int v)
 {
     std::stack<int> my_stack;
@@ -41,6 +49,13 @@ bool OpBasic::cyclic(Graph& g, int v)
     return false;
 }
 
+/**
+ * @details Check if graph has a cycle
+ * Returns true if the graph contains a cycle, else false.
+ * @param g a graph instance that represents a graph
+ * @return true if the graph has a cycle.
+ * @return false the graph don't have a cycle.
+ */
 bool OpBasic::is_cyclic(Graph& g){
     
     for(int i=0; i < g.getQtdVertices(); ++i){
@@ -51,6 +66,12 @@ bool OpBasic::is_cyclic(Graph& g){
     return false;
 }
 
+//! Check if graph is a tree
+/*!
+    Check if graph is a tree
+    Returns true if the graph is a tree, else false.
+    \param g a graph instance that represents a graph
+*/
 bool OpBasic::is_tree(Graph& g)
 {
     if( not is_cyclic(g) && g.getQtdArestas() == g.getQtdVertices()-1 ){
@@ -59,6 +80,14 @@ bool OpBasic::is_tree(Graph& g)
     return false;
 }
 
+//! Check there is edge absents between two graphs
+/*!
+    Compare two graphs and return a list with absent edges
+    between their.
+    \param g a graph instance that represents a graph
+    \param t a graph instance that represents another graph
+    \return a list of inytgtwith absent edges
+*/
 std::vector<int> OpBasic::diference_edge(Graph& g, Graph& t)
 {
     //std::tuple<int, int> list;
@@ -74,6 +103,14 @@ std::vector<int> OpBasic::diference_edge(Graph& g, Graph& t)
     return list;
 }
 
+//! Calculate a distance between two vertices
+/*!
+    Calculate a distance between two vertices
+    \param g a graph instance that represents a graph
+    \param v a integer that represents a vertex
+    \param u a integer that represents a vertex
+    \return a integer that represents the distance between two vertices
+*/
 int OpBasic::distance(Graph& g, int v, int u)
 {
     if(v == u){
@@ -101,6 +138,13 @@ int OpBasic::distance(Graph& g, int v, int u)
     return dist[u];
 }
 
+//! Calculate the short path between two vertices
+/*!
+    ????????????????????????????????????????????????????????w
+    \param g a graph instance that represents a graph
+    \param v a integer that represents a initial vertex
+    \return a vector of vector that represents the short path
+*/
 std::vector<std::vector<int> > OpBasic::distance(Graph& g, int v)
 {
     std::vector<std::vector<int> > caminhos(g.getQtdVertices(), std::vector<int>(g.getQtdVertices(), -1));
@@ -111,6 +155,14 @@ std::vector<std::vector<int> > OpBasic::distance(Graph& g, int v)
     return caminhos;
 }
 
+//! Get the short path between two vertices
+/*!
+    Calculate the lowest distance between two vertices
+    \param g a graph instance that represents a graph
+    \param begin a integer that represents a initial vertex
+    \param end a integer that represents a finish vertex
+    \return a vector that represents the short path
+*/
 std::vector<int> OpBasic::short_path(Graph& g, int begin, int end)
 {
     std::vector<int> my_stack;
@@ -134,6 +186,9 @@ std::vector<int> OpBasic::short_path(Graph& g, int begin, int end)
     my_stack.push_back(topo);
     // visitados[topo] = true;
 
+    //******************************************
+    // NAO ENTENDI BEM A NECESSIDADE DO SUMGRADE
+    //******************************************
     while(not my_stack.empty() ){
         topo = my_stack.back();
         if(topo == end){
@@ -176,6 +231,12 @@ std::vector<int> OpBasic::short_path(Graph& g, int begin, int end)
     return path;
 }
 
+//! Get the girth of graph
+/*!
+    Calculate the girth of graph
+    \param g a graph instance that represents a graph
+    \return a integer that represents the girth
+*/
 int OpBasic::girth(Graph& g)
 {
     int grt = INF_VALUE;
@@ -217,12 +278,23 @@ int OpBasic::girth(Graph& g)
     return grt;
 }
 
+//! Clean the queue
+/*!
+    Clean the queue
+    \param g a graph instance that represents a graph
+*/
 void OpBasic::clear(std::queue<int>& q)
 {
     while(not q.empty()){
         q.pop();
     }
 }
+
+//! Clean the stack
+/*!
+    Clean the stack
+    \param s a stack instance that represents a stack
+*/
 void OpBasic::clear(std::stack<int>& s)
 {
     while(not s.empty()){
@@ -230,6 +302,13 @@ void OpBasic::clear(std::stack<int>& s)
     }
 }
 
+//! Check if element is in a vector
+/*!
+    Given an element verify that exist in a vector that represents e.g. a stack, a queue, etc
+    \param x a integer that represents a value searched
+    \param v a vector 
+    \return a boolean that represent is element exist or not
+*/
 bool OpBasic::pertence(int x, std::vector<int>& v)
 {
     for(int i : v){
@@ -240,6 +319,12 @@ bool OpBasic::pertence(int x, std::vector<int>& v)
     return false;
 }
 
+//! Calculate the center of the graph
+/*!
+    Get the vertices of the center of the graph
+    \param g a graph instance that represents the graph
+    \return a vector with vertices that represents the center of the graph
+*/
 std::vector<int> OpBasic::centers(Graph& g)
 {
     int ordem = g.getQtdVertices();
@@ -280,6 +365,14 @@ std::vector<int> OpBasic::centers(Graph& g)
     return center;
 }
 
+//! Calculate the diameter of the graph
+/*!
+    The diameter of graph is the maximum distance between the pair of vertices.
+    It can also be defined as the maximal distance between the pair of vertices.
+    Way to solve it is to find all the paths and then find the maximum of all. 
+    \param g a graph instance that represents the graph
+    \return a integer that represents the diameter of the graph
+*/
 int OpBasic::diameter(Graph& g)
 {
     int maior = 0;
@@ -294,6 +387,9 @@ int OpBasic::diameter(Graph& g)
     return maior;
 }
 
+/// @brief ?????????????????????????????????
+/// @param g 
+/// @return ???????????????????????????????
 int OpBasic::min_diameter_tree_value(Graph& g)
 {
     std::vector<int> center = centers(g);
@@ -345,6 +441,15 @@ int OpBasic::min_diameter_tree_value(Graph& g)
     return min_diameter;
 }
 
+//! Sum vertices degrees from a vertice list
+/*!
+    The degree sum formula says that if you add up the degree
+    of all the vertices in a (finite) graph,
+    the result is twice the number of the edges in the graph
+    \param g a graph instance that represents the graph
+    \param v a vector that represents the vertices list
+    \return a integer that represents the sum of degree
+*/
 int OpBasic::sumGrade(Graph& g, std::vector<int> v)
 {
     auto it = v.begin();
@@ -357,11 +462,23 @@ int OpBasic::sumGrade(Graph& g, std::vector<int> v)
     return sum;
 }
 
+//! Check if the graph is valid
+/*!
+    checks if the graph is connected, is not a tree, not has a universal vertex and not has a leaf
+    \param g a graph instance that represents the graph
+    \return a boolean that represents true is valid, false is invalid
+*/
 bool OpBasic::is_valid(Graph& g)
 {
     return is_connected(g) && !is_tree(g) && !has_universal_vertex(g) && !has_leaf(g);
 }
 
+//! Check if is a connected or disconnected graph
+/*!
+    Check if is a connect graph or a forest
+    \param g a graph instance that represents the graph
+    \return a boolean that represents true is connected, false disconnected
+*/
 bool OpBasic::is_connected(Graph& g)
 {
     //std::vector<int>* pilha = new std::vector<int>();
@@ -412,6 +529,13 @@ void OpBasic::teste(std::vector<int> v, std::string msg){
     std::cout << std::endl;
 }
 
+//! Check if graph has a universal vertex
+/*!
+    Check if graph has a vertex that is adjacent to all
+    others vertices of the graph (a dominanting vertex)
+    \param g a graph instance that represents the graph
+    \return a boolean that represents true(has) or false(not)
+*/
 bool OpBasic::has_universal_vertex(Graph& g)
 {
     int max_grade = g.maior_grau();
@@ -419,6 +543,13 @@ bool OpBasic::has_universal_vertex(Graph& g)
     return max_grade == (g.getQtdVertices()-1);
 }
 
+//! Check if two graphs are the same
+/*!
+    Check if two graph are equal
+    \param g1 a graph instance that represents the graph
+    \param g2 a graph instance that represents the graph
+    \return a boolean that represents true(yes) or false(not)
+*/
 bool OpBasic::equal(Graph& g1, Graph& g2)
 {
     if(g1.getQtdVertices() != g2.getQtdVertices() || g1.getQtdArestas() != g2.getQtdArestas()){
@@ -439,6 +570,12 @@ bool OpBasic::equal(Graph& g1, Graph& g2)
     return true;
 }
 
+//! Check if the graph has leaf
+/*!
+    Check if the graph has leaf
+    \param g a graph instance that represents the graph
+    \return a boolean that represents true(yes) or false(not)
+*/
 bool OpBasic::has_leaf(Graph& g)
 {
     for(int i=0; i < g.getQtdVertices(); ++i){
@@ -450,6 +587,13 @@ bool OpBasic::has_leaf(Graph& g)
     return false;
 }
 
+//! Xor function
+/*!
+    Custom Xor function
+    \param a a boolean
+    \param b a boolean
+    \return a boolean that represents my custom Xor
+*/
 bool OpBasic::myXor(bool a, bool b)
 {
     bool c = a && !b;
@@ -458,11 +602,25 @@ bool OpBasic::myXor(bool a, bool b)
     return (c || d);
 }
 
+//! Xnor function
+/*!
+    Custom Xnor function
+    \param a a boolean
+    \param b a boolean
+    \return a boolean that represents my custom Xnor
+*/
 bool OpBasic::myXnor(bool a, bool b)
 {
     return !myXor(a,b);
 }
 
+//! Rename ???????????????????????????????
+/*!
+    Rename ???????????????????????????????
+    \param g a graph instance that represents the graph
+    \param v a integer that represents a vertex
+    \param u a integer that represents a vertex
+*/
 void OpBasic::rename(Graph& g, int v, int u)
 {
     Frontier f;
@@ -505,6 +663,12 @@ void OpBasic::rename(Graph& g, int v, int u)
     copy(g, gAux);
 }
 
+//! Duplicate a graph
+/*!
+    Duplicate a graph
+    \param g1 a graph instance that represents the old graph
+    \param g2 a graph instance that represents the new graph
+*/
 void OpBasic::copy(Graph& g1, Graph& g2)
 {
     g1.clear();
@@ -521,6 +685,12 @@ void OpBasic::copy(Graph& g1, Graph& g2)
     }
 }
 
+//! Get edges' list
+/*!
+    Build a list with edges from graph
+    \param g a graph instance that represents the graph
+    \return a vector with edges' list
+*/
 std::vector<int> OpBasic::edges(Graph& g)
 {
     std::vector<int> myEdges(g.getQtdArestas()*2);
@@ -537,6 +707,12 @@ std::vector<int> OpBasic::edges(Graph& g)
     return myEdges;
 }
 
+//! ????????????????
+/*!
+    ????????????????
+    \param g a graph instance that represents the graph
+    \return a vector with edges' list
+*/
 std::vector<int> OpBasic::edges_by_bigger_degree(Graph& g)
 {
     std::vector<int> myEdges;
@@ -563,6 +739,12 @@ std::vector<int> OpBasic::edges_by_bigger_degree(Graph& g)
     return myEdges;
 }
 
+//! ????????????????
+/*!
+    Retorna um vetor de arestas que se retirar as arestas a partir do inicio, o grafo nunca sera desconexo.
+    \param g a graph instance that represents the graph
+    \return a vector with edges' list
+*/
 std::vector<int> OpBasic::edges_conected(Graph& g)
 {
     int n = g.getQtdVertices();
@@ -593,6 +775,13 @@ std::vector<int> OpBasic::edges_conected(Graph& g)
     return myEdges;
 }
 
+//! Detect if a specific vertex belongs a cycle
+/*!
+    Detect if the vertex n belongs to a cycle
+    \param g a graph instance that represents the graph
+    \param n an integer representing a vertex that belongs to the cycle 
+    \return a vector that represents a vertices list belongs a cycle
+*/
 std::vector<int> OpBasic::cycle(Graph& g, int n)
 {
     std::vector<int> v;
@@ -612,6 +801,15 @@ std::vector<int> OpBasic::cycle(Graph& g, int n)
     return v;
 }
 
+//! Detect a cycle
+/*!
+    Seek if vertex belongs a cycle from a specific vertex
+    \param g a graph instance that represents the graph
+    \param n an integer that represents the numbers of vertices
+    \param u an integer that represents a seek vertex
+    \param v an integer that represents a start vertex
+    \return a vector with vertices list that belongs a cycle
+*/
 std::vector<int> OpBasic::cycle(Graph& g, int n, int u, int v)
 {
     // o vértice v já se encontra no ciclo.
@@ -684,6 +882,18 @@ int OpBasic::maxLowerCicle(Graph& g)
     return max;
 }
 
+//! Detect a cycle
+/*!
+    PARECE SER UM DFS FAZENDO BACKTRAKING PARA DETECTAR UM CICLO
+    \param g a graph instance that represents the graph
+    \param i a integer that represents node
+    \param n a integer ?????????????????????????
+    \param start a constant integer ?????????????????
+    \param v a vector ?????????????????
+    \param visitado a boolean ????????????????????
+    \param achou a boolean ??????????????????????
+    \return a vector with edges' list
+*/
 void OpBasic::find_cycle(Graph& g, int i, int n, const int start, std::vector<int>& v, bool* visitado, bool* achou)
 {
      
@@ -720,6 +930,12 @@ void OpBasic::find_cycle(Graph& g, int i, int n, const int start, std::vector<in
     visitado[i] = false;
 }
 
+//! Detect the biggest cycle
+/*!
+    Detect the biggest cycle
+    \param g a graph instance that represents the graph
+    \return a vector with a vertices list that represents the biggest cycle
+*/
 std::vector<int> OpBasic::biggestCycle(Graph& g)
 {
     Frontier f;
@@ -761,6 +977,13 @@ std::vector<int> OpBasic::biggestCycleUpDown(Graph& g)
     return ciclo;
 }
 
+//! Check if cycle has a chord
+/*!
+    Check if cycle has a chord
+    \param g a graph instance that represents the graph
+    \param ciclo a vector of integers that represents a list of vertices of a cycle 
+    \return a boolean (true, has a chord , false, not has a chord)
+*/
 bool OpBasic::possuiCorda(Graph& g, std::vector<int> ciclo)
 {
     /*
