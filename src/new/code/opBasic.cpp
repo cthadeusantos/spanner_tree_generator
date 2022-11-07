@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "frontier.hpp"
+//#include "frontier.hpp"
 #include "opBasic.hpp"
 
 /**
@@ -399,7 +399,7 @@ int OpBasic::min_diameter_tree_value(Graph& g)
         std::cout << c << " ";
     }
     std::cout << std::endl;
-    Frontier f;
+    //Frontier f;
 */
     Graph tree(g.getQtdVertices() );
     int min_diameter = INF_VALUE;
@@ -623,7 +623,7 @@ bool OpBasic::myXnor(bool a, bool b)
 */
 void OpBasic::rename(Graph& g, int v, int u)
 {
-    Frontier f;
+    //Frontier f;
     int n = g.getQtdVertices();
     Graph gAux(n);
 
@@ -775,11 +775,11 @@ std::vector<int> OpBasic::edges_conected(Graph& g)
     return myEdges;
 }
 
-//! Detect if a specific vertex belongs a cycle
+//! Seek a cycle without chord
 /*!
-    Detect if the vertex n belongs to a cycle
+    Seek a cycle without chord
     \param g a graph instance that represents the graph
-    \param n an integer representing a vertex that belongs to the cycle 
+    \param n an integer that representing the length cycle 
     \return a vector that represents a vertices list belongs a cycle
 */
 std::vector<int> OpBasic::cycle(Graph& g, int n)
@@ -834,28 +834,28 @@ std::vector<int> OpBasic::cycle(Graph& g, int n, int u, int v)
 
 int OpBasic::biggestCicleWithEdge(Graph& g, int u, int v)
 {
-    Frontier f;
+    //Frontier f;
     std::vector<int> ciclo;
     std::vector<int> cicloAux;
     int n = girth(g);
 
-    f.print(n, "limite minimo = ");
+    //f.print(n, "limite minimo = ");
     cicloAux = cycle(g, n, u, v);
 
     while( !cicloAux.empty() ){
         ciclo = cicloAux;
         ++n;
         cicloAux = cycle(g, n, u, v);
-        f.print(n, "n = ");
-        f.print(ciclo, "ciclo = ");
-        f.print(cicloAux, "cicloAux = ");
+        //f.print(n, "n = ");
+        //f.print(ciclo, "ciclo = ");
+        //f.print(cicloAux, "cicloAux = ");
     }
     return ciclo.size();
 }
 
 int OpBasic::lowestCicleWithEdge(Graph& g, int u, int v)
 {
-    Frontier f;
+    //Frontier f;
     std::vector<int> ciclo;
     int n = 3; // Menor ciclo possível em um grafo
 
@@ -938,7 +938,7 @@ void OpBasic::find_cycle(Graph& g, int i, int n, const int start, std::vector<in
 */
 std::vector<int> OpBasic::biggestCycle(Graph& g)
 {
-    Frontier f;
+    //Frontier f;
     //int min = girth(g);
     //int max = g.getQtdVertices() - 1;
     //int n = (min+max) / 2;
@@ -962,13 +962,13 @@ std::vector<int> OpBasic::biggestCycle(Graph& g)
 
 std::vector<int> OpBasic::biggestCycleUpDown(Graph& g)
 {
-    Frontier f;
+    //Frontier f;
     int n = g.getQtdVertices()-1;
     int gi = OpBasic::girth(g);
     std::vector<int> ciclo;
     while( ciclo.empty() ){
         if( n < gi) break;
-        f.print(n, "Procurando ciclo de tamanho ");
+        //f.print(n, "Procurando ciclo de tamanho ");
 
         ciclo = cycle(g, n);
         --n;
@@ -1062,8 +1062,6 @@ void OpBasic::graphToMatrix(Graph& g, int* m, int ordem)
         
     }
 }
-
-
 
 void OpBasic::multiplicacaoMatricial(int* a, int* b, int* c, int ordem)
 {

@@ -1,6 +1,6 @@
 #include "genGraph.hpp"
 #include "opBasic.hpp"
-#include "frontier.hpp"
+//#include "frontier.hpp"
 
 #include<iostream>
 
@@ -151,7 +151,7 @@ void GenGraph::generate_list_graph(std::vector<Graph>& list, int vMin, int vMax,
 */
 void GenGraph::generate_list_graph_without_triangle(std::vector<Graph>& list, int vMin, int vMax, int qtd, double p)
 {
-    Frontier f;
+    //Frontier f;
     generate_list_graph(list, vMin, vMax, qtd, p);
     //int count = 1;
     for( Graph& g : list){

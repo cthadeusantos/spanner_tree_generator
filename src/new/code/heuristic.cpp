@@ -2,7 +2,7 @@
 
 int Heuristic::heuristica_1(Graph& g)
 {
-    //Frontier f;
+    //Frontie'r' f;
     Stretch stretch;
     int n = g.getQtdVertices();
     std::vector<int> vertex_list(n);

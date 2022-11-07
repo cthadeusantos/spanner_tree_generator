@@ -1,22 +1,8 @@
 #include "graph.hpp"
+#include "opBasic.hpp"
+#include <iostream>
+#include <tuple>
 
-//! Assign value to stretch index
-/*!
-    Assign value to stretch index
-    \param n a integer that represents the stretch index
-*/
-void Graph::set_stretch_index(int value){
-    this->stretch_index = value;
-}
-
-//! Get value to stretch index
-/*!
-    Get value to stretch index
-    \return an integer that represents stretch index
-*/
-int Graph::get_stretch_index(){
-    return this->stretch_index;
-}
 
 //! Constructor
 /*!
@@ -28,7 +14,8 @@ Graph::Graph(int n)
     // graph = new std::vector<std::vector<int> >(n, std::vector<int>());
     qtdVertices = n;
     qtdArestas = 0;
-    for(int i = 0; i < n; ++i){
+    for (int i = 0; i < n; ++i)
+    {
         graph.push_back(std::vector<int>());
     }
 }
@@ -74,19 +61,21 @@ void Graph::add_aresta(int v, int u)
     std::vector<int>::iterator it;
 
     it = graph[v].begin();
-    while(it != graph[v].end() && *it < u){
+    while (it != graph[v].end() && *it < u)
+    {
         ++it;
     }
     graph[v].insert(it, u);
 
     it = graph[u].begin();
-    while(it != graph[u].end() && *it < v){
+    while (it != graph[u].end() && *it < v)
+    {
         ++it;
     }
     graph[u].insert(it, v);
 
-    //graph[v].push_back(u);
-    //graph[u].push_back(v);
+    // graph[v].push_back(u);
+    // graph[u].push_back(v);
     ++qtdArestas;
 }
 
@@ -97,8 +86,9 @@ void Graph::add_aresta(int v, int u)
 */
 void Graph::add_aresta(std::vector<int> arestas)
 {
-    for (std::vector<int>::iterator it = arestas.begin(); it != arestas.end(); it += 2){
-        add_aresta(*it, *(it+1));
+    for (std::vector<int>::iterator it = arestas.begin(); it != arestas.end(); it += 2)
+    {
+        add_aresta(*it, *(it + 1));
     }
 }
 
@@ -113,13 +103,15 @@ void Graph::remove_aresta(int v, int u)
     std::vector<int>::iterator it;
 
     it = graph[v].begin();
-    while(it != graph[v].end() && *it != u){
+    while (it != graph[v].end() && *it != u)
+    {
         ++it;
     }
     graph[v].erase(it);
 
     it = graph[u].begin();
-    while(it != graph[u].end() && *it != v){
+    while (it != graph[u].end() && *it != v)
+    {
         ++it;
     }
     graph[u].erase(it);
@@ -129,12 +121,13 @@ void Graph::remove_aresta(int v, int u)
 
 //! Add all new vertices
 /*!
-    Add new vertices 
+    Add new vertices
     \param n a integer that represents the numbers of vertices of graph
 */
 void Graph::add_all_vertice(int n)
 {
-    for(int i=0; i < n; ++i){
+    for (int i = 0; i < n; ++i)
+    {
         graph.push_back(std::vector<int>());
     }
     qtdVertices = n;
@@ -159,11 +152,15 @@ const std::vector<int> Graph::adjList(int v)
     \return a boolean
 */
 bool Graph::possui_aresta(int v, int u)
-{  
-    for(int x : adjList(v)){
-        if(x == u){
-            for(int y : adjList(u)){
-                if(y == v){
+{
+    for (int x : adjList(v))
+    {
+        if (x == u)
+        {
+            for (int y : adjList(u))
+            {
+                if (y == v)
+                {
                     return true;
                 }
             }
@@ -185,11 +182,12 @@ int Graph::grau(int v)
 
 //! Delete all edges
 /*!
-    Destroy the list of adjacencies of all vertices 
+    Destroy the list of adjacencies of all vertices
 */
 void Graph::clear_arestas()
 {
-    for(int i=0; i< getQtdVertices(); ++i){
+    for (int i = 0; i < getQtdVertices(); ++i)
+    {
         graph[i].clear();
     }
     qtdArestas = 0;
@@ -227,20 +225,23 @@ int Graph::next_vertex(int v)
 int Graph::ant_vertex(int v)
 {
     --v;
-    return v < 0 ? getQtdVertices()-1 : v;
+    return v < 0 ? getQtdVertices() - 1 : v;
 }
 
 //! An edge list
 /*!
     Return an edge list
-    \return a vector of integer 
+    \return a vector of integer
 */
 const std::vector<int> Graph::edgeList()
 {
     std::vector<int> aux;
-    for(int v=0; v < getQtdVertices(); ++v){
-        for(int u : adjList(v)){
-            if(u > v){
+    for (int v = 0; v < getQtdVertices(); ++v)
+    {
+        for (int u : adjList(v))
+        {
+            if (u > v)
+            {
                 aux.push_back(v);
                 aux.push_back(u);
             }
@@ -252,14 +253,16 @@ const std::vector<int> Graph::edgeList()
 //! Get max degree
 /*!
     Seek for max degree
-    \return a integer 
+    \return a integer
 */
 int Graph::maior_grau()
 {
     int maior = grau(0);
-    for(int i = 1; i < getQtdVertices(); ++i){
+    for (int i = 1; i < getQtdVertices(); ++i)
+    {
         int teste = grau(i);
-        if(teste > maior){
+        if (teste > maior)
+        {
             maior = teste;
         }
     }
@@ -269,15 +272,17 @@ int Graph::maior_grau()
 //! Get vertex with max degree
 /*!
     Seek for vertex with max degree
-    \return a integer 
+    \return a integer
 */
 int Graph::vertice_maior_grau()
 {
     int maior = grau(0);
     int v = 0;
-    for(int i = 1; i < getQtdVertices(); ++i){
+    for (int i = 1; i < getQtdVertices(); ++i)
+    {
         int teste = grau(i);
-        if(teste > maior){
+        if (teste > maior)
+        {
             maior = teste;
             v = i;
         }
@@ -288,16 +293,17 @@ int Graph::vertice_maior_grau()
 //! List all vertices with max degree
 /*!
     Seek for all vertices with max degree
-    \return a vector 
+    \return a vector
 */
 std::vector<int> Graph::vertices_de_maior_grau()
 {
     std::vector<int> list_vertices;
     int maior_grau = this->maior_grau();
 
-    for(int i = 0; i < getQtdVertices(); ++i)
+    for (int i = 0; i < getQtdVertices(); ++i)
     {
-        if(grau(i) == maior_grau){
+        if (grau(i) == maior_grau)
+        {
             list_vertices.push_back(i);
         }
     }
@@ -309,14 +315,14 @@ std::vector<int> Graph::vertices_de_maior_grau()
 /*!
     Count the number of vertices with highest degree
     \param grau is an integer
-    \return an integer 
+    \return an integer
 */
 int Graph::qtd_vertex_grau(int grau)
 {
     int count = 0;
-    for(int i = 0; i < getQtdVertices(); ++i)
+    for (int i = 0; i < getQtdVertices(); ++i)
     {
-        if( this->grau(i) == grau)
+        if (this->grau(i) == grau)
         {
             ++count;
         }
@@ -324,16 +330,90 @@ int Graph::qtd_vertex_grau(int grau)
     return count;
 }
 
-
 /*
     Methods created by Carlos Thadeu
 */
 
-
-void Graph::create(int dimension)
+int Graph::get_num_edges()
 {
-    for (int x = 0; x < dimension; x++){
-        ++qtdVertices;
-        graph.push_back(std::vector<int>());
+    return qtdArestas;
+};
+
+//! Set a best tree found
+/*!
+    After found a best tree , assing it to graph
+    \param n a graph that represents a local tree from a thread
+*/
+void Graph::set_best_tree(Graph graph)
+{
+    this->best_tree = {};
+    for (int i = 0; i < graph.edgeList().size(); i = i + 2)
+    {
+        this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i+1]));
     }
+};
+
+//! Get a best tree found
+/*!
+    Return a best tree found
+    \return a vector of tuples that represents edges from best tree
+*/
+std::vector<std::tuple<int, int>> Graph::get_best_tree(){
+    return this->best_tree;
+}
+
+//! Show at screen a best tree found
+/*!
+    Show at screen a best tree found
+*/
+void Graph::show_best_tree()
+{
+    int node1 = 0, node2 = 0;
+    for (auto&& tuple: this->best_tree){
+        std::tie(node1, node2) = tuple;
+        std::cout << "(" << node1 << "," << node2 << ")"<< std::endl;
+    }
+};
+
+//! Assign value to stretch index
+/*!
+    Assign value to stretch index
+    \param n a integer that represents the stretch index
+*/
+void Graph::set_stretch_index(int value)
+{
+    this->stretch_index = value;
+}
+
+//! Get value to stretch index
+/*!
+    Get value to stretch index
+    \return an integer that represents stretch index
+*/
+int Graph::get_stretch_index()
+{
+    return this->stretch_index;
+}
+
+//! Add new vertices to graph create without vertices Graph() 
+/*!
+    Add new vertices to graph create without vertices Graph()
+    \param n a integer that represents the number of vertices of graph
+*/
+void Graph::add_vertices(int n)
+{
+    for (int i = 0; i < n; ++i)
+    {
+        this->add_vertex();
+    };
+};
+
+std::vector<int> Graph::induced_cycle(Graph &g, int n){
+    OpBasic a = OpBasic();
+    return a.cycle(g, n);
+}
+
+bool Graph::has_chord(Graph &g, std::vector<int> x){
+    OpBasic a = OpBasic();
+    return a.possuiCorda(g, x);
 }

@@ -1,9 +1,10 @@
 #include "stretch.hpp"
 #include "opBasic.hpp"
 #include "genGraph.hpp"
-#include "frontier.hpp"
+//#include "frontier.hpp"
 
 #include <tuple>
+#include <iostream>
 
 /**
  * @details Find a stretch index from a graph.
@@ -73,7 +74,7 @@ void Stretch::find_index(Graph& g)
 
 void Stretch::find_index_edge(Graph& g)
 {
-    Frontier f;
+    //Frontier f;
     int n = g.getQtdVertices();
     int m = g.getQtdArestas();
     int indice[n-1];

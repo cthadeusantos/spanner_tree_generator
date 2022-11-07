@@ -2,9 +2,11 @@
 #include <sys/stat.h>
 //#include <errno.h>
 //#include <stdio.h>
+
 #include <string.h>
 #include "code/graph.hpp"
 #include "code/opBasic.hpp"
+#include "code/stretch.hpp"
 
 #include "Debug.h"
 
@@ -82,7 +84,7 @@ Graph read_graph_file()
                 if (WordCount++ == 0)
                 {
                     dimension = std::stoi(value_str);
-                    graph.create(dimension);
+                    graph.add_vertices(dimension);
                 }
                 else
                 {
@@ -91,17 +93,20 @@ Graph read_graph_file()
                         if (col >= dimension || row >=dimension){
                             printf("Ponto de parada");
                         }
-                        graph.add_aresta(row, col);
+                        bool exist = false;
+                        for (int i=0; i < graph.adjList(row).size(); i++){
+                            if (row > col){
+                                if (std::stoi(value_str) == 1){ exist = true; }
+                            }
+                        }
+                        if (!exist){ graph.add_aresta(row, col); }
                     }
                     col++;
                     if (col >= dimension)
                     {
                         col = 0;
                         row++;
-                        if (row >= dimension)
-                        {
-                            row = 0;
-                        }
+                        if (row >= dimension){ row = 0; }
                     }
                 }
                 value_str = "";
@@ -114,8 +119,4 @@ Graph read_graph_file()
         }
     }
     return graph;
-}
-
-void save_results_brute_force(){
-    
 }

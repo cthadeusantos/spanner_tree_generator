@@ -4,14 +4,16 @@
 #define INF_VALUE std::numeric_limits<int>::max()
 
 #include <vector>
+#include <tuple>
 
 class Graph
 {
 private:
-    std::vector<std::vector<int> > graph;
+    std::vector< std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
-    int stretch_index = INF_VALUE;
+    int stretch_index = INF_VALUE; // by Thadeu
+    
 public:
     Graph(int n);
     Graph();
@@ -48,6 +50,17 @@ public:
     int getQtdVertices(){ return qtdVertices; }
     int getQtdArestas(){ return qtdArestas; }
     std::vector<std::vector<int> > getGraph(){ return graph; }
+
+    // By THADEU
+    int grt = 0; // by Thadeu
+    std::vector<std::tuple<int, int> > best_tree;
+    int get_num_edges();
+    void set_best_tree(Graph graph);
+    std::vector<std::tuple<int, int> > get_best_tree();
+    void add_vertices(int n);
+    void show_best_tree();
+    std::vector<int> induced_cycle(Graph &g, int n);
+    bool has_chord(Graph &g, std::vector<int> x);
 };
 
 

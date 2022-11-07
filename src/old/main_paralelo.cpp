@@ -274,7 +274,7 @@ void create_threads(Graph& g)
 {
     int raiz = vertice_maior_grau(g);
     int qtd = g.grau(raiz);
-    int id=0;
+    int id = 0;
 
     std::thread vetor_th[qtd];
 

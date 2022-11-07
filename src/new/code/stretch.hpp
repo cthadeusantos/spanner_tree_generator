@@ -10,7 +10,7 @@ class Stretch
 private:
     int index;
     Graph tree;
-    std::mutex mtx;
+    //std::mutex mtx;
     int total_arv;
     
     void find_index_pararell(Graph& g, int raiz, int start, int end); 
