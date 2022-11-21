@@ -369,10 +369,12 @@ std::vector<std::tuple<int, int>> Graph::get_best_tree(){
 void Graph::show_best_tree()
 {
     int node1 = 0, node2 = 0;
+    std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
     for (auto&& tuple: this->best_tree){
         std::tie(node1, node2) = tuple;
-        std::cout << "(" << node1 << "," << node2 << ")"<< std::endl;
+        std::cerr << "(" << node1 << " , " << node2 << ") ";
     }
+    std::cerr << "\n" ;
 };
 
 //! Assign value to stretch index
@@ -416,4 +418,33 @@ std::vector<int> Graph::induced_cycle(Graph &g, int n){
 bool Graph::has_chord(Graph &g, std::vector<int> x){
     OpBasic a = OpBasic();
     return a.possuiCorda(g, x);
+}
+
+void Graph::add_tree(){
+    this->total_tree++;
+}
+
+void Graph::sum_trees(int value){
+    this->total_tree = this->total_tree + value;
+}
+
+int Graph::get_total_tree(){
+    return this->total_tree;
+}
+
+int Graph::get_qty_vertex(){
+    return this->qtdVertices;
+}
+
+int Graph::neighbor_index(int vertex, int neighbor){
+    int index = -1;
+    int size = this->adjList(vertex).size();
+    for (int i = 0; i < size; ++i)
+        {
+            if (this->adjList(vertex)[i] == neighbor){
+                index = i;
+                break;
+            }
+        }
+    return index;
 }

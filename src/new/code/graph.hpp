@@ -13,12 +13,13 @@ private:
     int qtdVertices;
     int qtdArestas;
     int stretch_index = INF_VALUE; // by Thadeu
+    int total_tree = 0; // by Thadeu
     
 public:
     Graph(int n);
     Graph();
     ~Graph();
-
+    
     void create(int dimension);
     void add_vertex();
     void add_aresta(int v, int u);
@@ -61,6 +62,12 @@ public:
     void show_best_tree();
     std::vector<int> induced_cycle(Graph &g, int n);
     bool has_chord(Graph &g, std::vector<int> x);
+    void add_tree();
+    void sum_trees(int value);
+    int get_total_tree();
+    int get_qty_vertex();
+    int neighbor_index(int vertex, int neighbor);
+    
 };
 
 

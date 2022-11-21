@@ -1,5 +1,12 @@
 #include "heuristic.hpp"
 
+/**
+ * @brief T-admissibility heuristic 1.
+ * @details List vertices in decreasing order.
+ * Add to the tree the first vertex of the list is not in the tree yet and all neighbors
+ * Process the list until there isn't a vertex in the tree.
+ * @param g a graph instance that represents the graph.
+ */
 int Heuristic::heuristica_1(Graph& g)
 {
     //Frontie'r' f;

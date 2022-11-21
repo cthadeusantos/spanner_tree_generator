@@ -14,6 +14,7 @@
 
 #include "ctfunctions.cpp"
 
+
 #include "code/frontier.hpp"
 #include "code/genGraph.hpp"
 #include "code/graph.hpp"
@@ -33,14 +34,14 @@
  * @{
  */
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
-int seed = 0;
+/* int seed = 0;
 bool graph_type=false;
 std::string paralel_type="m";
 int min_vertices = 0;
 int max_vertices = 0;
 int num_graph = 0;
 float probability = 0.45;
-int num_threads = 1;
+int num_threads = 1; */
 
 /**
  * }@
@@ -149,7 +150,8 @@ int main(int argc, char** argv){
 	std::string filename;
 	std::string dirname;
 	std::string auxiliary;
-	std::string DIR_BASE = get_enviroment_var("DIR_TADM");
+	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
+	std::string DIR_BASE = get_current_dir_name();
 	//std::string DIR_BASE = argv[0];
 	std::string DIR_INSTANCES = DIR_BASE + "instances/";
 	std::string DIR_RESULTS = DIR_BASE + "results/"; 

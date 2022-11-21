@@ -51,6 +51,8 @@ void Stretch::find_index(Graph& g)
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f = find_factor(g, tree);
                         ++arv;
+                        //g.sum_tree();
+                        g.add_tree();
                         if(f < index){
                             index = f;
                             this->tree = tree;
@@ -237,7 +239,8 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
-
+    g.set_stretch_index(factor);    // Insert by Thadeu
+    g.set_best_tree(tree);          // Insert by Thadeu
     return factor;
 }
 

@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 		create_threads(graph);
 	} else if (type_running == 1){
 		DEBUG std::cerr << "Maximum degree without duplications trees\n";
-		create_threads_without_trees_duplications(graph);
+		//create_threads_without_trees_duplications(graph);
 	}
 	time(&time_end);
 

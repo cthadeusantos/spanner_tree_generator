@@ -25,15 +25,18 @@ SEQ-OLD := app_SEQ-OLD
 app_SEQ-OLD_FILES := old/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
 PAR-OLD := app_PAR-OLD
 app_PAR-OLD_FILES := old/main_paralelo.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
-BF-SEQ := app_BF-SEQ
-app_BF-SEQ_FILES := new/main_BF-SEQ.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
-#ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ}
-TADM-CREATE := app_CREATE
-app_CREATE_FILES := new/main_create_graphs.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+#BF-SEQ := app_BF-SEQ
+#app_BF-SEQ_FILES := new/main_BF-SEQ.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+##ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ}
+#TADM-CREATE := app_CREATE
+#app_CREATE_FILES := new/main_create_graphs.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 #ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE}
-BF-PAR := app_BF-PAR
-app_BF-PAR_FILES := new/main_BF-PAR.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
-ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR}
+#BF-PAR := app_BF-PAR
+#app_BF-PAR_FILES := new/main_BF-PAR.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+##ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR}
+BF-MAIN := app_MAIN
+app_MAIN_FILES := new/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR} ${BF-MAIN}
 
 #--Main rule names--
 RELEASE_BUILD := build-release

@@ -1,0 +1,1 @@
+void sequential(Graph& g);

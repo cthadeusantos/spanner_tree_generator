@@ -121,7 +121,7 @@ int main(int argc, char** argv){
 
     DEBUG std::cerr << "Stretch index calculated: " << graph.get_stretch_index() << "\n";
 	DEBUG std::cerr << "Running time (in seconds): " << difftime(time_end, time_begin) << "\n";
-
+	DEBUG std::cerr << "Total de árvores calculadas: " << graph.get_total_tree() << "\n";
 	DEBUG std::cerr << "Outputing the solution\n";
 	//TODO: Imprimir no std::out a saida
 	std::cout << "Resposta exemplo" << std::endl;
