@@ -143,20 +143,17 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
 {
     
     sem_wait(&semaforo);
-	mtx.lock();
+	//mtx.lock();
     Graph G1 = graph;   // Auxiliary graph - local graph
-    mtx.unlock();
+    //mtx.unlock();
 
     // remove the root edges from a cycle of previous threads
     // Edges removed will processed another threads
-    vector<int> remove = {};
-    remove = edges_list;
-
-    mtx.lock();     // add by Thadeu - Avoid message -> malloc(): corrupted top size Aborted (core dumped)
+    //mtx.lock();
     for (int i=0; i < id * 2 ; i=i+2){
-        G1.remove_aresta(remove[i], remove[i+1]);
+        G1.remove_aresta(edges_list[i], edges_list[i+1]);
     } // end of prodedure to remove the root edges
-    mtx.unlock();   // add by Thadeu
+    //mtx.unlock();   // add by Thadeu
 
     bool disconnected = false;  // Can a tree be built?
     int start = G1.neighbor_index(raiz, neighbor_start); // Convert start vertex to start index from adjacency list
@@ -318,121 +315,47 @@ void create_threads_big_cycle(Graph& g) {
     int max_degree = g.grau(root);
     int cycle_size;
  
-  /*   if (type == 1){
-        DEBUG std::cerr << "Configurando para max degree: " << std::endl;
-        qty = max_degree;
-        neighbors = g.adjList(root);
-    } else { */
-        std::vector<int> big_cycle;
-        // find the largest induced cycle
-        
-        for (int i = n; i > 2; i--){
-            DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
-            big_cycle = op.cycle(g, i);
-            cycle_size = big_cycle.size();
-            if (cycle_size != 0){
-                DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
-                break;
-            }
+    std::vector<int> big_cycle;
+    // find the largest induced cycle
+    
+    for (int i = n; i > 2; i--){
+        DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
+        big_cycle = op.cycle(g, i);
+        cycle_size = big_cycle.size();
+        if (cycle_size != 0){
+            DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
+            break;
         }
-        qty = cycle_size;
-        neighbors = big_cycle;
-/*     } */
+    }
+    qty = cycle_size;
+    neighbors = big_cycle;
            
     std::thread vetor_th[qty];
+    // build edge list to be deleted from original graph inside find_index_induced_cycle
+    // Thread 1 remove 1st edge (inside find_index_induced_cycle)
+    // Thread 2 remove 1st and 2nd edges (inside find_index_induced_cycle)
+    // Thread 3 remove 1st, 2nd and 3rd edges (inside find_index_induced_cycle)
+    // and go on deleting edges (inside find_index_induced_cycle)
     for(int i = 0; i < qty; ++i){
-/*         if (type == 0){
-            neighbor = g.adjList(root)[i];
-        } else { */
-            root = neighbors[i];
-            neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
-/*         } */
-
-        vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
-        mtx.lock();
+        root = neighbors[i];
+        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
         edges_list.push_back(root);
         edges_list.push_back(neighbor);
-        mtx.unlock();
     }
 
+    for(int i = 0; i < qty; ++i){
+        root = neighbors[i];
+        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
+        // Here send edges' list to be deleted
+        // Delete the edges ensures that there are no duplicate trees
+        vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
+    }
 
     for(int i = 0; i < qty; ++i){
         vetor_th[i].join();
     }
     
 }
-
-/* void create_threads_without_trees_duplications(Graph& g)
-{
-    int qty = -1;
-    int root = -1;
-    int neighbor = -1;
-
-    std::vector<int> edges_list = {};
-    int pos = -1;
-
-    // Calcula atributo grt
-    // por enquanto fica aqui, no futuro retirar 
-    // pois o método create_thread nao é para calcular nada do grafo
-    OpBasic op; // by thadeu
-    g.grt = op.maxLowerCicle(g); // by thadeu
-    // fim calcula grt
-
-
-    
-    int n = g.get_qty_vertex();
-    root = vertice_maior_grau(g);
-    int max_degree = g.grau(root);
-    int cycle_size;
-
-    std::vector<int> big_cycle;
-    // find the largest induced cycle
-    cerr << "Procurando ciclo induzido de tamanho :\n";
-    for (int i = n; i > 2; i--){
-        big_cycle = op.cycle(g, i);
-        cycle_size = big_cycle.size();
-        if (cycle_size != 0){
-            cerr << "Achei ciclo induzido de tamanho :" << cycle_size ;
-            break;
-        }
-    }
-    
-    std::vector<int> neighbors;
-    int type = 0;
-    if (max_degree > cycle_size){
-        qty = max_degree;
-        neighbors = g.adjList(root);
-        type = 0;   // Define type building to max_degree template
-    } else{
-        qty = cycle_size;
-        neighbors = big_cycle;
-        type = 1;   // Define type building to biggest induced cycle template
-    }
-        
-    std::thread vetor_th[qty];
-    for(int i = 0; i < qty; ++i){
-        if (type == 0){
-            neighbor = g.adjList(root)[i];
-        } else {
-            root = neighbors[i];
-            neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
-        }
-
-        //vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, index, pos, i);
-        vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
-        edges_list.push_back(root);
-        edges_list.push_back(neighbor);
-        //edges_list.push_back(g.adjList(root)[index]);
-        //index = next(index, qty);
-        pos++;
-    }
-
-    for(int i = 0; i < qty; ++i){
-        vetor_th[i].join();
-    }
-} */
-
-
 
 //! Get index from adjacent vertex
 /*!

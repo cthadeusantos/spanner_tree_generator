@@ -72,7 +72,7 @@ void usage(const char* app_name){
 	std::cout << "-h | --help\t\t\tShow this message." << std::endl;
 	std::cout << "-s | --show\t\t\tShow infos at screen. [current " << display << "]" << std::endl;
 	std::cout << "-t X| --thread\t\t\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl;
-	std::cout << "-r X| --running\t\t\tDefine how the application run. X is 0-Sequentially 1-Parallel Max Degree 2-No dup. [current " << type_running << "]" << std::endl;
+	std::cout << "-r X| --running\t\t\tDefine how the application run. | X is 0-Sequentially | 1-Parallel Max Degree | 2-No dup. | [current " << type_running << "]" << std::endl;
 	std::cout << std::endl;
 }
 
@@ -90,21 +90,11 @@ void parseArgs(int argc, char** argv){
 		std::regex regexp("(.*)(=)");	// Select all character before equals sign AND equals sign
 		std::regex thd("(-thd=)(.*)");
 
-
 		DEBUG std::cerr << "Received param: " << arg << '\n';
 		if(arg == "-h" || arg == "--help"){
 			usage(argv[0]);
 			exit(0);
 		}
-/* 		else if(arg == "-s" || arg == "--seed"){
-			seed = std::atoi(argv[++i]);
-			DEBUG std::cerr << "Changed seed to: " << seed << '\n';
-		} */
-/* 		else if(std::regex_match(arg, thd)){
-			std::string value = regex_replace(arg, regexp, "");
-			num_threads = std::stoi(value);
-			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
-		} */
 		else if(arg == "-t" || arg == "--thread"){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
@@ -170,15 +160,10 @@ int main(int argc, char** argv){
     graph = read_graph_file();
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 
-	//DEBUG std::cerr << "Solving with paralellism - wait!\n";
-	//TODO: Chamar a força bruta para o grafo de entrada
-
-	//Parallelism acme; // Lonney Tunes rocks!
-	
 	time_t time_begin = 0;
     time_t time_end = 0;
     double tempo_total = 0;
-	
+
 	sem_init(&semaforo, 0, num_threads);
 	time(&time_begin);
 
@@ -196,8 +181,7 @@ int main(int argc, char** argv){
 		create_threads_big_cycle(graph);
 	} else if (type_running == 4){
 		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
-		Heuristic acme = Heuristic();	// Lonney Tunes rocks!
-		acme.heuristica_1(graph);
+		Heuristic().heuristica_1(graph);
 	} 
 
 	time(&time_end);
