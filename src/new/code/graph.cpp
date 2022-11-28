@@ -448,3 +448,7 @@ int Graph::neighbor_index(int vertex, int neighbor){
         }
     return index;
 }
+
+int Graph::eccentricity(Graph &graph, int vertex){
+    return OpBasic().eccentricity(graph, vertex);
+}

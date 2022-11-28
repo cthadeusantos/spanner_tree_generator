@@ -182,7 +182,13 @@ int main(int argc, char** argv){
 	} else if (type_running == 4){
 		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
 		Heuristic().heuristica_1(graph);
-	} 
+	} else if (type_running == 5){
+		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
+		Heuristic().heuristica_1(graph);
+	} else if (type_running == 10){
+		DEBUG std::cerr << "Solving with heuristic circular - wait!\n";
+		Heuristic().breadth_heuristic(graph);
+	}
 
 	time(&time_end);
 

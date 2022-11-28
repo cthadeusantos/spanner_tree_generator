@@ -10,6 +10,8 @@
 
 #include "Debug.h"
 
+#include "ctfunctions2.hpp"
+
 /// Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
 #define DEBUG
@@ -30,7 +32,7 @@
  * @param *a an integers that represents a value.
  * @param *b an integers that represents a value.
  */
-void swap(int *a, int*b)
+void swap(int *a, int *b)
 {
     int temp = *a;
     *a = *b;
@@ -54,4 +56,16 @@ void bubbleSort(int **array, int n)
                 swap(&array[1][j], &array[1][j + 1]);
             }
                 
+}
+
+bool in(std::vector <int> &vector1, const int &value)
+{
+    bool result = false;
+    for(auto vertex : vector1){
+        if (vertex == value){
+            result = true;
+            break;
+        }
+    }
+    return result;
 }

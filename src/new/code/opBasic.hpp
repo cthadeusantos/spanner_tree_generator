@@ -22,7 +22,7 @@ private:
     static void clear(std::stack<int>& s);
     static bool pertence(int x, std::vector<int>& v);
     static std::vector<int> short_path(Graph& g, int v, int u);
-    static int sumGrade(Graph& g, std::vector<int> v);
+    
     static void find_cycle(Graph& g, int i, int n, const int start,std::vector<int>& v, bool* visitado, bool* achou);
 
     static void teste(std::vector<int> v, std::string msg = "");
@@ -84,6 +84,15 @@ public:
 
     // MAX of lowest cicles with edge of g
     static int maxLowerCicle(Graph& g);
+
+    // This method was private, I change it to public because I need this at heuristic
+    static int sumGrade(Graph& g, std::vector<int> v);
+
+
+    // Get the eccentricity of a vertex
+    static int eccentricity(Graph &graph, int vertex);
+
+    
 };
 
 #endif

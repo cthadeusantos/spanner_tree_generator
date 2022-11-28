@@ -67,7 +67,7 @@ public:
     int get_total_tree();
     int get_qty_vertex();
     int neighbor_index(int vertex, int neighbor);
-    
+    int eccentricity(Graph &graph, int vertex);
 };
 
 

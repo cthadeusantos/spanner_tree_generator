@@ -138,7 +138,7 @@ int OpBasic::distance(Graph& g, int v, int u)
     return dist[u];
 }
 
-//! Calculate the short path between two vertices
+//! Calculate the path between a specific vertex and others
 /*!
     ????????????????????????????????????????????????????????w
     \param g a graph instance that represents a graph
@@ -1095,4 +1095,15 @@ void OpBasic::initMatrix(int* m, int ordem, int val)
             m[i*ordem + j] = val;
         }
     }
+}
+
+int OpBasic::eccentricity(Graph &graph, int vertex){
+    int max = 0;
+    for (int i=0; i < graph.get_qty_vertex();i++){
+        int dist = distance(graph, vertex, i);
+        if (dist > max){
+            max = dist;
+        }
+    }
+    return max;
 }
