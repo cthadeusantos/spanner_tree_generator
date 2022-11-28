@@ -129,7 +129,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_MAIN",
-            "args": [ "<", "${workspaceFolder}/instances/examples/G6_15a.in", ">", "${workspaceFolder}/workspace/debug.out", "-r", "10", "-t", "4"],
+            "args": [ "<", "${workspaceFolder}/instances/grafos/grafo_12.txt", ">", "${workspaceFolder}/workspace/debug.out", "-r", "10", "-t", "4"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

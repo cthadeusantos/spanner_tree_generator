@@ -8,102 +8,21 @@
 #include "../ctfunctions2.hpp"
 
 #include <bits/stdc++.h>
-bool Heuristic::sortby2nd_asc(const std::tuple<int, int> &a, 
-               const std::tuple<int, int> &b)
-{
-    return (std::get<1>(a) < std::get<1>(b));
-}
 
-bool Heuristic::sortby2nd_des(const std::tuple<int, int> &a, 
-               const std::tuple<int, int> &b)
-{
-    return (std::get<1>(a) > std::get<1>(b));
-}
-
-std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &FILA, std::vector <int> &visited, std::vector <int> &total_layer){
-    int soma = 0;
-    int vertex = -1;
-    int i = 0;
-    std::vector <int>FILA2;
-    
-    while (!FILA.empty()){
-        vertex = FILA.front();
-        FILA.pop();
-        int vgrau = graph.grau(vertex);
-        soma = soma + vgrau;
-        visited.push_back(vertex);
-        for (auto v : graph.adjList(vertex)){
-            if (!in(FILA2, v)){
-                FILA2.push_back(v);
-            }
-        }
-    }
-    while (i < FILA2.size()){
-        vertex = FILA2[i];
-        if (!in(visited, vertex)){
-            FILA.push(vertex);
-        }
-        i++;
-    }
- 
-    if (soma != 0){
-        total_layer.push_back(soma);
-        breadth_criterion(graph, FILA, visited, total_layer);
-    }
-    return total_layer; 
-}
-
-int Heuristic::root_selection(Graph &g){
-    int max = 0;
-    int n = g.get_qty_vertex();
-    std::vector<int> vertex_list(n);
-    std::queue <int>FILA;   // contains the vertices with the highest degree (same degree)
-    std::vector <std::vector<int>> sum_layer;    // contains the sum of vertices degree of layer
-
-    for( int i = 0; i < n; ++i) vertex_list[i] = i;
-    my_quicksort(vertex_list, 0, n, g);
-
-    for (auto vertex: g.vertices_de_maior_grau()){
-        FILA.push(vertex);
-    }
-    
-    while (!FILA.empty()){
-        std::vector <int>visited;   // Visited vertices
-        std::vector <int>total_layer;   // Sum total of the layer
-        std::queue <int>FILA3;
-        FILA3.push(FILA.front());
-        FILA.pop();
-        sum_layer.push_back(breadth_criterion(g, FILA3, visited, total_layer));
-        FILA3.pop();
-    }
-    
-    for (int index=0; index < sum_layer[0].size(); index++){
-        for (int j=0; j < sum_layer.size() - 1; j++){
-            if (sum_layer[j][index] > sum_layer[j+1][index]){
-                max = index;
-            } else if (sum_layer[j+1][index] > sum_layer[j][index]){
-                max = index;
-            }
-        }
-        if (max != 0) {
-            index = sum_layer.size() + 1;
-        }
-    }
-    return vertex_list[max];
-    //return nominees[xray][max];
-}
 
 /**
  * @brief T-admissibility heuristic circular.
- * @details Running the breadth heuristic
- * New heuristic added.
- * @param g a graph instance that represents the graph.
+ * @details The breadth heuristic
+ * That heuristic create a tree from a highest degree vertex, than insert your neighbors, after insert the neighbors of neighbors
+ * @author Carlos Thadeu
+ * @param graph a graph instance that represents the graph.
  */
-int Heuristic::breadth_heuristic(Graph& g)
+int Heuristic::breadth_heuristic(Graph &graph)
 {
     Stretch stretch;
+    int counter = 0;
     int root = 0;
-    int n = g.getQtdVertices();
+    int n = graph.getQtdVertices();
     std::vector <int> vertices;
     
     Graph tree(n);
@@ -111,35 +30,39 @@ int Heuristic::breadth_heuristic(Graph& g)
     std::queue<int> QUEUE1;
     int LIST2[2][n];
 
-    root = root_selection(g);
+    root = root_selection(graph);
 
     std::cerr << "Vértice raiz da árvore: " << root << std::endl;
 
     QUEUE1.push(root);
-    int counter = 0;
+    
 
     while (!(QUEUE1.empty())){
-        counter = 0;
+        //counter = 0;
         root = QUEUE1.front();
         QUEUE1.pop();
         for (int j =0; j < n; ++j){
             LIST2[0][j] = -1;
             LIST2[1][j] = -1;
         }
-        int num_neighbor = g.adjList(root).size();
+        int num_neighbor = graph.adjList(root).size();
         for (int i = 0; i < num_neighbor; ++i){
-            int neighbor = g.adjList(root)[i];
+            int neighbor = graph.adjList(root)[i];
             if (tree.grau(neighbor) == 0) {
                 tree.add_aresta(root, neighbor);
-                LIST2[0][counter] = neighbor;
-                LIST2[1][counter] = g.grau(neighbor);
-                counter++;
+                LIST2[0][i] = neighbor;
+                //LIST2[0][counter] = neighbor;
+                LIST2[1][i] = graph.grau(neighbor);
+                //LIST2[1][counter] = graph.grau(neighbor);
+                //counter++;
             }
         }
-        
+
         // BUBLESORT TOSCÃO
-        for (int i=0; i < counter - 1; ++i){
-            for (int j = 1; j < counter; ++j){
+        //for (int i=0; i < counter - 1; ++i){
+        for (int i=0; i < num_neighbor; ++i){
+            //for (int j = 1; j < counter; ++j){
+            for (int j = 0; j < num_neighbor; ++j){
                 if (LIST2[1][i] < LIST2[1][j]){
                     int temp1 = LIST2[0][j];
                     LIST2[0][j] = LIST2[0][i];
@@ -151,14 +74,15 @@ int Heuristic::breadth_heuristic(Graph& g)
             }
         }
 
-        for (int i = 0; i < counter; ++i){
+        //for (int i = 0; i < counter; ++i){
+        for (int i = 0; i < num_neighbor; ++i){
             if (LIST2[0][i] != -1) QUEUE1.push(LIST2[0][i]);
         }
     }
-    int factor = stretch.find_factor(g, tree);
-    std::cout << "******ACHEI FATOR --->>>> :" << factor << std::endl;
-    g.set_stretch_index(factor);
-    g.set_best_tree(tree);
+    int factor = stretch.find_factor(graph, tree);
+    //std::cout << "******ACHEI FATOR --->>>> :" << factor << std::endl;
+    graph.set_stretch_index(factor);
+    graph.set_best_tree(tree);
     return 0;
 }
 
@@ -174,6 +98,7 @@ int Heuristic::heuristica_1(Graph& g)
     //Frontie'r' f;
     Stretch stretch;
     int n = g.getQtdVertices();
+    int root = 0;
     std::vector<int> vertex_list(n);
     for( int i = 0; i < n; ++i)
     {
@@ -184,9 +109,18 @@ int Heuristic::heuristica_1(Graph& g)
 
     Graph tree(n);
 
-    for( int v : g.adjList(vertex_list[0]) )
+    //root = root_selection(g);
+    root = vertex_list[0];
+
+    std::cerr << "RAIZ ESOLHIDA: " << root << std::endl;
+/*     for( int v : g.adjList(vertex_list[0]) )
     {
         tree.add_aresta(vertex_list[0], v);
+    } */
+
+    for( int v : g.adjList(root) )
+    {
+        tree.add_aresta(root, v);
     }
 
     int i = 1;
@@ -530,4 +464,126 @@ void Heuristic::my_sort(std::vector<int>& v1, std::vector<int>& v2)
             --j;
         }
     }
+}
+
+bool Heuristic::sortby2nd_asc(const std::tuple<int, int> &a, 
+               const std::tuple<int, int> &b)   // By thadeu
+{
+    return (std::get<1>(a) < std::get<1>(b));
+}
+
+bool Heuristic::sortby2nd_des(const std::tuple<int, int> &a, 
+               const std::tuple<int, int> &b)   // By thadeu
+{
+    return (std::get<1>(a) > std::get<1>(b));
+}
+
+std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &FILA,
+                std::vector <int> &visited, std::vector <int> &total_layer){    // By thadeu
+    int soma = 0;
+    int vertex = -1;
+    int i = 0;
+    std::vector <int>FILA2;
+    
+    while (!FILA.empty()){
+        vertex = FILA.front();
+        FILA.pop();
+        int vgrau = graph.grau(vertex);
+        soma = soma + vgrau;
+        visited.push_back(vertex);
+
+        //////////////
+        /* int num_neighbor = graph.adjList(vertex).size();
+        int LIST2[2][num_neighbor];
+
+        for (int i = 0; i < num_neighbor; ++i){
+                LIST2[0][i] = graph.adjList(vertex)[i];
+                LIST2[1][i] = graph.grau(LIST2[0][i]);
+        }
+
+        // BUBLESORT TOSCÃO
+        //for (int i=0; i < counter - 1; ++i){
+        for (int i=0; i < num_neighbor; ++i){
+            //for (int j = 1; j < counter; ++j){
+            for (int j = 0; j < num_neighbor; ++j){
+                if (LIST2[1][i] > LIST2[1][j]){
+                    int temp1 = LIST2[0][j];
+                    LIST2[0][j] = LIST2[0][i];
+                    LIST2[0][i] = temp1;
+                    int temp2 = LIST2[1][j];
+                    LIST2[1][j] = LIST2[1][i];
+                    LIST2[1][i] = temp2;
+                }
+            }
+        }
+
+        
+        for (int i=0; i < num_neighbor; i++){
+            int v = LIST2[0][i];
+            if (!in(FILA2, v)){
+                FILA2.push_back(v);
+            }
+        } */
+
+        //////////////
+
+
+        for (auto v : graph.adjList(vertex)){
+            if (!in(FILA2, v)){
+                FILA2.push_back(v);
+            }
+        }
+    }
+    while (i < FILA2.size()){
+        vertex = FILA2[i];
+        if (!in(visited, vertex)){
+            FILA.push(vertex);
+        }
+        i++;
+    }
+ 
+    if (soma != 0){
+        total_layer.push_back(soma);
+        breadth_criterion(graph, FILA, visited, total_layer);
+    }
+    return total_layer; 
+}
+
+int Heuristic::root_selection(Graph &g){    // By thadeu
+    int max = 1;
+    int n = g.get_qty_vertex();
+    std::vector<int> vertex_list(n);
+    std::queue <int>FILA;   // contains the vertices with the highest degree (same degree)
+    std::vector <std::vector<int>> sum_layer;    // contains the sum of vertices degree of layer
+
+    for( int i = 0; i < n; ++i) vertex_list[i] = i;
+    my_quicksort(vertex_list, 0, n, g);
+
+    for (auto vertex: g.vertices_de_maior_grau()){
+        FILA.push(vertex);
+    }
+    
+    while (!FILA.empty()){
+        std::vector <int>visited;   // Visited vertices
+        std::vector <int>total_layer;   // Sum total of the layer
+        std::queue <int>FILA3;
+        FILA3.push(FILA.front());
+        FILA.pop();
+        sum_layer.push_back(breadth_criterion(g, FILA3, visited, total_layer));
+        FILA3.pop();
+    }
+    
+    for (int index=0; index < sum_layer[0].size(); index++){
+        for (int j=0; j < sum_layer.size() - 1; j++){
+            if (sum_layer[j][index] > sum_layer[j+1][index]){
+                max = index;
+            } else if (sum_layer[j+1][index] > sum_layer[j][index]){
+                max = index;
+            }
+        }
+        if (max != 0) {
+            index = sum_layer.size() + 1;
+        }
+    }
+    return vertex_list[max-1];
 }

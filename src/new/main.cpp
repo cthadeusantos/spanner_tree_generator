@@ -72,7 +72,7 @@ void usage(const char* app_name){
 	std::cout << "-h | --help\t\t\tShow this message." << std::endl;
 	std::cout << "-s | --show\t\t\tShow infos at screen. [current " << display << "]" << std::endl;
 	std::cout << "-t X| --thread\t\t\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl;
-	std::cout << "-r X| --running\t\t\tDefine how the application run. | X is 0-Sequentially | 1-Parallel Max Degree | 2-No dup. | [current " << type_running << "]" << std::endl;
+	std::cout << "-r X| --running\t\t\tDefine how the application run. | X is 0-Create trees | 1-Brute Force (sequencial) | 2-Max Degree (parallel) | 3-Induced cycle (parallel) | 4-Heuristic 1 | 5-Heuristic 2 | 10-Breadth heuristic | [current " << type_running << "]" << std::endl;
 	std::cout << std::endl;
 }
 
@@ -139,7 +139,6 @@ void parseArgs(int argc, char** argv){
 			probability = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed probability to: " << probability << '\n';
 		}
-
 		else {
 			DEBUG std::cerr << "Unknown param: " << arg << "\n";
 			exit(1);
@@ -183,10 +182,10 @@ int main(int argc, char** argv){
 		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
 		Heuristic().heuristica_1(graph);
 	} else if (type_running == 5){
-		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
-		Heuristic().heuristica_1(graph);
+		DEBUG std::cerr << "Solving with heuristic 2 - wait!\n";
+		Heuristic().heuristica_2(graph);
 	} else if (type_running == 10){
-		DEBUG std::cerr << "Solving with heuristic circular - wait!\n";
+		DEBUG std::cerr << "Solving with breadth heuristic - wait!\n";
 		Heuristic().breadth_heuristic(graph);
 	}
 
