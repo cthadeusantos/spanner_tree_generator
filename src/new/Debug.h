@@ -6,13 +6,27 @@
  * Each component has a basic debug controller. When activated, debug code will run to help the analysis of the component with prints in std::cerr.
  */
 #ifndef DEBUG_H
-#define DEBUG_H
+    #define DEBUG_H
 
-#ifndef NDEBUG
+    #ifndef NDEBUG
 
-///Debug main_BF-SEQ.cpp
-#define MN_BF_SEQ_DEBUG 1 
+        ///Debug main_BF-SEQ.cpp
+        #define MN_BF_SEQ_DEBUG 1 
 
-#endif //NDEBUG
+    #endif //NDEBUG
 
 #endif //DEBUG_H
+
+#ifdef MN_BF_SEQ_DEBUG
+    #define DEBUG
+#else
+    #define DEBUG while (false)
+#endif
+
+#ifdef WINDOWS
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+#endif

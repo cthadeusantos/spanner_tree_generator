@@ -21,10 +21,10 @@ DEBUG_FLAGS := -g
 #SRC_INCLUDE := -I ${EXTERNAL_DIR}/
 
 #--Applications--
-SEQ-OLD := app_SEQ-OLD
-app_SEQ-OLD_FILES := old/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
-PAR-OLD := app_PAR-OLD
-app_PAR-OLD_FILES := old/main_paralelo.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
+##SEQ-OLD := app_SEQ-OLD
+##app_SEQ-OLD_FILES := old/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
+##PAR-OLD := app_PAR-OLD
+##app_PAR-OLD_FILES := old/main_paralelo.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/old/code/ -name *.cpp))
 #BF-SEQ := app_BF-SEQ
 #app_BF-SEQ_FILES := new/main_BF-SEQ.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 ##ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ}

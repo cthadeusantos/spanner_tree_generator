@@ -1,14 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-#include <algorithm> 
+#include <algorithm>
+#include <bits/stdc++.h>
 
 #include "heuristic.hpp"
 #include "graph.hpp"
-#include "../ctfunctions2.hpp"
 
-#include <bits/stdc++.h>
-
+#include "../my_libs/ctfunctions2.hpp"
 
 /**
  * @brief T-admissibility heuristic circular.
@@ -531,13 +530,16 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
         for (auto v : graph.adjList(vertex)){
             if (!in(FILA2, v)){
                 FILA2.push_back(v);
+                
             }
         }
     }
+    int parent = vertex;
     while (i < FILA2.size()){
         vertex = FILA2[i];
         if (!in(visited, vertex)){
             FILA.push(vertex);
+            //tree.add_aresta(parent, vertex);
         }
         i++;
     }
@@ -550,7 +552,7 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
 }
 
 int Heuristic::root_selection(Graph &g){    // By thadeu
-    int max = 1;
+    int index = 0;
     int n = g.get_qty_vertex();
     std::vector<int> vertex_list(n);
     std::queue <int>FILA;   // contains the vertices with the highest degree (same degree)
@@ -563,27 +565,48 @@ int Heuristic::root_selection(Graph &g){    // By thadeu
         FILA.push(vertex);
     }
     
+    int min_diameter = INF_VALUE;
+    std::vector <int> nominees;
     while (!FILA.empty()){
         std::vector <int>visited;   // Visited vertices
         std::vector <int>total_layer;   // Sum total of the layer
         std::queue <int>FILA3;
-        FILA3.push(FILA.front());
+        int y = FILA.front();
+        FILA3.push(y);
         FILA.pop();
+        nominees.push_back(y);
+
+        //Graph tree(n);
+
         sum_layer.push_back(breadth_criterion(g, FILA3, visited, total_layer));
         FILA3.pop();
+
+        //int x = OpBasic().diameter(tree);
+        //diameters.push_back(x);
+        //if ( x <= min_diameter){
+        //    std::cerr << "DIAMETRO: " << x << std::endl;
+        //    min_diameter = x;
+        //}
     }
     
-    for (int index=0; index < sum_layer[0].size(); index++){
-        for (int j=0; j < sum_layer.size() - 1; j++){
-            if (sum_layer[j][index] > sum_layer[j+1][index]){
-                max = index;
-            } else if (sum_layer[j+1][index] > sum_layer[j][index]){
-                max = index;
+    
+    for (int col=0; col < sum_layer[0].size(); col++){
+        int max =0;
+        for (int row=0; row < sum_layer.size() - 1; row++){
+            //if (sum_layer[j][index] > sum_layer[j+1][index] and diameters[j*2+1] <= min_diameter){
+            if (sum_layer[row][col] > sum_layer[row+1][col] and sum_layer[row][col] > max){
+                index = row;
+                max = sum_layer[row][col];
+            //} else if (sum_layer[j+1][index] > sum_layer[j][index] and diameters[j*2+1] <= min_diameter){
+            } else if (sum_layer[row+1][col] > sum_layer[row][col] and sum_layer[row+1][col] > max){
+                index = row;
+                max = sum_layer[row+1][col];
             }
         }
         if (max != 0) {
-            index = sum_layer.size() + 1;
+            col = sum_layer[0].size() + 1;
         }
     }
-    return vertex_list[max-1];
+    //return vertex_list[max-1];
+    return nominees[index];
 }

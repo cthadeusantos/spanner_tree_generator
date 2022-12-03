@@ -8,15 +8,15 @@
 #include "stretch.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
-#ifdef MN_BF_SEQ_DEBUG
+/* #ifdef MN_BF_SEQ_DEBUG
 	#define DEBUG
 #else
 	#define DEBUG while(false)
-#endif
+#endif */
 
 #include "../Debug.h"
 #include "my_functions.hpp"
-#include "../ctfunctions2.cpp"
+#include "../my_libs/ctfunctions2.cpp"
 
 using namespace std;
 sem_t semaforo;
@@ -48,8 +48,10 @@ Faziam parte do arquivo parallel_functions.cpp
 */
 void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 {
-    sem_wait(&semaforo); // Apenas 4 threads puderam fazer este código por vez
-    int n = g.getQtdVertices();
+    // Nos meus testes, mais de 4 threads fizeram este código, comigo não aconteceu
+    // o mesmo que o pesquisador anterior 
+    sem_wait(&semaforo); // Apenas 4 threads puderam fazer este código por vez (obs. pequisador Daniel)
+    int n = g.getQtdVertices(); 
     int m = g.getQtdArestas();
 
     int prox_vizinho[n];
