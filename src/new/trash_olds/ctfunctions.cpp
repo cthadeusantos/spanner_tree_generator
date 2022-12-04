@@ -18,6 +18,12 @@ extern int min_vertices = 0;
 extern int max_vertices = 0;
 extern int num_graph = 0;
 extern float probability = 0.45; */
+bool graph_type=false;
+std::string paralel_type="m";
+int min_vertices = 0;
+int max_vertices = 0;
+int num_graph = 0;
+float probability = 0.45;
 
 int create_new_graphs(){
     DEBUG std::cerr << "Creating new graphs.\n";

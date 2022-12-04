@@ -5,6 +5,7 @@
 
 #include <tuple>
 #include <iostream>
+#include <cmath>
 
 /**
  * @details Find a stretch index from a graph.
@@ -21,7 +22,8 @@ void Stretch::find_index(Graph& g)
     int u;
     int arv = 0;
     int grt;
-    index = INF_VALUE;
+    //index = INF_VALUE;
+    index = (int)INFINITY;
 
     OpBasic op; // alteracao LF
 
@@ -89,7 +91,8 @@ void Stretch::find_index_edge(Graph& g)
     Graph tree(n);
 
     int arv = 0;
-    index = INF_VALUE;
+    //index = INF_VALUE;
+    index = (int)INFINITY;
 
     while(indice[0]/2 <= m-(n-1)){
         if( indice[j]/2 > m-(n-1-j) ){
@@ -134,7 +137,8 @@ void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
     int v = raiz;
     int u;
     // int arv = 0; // debug
-    index = INF_VALUE;
+    //index = INF_VALUE;
+    index = (int)INFINITY;
 
     Graph tree(g.getQtdVertices());
 
@@ -239,6 +243,7 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
+    if (factor < 2) factor = (int)INFINITY;
     g.set_stretch_index(factor);    // Insert by Thadeu
     g.set_best_tree(tree);          // Insert by Thadeu
     return factor;
@@ -247,7 +252,8 @@ int Stretch::find_factor(Graph& g, Graph& tree)
 void Stretch::find_index_cycle(Graph& g, int m)
 {
     std::vector<Graph> l;
-    int index_menor = INF_VALUE;
+    //int index_menor = INF_VALUE;
+    int index_menor = (int)INFINITY;
     GenGraph::all_sub(g, l, m);
 
     int count = 1;

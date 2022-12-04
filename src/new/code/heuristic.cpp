@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <bits/stdc++.h>
 
+#include "../Debug.h"
+
 #include "heuristic.hpp"
 #include "graph.hpp"
 
@@ -31,7 +33,7 @@ int Heuristic::breadth_heuristic(Graph &graph)
 
     root = root_selection(graph);
 
-    std::cerr << "Vértice raiz da árvore: " << root << std::endl;
+    DEBUG std::cerr << "Vértice raiz da árvore: " << root << std::endl;
 
     QUEUE1.push(root);
     
@@ -111,7 +113,7 @@ int Heuristic::heuristica_1(Graph& g)
     //root = root_selection(g);
     root = vertex_list[0];
 
-    std::cerr << "RAIZ ESOLHIDA: " << root << std::endl;
+    DEBUG std::cerr << "RAIZ ESOLHIDA: " << root << std::endl;
 /*     for( int v : g.adjList(vertex_list[0]) )
     {
         tree.add_aresta(vertex_list[0], v);

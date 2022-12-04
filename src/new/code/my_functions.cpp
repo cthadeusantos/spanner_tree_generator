@@ -48,8 +48,9 @@ Faziam parte do arquivo parallel_functions.cpp
 */
 void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 {
-    // Nos meus testes, mais de 4 threads fizeram este código, comigo não aconteceu
-    // o mesmo que o pesquisador anterior 
+    // Nos meus testes, mais de 4 threads fizeram este código,
+    // comigo não aconteceu o mesmo que o aconteceu com o pesquisador Daniel.
+    // As threads ficaram limitadas a quantidade de arestas entregues para processamento (natural)
     sem_wait(&semaforo); // Apenas 4 threads puderam fazer este código por vez (obs. pequisador Daniel)
     int n = g.getQtdVertices(); 
     int m = g.getQtdArestas();

@@ -13,3 +13,6 @@ void create_threads_big_cycle(Graph& g);
 int adj_id(Graph& g, int v, int adj);
 int next(int a, int limite);
 int find_factor(Graph& g, Graph& tree);
+
+void create_threads_edge_max_degree(Graph& g);
+void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const int id);

@@ -13,15 +13,14 @@
 #include <semaphore.h> // sem_t, sem_init, sem_wait, sem_post, sem_destroy
 #include <thread>  // std::thread
 #include <mutex>   // std::mutex
-
-
 #include <ctime>
 
 #include "Debug.h"
 
-#include "my_libs/ctfunctions.cpp"
+//#include "my_libs/ctfunctions.cpp"
 
 #include "my_libs/ctfunctions2.hpp"
+//#include "my_libs/externals.hpp"
 #include "code/my_functions.hpp"
 /* #include "code/sequential_functions.hpp" */
 
@@ -81,11 +80,12 @@ void usage(const char* app_name){
 	std::cout << "Define which type application will be run. [current " << type_running << "]" << std::endl;
 	std::cout << "\t-r X | --running X" << std::endl;
 	std::cout << "\t\t\t\t 0 - Create trees" << std::endl;
-	std::cout << "\t\t\t\t 1 - Brute Force (sequencial)" << std::endl;
+	std::cout << "\t\t\t\t 1 - Brute Force (sequential)" << std::endl;
 	std::cout << "\t\t\t\t 2 - Max Degree (parallel)" << std::endl;
 	std::cout << "\t\t\t\t 3 - Induced cycle (parallel)" << std::endl;
 	std::cout << "\t\t\t\t 4 - Heuristic 1" << std::endl;
 	std::cout << "\t\t\t\t 5 - Heuristic 2" << std::endl;
+	std::cout << "\t\t\t\t 6 - Brute Force (parallel) limited by threads" << std::endl;
 	std::cout << "\t\t\t\t 10- Breadth heuristic" << std::endl << std::endl;
 
 	std::cout << "If running is 0 (create tree) - parameters must be necessary" << std::endl;
@@ -186,6 +186,8 @@ int main(int argc, char** argv){
 	std::string filename = get_filename();
 	std::string run_name  = "";
 
+	std::cout << filename << std::endl;
+
 	DEBUG std::cerr << "Calculate stretch index.\n";
 	parseArgs(argc, argv); //Will setup globals
 
@@ -208,11 +210,15 @@ int main(int argc, char** argv){
 		create_new_graphs();
 	} else if (type_running == 1){
 		DEBUG std::cerr << "Solving with sequential brute force - wait!\n";
-		run_name = "Brute force";
-		create_threads(graph);
+		run_name = "Brute force - Sequential";
+		Stretch().find_index(graph);
+	} else if (type_running == 6){
+		DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
+		run_name = "Maximum degree - parallel";
+		//create_threads_edge_max_degree(graph);
 	} else if (type_running == 2){
-		DEBUG std::cerr << "Solving with Maximum degree - PARALLEL- wait!\n";
-		run_name = "Maximum degree";
+		DEBUG std::cerr << "Solving burte force with Maximum degree - PARALLEL- wait!\n";
+		run_name = "Maximum degree - parallel";
 		create_threads(graph);
 	} else if (type_running == 3){
 		DEBUG std::cerr << "Solving with induced cycle - PARALLEL- wait!\n";
@@ -220,22 +226,20 @@ int main(int argc, char** argv){
 		create_threads_big_cycle(graph);
 	} else if (type_running == 4){
 		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
-		run_name = "Heuristic 1";
+		run_name = "Heuristic 1v1";
 		Heuristic().heuristica_1(graph);
 	} else if (type_running == 5){
 		DEBUG std::cerr << "Solving with heuristic 2 - wait!\n";
-		run_name = "Heuristic 2";
+		run_name = "Heuristic 2v1";
 		Heuristic().heuristica_2(graph);
 	} else if (type_running == 10){
 		DEBUG std::cerr << "Solving with breadth heuristic - wait!\n";
 		run_name = "Breadth heuristic";
 		Heuristic().breadth_heuristic(graph);
 	}
-
 	time(&time_end);
 
 	// OUTPUT - nothing - screen - file - debug
-	
 	if ((output & 1)==1){
 		std::cout << "Outputing the solution for " << run_name << std::endl;
 		std::cout << "Input filename: " << filename << std::endl;
