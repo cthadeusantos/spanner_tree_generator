@@ -7,6 +7,7 @@
 #include<unistd.h>
 
 #include <iterator>
+#include <set>
 
 #include <cstdlib>
 #include <sys/types.h>
@@ -282,4 +283,43 @@ int create_new_graphs(){
         graphOut.close();
     }
     return 0;
+}
+
+int vertex_importance(int root,  Graph &graph){
+    std::set <int> NEIGHBORS;
+    std::queue <int> QUEUE1;
+    std::vector <int> visited;
+    
+    int vertex = root;
+    int sum = 0;
+    int level = 1;
+
+    QUEUE1.push(vertex);
+
+    while (!QUEUE1.empty()){
+
+        while (!QUEUE1.empty()){
+            vertex = QUEUE1.front();
+            QUEUE1.pop();
+            visited.push_back(vertex);
+
+            for (int neighbor : graph.adjList(vertex)){
+                if (!in(visited, neighbor)) NEIGHBORS.insert(neighbor);
+            }
+
+        }
+
+        std::set<int>:: iterator it;
+        for( it = NEIGHBORS.begin(); it!=NEIGHBORS.end(); ++it){
+            int value = *it;
+            if (!in(visited, value)){
+                QUEUE1.push(value);
+                sum = sum + level; 
+            } 
+            
+        }
+        NEIGHBORS.clear();
+        level++;
+    }
+    return sum;
 }

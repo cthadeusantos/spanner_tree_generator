@@ -30,7 +30,8 @@ public:
     static bool sortby2nd_asc(const std::tuple<int, int> &a, 
                 const std::tuple<int, int> &b); // By Thadeu
 
-    static int root_selection(Graph &g); // By Thadeu
+    static int root_selection(Graph &g); // By Thadeu   
+    static int root_selection2(Graph &g); //By thadeu
 };
 
 #endif

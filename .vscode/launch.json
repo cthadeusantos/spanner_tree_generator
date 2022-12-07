@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_MAIN",
-            "args": [ "<", "${workspaceFolder}/instances/grafos/grafo_10.txt", ">", "${workspaceFolder}/workspace/debug.out", "-r", "2", "-t", "4", "--debug", "--summary" ],
+            "args": [ "<", "${workspaceFolder}/instances/grafos/grafo_18.txt", ">", "${workspaceFolder}/workspace/debug.out", "-r", "10", "-t", "4", "--debug", "--summary" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

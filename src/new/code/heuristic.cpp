@@ -14,7 +14,11 @@
 /**
  * @brief T-admissibility heuristic circular.
  * @details The breadth heuristic
- * That heuristic create a tree from a highest degree vertex, than insert your neighbors, after insert the neighbors of neighbors
+ * That heuristic create a tree:
+ * 1. From a highest degree vertex, than insert all your neighbors
+ * 2. Sort this neighbors inserted from the highest degree to lowest degree
+ * 3. Next insert the neighbors of neighbors
+ * 4. Repeat 2 until there isn't vertices 
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
@@ -31,7 +35,8 @@ int Heuristic::breadth_heuristic(Graph &graph)
     std::queue<int> QUEUE1;
     int LIST2[2][n];
 
-    root = root_selection(graph);
+    //root = root_selection(graph);
+    root = root_selection2(graph);
 
     DEBUG std::cerr << "Vértice raiz da árvore: " << root << std::endl;
 
@@ -110,8 +115,14 @@ int Heuristic::heuristica_1(Graph& g)
 
     Graph tree(n);
 
-    //root = root_selection(g);
+    
     root = vertex_list[0];
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /// PARA TESTAR O CRITER|IO DE ESCOLHA - REMOVER - E COLOCAR NA OPCAO DA HEURISTICA
+    /// COM ESTE CRITERIO
+    root = root_selection2(g);
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     DEBUG std::cerr << "RAIZ ESOLHIDA: " << root << std::endl;
 /*     for( int v : g.adjList(vertex_list[0]) )
@@ -553,6 +564,22 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
     return total_layer; 
 }
 
+
+int Heuristic::root_selection2(Graph &g){    // By thadeu
+    //std::queue <int>FILA;   // contains the vertices with the highest degree (same degree)
+
+    int importance = 0;
+    int choice = -1;
+    for (auto vertex: g.vertices_de_maior_grau()){
+        int value = vertex_importance( vertex, g );
+        if (value > importance) {
+            importance = value;
+            choice = vertex;
+        }
+    }
+    return choice;
+}
+
 int Heuristic::root_selection(Graph &g){    // By thadeu
     int index = 0;
     int n = g.get_qty_vertex();
@@ -569,6 +596,7 @@ int Heuristic::root_selection(Graph &g){    // By thadeu
     
     int min_diameter = INF_VALUE;
     std::vector <int> nominees;
+
     while (!FILA.empty()){
         std::vector <int>visited;   // Visited vertices
         std::vector <int>total_layer;   // Sum total of the layer
@@ -579,6 +607,7 @@ int Heuristic::root_selection(Graph &g){    // By thadeu
         nominees.push_back(y);
 
         //Graph tree(n);
+
 
         sum_layer.push_back(breadth_criterion(g, FILA3, visited, total_layer));
         FILA3.pop();

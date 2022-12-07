@@ -1,4 +1,4 @@
-- [1. Links importante e trabalhos feitos](#1-links-importante-e-trabalhos-feitos)
+- [1. Important links and work performed](#1-important-links-and-work-performed)
 - [2. Project Architecture](#2-project-architecture)
   - [2.1. Pre-requisites](#21-pre-requisites)
   - [2.2. External Dependencies](#22-external-dependencies)
@@ -13,10 +13,10 @@ This project is a collection of solutions for the T-admissibility problem. The b
 
 * Versão: 0.0 (12/08/2022)
 
-## 1. Links importante e trabalhos feitos
+## 1. Important links and work performed
 
 * Link to [this repository](https://github.com/cthadeusantos/spanner_tree_generator). 
-* Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1).
+* Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1). (portuguese)
     * Every task is represented by a card (issue). Any issue tagged as `EPIC` detail the current main goal of the project.
 * Past published work:
   * [Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
