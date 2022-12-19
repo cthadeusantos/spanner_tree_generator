@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include<unistd.h>
+#include <math.h>
 
 #include <iterator>
 #include <set>
@@ -23,6 +24,7 @@
 
 #include "ctfunctions2.hpp"
 //#include "externals.hpp"
+
 
 bool graph_type=false;
 std::string paralel_type="m";
@@ -51,7 +53,7 @@ float probability = 0.45;
  * @param *a an integers that represents a value.
  * @param *b an integers that represents a value.
  */
-void swap(int *a, int *b) {
+void swap0(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
@@ -69,14 +71,20 @@ void bubbleSort(int **array, int n) {
         // Last i elements are already in place
         for (j = 0; j < n - i - 1; j++) {
             if (array[1][j] < array[1][j + 1]) {
-                swap(&array[0][j], &array[0][j + 1]);
-                swap(&array[1][j], &array[1][j + 1]);
+                swap0(&array[0][j], &array[0][j + 1]);
+                swap0(&array[1][j], &array[1][j + 1]);
             }
         }
             
                 
 }
 
+/**
+ * @details Is the value belongs the vector?
+ * @param vector1 a vector that contains integers
+ * @param value a seek value
+ * @return a boolean
+ */
 bool in(std::vector <int> &vector1, const int &value) {
     bool result = false;
     for(auto vertex : vector1) {
@@ -285,41 +293,58 @@ int create_new_graphs(){
     return 0;
 }
 
-int vertex_importance(int root,  Graph &graph){
-    std::set <int> NEIGHBORS;
-    std::queue <int> QUEUE1;
-    std::vector <int> visited;
-    
-    int vertex = root;
-    int sum = 0;
-    int level = 1;
 
-    QUEUE1.push(vertex);
-
-    while (!QUEUE1.empty()){
-
-        while (!QUEUE1.empty()){
-            vertex = QUEUE1.front();
-            QUEUE1.pop();
-            visited.push_back(vertex);
-
-            for (int neighbor : graph.adjList(vertex)){
-                if (!in(visited, neighbor)) NEIGHBORS.insert(neighbor);
-            }
-
-        }
-
-        std::set<int>:: iterator it;
-        for( it = NEIGHBORS.begin(); it!=NEIGHBORS.end(); ++it){
-            int value = *it;
-            if (!in(visited, value)){
-                QUEUE1.push(value);
-                sum = sum + level; 
-            } 
-            
-        }
-        NEIGHBORS.clear();
-        level++;
+// https://github.com/sprsgupta/Articulation_points_in_graph/blob/master/Connected%20graphs
+std::tuple<std::set<int>, std::vector<std::pair<int,int>> > seek_articulations(Graph &graph){
+    int n = graph.get_qty_vertex();
+    int tme=1; //initialize time with 0
+    std::vector <int> disc, low; //these are the discovery and lowest time of a particular node
+    for (int i=0; i < n; i++){
+        disc.push_back(0);
+        low.push_back(0);
     }
-    return sum;
+    std::set<int> articu_p; 
+    std::vector<std::pair<int,int>> bridge;//it represents the edges which acts as bridge
+    special_dfs(0, -1, tme, disc, low, articu_p, bridge, graph);
+
+    return std::make_tuple(articu_p, bridge);
 }
+
+void special_dfs(int cur,int par, int &tme, std::vector <int> &disc, std::vector <int> &low,
+std::set<int> &articu_p, std::vector<std::pair<int,int>> &bridge, Graph &graph){
+    int child_count=0;
+    disc[cur]=low[cur]=tme++;//increase the time for next call 
+    //for(auto child : adj[cur]){
+    for(auto child : graph.adjList(cur)){
+     //if child is not visited yet
+            
+        if(disc[child]==0){
+            //inititate a dfs call
+            special_dfs(child, cur, tme, disc, low, articu_p, bridge, graph);
+                //increase the child count corr to curr node
+            child_count+=1;
+                //update lowest time values
+            low[cur]=std::min(low[cur],low[child]);
+                //condition to be fulfilled for articulation point
+                // take root otherwise
+            if(cur !=0 && low[child]>=disc[cur]){
+                articu_p.insert(cur);
+            }
+                //condition to be fulfilled for bridges
+            if(low[child]>disc[cur]){
+                bridge.push_back({child,cur});
+            }
+                
+        }
+            // now check for backedge
+        else if(child !=par){
+            low[cur]=std::min(low[cur],disc[child]);
+        }
+    }
+        // now acccount for root node
+    if(cur==0 && child_count>=2){
+        articu_p.insert(cur);
+    }
+
+}
+

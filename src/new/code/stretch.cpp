@@ -243,7 +243,7 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
-    if (factor < 2) factor = (int)INFINITY;
+    if (factor < 2) factor = (int)INFINITY; // by Thadeu
     g.set_stretch_index(factor);    // Insert by Thadeu
     g.set_best_tree(tree);          // Insert by Thadeu
     return factor;

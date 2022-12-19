@@ -15,7 +15,8 @@
 #endif */
 
 #include "../Debug.h"
-#include "my_functions.hpp"
+#include "parallel.hpp"
+#include "centrality.hpp"
 #include "../my_libs/ctfunctions2.cpp"
 
 using namespace std;
@@ -31,8 +32,6 @@ void sequential(Graph& graph){
 	Stretch acme; // Lonney Tunes rocks!
 	acme.find_index(graph);
 }
-
-
 /*************************************************************************************************
 Faziam parte do arquivo parallel_functions.cpp
 **************************************************************************************************/
@@ -132,7 +131,6 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
 
-//! Calculate stretch index - cycle
 /*!
     Calculate a stretch index using an induced cycle's edge
     \param g a graph instance that represents the graph
@@ -234,37 +232,85 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
 
-int find_factor(Graph& g, Graph& tree)
+void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const int id)
 {
-    std::vector<int> list = OpBasic::diference_edge(g, tree);
-    std::vector<int>::iterator it;
-    int factor = 1;
+    sem_wait(&semaforo);
 
-    it = list.begin();
-    while(it != list.end()){
-        int v = *it;
-        int u = *(it+1);
-        int d = OpBasic::distance(tree, v, u);
-        if(factor < d){
-            factor = d;
-        }
-        it = it + 2;
+    int n = g.getQtdVertices();
+    int m = g.getQtdArestas();
+    // std::vector<int> edges = OpBasic::edges(g);
+    int indice[n-1];
+    int j = 0;
+    indice[j] = start;
+    
+    Graph tree(n);
+    Graph tree_local;
+    int arv = 0;
+    int index_local = INF_VALUE;
+
+    Graph gTeste(n);
+
+    OpBasic op;
+    int grt = op.maxLowerCicle(g);
+
+    for(int i = start; i < edges.size(); i += 2)
+    {
+        gTeste.add_aresta(edges[i], edges[i+1]);
     }
-
-    return factor;
-}
-
-int vertice_maior_grau(Graph& g)
-{
-    int raiz = -1;
-    int maior_grau = -1;
-    for(int i=0; i < g.getQtdVertices(); ++i){
-        if(g.grau(i) > maior_grau){
-            raiz = i;
-            maior_grau = g.grau(i);
+    if( OpBasic::is_connected(gTeste) ){
+        if(g.get_stretch_index() > grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
+            while(indice[0] < start+2){
+                if( indice[j]/2 > m-(n-1-j) ){
+                    --j;
+                    tree.remove_aresta(edges[indice[j]],edges[indice[j]+1]);
+                    indice[j] += 2;
+                }
+                else {
+                    tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
+                    if( !OpBasic::is_cyclic(tree) ){
+                        if(j == n-2){ // achou uma arvore geradora
+                            int f = find_factor(g, tree);
+                            ++arv;
+                            if(f < index_local){
+                                index_local = f;
+                                tree_local = tree;
+                                if (index_local == grt-1) {
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            int next = j+1;
+                            indice[next] = indice[j] + 2;
+                            j = next;
+                            continue; // Simula uma chamada recursiva
+                        }
+                    }
+                    tree.remove_aresta(edges[indice[j]], edges[indice[j]+1]);
+                    indice[j] += 2;
+                }
+            }
         }
     }
-    return raiz;
+    
+    mtx.lock();
+    if( arv == 0){
+        std::cout << "thread " << id << " nao criou arvores.\n";
+    }
+    else {
+        std::cout << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+    }
+    //total_arv += arv;
+    if( index_local < g.get_stretch_index()){
+        //index_global = index_local;
+        //tree_global = tree_local;
+        total_arv += arv;   // by thadeu
+        g.set_stretch_index(index_local); // by thadeu
+        g.set_best_tree(tree_local); // by thadeu
+    }
+    mtx.unlock();
+
+    sem_post(&semaforo);
 }
 
 void create_threads(Graph& g)
@@ -295,6 +341,24 @@ void create_threads(Graph& g)
 
     for(int i=0; i < qtd; ++i){
         vetor_th[i].join();
+    }
+}
+
+void create_threads_edge_max_degree(Graph& g)
+{
+    int qtd_th = g.maior_grau();
+    //int qtd_th = num_thread;
+
+    std::vector< std::thread> vetor_th(qtd_th);
+
+    std::vector<int> edges = OpBasic::edges_by_bigger_degree(g);
+    
+    for(int i=0; i < qtd_th; ++i){
+        vetor_th[i] = std::thread(find_index_pararell_edge, std::ref(g), edges, i*2, i); // separação dos threats
+    }
+
+    for(int i=0; i < qtd_th; ++i){
+        vetor_th[i].join(); // junção das threads
     }
 }
 
@@ -360,6 +424,73 @@ void create_threads_big_cycle(Graph& g) {
     
 }
 
+void create_threads_articulations(Graph& g) {
+    int qty = -1;
+    int root = -1;
+    int neighbor = -1;
+    std::vector<int> edges_list = {};
+    std::vector<int> neighbors;
+    //int pos = -1;
+
+    // Calcula atributo grt
+    // por enquanto fica aqui, no futuro retirar 
+    // pois o método create_thread nao é para calcular nada do grafo
+    //OpBasic op; // by thadeu
+    g.grt = OpBasic::maxLowerCicle(g); // by thadeu
+    // fim calcula grt
+    std::set<int> articulations; 
+    std::vector<std::pair<int,int>> bridges;
+    std::tie(articulations, bridges) = seek_articulations(g);
+    auto vertex_importance = Centrality::closeness_centrality_list(articulations, g);
+
+    int n = g.get_qty_vertex();
+    root = vertice_maior_grau(g);
+    int max_degree = g.grau(root);
+    int cycle_size;
+ 
+    std::vector<int> big_cycle;
+    // find the largest induced cycle
+    
+    for (int i = n; i > 2; i--){
+        DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
+        big_cycle = OpBasic::cycle(g, i);
+        cycle_size = big_cycle.size();
+        if (cycle_size != 0){
+            DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
+            break;
+        }
+    }
+    qty = cycle_size;
+    neighbors = big_cycle;
+           
+    std::thread vetor_th[qty];
+    // build edge list to be deleted from original graph inside find_index_induced_cycle
+    // Thread 1 remove 1st edge (inside find_index_induced_cycle)
+    // Thread 2 remove 1st and 2nd edges (inside find_index_induced_cycle)
+    // Thread 3 remove 1st, 2nd and 3rd edges (inside find_index_induced_cycle)
+    // and go on deleting edges (inside find_index_induced_cycle)
+    for(int i = 0; i < qty; ++i){
+        root = neighbors[i];
+        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
+        edges_list.push_back(root);
+        edges_list.push_back(neighbor);
+    }
+
+    for(int i = 0; i < qty; ++i){
+        root = neighbors[i];
+        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
+        // Here send edges' list to be deleted
+        // Delete the edges ensures that there are no duplicate trees
+        vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
+    }
+
+    for(int i = 0; i < qty; ++i){
+        vetor_th[i].join();
+    }
+    
+}
+
+
 //! Get index from adjacent vertex
 /*!
     \param g a graph instance that represents the graph
@@ -379,9 +510,41 @@ int adj_id(Graph& g, int v, int adj)
     return index;
 }
 
-
 int next(int a, int limite)
 {
     ++a;
     return a == limite ? 0 : a;
+}
+
+int find_factor(Graph& g, Graph& tree)
+{
+    std::vector<int> list = OpBasic::diference_edge(g, tree);
+    std::vector<int>::iterator it;
+    int factor = 1;
+
+    it = list.begin();
+    while(it != list.end()){
+        int v = *it;
+        int u = *(it+1);
+        int d = OpBasic::distance(tree, v, u);
+        if(factor < d){
+            factor = d;
+        }
+        it = it + 2;
+    }
+
+    return factor;
+}
+
+int vertice_maior_grau(Graph& g)
+{
+    int raiz = -1;
+    int maior_grau = -1;
+    for(int i=0; i < g.getQtdVertices(); ++i){
+        if(g.grau(i) > maior_grau){
+            raiz = i;
+            maior_grau = g.grau(i);
+        }
+    }
+    return raiz;
 }
