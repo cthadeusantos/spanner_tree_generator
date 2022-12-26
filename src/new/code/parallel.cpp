@@ -17,7 +17,7 @@
 #include "../Debug.h"
 #include "parallel.hpp"
 #include "centrality.hpp"
-#include "../my_libs/ctfunctions2.cpp"
+//#include "../my_libs/ctfunctions2.cpp"
 
 using namespace std;
 sem_t semaforo;
@@ -28,10 +28,10 @@ std::mutex mtx;
 /*************************************************************************************************
 Faziam parte do arquivo sequential_functions.cpp
 **************************************************************************************************/
-void sequential(Graph& graph){
-	Stretch acme; // Lonney Tunes rocks!
-	acme.find_index(graph);
-}
+//void sequential(Graph& graph){
+//	Stretch acme; // Lonney Tunes rocks!
+//	acme.find_index(graph);
+//}
 /*************************************************************************************************
 Faziam parte do arquivo parallel_functions.cpp
 **************************************************************************************************/
@@ -424,12 +424,21 @@ void create_threads_big_cycle(Graph& g) {
     
 }
 
+/**
+ * Stretch index from articulations
+ * @details Calculate the stretch index from articulations (if exists)
+ * This procedure will seek from articulations points then split the graph from
+ * this articulations and calculate the stretch index
+ * 
+ * @author Carlos Thadeu
+ * @param g a graph that represents the graph
+ */
 void create_threads_articulations(Graph& g) {
     int qty = -1;
     int root = -1;
     int neighbor = -1;
     std::vector<int> edges_list = {};
-    std::vector<int> neighbors;
+    
     //int pos = -1;
 
     // Calcula atributo grt
@@ -443,51 +452,16 @@ void create_threads_articulations(Graph& g) {
     std::tie(articulations, bridges) = seek_articulations(g);
     auto vertex_importance = Centrality::closeness_centrality_list(articulations, g);
 
+    root = Centrality::root_selection2(vertex_importance);
+    
+    // Building subgraphs
+    std::vector<std::vector<int>> subgraph;
+    //g.delete_vertex(root);
+    g.split_in_subgraphs(articulations, subgraph, g);
+
+    
     int n = g.get_qty_vertex();
-    root = vertice_maior_grau(g);
-    int max_degree = g.grau(root);
-    int cycle_size;
- 
-    std::vector<int> big_cycle;
-    // find the largest induced cycle
-    
-    for (int i = n; i > 2; i--){
-        DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
-        big_cycle = OpBasic::cycle(g, i);
-        cycle_size = big_cycle.size();
-        if (cycle_size != 0){
-            DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
-            break;
-        }
-    }
-    qty = cycle_size;
-    neighbors = big_cycle;
-           
-    std::thread vetor_th[qty];
-    // build edge list to be deleted from original graph inside find_index_induced_cycle
-    // Thread 1 remove 1st edge (inside find_index_induced_cycle)
-    // Thread 2 remove 1st and 2nd edges (inside find_index_induced_cycle)
-    // Thread 3 remove 1st, 2nd and 3rd edges (inside find_index_induced_cycle)
-    // and go on deleting edges (inside find_index_induced_cycle)
-    for(int i = 0; i < qty; ++i){
-        root = neighbors[i];
-        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
-        edges_list.push_back(root);
-        edges_list.push_back(neighbor);
-    }
 
-    for(int i = 0; i < qty; ++i){
-        root = neighbors[i];
-        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
-        // Here send edges' list to be deleted
-        // Delete the edges ensures that there are no duplicate trees
-        vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
-    }
-
-    for(int i = 0; i < qty; ++i){
-        vetor_th[i].join();
-    }
-    
 }
 
 

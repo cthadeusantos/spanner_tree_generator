@@ -1,5 +1,6 @@
-#ifndef STRECH_HPP_
-#define STRECH_HPP_
+#ifndef STRETCH_HPP
+    #define STRETCH_HPP
+
 
 #include "graph.hpp"
 #include <thread>
@@ -7,42 +8,45 @@
 
 class Stretch
 {
-private:
-    int index;
-    Graph tree;
-    //std::mutex mtx;
-    int total_arv;
-    
-    void find_index_pararell(Graph& g, int raiz, int start, int end); 
+    private:
+        int index;
+        Graph tree;
+        //std::mutex mtx;
+        int total_arv;
+        
+        void find_index_pararell(Graph& g, int raiz, int start, int end); 
 
-   // static tambem não funcionou... // static void find_index_pararell(Graph& g, int raiz, int start, int end);
+    // static tambem não funcionou... // static void find_index_pararell(Graph& g, int raiz, int start, int end);
 
-    // calculo do limite inferior para o index
-    int lowerBound(Graph& g);
+        // calculo do limite inferior para o index
+        int lowerBound(Graph& g);
 
-public:
-    Stretch() { index = -1; tree = Graph(); total_arv=0; }
-    ~Stretch() { }
+    public:
+        Stretch() { index = -1; tree = Graph(); total_arv=0; }
+        ~Stretch() { }
 
-    void find_index(Graph& g);
-    void find_index_thread(Graph& g);
+        void sequential(Graph& g);
 
-    int find_factor(Graph& g, Graph& tree);
+        void find_index(Graph& g);
+        void find_index_thread(Graph& g);
 
-    int getIndex(){ return index; }
-    Graph getTree(){ return tree; }
-    int getTotalTree(){ return total_arv; }
+        int find_factor(Graph& g, Graph& tree);
 
-    
-    void find_index_edge(Graph& g);
+        int getIndex(){ return index; }
+        Graph getTree(){ return tree; }
+        int getTotalTree(){ return total_arv; }
 
-    void find_index_cycle(Graph& g, int m);
+        void find_index_edge(Graph& g);
 
+        void find_index_cycle(Graph& g, int m);
 
-    // Não teu certo... // friend void find_index_pararell(Strech* s, Graph& g, int raiz, int start, int end);
+        // Não teu certo... // friend void find_index_pararell(Strech* s, Graph& g, int raiz, int start, int end); DJ
 
-    void setIndex(int val) { index = val; } // Precisei criar por força maior...
-    void setTree(Graph t) { tree = t; } // Precisei criar por força maior...
+        // Provavelmente esses dois metodos ficaram desnecessários
+        // depois que criei os atributos bestindex e besttree em Graph
+        // Mantidos até ter certeza que não são necessários CT
+        void setIndex(int val) { index = val; } // Precisei criar por força maior... DJ
+        void setTree(Graph t) { tree = t; } // Precisei criar por força maior... DJ
 };
 
 #endif

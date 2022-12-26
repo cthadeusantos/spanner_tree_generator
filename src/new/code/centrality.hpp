@@ -20,6 +20,7 @@ class Centrality
     public:
         static int root_selection(Graph &g); // By Thadeu   
         static int root_selection2(Graph &g); //By thadeu
+        static int root_selection2(std::vector<std::pair<int,float>>);
         static void insertionSort(int arr[], int n); // By Thadeu
         static void my_insertionSort(std::vector <int> &degree, std::vector <float> &closeness, Graph &g ); // By Thadeu
         static void my_insertionSort(std::vector <int> &vector1, std::vector <int> &vector2, char order); // by Thadeu

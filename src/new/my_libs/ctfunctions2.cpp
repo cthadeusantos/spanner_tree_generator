@@ -85,9 +85,9 @@ void bubbleSort(int **array, int n) {
  * @param value a seek value
  * @return a boolean
  */
-bool in(std::vector <int> &vector1, const int &value) {
+bool in(std::vector <int> &vector, const int &value) {
     bool result = false;
-    for(auto vertex : vector1) {
+    for(auto vertex : vector) {
         if (vertex == value) {
             result = true;
             break;
@@ -96,10 +96,69 @@ bool in(std::vector <int> &vector1, const int &value) {
     return result;
 }
 
-/*
-https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
-Solution 1.3
-*/
+/**
+ * @details Is the value belongs the set?
+ * @param set1 a set that contains integers
+ * @param value a seek value
+ * @return a boolean
+ */
+bool in(std::set <int> &set, const int &value) {
+    bool result = false;
+    for(auto vertex : set) {
+        if (vertex == value) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
+/**
+ * @details Return an index from an element at vector if that element exists
+ * Return NULL if element not belongs a vector
+ * @param vector1 a vector that contains integers
+ * @param value a seek element
+ * @return an integer
+ */
+int in(const int &value, std::vector <int> &vector) {
+    std::vector<int>::iterator itr = std::find(vector.begin(), vector.end(), value);
+    int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
+    if (itr != vector.cend()) {
+        result = std::distance(vector.begin(), itr);
+    }
+    return result;
+}
+
+/**
+ * @details Return an index from an element at set if that element exists
+ * Return NULL if element not belongs a set
+ * @param set a set that contains integers
+ * @param value a seek element
+ * @return an integer
+ */
+int in(const int &value, std::set <int> &set) {
+    std::set<int>::iterator itr = std::find(set.begin(), set.end(), value);
+    int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
+    if (itr != set.cend()) {
+        result = std::distance(set.begin(), itr);
+    }
+    return result;
+}
+
+
+/**
+ * Split a string
+ * @details Split a string
+ * The delimiter is not optional because there isn't implemented default, you must select one.
+ * 
+ * Reference:
+ * https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+ * Solution 1.3
+ * @author Carlos Thadeu
+ * @param s a string
+ * @param delimiter a char that represents a delimiter of a string
+ * @return a string that represents the name of file
+ */
 std::vector<std::string> split(const std::string& s, char delimiter) {
    std::vector<std::string> tokens;
    std::string token;
@@ -110,10 +169,13 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
    return tokens;
 }
 
-/*
-Reference:
-https://stackoverflow.com/questions/62697081/get-the-name-of-an-input-file-passed-in-by-redirection
-*/
+/**
+ * Get the filename passed in by redirection
+ * @details Get the filename passed in by redirection
+ * Reference: https://stackoverflow.com/questions/62697081/get-the-name-of-an-input-file-passed-in-by-redirection
+ * @author Carlos Thadeu
+ * @return a string that represents the name of file
+ */
 std::string get_filename() {
 	// To get filename redirections
 	char buf[512], file[512] = {0};
@@ -136,6 +198,85 @@ std::string get_filename() {
 	std::vector<std::string> texto = split(text, '/');
 	return texto[texto.size()-1];
 }
+
+/**
+ * Seek for articulations and bridges at a graph
+ * @details Locate if a graph contains articulations and bridges
+ * @author Carlos Thadeu
+ * @param graph a graph that represents the graph
+ * @return a tuple that contains a set and a vector of pairs.
+ */
+std::tuple<std::set<int>, std::vector<std::pair<int,int>>> seek_articulations(Graph &graph){
+    int n = graph.get_qty_vertex();
+    int tme=1; //initialize time with 0
+    std::vector <int> disc, low; //these are the discovery and lowest time of a particular node
+    for (int i=0; i < n; i++){
+        disc.push_back(0);
+        low.push_back(0);
+    }
+    std::set<int> articu_p; 
+    std::vector<std::pair<int,int>> bridge;//it represents the edges which acts as bridge
+    special_dfs(0, -1, tme, disc, low, articu_p, bridge, graph);
+
+    return std::make_tuple(articu_p, bridge);
+}
+
+
+/**
+ * DFS to locate articulations and bridges
+ * @details That's a DFS that seek and found if exists articulations and bridges at graph.
+ * How the articulations and bridges are seek at same time, they are stored at two special parameters,
+ * articu_p and bridge.
+ * Adapter from https://github.com/sprsgupta/Articulation_points_in_graph/blob/master/Connected%20graphs
+ * @author Carlos Thadeu
+ * @param cur an integer that represents the current vertex
+ * @param par an integer that represents the previous vertex 
+ * @param tme an integer that represents the interation ("time")
+ * @param disc a vector that are the discovery and lowest time of a particular node
+ * @param low a vector that
+ * @param articu_p a set that contains the articulations found 
+ * @param bridge a vector of pair that contains the bridges found
+ * @param graph a graph that represents the graph
+ */
+
+void special_dfs(int cur,int par, int &tme, std::vector <int> &disc, std::vector <int> &low,
+std::set<int> &articu_p, std::vector<std::pair<int,int>> &bridge, Graph &graph){
+    int child_count=0;
+    disc[cur]=low[cur]=tme++;//increase the time for next call 
+    //for(auto child : adj[cur]){
+    for(auto child : graph.adjList(cur)){
+     //if child is not visited yet
+            
+        if(disc[child]==0){
+            //inititate a dfs call
+            special_dfs(child, cur, tme, disc, low, articu_p, bridge, graph);
+                //increase the child count corr to curr node
+            child_count+=1;
+                //update lowest time values
+            low[cur]=std::min(low[cur],low[child]);
+                //condition to be fulfilled for articulation point
+                // take root otherwise
+            if(cur !=0 && low[child]>=disc[cur]){
+                articu_p.insert(cur);
+            }
+                //condition to be fulfilled for bridges
+            if(low[child]>disc[cur]){
+                bridge.push_back({child,cur});
+            }
+                
+        }
+            // now check for backedge
+        else if(child !=par){
+            low[cur]=std::min(low[cur],disc[child]);
+        }
+    }
+        // now acccount for root node
+    if(cur==0 && child_count>=2){
+        articu_p.insert(cur);
+    }
+
+}
+
 
 /*
  * Funcoes que fazem a leitura/apoio do arquivo em redirections
@@ -291,60 +432,5 @@ int create_new_graphs(){
         graphOut.close();
     }
     return 0;
-}
-
-
-// https://github.com/sprsgupta/Articulation_points_in_graph/blob/master/Connected%20graphs
-std::tuple<std::set<int>, std::vector<std::pair<int,int>> > seek_articulations(Graph &graph){
-    int n = graph.get_qty_vertex();
-    int tme=1; //initialize time with 0
-    std::vector <int> disc, low; //these are the discovery and lowest time of a particular node
-    for (int i=0; i < n; i++){
-        disc.push_back(0);
-        low.push_back(0);
-    }
-    std::set<int> articu_p; 
-    std::vector<std::pair<int,int>> bridge;//it represents the edges which acts as bridge
-    special_dfs(0, -1, tme, disc, low, articu_p, bridge, graph);
-
-    return std::make_tuple(articu_p, bridge);
-}
-
-void special_dfs(int cur,int par, int &tme, std::vector <int> &disc, std::vector <int> &low,
-std::set<int> &articu_p, std::vector<std::pair<int,int>> &bridge, Graph &graph){
-    int child_count=0;
-    disc[cur]=low[cur]=tme++;//increase the time for next call 
-    //for(auto child : adj[cur]){
-    for(auto child : graph.adjList(cur)){
-     //if child is not visited yet
-            
-        if(disc[child]==0){
-            //inititate a dfs call
-            special_dfs(child, cur, tme, disc, low, articu_p, bridge, graph);
-                //increase the child count corr to curr node
-            child_count+=1;
-                //update lowest time values
-            low[cur]=std::min(low[cur],low[child]);
-                //condition to be fulfilled for articulation point
-                // take root otherwise
-            if(cur !=0 && low[child]>=disc[cur]){
-                articu_p.insert(cur);
-            }
-                //condition to be fulfilled for bridges
-            if(low[child]>disc[cur]){
-                bridge.push_back({child,cur});
-            }
-                
-        }
-            // now check for backedge
-        else if(child !=par){
-            low[cur]=std::min(low[cur],disc[child]);
-        }
-    }
-        // now acccount for root node
-    if(cur==0 && child_count>=2){
-        articu_p.insert(cur);
-    }
-
 }
 

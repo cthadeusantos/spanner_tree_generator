@@ -7,6 +7,15 @@
 #include <iostream>
 #include <cmath>
 
+
+/*************************************************************************************************
+Faziam parte do arquivo sequential_functions.cpp
+**************************************************************************************************/
+void Stretch::sequential(Graph& graph){
+	//Stretch acme; // Lonney Tunes rocks!
+	find_index(graph);
+}
+
 /**
  * @details Find a stretch index from a graph.
  * Returns a integer that represents a stretch index.

@@ -16,6 +16,30 @@ int Centrality::root_selection2(Graph &g){    // By thadeu
     return choice;
 }
 
+/**
+ * Select a vertex to be root
+ * @details Select a vertex to be root using closeness centrality 
+ * @author Carlos Thadeu
+ * @param vector1 a vector of pair <int, float> that represents a vertex and your centrality
+ * @param selected an integer that represents the vertex with max centrality 
+ */
+int Centrality::root_selection2(std::vector<std::pair<int,float>> vector1){    // By thadeu
+
+    float max = 0;
+    float centrality=0;
+    int vertex = 0;
+    int selected = 0;
+
+    for (int i=0; i < vector1.size(); i++){
+        std::tie(vertex, centrality) = vector1[i];
+        if (centrality > max) {
+            max = centrality;
+            selected = vertex;
+        }
+    }
+    return selected;
+}
+
 int Centrality::root_selection(Graph &g){    // By thadeu
     int index = 0;
     int n = g.get_qty_vertex();

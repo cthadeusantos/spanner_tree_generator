@@ -24,12 +24,14 @@
 #include "code/parallel.hpp"
 /* #include "code/sequential_functions.hpp" */
 
+
 #include "code/frontier.hpp"
 #include "code/genGraph.hpp"
 #include "code/graph.hpp"
 #include "code/heuristic.hpp"
 #include "code/opBasic.hpp"
 #include "code/stretch.hpp"
+
 
 ///Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
@@ -65,7 +67,7 @@ bool best = false;
  * @param app_name The name of the application as called in the command line.
  */
 void usage(const char* app_name){
-	std::cout << "Usage: " << app_name << " <option(s)> " << std::endl;
+	std::cout << "Usage: " << app_name << " <option(s)> " << "< INPUT_FILENAME >>> OUTPUT_FILENAME" << std::endl;
 	std::cout << "Options: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
@@ -216,7 +218,7 @@ int main(int argc, char** argv){
 	} else if (type_running == 1){
 		DEBUG std::cerr << "Solving with sequential brute force - wait!\n";
 		run_name = "Brute force - Sequential";
-		Stretch().find_index(graph);
+		Stretch().sequential(graph);
 	} else if (type_running == 2){
 		DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
 		run_name = "Maximum degree - parallel";

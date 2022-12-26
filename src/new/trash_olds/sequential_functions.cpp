@@ -14,9 +14,9 @@
 #endif
 
 #include "../Debug.h"
-#include "sequential_functions.hpp"
+/* #include "sequential_functions.hpp"
 
 void sequential(Graph& graph){
 	Stretch acme; // Lonney Tunes rocks!
 	acme.find_index(graph);
-}
+} */

@@ -2,7 +2,11 @@
 #include "opBasic.hpp"
 #include <iostream>
 #include <tuple>
+#include <bits/stdc++.h>
+#include <iterator>
 
+#include "../Debug.h"
+#include "../my_libs/ctfunctions2.cpp"
 
 //! Constructor
 /*!
@@ -89,6 +93,24 @@ void Graph::add_aresta(std::vector<int> arestas)
     for (std::vector<int>::iterator it = arestas.begin(); it != arestas.end(); it += 2)
     {
         add_aresta(*it, *(it + 1));
+    }
+}
+
+/**
+ * Delete a vertex from graph
+ * @details Delete a vertex from graph and your edges
+ * @author Carlos Thadeu
+ * @param vertex an integer that represents the vertex to be deleted
+ */
+void Graph::delete_vertex(int vertex){
+    std::vector<int>::iterator it;
+    std::vector<int> neighbors;
+    neighbors = adjList(vertex);
+
+    // otimizar usando iterator
+    for (int i = 0; i < neighbors.size(); i++){
+        DEBUG std::cerr << "Apagando (" << vertex << "," <<neighbors[i] << ")" << std::endl;
+        remove_aresta(vertex, neighbors[i]);
     }
 }
 
@@ -451,4 +473,111 @@ int Graph::neighbor_index(int vertex, int neighbor){
 
 int Graph::eccentricity(Graph &graph, int vertex){
     return OpBasic().eccentricity(graph, vertex);
+}
+
+/**
+ * Deep first search
+ * @details Deep first search using stack
+ * Returns all reachable verttices from initial vertex 
+ * adapter from https://www.geeksforgeeks.org/iterative-depth-first-traversal/
+ * @author Carlos Thadeu
+ * @param vertex an integer that represents a vertex
+ * @return a vector with all vertices reachable
+ */
+std::vector<int> Graph::DFS(int vertex)
+{
+    // Initially mark all vertices as not visited
+    //std::vector<bool> visited(V, false);
+    std::vector<bool> visited(get_qty_vertex(), false);
+    std::vector<int> vertices_dfs;
+
+    // Create a stack for DFS
+    std::stack<int> stack;
+ 
+    // Push the current source node.
+    stack.push(vertex);
+ 
+    while (!stack.empty())
+    {
+        // Pop a vertex from stack and print it
+        int vertex = stack.top();
+        stack.pop();
+ 
+        // Stack may contain same vertex twice. So
+        // we need to print the popped item only
+        // if it is not visited.
+        if (!visited[vertex])
+        {
+            vertices_dfs.push_back(vertex);
+            visited[vertex] = true;
+        }
+ 
+        // Get all adjacent vertices of the popped vertex s
+        // If a adjacent has not been visited, then push it
+        // to the stack.
+        //for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+        //for (auto i = adjList(s).begin(); i != adjList(s).end(); ++i)
+        for (int i=0; i < adjList(vertex).size(); i++){
+            if (!visited[adjList(vertex)[i]])
+                stack.push(adjList(vertex)[i]);
+        }
+
+    }
+    return vertices_dfs;
+}
+
+/// @brief 
+/// @param root 
+/// @param subset 
+/// @param subgraph 
+void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g){
+    Graph graph;
+    // transform set at vector
+    graph = g;
+    std::vector<int> list_articulations(articulations.begin(), articulations.end());
+    //std::vector<std::vector<int>> neighbors;
+    std::set<int> visited;
+    for (auto root : list_articulations){
+        //neighbors.push_back(this->adjList(root));
+        graph.delete_vertex(root);
+    }
+    for (auto root : list_articulations){
+
+        //for (int i=0; i < neighbors.size(); i++){
+        for (auto neighbor : g.adjList(root)){
+            //if (!in(visited, neighbors[i])){
+            if (!in(visited, neighbor) && (!in( list_articulations, neighbor))){
+                //subgraph.push_back(this->DFS(neighbors[i])); //add vertices
+                subgraph.push_back(graph.DFS(neighbor)); //add vertices 
+                //subgraph[subgraph.size()-1].push_back(root); // add root vertex
+                for (const auto& t : subgraph.back()) { // reference avoids copying element
+                    visited.insert(t);      // element can not be changed
+                }
+                //if (subgraph[subgraph.size()-1].size() < 3){ // Usa isto Se usar subgraph[subgraph.size()-1].push_back(root);
+                if (subgraph[subgraph.size()-1].size() < 2){
+                    for (auto i: subgraph[subgraph.size()-1]){
+                        visited.erase(i);
+                    }
+                    subgraph.erase(subgraph.begin()+subgraph.size()-1);
+                } 
+            }
+        }
+        // Reinsert remove edges at graph
+/*         for (auto i : neighbors) {
+            // access by value, the type of i is int
+            this->add_aresta(root, i);
+        } */
+    }
+    int count = 0;
+    for (auto sb : subgraph){
+        for (auto v : sb){
+            for (auto neighbor: g.adjList(v)){
+                    if (in(list_articulations, neighbor) && (!in(subgraph[count], neighbor))){
+                        subgraph[count].push_back(neighbor);
+                    }
+            }
+        }
+        count++;
+    }
+    DEBUG std::cerr << "**" << std::endl;
 }

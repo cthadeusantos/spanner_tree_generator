@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <tuple>
+#include <set>
 
 class Graph
 {
@@ -14,7 +15,7 @@ private:
     int qtdArestas;
     int stretch_index = INF_VALUE; // by Thadeu
     int total_tree = 0; // by Thadeu
-    
+  
 public:
     Graph(int n);
     Graph();
@@ -24,6 +25,7 @@ public:
     void add_vertex();
     void add_aresta(int v, int u);
     void add_aresta(std::vector<int> arestas);
+    void delete_vertex(int vertex); // by thadeu
     void remove_aresta(int v, int u);
     void clear_arestas();
     void clear();
@@ -68,7 +70,8 @@ public:
     int get_qty_vertex();
     int neighbor_index(int vertex, int neighbor);
     int eccentricity(Graph &graph, int vertex);
+    std::vector<int> DFS(int s);
+    void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
 };
-
 
 #endif

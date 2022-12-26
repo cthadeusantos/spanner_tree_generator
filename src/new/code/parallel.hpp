@@ -2,13 +2,6 @@
     #define PARALLEL_HPP_
 #endif
 
-/*************************************************************************************************
-Faziam parte do arquivo sequential_functions.hpp
-**************************************************************************************************/
-void sequential(Graph& g);
-/*************************************************************************************************
-Faziam parte do arquivo parallel_functions.hpp
-**************************************************************************************************/
 void find_index_parallel(Graph &g, int raiz, int start, int end, const int id);
 void find_index_induced_cycle(Graph &graph, int raiz, int start, const int id, std::vector<int> edges_list );
 void create_threads(Graph& g);
