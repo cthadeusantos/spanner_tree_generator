@@ -81,7 +81,8 @@ void bubbleSort(int **array, int n) {
 }
 
 /**
- * Return the index of element at a vector
+ * @brief Return the index of element at a vector
+ * @details Return an index from an element at vector if that element exists
  * @author Carlos Thadeu
  * @param key a seek value
  * @param vector a vector that contains integers
@@ -89,7 +90,7 @@ void bubbleSort(int **array, int n) {
  */
 int get_index(int key, std::vector<int> vector){
     std::vector<int>::iterator itr = std::find(vector.begin(), vector.end(), key);
-    return vector.begin() - itr;
+    return itr - vector.begin();
 }
 
 /**
@@ -110,6 +111,24 @@ bool in(std::vector <int> &vector, const int &value) {
 }
 
 /**
+ * @details Is the value belongs the vector?
+ * @param vector1 a vector that contains integers
+ * @param value a seek value
+ * @return a boolean
+ */
+bool in(const std::vector <int> &vector, const int &value) {
+    bool result = false;
+    for(auto vertex : vector) {
+        if (vertex == value) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
+/**
+ * @brief 
  * @details Is the value belongs the set?
  * @param set1 a set that contains integers
  * @param value a seek value
@@ -127,8 +146,11 @@ bool in(std::set <int> &set, const int &value) {
 }
 
 /**
+ * @brief Return an index from an elemento at a vector if that element exists
  * @details Return an index from an element at vector if that element exists
  * Return NULL if element not belongs a vector
+ * (((  DEPRECATED  ))) will be remove at future
+ * (((   REPLACED   ))) by get_index function
  * @param vector1 a vector that contains integers
  * @param value a seek element
  * @return an integer

@@ -19,8 +19,10 @@ int get_index(int key, std::vector<int> v);
 
 // Search functions
 bool in(std::vector <int> &vector1, const int &value);
+bool in(const std::vector <int> &vector1, const int &value);
 bool in(std::set <int> &set1, const int &value);
-int in(const int &value, std::vector <int> &vector);
+
+int in(const int &value, std::vector <int> &vector); // (((  DEPRECATED  ))) will be remove at future / (((   REPLACED   ))) by get_index function
 int in(const int &value, std::vector <int> &set);
 
 //String functions

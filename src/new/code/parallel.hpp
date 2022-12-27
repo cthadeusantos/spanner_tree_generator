@@ -14,3 +14,4 @@ int vertice_maior_grau(Graph& g);
 
 void create_threads_edge_max_degree(Graph& g);
 void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const int id);
+void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id);

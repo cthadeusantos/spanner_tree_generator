@@ -475,7 +475,7 @@ int Graph::eccentricity(Graph &graph, int vertex){
 }
 
 /**
- * Deep first search
+ * @brief Deep first search
  * @details Deep first search using stack
  * Returns all reachable verttices from initial vertex 
  * adapter from https://www.geeksforgeeks.org/iterative-depth-first-traversal/
@@ -526,7 +526,7 @@ std::vector<int> Graph::DFS(int vertex)
 }
 
 /**
- * Find subgraphs from an articulations the original graph
+ * @brief Find subgraphs from an articulations at the original graph
  * @details Seek subgraphs from an articulations the original graph 
  * @author Carlos Thadeu
  * @param articulations a set that represents the articulations of graph
@@ -578,4 +578,24 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
         }
         count++;
     }
+}
+
+Graph Graph::build_subgraph(std::vector<int> &subgraph){
+    Graph new_graph(subgraph.size());
+
+    std::vector<int> adjacentes;
+    int index = 0;
+    for (auto v1 : subgraph){
+        int e1 = get_index(v1, subgraph);
+        int e2;
+        adjacentes = this->adjList(v1);
+        for (auto v2 : adjacentes){
+            if (in(subgraph, v2) && v2 != v1 ){
+                e2 = get_index(v2, subgraph);
+                if ((!in(new_graph.adjList(e1), e2)) && (!in(new_graph.adjList(e2), e1)))
+                    new_graph.add_aresta(e1, e2);
+            }
+        }
+    }
+    return new_graph;
 }

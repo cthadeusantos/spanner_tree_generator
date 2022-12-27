@@ -72,6 +72,7 @@ public:
     int eccentricity(Graph &graph, int vertex);
     std::vector<int> DFS(int s);
     void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
+    Graph build_subgraph(std::vector<int> &split_in_subgraphs);
 };
 
 #endif

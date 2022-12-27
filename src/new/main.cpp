@@ -81,16 +81,17 @@ void usage(const char* app_name){
 
 	std::cout << "Define which type application will be run. [current " << type_running << "]" << std::endl;
 	std::cout << "\t-r X | --running X" << std::endl;
-	std::cout << "\t\t\t\t 0 - Create trees" << std::endl;
-	std::cout << "\t\t\t\t 1 - Brute Force (sequential)" << std::endl;
-	std::cout << "\t\t\t\t 2 - Brute Force (parallel) limited by threads" << std::endl;
-	std::cout << "\t\t\t\t 3 - Max Degree (parallel)" << std::endl;
-	std::cout << "\t\t\t\t 4 - Induced cycle (parallel)" << std::endl;
-	std::cout << "\t\t\t\t 5 - Heuristic 1" << std::endl;
-	std::cout << "\t\t\t\t 6 - Heuristic 1 vertex importance" << std::endl;
-	std::cout << "\t\t\t\t 7 - Heuristic 2" << std::endl;
-	std::cout << "\t\t\t\t 8 - Heuristic 2 vertex importance" << std::endl;
-	std::cout << "\t\t\t\t 9 - Breadth heuristic" << std::endl << std::endl;
+	std::cout << "\t\t\t\t 0  - Create trees" << std::endl;
+	std::cout << "\t\t\t\t 1  - Brute Force (sequential)" << std::endl;
+	std::cout << "\t\t\t\t 2  - Brute Force (parallel) limited by threads" << std::endl;
+	std::cout << "\t\t\t\t 3  - Max Degree (parallel)" << std::endl;
+	std::cout << "\t\t\t\t 4  - Induced cycle (parallel)" << std::endl;
+	std::cout << "\t\t\t\t 5  - Heuristic 1" << std::endl;
+	std::cout << "\t\t\t\t 6  - Heuristic 1 vertex importance" << std::endl;
+	std::cout << "\t\t\t\t 7  - Heuristic 2" << std::endl;
+	std::cout << "\t\t\t\t 8  - Heuristic 2 vertex importance" << std::endl;
+	std::cout << "\t\t\t\t 9  - Breadth heuristic" << std::endl << std::endl;
+	std::cout << "\t\t\t\t 10 - Articulations (parallel)" << std::endl << std::endl;
 
 	std::cout << "If running is 0 (create tree) - parameters must be necessary" << std::endl;
 	std::cout << "\t\t\t\t -tri | --triangle\tCreate with triangles" << std::endl;
@@ -186,6 +187,11 @@ void parseArgs(int argc, char** argv){
 
 /// @brief  The main method
 int main(int argc, char** argv){
+
+	if(argc < 2){
+		usage("--help");
+		exit(0);
+	}
 
 	std::string filename = get_filename();
 	std::string run_name  = "";

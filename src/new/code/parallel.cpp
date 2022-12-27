@@ -37,6 +37,99 @@ Faziam parte do arquivo parallel_functions.cpp
 **************************************************************************************************/
 
 
+/**
+ * @brief Calculate stretch index using articulations
+ * @details Create thread to calculate the stretch index from articulations (if exists) 
+ * @author Daniel Juventude (original)
+ * @author Carlos Thadeu(adapter)
+ * @param g a graph instance that represents the graph
+ * @param raiz
+ * @param start
+ * @param end
+ * @param id
+ */
+void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id)
+{
+    DEBUG std::cerr << "CALCULANDO POR ARTICULACAO - Thread : " << id << std::endl;
+
+    sem_wait(&semaforo); 
+    int n = subgraph.getQtdVertices(); 
+    int m = subgraph.getQtdArestas();
+
+    int prox_vizinho[n];
+    int ult_colocado[n];
+    int v = raiz;
+    int u;
+    int arv = 0; // debug
+    int index_local = (int)INFINITY;
+    Graph tree_local;
+
+    Graph tree(n);
+
+    for(int i=0; i < n; ++i){
+        prox_vizinho[i] = 0;
+        ult_colocado[i] = -1;
+    }
+
+    prox_vizinho[v] = start;
+
+    //while(g.get_stretch_index() > g.grt-1 ){
+    while(graph.get_stretch_index() > graph.grt-1 ){
+        if(v == raiz){
+            if(prox_vizinho[v] == end){
+                break; // Fim do algoritmo
+            }
+        }
+
+        if( prox_vizinho[v] == subgraph.grau(v) ){
+            prox_vizinho[v] = 0;
+            v = subgraph.ant_vertex(v);
+            tree.remove_aresta(v, ult_colocado[v]);
+            ult_colocado[v] = -1;
+        } else {
+            u = subgraph.adjList(v)[prox_vizinho[v]];
+            ++prox_vizinho[v];
+            if( not tree.possui_aresta(v, u) ){
+                tree.add_aresta(v, u);
+                ult_colocado[v] = u;
+                if(not OpBasic::is_cyclic(tree)){
+                    if(tree.getQtdArestas() == tree.getQtdVertices()-1){
+                        int f = find_factor(subgraph, tree);
+                        ++arv;
+                        subgraph.add_tree();
+                        
+                        if(f < index_local){
+                            index_local = f;
+                            tree_local = tree;
+                            if(index_local == graph.grt-1){// alteracao LF
+                              break;// alteracao LF
+                            }// alteracao LF
+
+                        }
+                    }else{
+                        v = subgraph.next_vertex(v);
+                        continue;
+                    }
+                }
+                tree.remove_aresta(v, u);
+            }
+        }
+    }
+
+    mtx.lock();
+
+    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
+
+    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+        total_arv += arv;
+        graph.set_stretch_index(index_local);
+        graph.set_best_tree(tree_local);
+    }
+    mtx.unlock();
+    sem_post(&semaforo); // a thread libera espaço para a proxima
+}
+
+
 //! Calculate stretch index - parallel
 /*!
     \param g a graph instance that represents the graph
@@ -425,8 +518,8 @@ void create_threads_big_cycle(Graph& g) {
 }
 
 /**
- * Stretch index from articulations
- * @details Calculate the stretch index from articulations (if exists)
+ * @brief Create threads to calculate stretch index from articulations
+ * @details Create thread to calculate the stretch index from articulations (if exists)
  * This procedure will seek from articulations points then split the graph from
  * this articulations and calculate the stretch index
  * 
@@ -434,20 +527,15 @@ void create_threads_big_cycle(Graph& g) {
  * @param g a graph that represents the graph
  */
 void create_threads_articulations(Graph& g) {
-    int qty = -1;
-    int root = -1;
-    int neighbor = -1;
-    std::vector<int> edges_list = {};
-    
-    //int pos = -1;
-
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
     //OpBasic op; // by thadeu
     g.grt = OpBasic::maxLowerCicle(g); // by thadeu
     // fim calcula grt
-    std::set<int> articulations; 
+
+
+    std::set<int> articulations;     
     std::vector<std::pair<int,int>> bridges;
     std::tie(articulations, bridges) = seek_articulations(g); // seek for articulations and bridges
     //auto vertex_importance = Centrality::closeness_centrality_list(articulations, g);
@@ -458,10 +546,25 @@ void create_threads_articulations(Graph& g) {
     std::vector<std::vector<int>> subgraph;
     //g.delete_vertex(root);
     g.split_in_subgraphs(articulations, subgraph, g);
-    
-    DEBUG std::cerr << "--------" << get_index(3, subgraph[0]);
-    int n = g.get_qty_vertex();
 
+    int qtd = subgraph.size();
+    DEBUG std::cerr << "Articulacoes detectadas: " << qtd << std::endl;
+    
+    std::thread vetor_th[qtd];
+
+    int id = 0;
+    Graph xpto[qtd];
+
+    for (std::vector<int> sb : subgraph){
+        xpto[id] = g.build_subgraph(sb);
+        int root = vertice_maior_grau(xpto[id]);
+        int neighbor = xpto[id].adjList(root)[0];
+        vetor_th[id] = std::thread(find_index_articulation, std::ref(g), std::ref(xpto[id]), root, root, neighbor, id);
+        id++;
+    }
+    for(int i = 0; i < id; ++i){
+        vetor_th[i].join();
+    }
 }
 
 
