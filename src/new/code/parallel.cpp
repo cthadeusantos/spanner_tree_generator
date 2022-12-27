@@ -449,17 +449,17 @@ void create_threads_articulations(Graph& g) {
     // fim calcula grt
     std::set<int> articulations; 
     std::vector<std::pair<int,int>> bridges;
-    std::tie(articulations, bridges) = seek_articulations(g);
-    auto vertex_importance = Centrality::closeness_centrality_list(articulations, g);
+    std::tie(articulations, bridges) = seek_articulations(g); // seek for articulations and bridges
+    //auto vertex_importance = Centrality::closeness_centrality_list(articulations, g);
 
-    root = Centrality::root_selection2(vertex_importance);
+    //root = Centrality::root_selection2(vertex_importance);
     
     // Building subgraphs
     std::vector<std::vector<int>> subgraph;
     //g.delete_vertex(root);
     g.split_in_subgraphs(articulations, subgraph, g);
-
     
+    DEBUG std::cerr << "--------" << get_index(3, subgraph[0]);
     int n = g.get_qty_vertex();
 
 }

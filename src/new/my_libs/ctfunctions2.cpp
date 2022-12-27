@@ -6,6 +6,7 @@
 #include <sstream>
 #include<unistd.h>
 #include <math.h>
+#include <iterator>
 
 #include <iterator>
 #include <set>
@@ -77,6 +78,18 @@ void bubbleSort(int **array, int n) {
         }
             
                 
+}
+
+/**
+ * Return the index of element at a vector
+ * @author Carlos Thadeu
+ * @param key a seek value
+ * @param vector a vector that contains integers
+ * @return a boolean
+ */
+int get_index(int key, std::vector<int> vector){
+    std::vector<int>::iterator itr = std::find(vector.begin(), vector.end(), key);
+    return vector.begin() - itr;
 }
 
 /**

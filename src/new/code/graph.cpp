@@ -109,7 +109,6 @@ void Graph::delete_vertex(int vertex){
 
     // otimizar usando iterator
     for (int i = 0; i < neighbors.size(); i++){
-        DEBUG std::cerr << "Apagando (" << vertex << "," <<neighbors[i] << ")" << std::endl;
         remove_aresta(vertex, neighbors[i]);
     }
 }
@@ -526,10 +525,14 @@ std::vector<int> Graph::DFS(int vertex)
     return vertices_dfs;
 }
 
-/// @brief 
-/// @param root 
-/// @param subset 
-/// @param subgraph 
+/**
+ * Find subgraphs from an articulations the original graph
+ * @details Seek subgraphs from an articulations the original graph 
+ * @author Carlos Thadeu
+ * @param articulations a set that represents the articulations of graph
+ * @param subgraph a vector of vectors that represents the subgraphs
+ * @param g a graph that represents the original graph
+ */
 void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g){
     Graph graph;
     // transform set at vector
@@ -562,11 +565,7 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
                 } 
             }
         }
-        // Reinsert remove edges at graph
-/*         for (auto i : neighbors) {
-            // access by value, the type of i is int
-            this->add_aresta(root, i);
-        } */
+
     }
     int count = 0;
     for (auto sb : subgraph){
@@ -579,5 +578,4 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
         }
         count++;
     }
-    DEBUG std::cerr << "**" << std::endl;
 }

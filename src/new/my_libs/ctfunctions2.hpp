@@ -14,6 +14,8 @@ extern float probability;
 void swap0(int *a, int *b);
 void bubbleSort(int **array, int n);
 
+// Distance functions
+int get_index(int key, std::vector<int> v);
 
 // Search functions
 bool in(std::vector <int> &vector1, const int &value);
