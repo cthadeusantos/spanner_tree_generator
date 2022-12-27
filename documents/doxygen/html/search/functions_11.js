@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['write_145',['write',['../classFrontier.html#a8b68d239f640f349424f5ef782ba95a5',1,'Frontier::write(int value, std::string msg, std::string end, std::ostream &amp;out=std::cout)'],['../classFrontier.html#a428e3b9daff427dd945fb6b730edeb2a',1,'Frontier::write(double value, std::string msg, std::string end, std::ostream &amp;out=std::cout)']]]
+  ['vertice_5fmaior_5fgrau_193',['vertice_maior_grau',['../classGraph.html#a952de6ac8aa2c909910414291a1abc93',1,'Graph']]],
+  ['vertices_5fde_5fmaior_5fgrau_194',['vertices_de_maior_grau',['../classGraph.html#a4705a7c947534dd34a2acbebd3bb0433',1,'Graph']]]
 ];

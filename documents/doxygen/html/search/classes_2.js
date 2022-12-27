@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['heuristic_76',['Heuristic',['../classHeuristic.html',1,'']]]
+  ['gengraph_102',['GenGraph',['../classGenGraph.html',1,'']]],
+  ['graph_103',['Graph',['../classGraph.html',1,'']]]
 ];

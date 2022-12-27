@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['opbasic_77',['OpBasic',['../classOpBasic.html',1,'']]]
+  ['heuristic_104',['Heuristic',['../classHeuristic.html',1,'']]]
 ];

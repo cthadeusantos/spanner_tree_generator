@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['frontier_73',['Frontier',['../classFrontier.html',1,'']]]
+  ['centrality_100',['Centrality',['../classCentrality.html',1,'']]]
 ];
