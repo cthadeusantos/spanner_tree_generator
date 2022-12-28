@@ -252,10 +252,10 @@ void Heuristic::heuristica_2_modified(Graph& graph)
     int n = graph.getQtdVertices(); // by thadeu
 
     Graph tree(n);
-    std::vector<int> vertex_list;
+    std::vector<int> vertex_list(n, 0);
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
-    std::vector<float> importance(n); // by thadeu
+    std::vector<float> importance(n, 0); // by thadeu
 
     for( int i = 0; i < n; ++i)
     {

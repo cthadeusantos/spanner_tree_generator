@@ -7,6 +7,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "../Debug.h"
+
 
 /*************************************************************************************************
 Faziam parte do arquivo sequential_functions.cpp
@@ -267,9 +269,9 @@ void Stretch::find_index_cycle(Graph& g, int m)
 
     int count = 1;
     for( Graph g : l){
-        std::cout << "inicio do grafo: " << count << std::endl;
+        DEBUG std::cerr << "inicio do grafo: " << count << std::endl;
         find_index(g);
-        std::cout << "fim do grafo: " << count << std::endl;
+        DEBUG std::cerr << "fim do grafo: " << count << std::endl;
         if (index < index_menor){
             index_menor = index;
         }

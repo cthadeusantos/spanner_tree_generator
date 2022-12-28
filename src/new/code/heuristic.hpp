@@ -14,10 +14,10 @@ class Heuristic
 
     public:
         static void my_quicksort(std::vector<int>& vertices, int began, int end, Graph& g);
-        static int heuristica_1(Graph& g);
-        static void heuristica_1_modified(Graph& g); // by Thadeu
-        static int heuristica_2(Graph& g);
-        static void heuristica_2_modified(Graph& g); // by Thadeu
+        static int heuristica_1(Graph &g);
+        static void heuristica_1_modified(Graph &g); // by Thadeu
+        static int heuristica_2(Graph &g);
+        static void heuristica_2_modified(Graph &g); // by Thadeu
         static int breadth_heuristic(Graph& g); // By thadeu
         static std::vector <int> breadth_criterion(Graph &graph, std::queue <int> &FILA,
                     std::vector <int> &visited, std::vector <int> &total_layer);

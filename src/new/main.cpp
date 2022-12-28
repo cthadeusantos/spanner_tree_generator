@@ -196,7 +196,7 @@ int main(int argc, char** argv){
 	std::string filename = get_filename();
 	std::string run_name  = "";
 
-	std::cout << filename << std::endl;
+	DEBUG std::cerr << filename << std::endl;
 
 	DEBUG std::cerr << "Calculate stretch index.\n";
 	parseArgs(argc, argv); //Will setup globals
@@ -208,58 +208,56 @@ int main(int argc, char** argv){
     graph = read_graph_file();
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 
-	time_t time_begin = 0;
-    time_t time_end = 0;
+	time_t time_begin;
+    time_t time_end;
     double tempo_total = 0;
 
-	OpBasic op; 
-    int lower_limit = op.maxLowerCicle(graph) - 1;
+    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 
 	sem_init(&semaforo, 0, num_threads);
 	time(&time_begin);
-
 	if (type_running == 0){
 		DEBUG std::cerr << "Create graph - wait!\n";
 		create_new_graphs();
 	} else if (type_running == 1){
 		DEBUG std::cerr << "Solving with sequential brute force - wait!\n";
-		run_name = "Brute force - Sequential";
+		run_name = "Brute_force-Sequential";
 		Stretch().sequential(graph);
 	} else if (type_running == 2){
 		DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
-		run_name = "Maximum degree - parallel";
+		run_name = "Max_degree_edges";
 		create_threads_edge_max_degree(graph);
 	} else if (type_running == 3){
 		DEBUG std::cerr << "Solving brute force with Maximum degree - PARALLEL- wait!\n";
-		run_name = "Maximum degree - parallel";
+		run_name = "Maximum_degree-parallel";
 		create_threads(graph);
 	} else if (type_running == 4){
 		DEBUG std::cerr << "Solving with induced cycle - PARALLEL- wait!\n";
-		run_name = "Induced cycle";
+		run_name = "Induced_cycle";
 		create_threads_big_cycle(graph);
 	} else if (type_running == 5){
 		DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
-		run_name = "Heuristic 1v1";
+		run_name = "Heuristic_1v1";
 		Heuristic::heuristica_1(graph);
 	} else if (type_running == 6){
 		DEBUG std::cerr << "Solving with heuristic 1 vertex importance- wait!\n";
-		run_name = "Heuristic 1v2";
+		run_name = "Heuristic_1v2";
 		Heuristic::heuristica_1_modified(graph);
 	} else if (type_running == 7){
 		DEBUG std::cerr << "Solving with heuristic 2 - wait!\n";
-		run_name = "Heuristic 2v1";
+		run_name = "Heuristic_2v1";
 		Heuristic::heuristica_2(graph);
 	} else if (type_running == 8){
 		DEBUG std::cerr << "Solving with heuristic 2 vertex importance- wait!\n";
-		run_name = "Heuristic 2v2";
+		run_name = "Heuristic_2v2";
 		Heuristic::heuristica_2_modified(graph);
 	} else if (type_running == 9){
 		DEBUG std::cerr << "Solving with breadth heuristic - wait!\n";
-		run_name = "Breadth heuristic";
+		run_name = "Breadth_heuristic";
 		Heuristic::breadth_heuristic(graph);
 	} else if (type_running == 10){
 		DEBUG std::cerr << "Solving with articulations - wait!\n";
-		run_name = "Articulations method";
+		run_name = "Articulations";
 		create_threads_articulations(graph);
 	}
 	time(&time_end);
@@ -275,7 +273,7 @@ int main(int argc, char** argv){
 		if (best) graph.show_best_tree();
 	}
 	if ((output & 2)==2){
-		std::cout << filename << run_name << " " << lower_limit << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
+		std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
 		if (best) graph.show_best_tree();
 	}
 	if ((output & 64)==64){
