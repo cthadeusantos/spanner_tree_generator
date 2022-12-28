@@ -61,7 +61,7 @@ int Heuristic::breadth_heuristic(Graph &graph)
         Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
 
         for (int i = 0; i < num_neighbor; ++i){
-            if (!in(enqueued, neighbor_list[i])){
+            if (!in( neighbor_list[i], enqueued)){
                 QUEUE1.push(neighbor_list[i]);
                 enqueued.push_back(neighbor_list[i]);
             }
@@ -455,7 +455,7 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
 
 
         for (auto v : graph.adjList(vertex)){
-            if (!in(FILA2, v)){
+            if (!in(v, FILA2)){
                 FILA2.push_back(v);
                 
             }
@@ -464,7 +464,7 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
     int parent = vertex;
     while (i < FILA2.size()){
         vertex = FILA2[i];
-        if (!in(visited, vertex)){
+        if (!in(vertex, visited)){
             FILA.push(vertex);
             //tree.add_aresta(parent, vertex);
         }

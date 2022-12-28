@@ -18,12 +18,12 @@ void bubbleSort(int **array, int n);
 int get_index(int key, std::vector<int> v);
 
 // Search functions
-bool in(std::vector <int> &vector1, const int &value);
-bool in(const std::vector <int> &vector1, const int &value);
-bool in(std::set <int> &set1, const int &value);
+bool in(const int &value, std::vector <int> &vector);
+bool in( const int &value, const std::vector <int> &vector);
+bool in(const int &value, std::set <int> &set );
 
-int in(const int &value, std::vector <int> &vector); // (((  DEPRECATED  ))) will be remove at future / (((   REPLACED   ))) by get_index function
-int in(const int &value, std::vector <int> &set);
+//int in(const int &value, std::vector <int> &vector); // (((  DEPRECATED  ))) will be remove at future / (((   REPLACED   ))) by get_index function
+//int in(const int &value, std::vector <int> &set);
 
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);

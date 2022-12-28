@@ -130,7 +130,7 @@ float Centrality::vertex_importance(int root,  Graph &graph){
             visited.push_back(vertex);
 
             for (int neighbor : graph.adjList(vertex)){
-                if (!in(visited, neighbor)) NEIGHBORS.insert(neighbor);
+                if (!in(neighbor, visited )) NEIGHBORS.insert(neighbor);
             }
 
         }
@@ -138,7 +138,7 @@ float Centrality::vertex_importance(int root,  Graph &graph){
         std::set<int>:: iterator it;
         for( it = NEIGHBORS.begin(); it!=NEIGHBORS.end(); ++it){
             int value = *it;
-            if (!in(visited, value)){
+            if (!in(value, visited)){
                 QUEUE1.push(value);
                 sum = sum + level; 
             } 

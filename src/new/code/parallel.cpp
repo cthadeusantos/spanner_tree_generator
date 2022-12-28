@@ -19,7 +19,7 @@
 #include "centrality.hpp"
 //#include "../my_libs/ctfunctions2.cpp"
 
-using namespace std;
+//using namespace std;
 sem_t semaforo;
 int total_arv = 0;
 std::mutex mtx;
@@ -120,11 +120,14 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
 
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
 
-    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
-        total_arv += arv;
-        graph.set_stretch_index(index_local);
-        graph.set_best_tree(tree_local);
-    }
+
+        /* if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+            total_arv += arv;
+            graph.set_stretch_index(index_local);
+            graph.set_best_tree(tree_local);
+        } */
+    set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
+
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -152,7 +155,8 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int v = raiz;
     int u;
     int arv = 0; // debug
-    int index_local = INF_VALUE;
+    //int index_local = INF_VALUE;
+    int index_local = (int)INFINITY;
     Graph tree_local;
 
     Graph tree(n);
@@ -215,11 +219,13 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
 
-    if(index_local < g.get_stretch_index()) {
+    set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
+
+/*     if(index_local < g.get_stretch_index()) {
         total_arv += arv;
         g.set_stretch_index(index_local);
         g.set_best_tree(tree_local);
-    }
+    } */
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -258,7 +264,7 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     int ult_colocado[n] = {};       // last add vertex at tree(index)
     int v = raiz;
     int u = -1;
-    int index_local = INF_VALUE;
+    int index_local = (int)INFINITY;
 
     Graph tree_local(n);
     Graph tree(n);
@@ -316,11 +322,13 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     }
     DEBUG std::cerr << "thread " << id << " criou " << G1.get_total_tree() << " arvores." << std::endl;
     mtx.lock();
-        graph.sum_trees(G1.get_total_tree());
-        if (index_local < graph.get_stretch_index()) {
-            graph.set_stretch_index(index_local);
-            graph.set_best_tree(tree_local);
-        }
+    graph.sum_trees(G1.get_total_tree());
+    int arv = 0; // Insert by compatibility with set_graph_final_parameters
+    set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
+/*     if (index_local < graph.get_stretch_index()) {
+        graph.set_stretch_index(index_local);
+        graph.set_best_tree(tree_local);
+    } */
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -339,19 +347,21 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     Graph tree(n);
     Graph tree_local;
     int arv = 0;
-    int index_local = INF_VALUE;
+    //int index_local = INF_VALUE;
+    int index_local = (int)INFINITY;
 
     Graph gTeste(n);
 
-    OpBasic op;
-    int grt = op.maxLowerCicle(g);
+    // Removido pq coloquei em cria threads
+/*     OpBasic op;
+    int grt = op.maxLowerCicle(g); */
 
     for(int i = start; i < edges.size(); i += 2)
     {
         gTeste.add_aresta(edges[i], edges[i+1]);
     }
     if( OpBasic::is_connected(gTeste) ){
-        if(g.get_stretch_index() > grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
+        if(g.get_stretch_index() > g.grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
             while(indice[0] < start+2){
                 if( indice[j]/2 > m-(n-1-j) ){
                     --j;
@@ -367,7 +377,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
-                                if (index_local == grt-1) {
+                                if (index_local == g.grt-1) {
                                     break;
                                 }
                             }
@@ -393,14 +403,15 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     else {
         std::cout << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     }
-    //total_arv += arv;
-    if( index_local < g.get_stretch_index()){
+    //total_arv += arv; Já estava comentado antes de inserir set_graph_final_parameters
+/*     if( index_local < g.get_stretch_index()){
         //index_global = index_local;
         //tree_global = tree_local;
         total_arv += arv;   // by thadeu
         g.set_stretch_index(index_local); // by thadeu
         g.set_best_tree(tree_local); // by thadeu
-    }
+    } */
+    set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
     mtx.unlock();
 
     sem_post(&semaforo);
@@ -441,6 +452,13 @@ void create_threads_edge_max_degree(Graph& g)
 {
     int qtd_th = g.maior_grau();
     //int qtd_th = num_thread;
+
+    // Calcula atributo grt
+    // por enquanto fica aqui, no futuro retirar 
+    // pois o método create_thread nao é para calcular nada do grafo
+    OpBasic op; // by thadeu
+    g.grt = op.maxLowerCicle(g); // by thadeu
+    // fim calcula grt
 
     std::vector< std::thread> vetor_th(qtd_th);
 
@@ -624,4 +642,77 @@ int vertice_maior_grau(Graph& g)
         }
     }
     return raiz;
+}
+
+
+void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph){
+    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+        total_arv += arv;
+        graph.set_stretch_index(index_local);
+        graph.set_best_tree(tree_local);
+    }
+}
+
+void main_algorithm(int &raiz, int &start, int &end, Graph &graph, Graph &G1){
+
+    int n = G1.getQtdVertices();    // num vertices
+    int m = G1.getQtdArestas();     // num edges
+    int prox_vizinho[n] = {};       // next neighbor (index)
+    int ult_colocado[n] = {};       // last add vertex at tree(index)
+    int u = -1;
+    int v = raiz;
+    int index_local = (int)INFINITY;
+
+    Graph tree_local(n);
+    Graph tree(n);
+
+    for(int i=0; i < n; ++i){
+        prox_vizinho[i] = 0;
+        ult_colocado[i] = -1;
+    }
+
+    prox_vizinho[v] = start;
+
+    while(G1.get_stretch_index() > G1.grt - 1) {
+        if(v == raiz){
+            if (prox_vizinho[v] == end){
+                break; // Fim do algoritmo
+            }
+        }
+        if ( prox_vizinho[v] == G1.grau(v) ){
+            prox_vizinho[v] = 0;
+            v = G1.ant_vertex(v);
+            tree.remove_aresta(v, ult_colocado[v]);
+            ult_colocado[v] = -1;
+        } else {
+            u = G1.adjList(v)[prox_vizinho[v]];
+            ++prox_vizinho[v];
+            if( not tree.possui_aresta(v, u) ){
+                tree.add_aresta(v, u);
+                ult_colocado[v] = u;
+
+                if(not OpBasic::is_cyclic(tree)){
+
+                    if(tree.getQtdArestas() == tree.getQtdVertices()-1){
+                                mtx.lock();
+                                int f = find_factor(graph, tree);
+                                mtx.unlock();
+                        G1.add_tree();
+
+                        if(f < index_local){
+                            index_local = f;
+                            tree_local = tree;
+                            if(index_local == G1.grt -1){
+                              break;
+                            }
+                        }
+                    } else {
+                        v = G1.next_vertex(v);
+                        continue;
+                    }
+                }
+                tree.remove_aresta(v, u);
+            }
+        }
+    }
 }

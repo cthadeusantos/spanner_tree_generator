@@ -99,7 +99,7 @@ int get_index(int key, std::vector<int> vector){
  * @param value a seek value
  * @return a boolean
  */
-bool in(std::vector <int> &vector, const int &value) {
+bool in(const int &value, std::vector <int> &vector) {
     bool result = false;
     for(auto vertex : vector) {
         if (vertex == value) {
@@ -116,7 +116,7 @@ bool in(std::vector <int> &vector, const int &value) {
  * @param value a seek value
  * @return a boolean
  */
-bool in(const std::vector <int> &vector, const int &value) {
+bool in( const int &value, const std::vector <int> &vector) {
     bool result = false;
     for(auto vertex : vector) {
         if (vertex == value) {
@@ -134,7 +134,7 @@ bool in(const std::vector <int> &vector, const int &value) {
  * @param value a seek value
  * @return a boolean
  */
-bool in(std::set <int> &set, const int &value) {
+bool in(const int &value, std::set <int> &set) {
     bool result = false;
     for(auto vertex : set) {
         if (vertex == value) {
@@ -155,14 +155,14 @@ bool in(std::set <int> &set, const int &value) {
  * @param value a seek element
  * @return an integer
  */
-int in(const int &value, std::vector <int> &vector) {
+/* int in(const int &value, std::vector <int> &vector) {
     std::vector<int>::iterator itr = std::find(vector.begin(), vector.end(), value);
     int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
     if (itr != vector.cend()) {
         result = std::distance(vector.begin(), itr);
     }
     return result;
-}
+} */
 
 /**
  * @details Return an index from an element at set if that element exists
@@ -171,14 +171,14 @@ int in(const int &value, std::vector <int> &vector) {
  * @param value a seek element
  * @return an integer
  */
-int in(const int &value, std::set <int> &set) {
+/* int in(const int &value, std::set <int> &set) {
     std::set<int>::iterator itr = std::find(set.begin(), set.end(), value);
     int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
     if (itr != set.cend()) {
         result = std::distance(set.begin(), itr);
     }
     return result;
-}
+} */
 
 
 /**

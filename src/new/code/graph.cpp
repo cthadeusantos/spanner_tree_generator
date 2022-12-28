@@ -457,6 +457,7 @@ int Graph::get_qty_vertex(){
     return this->qtdVertices;
 }
 
+// Get the index from vertex
 int Graph::neighbor_index(int vertex, int neighbor){
     int index = -1;
     int size = this->adjList(vertex).size();
@@ -549,7 +550,7 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
         //for (int i=0; i < neighbors.size(); i++){
         for (auto neighbor : g.adjList(root)){
             //if (!in(visited, neighbors[i])){
-            if (!in(visited, neighbor) && (!in( list_articulations, neighbor))){
+            if (!in(neighbor, visited) && (!in( neighbor, list_articulations))){
                 //subgraph.push_back(this->DFS(neighbors[i])); //add vertices
                 subgraph.push_back(graph.DFS(neighbor)); //add vertices 
                 //subgraph[subgraph.size()-1].push_back(root); // add root vertex
@@ -571,7 +572,7 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
     for (auto sb : subgraph){
         for (auto v : sb){
             for (auto neighbor: g.adjList(v)){
-                    if (in(list_articulations, neighbor) && (!in(subgraph[count], neighbor))){
+                    if (in(neighbor, list_articulations) && (!in(neighbor, subgraph[count]))){
                         subgraph[count].push_back(neighbor);
                     }
             }
@@ -590,9 +591,9 @@ Graph Graph::build_subgraph(std::vector<int> &subgraph){
         int e2;
         adjacentes = this->adjList(v1);
         for (auto v2 : adjacentes){
-            if (in(subgraph, v2) && v2 != v1 ){
+            if (in(v2, subgraph) && v2 != v1 ){
                 e2 = get_index(v2, subgraph);
-                if ((!in(new_graph.adjList(e1), e2)) && (!in(new_graph.adjList(e2), e1)))
+                if ((!in(e2, new_graph.adjList(e1))) && (!in(e1, new_graph.adjList(e2))))
                     new_graph.add_aresta(e1, e2);
             }
         }
