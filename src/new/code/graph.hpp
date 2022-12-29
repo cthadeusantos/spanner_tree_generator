@@ -6,6 +6,7 @@
 #include <vector>
 #include <tuple>
 #include <set>
+#include <cmath>
 
 class Graph
 {
@@ -13,7 +14,7 @@ private:
     std::vector< std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
-    int stretch_index = INF_VALUE; // by Thadeu
+    int stretch_index = (int)INFINITY; // by Thadeu
     int total_tree = 0; // by Thadeu
   
 public:
@@ -21,7 +22,7 @@ public:
     Graph();
     ~Graph();
     
-    void create(int dimension);
+    //void create(int dimension);
     void add_vertex();
     void add_aresta(int v, int u);
     void add_aresta(std::vector<int> arestas);

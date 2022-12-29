@@ -133,6 +133,7 @@ int Heuristic::heuristica_1(Graph& g)
  * @details List vertices in decreasing order by degree and vertex importance.
  * Add to the tree the first vertex of the list is not in the tree yet and all neighbors
  * Process the list until there isn't a vertex in the tree.
+ * Only diference about heuristic 1 is the select root. Now considering degree and vertex importance to select root.
  * @author Daniel Juventude(original)
  * @author Carlos Thadeu (modified)
  * @date 2022/12/14
@@ -242,8 +243,10 @@ int Heuristic::heuristica_2(Graph& g)
 /**
  * @brief T-admissibility heuristic 2 modified.
  * @details List vertices in decreasing order by degree and vertex importance.
- * Add to the tree the first vertex of the list is not in the tree yet and all neighbors
+ * Add to the tree the vertex with max degree of the leaves's list and all neighbors
  * Process the list until there isn't a vertex in the tree.
+ * Differences of heuristic 2 are:
+ * tiebrake among vertices at the leaves list is select which vertex has max vertex importance(max centrallity)
  * @author Daniel Juventude(original)
  * @author Carlos Thadeu (modified)
  * @date 2022/12/14
@@ -519,6 +522,7 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
 //
 // Com as alterações feitas (thadeu) o grafo passou a ter os atributos best_tree and stretch index
 // provavelmente tornando desnecessário estes metodos
+// Mantidos para efeitos de compatibilidade até serem depreciados por completos
 //**********************************************************************************************
 
 
