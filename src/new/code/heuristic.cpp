@@ -36,6 +36,10 @@ int Heuristic::breadth_heuristic(Graph &graph)
     std::vector <int> degree_list; // newline
     std::vector <int> enqueued; // processed vertices that was enqueued anytime
 
+
+    std::vector <float> xxx = Centrality::closeness_centrality(graph);
+
+
     root = Centrality::root_selection2(graph);
 
     DEBUG std::cerr << "Vértice raiz da árvore: " << root << std::endl;
@@ -252,10 +256,13 @@ void Heuristic::heuristica_2_modified(Graph& graph)
     int n = graph.getQtdVertices(); // by thadeu
 
     Graph tree(n);
+    std::vector<int> lista;
     std::vector<int> vertex_list(n, 0);
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     std::vector<float> importance(n, 0); // by thadeu
+    std::vector<int> vertex;
+    std::vector<float> closeness;
 
     for( int i = 0; i < n; ++i)
     {
@@ -273,12 +280,12 @@ void Heuristic::heuristica_2_modified(Graph& graph)
 
     for( int v : graph.adjList(root))
     {
-        vertex_list.push_back(v);
+        lista.push_back(v);
         tree.add_aresta(root, v);
     }
     while( tree.qtd_vertex_grau() > 0)
     {
-        for(int v : vertex_list)
+        for(int v : lista)
         {
             lista_relativa_valor.push_back(graph.grau(v) - func_aux_h2(tree, graph, v));
             lista_relativa_vertice.push_back(v);
@@ -287,8 +294,31 @@ void Heuristic::heuristica_2_modified(Graph& graph)
         my_sort(lista_relativa_valor, lista_relativa_vertice);
 
         int u = lista_relativa_vertice.back();
-        std::vector<int>::iterator it = std::find(vertex_list.begin(), vertex_list.end(), u);
-        vertex_list.erase(it);
+
+        // CRITERIO DE DESEMPATE SE OS VERTICES TIVEREM MESMO MAX DEGREE
+        
+        int max_degree = lista_relativa_valor.back();
+
+
+        for (int i=lista_relativa_valor.size(); i >= 0; i--){
+            if (lista_relativa_valor[i]==max_degree){
+                vertex.push_back(lista_relativa_vertice[i]);
+                closeness.push_back(importance[i]);
+            }
+            //if (lista_relativa_valor[i] < max_degree) break;
+        }
+        float max_closeness = *max_element(closeness.begin(), closeness.end());
+
+        for (int i=0; i < vertex.size(); i++){
+            if (closeness[i]==max_closeness) {
+                u = vertex[i];
+            }
+        }
+        
+        // ^^^^^^^^^^^^ ALTERAÇÃO DEVE TERMINAR AQUI  ^^^^^^^^^^^^
+        
+        std::vector<int>::iterator it = std::find(lista.begin(), lista.end(), u); // by DJ
+        lista.erase(it); // by DJ
 
         for( int v : graph.adjList(u))
         {
@@ -296,11 +326,14 @@ void Heuristic::heuristica_2_modified(Graph& graph)
             {
                 tree.add_aresta(u, v);
                 vertex_list.push_back(v);
+                lista.push_back(v);
             }
         }
 
         lista_relativa_valor.clear();
         lista_relativa_vertice.clear();
+        vertex.clear();
+        closeness.clear();
     }
 
     int factor = stretch.find_factor(graph, tree);
