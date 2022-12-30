@@ -84,6 +84,7 @@ void Stretch::find_index(Graph& g)
     }
     this->total_arv = arv;
     g.set_stretch_index(index);
+    g.set_best_tree(tree);
     //return index;
 }
 

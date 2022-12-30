@@ -7,35 +7,13 @@
 #include "opBasic.hpp"
 #include "stretch.hpp"
 
-///Basic debugging controller. See Debug.h for details.
-/* #ifdef MN_BF_SEQ_DEBUG
-	#define DEBUG
-#else
-	#define DEBUG while(false)
-#endif */
-
 #include "../Debug.h"
 #include "parallel.hpp"
 #include "centrality.hpp"
-//#include "../my_libs/ctfunctions2.cpp"
 
-//using namespace std;
 sem_t semaforo;
 int total_arv = 0;
 std::mutex mtx;
-
-
-/*************************************************************************************************
-Faziam parte do arquivo sequential_functions.cpp
-**************************************************************************************************/
-//void sequential(Graph& graph){
-//	Stretch acme; // Lonney Tunes rocks!
-//	acme.find_index(graph);
-//}
-/*************************************************************************************************
-Faziam parte do arquivo parallel_functions.cpp
-**************************************************************************************************/
-
 
 /**
  * @brief Calculate stretch index using articulations
@@ -74,7 +52,15 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     prox_vizinho[v] = start;
 
     //while(g.get_stretch_index() > g.grt-1 ){
-    while(graph.get_stretch_index() > graph.grt-1 ){
+    int grt = OpBasic::maxLowerCicle(subgraph);
+    subgraph.grt = grt;
+    int lower_limit = grt - 1;
+
+    mtx.lock();
+    int stretch_index = graph.get_stretch_index();
+    mtx.unlock();
+
+    while(stretch_index > lower_limit){
         if(v == raiz){
             if(prox_vizinho[v] == end){
                 break; // Fim do algoritmo
@@ -101,7 +87,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
                         if(f < index_local){
                             index_local = f;
                             tree_local = tree;
-                            if(index_local == graph.grt-1){// alteracao LF
+                            if(index_local == lower_limit){// alteracao LF
                               break;// alteracao LF
                             }// alteracao LF
 
@@ -120,18 +106,11 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
 
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
 
-
-        /* if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
-            total_arv += arv;
-            graph.set_stretch_index(index_local);
-            graph.set_best_tree(tree_local);
-        } */
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
 
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
-
 
 //! Calculate stretch index - parallel
 /*!
@@ -158,13 +137,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     //int index_local = INF_VALUE;
     int index_local = (int)INFINITY;
     Graph tree_local;
-
     Graph tree(n);
-
-    // PASSEI O GRT para atributo do grafo
-    //OpBasic op;
-    ////int raiz;
-    //grt = op.maxLowerCicle(g); // alteracao DJ
 
     for(int i=0; i < n; ++i){
         prox_vizinho[i] = 0;
@@ -172,8 +145,13 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     }
 
     prox_vizinho[v] = start;
+    mtx.lock();
+    int stretch_index = g.get_stretch_index();
+    int lower_limit = g.grt-1 ;
+    mtx.unlock();
 
-    while(g.get_stretch_index() > g.grt-1 ){
+
+    while(stretch_index > lower_limit ){
         if(v == raiz){
             if(prox_vizinho[v] == end){
                 break; // Fim do algoritmo
@@ -195,12 +173,14 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f = find_factor(g, tree);
                         ++arv;
+                        mtx.lock();
                         g.add_tree();
+                        mtx.unlock();
                         
                         if(f < index_local){
                             index_local = f;
                             tree_local = tree;
-                            if(index_local == g.grt-1){// alteracao LF
+                            if(index_local == lower_limit){// alteracao LF
                               break;// alteracao LF
                             }// alteracao LF
 
@@ -221,11 +201,6 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
 
-/*     if(index_local < g.get_stretch_index()) {
-        total_arv += arv;
-        g.set_stretch_index(index_local);
-        g.set_best_tree(tree_local);
-    } */
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -325,10 +300,6 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     graph.sum_trees(G1.get_total_tree());
     int arv = 0; // Insert by compatibility with set_graph_final_parameters
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
-/*     if (index_local < graph.get_stretch_index()) {
-        graph.set_stretch_index(index_local);
-        graph.set_best_tree(tree_local);
-    } */
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -398,19 +369,11 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     
     mtx.lock();
     if( arv == 0){
-        std::cout << "thread " << id << " nao criou arvores.\n";
+        DEBUG std::cerr << "thread " << id << " nao criou arvores.\n";
     }
     else {
-        std::cout << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+        DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     }
-    //total_arv += arv; Já estava comentado antes de inserir set_graph_final_parameters
-/*     if( index_local < g.get_stretch_index()){
-        //index_global = index_local;
-        //tree_global = tree_local;
-        total_arv += arv;   // by thadeu
-        g.set_stretch_index(index_local); // by thadeu
-        g.set_best_tree(tree_local); // by thadeu
-    } */
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
     mtx.unlock();
 
@@ -499,6 +462,7 @@ void create_threads_big_cycle(Graph& g) {
     for (int i = n; i > 2; i--){
         DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
         big_cycle = op.cycle(g, i);
+        
         cycle_size = big_cycle.size();
         if (cycle_size != 0){
             DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
@@ -526,6 +490,7 @@ void create_threads_big_cycle(Graph& g) {
         neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
         // Here send edges' list to be deleted
         // Delete the edges ensures that there are no duplicate trees
+        //vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
         vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
     }
 
@@ -644,75 +609,10 @@ int vertice_maior_grau(Graph& g)
     return raiz;
 }
 
-
 void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph){
     if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
         total_arv += arv;
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
-    }
-}
-
-void main_algorithm(int &raiz, int &start, int &end, Graph &graph, Graph &G1){
-
-    int n = G1.getQtdVertices();    // num vertices
-    int m = G1.getQtdArestas();     // num edges
-    int prox_vizinho[n] = {};       // next neighbor (index)
-    int ult_colocado[n] = {};       // last add vertex at tree(index)
-    int u = -1;
-    int v = raiz;
-    int index_local = (int)INFINITY;
-
-    Graph tree_local(n);
-    Graph tree(n);
-
-    for(int i=0; i < n; ++i){
-        prox_vizinho[i] = 0;
-        ult_colocado[i] = -1;
-    }
-
-    prox_vizinho[v] = start;
-
-    while(G1.get_stretch_index() > G1.grt - 1) {
-        if(v == raiz){
-            if (prox_vizinho[v] == end){
-                break; // Fim do algoritmo
-            }
-        }
-        if ( prox_vizinho[v] == G1.grau(v) ){
-            prox_vizinho[v] = 0;
-            v = G1.ant_vertex(v);
-            tree.remove_aresta(v, ult_colocado[v]);
-            ult_colocado[v] = -1;
-        } else {
-            u = G1.adjList(v)[prox_vizinho[v]];
-            ++prox_vizinho[v];
-            if( not tree.possui_aresta(v, u) ){
-                tree.add_aresta(v, u);
-                ult_colocado[v] = u;
-
-                if(not OpBasic::is_cyclic(tree)){
-
-                    if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                                mtx.lock();
-                                int f = find_factor(graph, tree);
-                                mtx.unlock();
-                        G1.add_tree();
-
-                        if(f < index_local){
-                            index_local = f;
-                            tree_local = tree;
-                            if(index_local == G1.grt -1){
-                              break;
-                            }
-                        }
-                    } else {
-                        v = G1.next_vertex(v);
-                        continue;
-                    }
-                }
-                tree.remove_aresta(v, u);
-            }
-        }
     }
 }
