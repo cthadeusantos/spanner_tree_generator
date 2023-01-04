@@ -1,6 +1,6 @@
 /**
  * @file main.cpp
- * @author Carlos Thadeu ()
+ * @authors { Carlos Thadeu [CT] / Anderson Zudio[AZ](contributor)}
  * @brief Application to solve the T-admissibility problem with parallelism of threads or sequential.
  */
 
@@ -14,6 +14,8 @@
 #include <thread>  // std::thread
 #include <mutex>   // std::mutex
 #include <ctime>
+
+#include <chrono>	// contributor AZ
 
 #include "Debug.h"
 
@@ -51,7 +53,8 @@ extern int index_global;
  */
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
-int num_threads = 1;
+extern int num_threads;
+extern int max_induced_cycles;
 int type_running = 0;
 int output = 0;
 bool best = false;
@@ -71,10 +74,11 @@ void usage(const char* app_name){
 	std::cout << "Options: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
-	
+	std::cout << "\t-c X | --cycles X\tDefine the max of induced cycles to be seek (usage only induced cycle parallel). [current " << max_induced_cycles << "]" << std::endl  << std::endl ;
+
 	std::cout << "Show info:" << std::endl;
-	std::cout << "\t-s | --summary \t\tAt file. [current " << output << "]" << std::endl;
-	std::cout << "\t-e | --expo \t\tAt screen. [current " << output << "]" << std::endl;
+	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
+	std::cout << "\t-s | --screen \t\tAt screen. [current " << output << "]" << std::endl;
 	std::cout << "\t-d | --debug \t\tAt screen only debug mode. [current " << output << "]" << std::endl;
 	std::cout << "\t-b | --best \t\tShow the best tree found." << std::endl;
 	std::cout << "You can combine summary, expo, debug and show" << std::endl << std::endl;
@@ -103,7 +107,8 @@ void usage(const char* app_name){
 }
 
 /**
- * @brief Auxiliary function to parse the contents of the command line arguments. 
+ * @brief Auxiliary function to parse the contents of the command line arguments.
+ * @authors { Anderson Zudio[AZ] /  Carlos Thadeu [CT] (contributor)}
  * @details This is a simple auxiliary function that will parse the args from the command line. You may see the entire specification at the terminal using the -help argument.
  */
 void parseArgs(int argc, char** argv){
@@ -129,11 +134,15 @@ void parseArgs(int argc, char** argv){
 			type_running = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed type running to: " << type_running << '\n';
 		}
-		else if(arg == "-e" || arg == "--expo"){
+		else if(arg == "-c" || arg == "--cycles"){
+			max_induced_cycles = std::atoi(argv[++i]);
+			DEBUG std::cerr << "Changed maximum induced cycles to: " << max_induced_cycles << '\n';
+		}
+		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
 			DEBUG std::cerr << "Changed output type to: " << type_running << '\n';
 		}
-		else if(arg == "-s" || arg == "--summary"){
+		else if(arg == "-f" || arg == "--file"){
 			output = output + 2;
 			DEBUG std::cerr << "Changed output type to: " << type_running << '\n';
 		}
@@ -187,7 +196,8 @@ void parseArgs(int argc, char** argv){
 
 /// @brief  The main method
 int main(int argc, char** argv){
-
+	num_threads = 1;
+	max_induced_cycles = 1;
 	if(argc < 2){
 		usage("--help");
 		exit(0);
@@ -208,14 +218,18 @@ int main(int argc, char** argv){
     graph = read_graph_file();
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 
-	time_t time_begin;
-    time_t time_end;
-    double tempo_total = 0;
-
+	// Substituir pela biblioteca chrono (AZ)
+	//time_t time_begin;
+    //time_t time_end;
+    //double tempo_total = 0;
+	
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 
 	sem_init(&semaforo, 0, num_threads);
-	time(&time_begin);
+	//time(&time_begin);
+
+	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+
 	if (type_running == 0){
 		DEBUG std::cerr << "Create graph - wait!\n";
 		create_new_graphs();
@@ -225,12 +239,12 @@ int main(int argc, char** argv){
 		Stretch().sequential(graph);
 	} else if (type_running == 2){
 		DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
-		run_name = "Max_degree_edges";
-		create_threads_edge_max_degree(graph);
+		run_name = "Brute force-parallel";
+		create_threads(graph);
 	} else if (type_running == 3){
 		DEBUG std::cerr << "Solving brute force with Maximum degree - PARALLEL- wait!\n";
-		run_name = "Maximum_degree-parallel";
-		create_threads(graph);
+		run_name = "Max_degree_edges";
+		create_threads_edge_max_degree(graph);
 	} else if (type_running == 4){
 		DEBUG std::cerr << "Solving with induced cycle - PARALLEL- wait!\n";
 		run_name = "Induced_cycle";
@@ -260,29 +274,53 @@ int main(int argc, char** argv){
 		run_name = "Articulations";
 		create_threads_articulations(graph);
 	}
-	time(&time_end);
+
+	/* #include "brute-force/bf_sequential.cpp"
+	#include "brute-force/bf_threads.cpp"
+	#include "brute-force/bf_maxdegree.cpp"
+	#include "brute-force/bf_cycle.cpp" */
+
+	//time(&time_end);
+	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
+	std::chrono::duration<double> execution_duration(end - start);
+	double lastExecutionTime = execution_duration.count();
 
 	// OUTPUT - nothing - screen - file - debug
-	if ((output & 1)==1){
-		std::cout << "Outputing the solution for " << run_name << std::endl;
+	if ((output & 1)==1){	// TO SCREEN
 		std::cout << "Input filename: " << filename << std::endl;
+		std::cout << "Outputing the solution for " << run_name << std::endl;
+		std::cout << "Vertices: " << graph.get_qty_vertex() << std::endl;
+		std::cout << "Edges: " << graph.get_num_edges() << std::endl;
 		std::cout << "Limite inferior: " << lower_limit << std::endl;
 		std::cout << "Stretch index calculated: " << graph.get_stretch_index() <<  std::endl;
 		std::cout << "Total de árvores calculadas: " << graph.get_total_tree() <<  std::endl;
-		std::cout << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
+		//std::cout << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
+		std::cout << "Running time (in seconds): " << lastExecutionTime <<  std::endl;
 		if (best) graph.show_best_tree();
 	}
-	if ((output & 2)==2){
-		std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
+	if ((output & 2)==2){	// TO FILE
+		//std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
+		std::cout <<	filename << " " <<
+						run_name << " " <<
+						graph.get_qty_vertex() << " " <<
+						graph.get_num_edges() << " " <<
+						lower_limit << " " <<
+						graph.get_stretch_index() << " " <<
+						graph.get_total_tree() << " " <<
+						lastExecutionTime << std::endl;
 		if (best) graph.show_best_tree();
 	}
-	if ((output & 64)==64){
-		DEBUG std::cerr << "Outputing the solution for " << run_name << std::endl;
+	if ((output & 64)==64){	// TO SCREEN AT DEBUGGER
 		DEBUG std::cerr << "Input filename: " << filename << std::endl;
+		DEBUG std::cerr << "Outputing the solution for " << run_name << std::endl;
+		DEBUG std::cerr << "Vertices: " << graph.get_qty_vertex() << std::endl;
+		DEBUG std::cerr << "Edges: " << graph.get_num_edges() << std::endl;
 		DEBUG std::cerr << "Limite inferior: " << lower_limit << std::endl;
 	    DEBUG std::cerr << "Stretch index calculated: " << graph.get_stretch_index() <<  std::endl;
 		DEBUG std::cerr << "Total de árvores calculadas: " << graph.get_total_tree() <<  std::endl;
-		DEBUG std::cerr << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
+		//DEBUG std::cerr << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
+		DEBUG std::cerr << "Running time (in seconds): " << lastExecutionTime <<  std::endl;
+
 		if (best){
 			int node1 = 0, node2 = 0;
 			for (auto&& tuple: graph.best_tree){

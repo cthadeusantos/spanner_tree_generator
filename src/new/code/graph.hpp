@@ -16,6 +16,7 @@ private:
     int qtdArestas;
     int stretch_index = (int)INFINITY; // by Thadeu
     int total_tree = 0; // by Thadeu
+    bool signal=true;
   
 public:
     Graph(int n);
@@ -74,6 +75,8 @@ public:
     std::vector<int> DFS(int s);
     void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
     Graph build_subgraph(std::vector<int> &split_in_subgraphs);
+    bool get_signal();
+    void set_signal();
 };
 
 #endif

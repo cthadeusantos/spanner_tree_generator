@@ -2,6 +2,8 @@
 #include <mutex>   // std::mutex
 #include <semaphore.h> // sem_t, sem_init, sem_wait, sem_post, sem_destroy
 
+#include <initializer_list>
+
 #include <iostream>
 #include "graph.hpp"
 #include "opBasic.hpp"
@@ -14,6 +16,8 @@
 sem_t semaforo;
 int total_arv = 0;
 std::mutex mtx;
+int num_threads;
+int max_induced_cycles;
 
 /**
  * @brief Calculate stretch index using articulations
@@ -60,7 +64,8 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     int stretch_index = graph.get_stretch_index();
     mtx.unlock();
 
-    while(stretch_index > lower_limit){
+    while(stretch_index > lower_limit && graph.get_signal()){
+    //while(stretch_index > lower_limit ){
         if(v == raiz){
             if(prox_vizinho[v] == end){
                 break; // Fim do algoritmo
@@ -104,10 +109,8 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
 
     mtx.lock();
 
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
-
+    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
-
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -150,8 +153,8 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int lower_limit = g.grt-1 ;
     mtx.unlock();
 
-
-    while(stretch_index > lower_limit ){
+    while(stretch_index > lower_limit && g.get_signal() ){
+   //while(stretch_index > lower_limit){
         if(v == raiz){
             if(prox_vizinho[v] == end){
                 break; // Fim do algoritmo
@@ -197,8 +200,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 
     mtx.lock();
 
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores." << std::endl;
-
+    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
 
     mtx.unlock();
@@ -226,7 +228,18 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     // Edges removed will processed another threads
     //mtx.lock();
     for (int i=0; i < id * 2 ; i=i+2){
-        G1.remove_aresta(edges_list[i], edges_list[i+1]);
+        int v1=edges_list[i];
+        int v2=edges_list[i+1];
+        G1.remove_aresta(v1, v2);
+        if (G1.grau(v1)<=1 && i != 0){
+            G1.add_aresta(v1, v2);
+            if (id == (i / 2 + 1)){
+                DEBUG std::cerr << "Thread " << id << " with v1: " << v1 << " v2: " << v2 << " cannot be removed!"  << std::endl;
+                sem_post(&semaforo); // a thread libera espaço para a proxima
+                return;
+            }
+
+        }
     } // end of prodedure to remove the root edges
     //mtx.unlock();   // add by Thadeu
 
@@ -251,9 +264,9 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
 
     prox_vizinho[v] = start;
 
-    if (G1.grau(v) == 0) disconnected = true; // There's no way to build a tree
-    
-    while(G1.get_stretch_index() > G1.grt - 1 && G1.grau(v) > 0 && !(disconnected)) {
+    //if (G1.grau(v) == 0) disconnected = true; // There's no way to build a tree
+    while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()) {
+   // while(G1.get_stretch_index() > G1.grt - 1 && G1.grau(v) > 0 && !(disconnected)) {
         if(v == raiz){
             if (prox_vizinho[v] == end){
                 break; // Fim do algoritmo
@@ -274,9 +287,9 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
                 if(not OpBasic::is_cyclic(tree)){
 
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                                mtx.lock();
-                                int f = find_factor(graph, tree);
-                                mtx.unlock();
+                        mtx.lock();
+                        int f = find_factor(graph, tree);
+                        mtx.unlock();
                         G1.add_tree();
 
                         if(f < index_local){
@@ -295,7 +308,16 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
             }
         }
     }
-    DEBUG std::cerr << "thread " << id << " criou " << G1.get_total_tree() << " arvores." << std::endl;
+    int arvores = G1.get_total_tree();
+    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
+/*     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores." << std::endl;
+        if( arvores == 0){
+        DEBUG std::cerr << "thread " << id << " nao criou arvores.\n";
+    }
+    else {
+        DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
+    } */
+    
     mtx.lock();
     graph.sum_trees(G1.get_total_tree());
     int arv = 0; // Insert by compatibility with set_graph_final_parameters
@@ -331,9 +353,9 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     {
         gTeste.add_aresta(edges[i], edges[i+1]);
     }
-    if( OpBasic::is_connected(gTeste) ){
+    if( OpBasic::is_connected(gTeste)){
         if(g.get_stretch_index() > g.grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
-            while(indice[0] < start+2){
+            while(indice[0] < start+2  && g.get_signal()){ //Update by thadeu
                 if( indice[j]/2 > m-(n-1-j) ){
                     --j;
                     tree.remove_aresta(edges[indice[j]],edges[indice[j]+1]);
@@ -345,9 +367,13 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                         if(j == n-2){ // achou uma arvore geradora
                             int f = find_factor(g, tree);
                             ++arv;
+                            mtx.lock();
+                            g.add_tree();
+                            mtx.unlock();
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
+
                                 if (index_local == g.grt-1) {
                                     break;
                                 }
@@ -368,15 +394,9 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     }
     
     mtx.lock();
-    if( arv == 0){
-        DEBUG std::cerr << "thread " << id << " nao criou arvores.\n";
-    }
-    else {
-        DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
-    }
+    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
     mtx.unlock();
-
     sem_post(&semaforo);
 }
 
@@ -413,8 +433,12 @@ void create_threads(Graph& g)
 
 void create_threads_edge_max_degree(Graph& g)
 {
-    int qtd_th = g.maior_grau();
-    //int qtd_th = num_thread;
+    
+    
+    //int qtd_th = g.maior_grau();
+    int qtd_th = num_threads;
+
+
 
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
@@ -427,6 +451,16 @@ void create_threads_edge_max_degree(Graph& g)
 
     std::vector<int> edges = OpBasic::edges_by_bigger_degree(g);
     
+    qtd_th = std::max({num_threads, g.maior_grau(), int(edges.size()/2)});
+/*     if (num_threads > g.maior_grau()){
+        qtd_th = g.maior_grau();
+    } else if (num_threads > edges.size()/2){
+        qtd_th = int(edges.size()/2);
+    } */
+    if (qtd_th > num_threads){
+        qtd_th = num_threads;
+    }
+
     for(int i=0; i < qtd_th; ++i){
         vetor_th[i] = std::thread(find_index_pararell_edge, std::ref(g), edges, i*2, i); // separação dos threats
     }
@@ -459,8 +493,11 @@ void create_threads_big_cycle(Graph& g) {
     std::vector<int> big_cycle;
     // find the largest induced cycle
     
-    for (int i = n; i > 2; i--){
-        DEBUG std::cerr << "Procurando ciclo induzido de tamanho : " << i << std::endl;
+    if (n < max_induced_cycles) max_induced_cycles=n;
+
+    //big_cycle = OpBasic::biggestCycle(g);
+    for (int i = max_induced_cycles; i > 2; i--){
+        DEBUG std::cerr << "Seeking for induced cycle - size: " << i << std::endl;
         big_cycle = op.cycle(g, i);
         
         cycle_size = big_cycle.size();
@@ -614,5 +651,6 @@ void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Grap
         total_arv += arv;
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
+        if (index_local==graph.grt - 1) graph.set_signal();
     }
 }

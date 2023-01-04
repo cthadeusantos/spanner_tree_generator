@@ -600,3 +600,26 @@ Graph Graph::build_subgraph(std::vector<int> &subgraph){
     }
     return new_graph;
 }
+
+/**
+ * @brief Return signal if lower limit was reached
+ * @details Return signal if lower limit was reached when the original graph was splitted
+ * Lower limit not reached, signal is true.
+ * Lower limit reached, signal is false.
+ * @author Carlos Thadeu
+ */
+bool Graph::get_signal(){
+    return this->signal;
+}
+
+/**
+ * @brief Set signal to false
+ * @details If the lower limit was reached, the signal is setting to false
+ * The signal at original graph is useful when the original graph was split in many parts
+ * and there is a need to know if lower limit was reached
+ * Not reached, signal is true. Reached, signal is false.
+ * @author Carlos Thadeu
+ */
+void Graph::set_signal(){
+    this->signal=false;
+}
