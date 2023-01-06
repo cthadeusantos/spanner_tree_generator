@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_MAIN",
-            "args": [ "<", "${workspaceFolder}/instances/examples/G12_articulation.in", ">", "${workspaceFolder}/workspace/debug.out", "-r", "3", "-t", "4", "--debug", "--summary" ],
+            "args": [ "<", "${workspaceFolder}/instances/grafos/grafo_10.txt", ">", "${workspaceFolder}/workspace/debug.out", "-r", "3", "-c", "10", "-t", "32", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

@@ -42,7 +42,7 @@ int Heuristic::breadth_heuristic(Graph &graph)
 
     root = Centrality::root_selection2(graph);
 
-    DEBUG std::cerr << "Vértice raiz da árvore: " << root << std::endl;
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     QUEUE1.push(root);
     enqueued.push_back(root);
@@ -102,7 +102,7 @@ int Heuristic::heuristica_1(Graph& g)
     Graph tree(n);
     root = vertex_list[0];
 
-    DEBUG std::cerr << "RAIZ ESOLHIDA: " << root << std::endl;
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     for( int v : g.adjList(root) )
     {
@@ -162,7 +162,7 @@ void Heuristic::heuristica_1_modified(Graph& g)
         DEBUG std::cerr << i << "-" << Centrality::vertex_importance(i, g) << std::endl; 
     }
     
-    DEBUG std::cerr << "RAIZ ESCOLHIDA: " << root << std::endl;
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     for( int v : g.adjList(root) )
     {
@@ -453,42 +453,6 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
         int vgrau = graph.grau(vertex);
         soma = soma + vgrau;
         visited.push_back(vertex);
-
-        //////////////
-        /* int num_neighbor = graph.adjList(vertex).size();
-        int LIST2[2][num_neighbor];
-
-        for (int i = 0; i < num_neighbor; ++i){
-                LIST2[0][i] = graph.adjList(vertex)[i];
-                LIST2[1][i] = graph.grau(LIST2[0][i]);
-        }
-
-        // BUBLESORT TOSCÃO
-        //for (int i=0; i < counter - 1; ++i){
-        for (int i=0; i < num_neighbor; ++i){
-            //for (int j = 1; j < counter; ++j){
-            for (int j = 0; j < num_neighbor; ++j){
-                if (LIST2[1][i] > LIST2[1][j]){
-                    int temp1 = LIST2[0][j];
-                    LIST2[0][j] = LIST2[0][i];
-                    LIST2[0][i] = temp1;
-                    int temp2 = LIST2[1][j];
-                    LIST2[1][j] = LIST2[1][i];
-                    LIST2[1][i] = temp2;
-                }
-            }
-        }
-
-        
-        for (int i=0; i < num_neighbor; i++){
-            int v = LIST2[0][i];
-            if (!in(FILA2, v)){
-                FILA2.push_back(v);
-            }
-        } */
-
-        //////////////
-
 
         for (auto v : graph.adjList(vertex)){
             if (!in(v, FILA2)){
