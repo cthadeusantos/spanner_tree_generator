@@ -26,14 +26,13 @@
 #include "code/parallel.hpp"
 /* #include "code/sequential_functions.hpp" */
 
-
 #include "code/frontier.hpp"
 #include "code/genGraph.hpp"
 #include "code/graph.hpp"
 #include "code/heuristic.hpp"
 #include "code/opBasic.hpp"
 #include "code/stretch.hpp"
-
+#include "code/centrality.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
@@ -41,6 +40,9 @@
 #else
 	#define DEBUG while(false)
 #endif
+
+//#include <atomic>
+//std::atomic<bool> processando(true);
 
 extern sem_t semaforo;
 extern int index_global;
@@ -158,14 +160,6 @@ void parseArgs(int argc, char** argv){
 			graph_type = false;
 			DEBUG std::cerr << "Changed triangle to: " << graph_type << '\n';
 		}
-/* 		else if(arg == "--degree"){
-			paralel_type = "m";
-			DEBUG std::cerr << "Changed paralelism to: " << paralel_type << '\n';
-		}
-		else if(arg == "--list"){
-			paralel_type = "l";
-			DEBUG std::cerr << "Changed paralelism to: " << paralel_type << '\n'; 
-		} */
 		else if(arg == "-min"){
 			min_vertices = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed minimum to: " << min_vertices << '\n';
@@ -218,16 +212,11 @@ int main(int argc, char** argv){
     graph = read_graph_file();
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 
-	// Substituir pela biblioteca chrono (AZ)
-	//time_t time_begin;
-    //time_t time_end;
-    //double tempo_total = 0;
-	
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
-
+	
 	sem_init(&semaforo, 0, num_threads);
-	//time(&time_begin);
-
+	
+	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	if (type_running == 0){
@@ -275,12 +264,6 @@ int main(int argc, char** argv){
 		create_threads_articulations(graph);
 	}
 
-	/* #include "brute-force/bf_sequential.cpp"
-	#include "brute-force/bf_threads.cpp"
-	#include "brute-force/bf_maxdegree.cpp"
-	#include "brute-force/bf_cycle.cpp" */
-
-	//time(&time_end);
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();

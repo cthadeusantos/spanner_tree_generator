@@ -268,9 +268,10 @@ cython_debug/
 *.code-workspace
 
 # Ignore doxygen buildigs
-documents/source-doc.html
-documents/doxygen/Doxyfile
-documents/html/*
-documents/html/*.map
+documents/doxygen/html/
+documents/doxugen/html/*.map
+documents/doxygen/latex/
+!documents/doxygen/Doxyfile
+!documents/source-doc.html
 
 # End of https://www.toptal.com/developers/gitignore/api/c,c++,python,visualstudiocode,notepadpp

@@ -72,11 +72,16 @@ public:
     int get_qty_vertex();
     int neighbor_index(int vertex, int neighbor);
     int eccentricity(Graph &graph, int vertex);
+
     std::vector<int> DFS(int s);
     void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
     Graph build_subgraph(std::vector<int> &split_in_subgraphs);
     bool get_signal();
     void set_signal();
+
+    void my_insertionSort_graph(std::vector <int> &vector1, std::vector <int> &vector2, char order);
+    std::vector<int> select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2);
+
 };
 
 #endif

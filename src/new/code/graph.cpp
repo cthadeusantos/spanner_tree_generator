@@ -623,3 +623,64 @@ bool Graph::get_signal(){
 void Graph::set_signal(){
     this->signal=false;
 }
+
+/**
+ * @brief Modify insert sort
+ * @details Details decription
+ * That's a modify code to sort two vectors at ascendind or descending.
+ * The sorting will be controlled by the first vector (it will be mandatory)
+ * The second vector will be sort following the first vector positions
+ * Use 'a' for ascending or 'd' for descending
+ * Example: v1={4,3,6,2} v2={1,2,3,4} ascending
+ * Result: v1={2,3,4,6} v2={4,2,1,3}
+ * @date 2022/12/17
+ * @author Original code rathbhupendra
+ * @author Modify code cthadeusantos
+ * @param vector1   That's an integer vector that will be sort
+ * @param vector2   That's an integer vector that will be sort following vector1 order
+ * @param order (optional) a - ascending d - descending
+ */
+void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int> &vector2, char order='a')
+{
+    int n = vector1.size();
+    int i, key1, key2, j;
+
+    for (i = 1; i < n; i++)
+    {
+        key1 = vector1[i];
+        key2 = vector2[i];
+        j = i - 1;
+ 
+        // Move elements of arr[0..i-1], 
+        // that are greater than key, to one
+        // position ahead of their
+        // current position
+        if (order == 'a'){
+            while (j >= 0 && key1 < vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        } else if (order == 'd'){
+            while (j >= 0 && key1 > vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        }
+
+        vector1[j + 1] = key1;
+	    vector2[j + 1] = key2;
+    }
+}
+
+std::vector<int> Graph::select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2){
+    std::vector<int> output;
+    for (int i=0; i<vector1.size();i++){
+        if (vector2[i]==max)
+            output.push_back(vector1[i]);
+    }
+    return output;
+}

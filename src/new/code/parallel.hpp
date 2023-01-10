@@ -20,3 +20,4 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
 void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id);
 
 void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph);
+std::vector<std::vector<int>> seeking_induced_cycles(Graph &graph);

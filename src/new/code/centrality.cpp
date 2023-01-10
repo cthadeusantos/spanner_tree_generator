@@ -1,6 +1,12 @@
 #include "centrality.hpp"
 #include "heuristic.hpp"
 
+/**
+ * Select a vertex to be root
+ * @details Selects a vertex to be root using closeness centrality from all graph's vertices
+ * @author Carlos Thadeu
+ * @param g a graph
+ */
 int Centrality::root_selection2(Graph &g){    // By thadeu
     //std::queue <int>FILA;   // contains the vertices with the highest degree (same degree)
 
@@ -21,7 +27,7 @@ int Centrality::root_selection2(Graph &g){    // By thadeu
  * @details Select a vertex to be root using closeness centrality 
  * @author Carlos Thadeu
  * @param vector1 a vector of pair <int, float> that represents a vertex and your centrality
- * @param selected an integer that represents the vertex with max centrality 
+ * @return selected an integer that represents the vertex with max centrality 
  */
 int Centrality::root_selection2(std::vector<std::pair<int,float>> vector1){    // By thadeu
 
@@ -40,6 +46,14 @@ int Centrality::root_selection2(std::vector<std::pair<int,float>> vector1){    /
     return selected;
 }
 
+/**
+ * Select a vertex to be root
+ * @details Select a vertex to be root using closeness centrality.
+ * @details That's a first version ... DEPRECATED
+ * @author Carlos Thadeu
+ * @param vector1 a vector of pair <int, float> that represents a vertex and your centrality
+ * @return selected an integer that represents the vertex with max centrality 
+ */
 int Centrality::root_selection(Graph &g){    // By thadeu
     int index = 0;
     int n = g.get_qty_vertex();
@@ -92,6 +106,13 @@ int Centrality::root_selection(Graph &g){    // By thadeu
     return nominees[index];
 }
 
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for all vertices at graph
+ * @author Carlos Thadeu
+ * @param g a graph
+ * @return a vector of float that represents closeness centrality
+ */
 std::vector <float> Centrality::closeness_centrality(Graph &graph){
     int n = graph.get_qty_vertex();
     std::vector <float> closeness;
@@ -101,7 +122,31 @@ std::vector <float> Centrality::closeness_centrality(Graph &graph){
     return closeness;
 }
 
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for specific vertices
+ * @author Carlos Thadeu
+ * @param vertices a set of vertices
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
 std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(std::set <int> &vertices,Graph &graph){
+    std::vector<std::pair<int,float>> closeness;
+    for (auto i : vertices){
+        closeness.push_back({i, vertex_importance(i, graph)});
+    }
+    return closeness;
+}
+
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for specific vertices
+ * @author Carlos Thadeu
+ * @param vertices a vector of vertices
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(std::vector <int> &vertices,Graph &graph){
     std::vector<std::pair<int,float>> closeness;
     for (auto i : vertices){
         closeness.push_back({i, vertex_importance(i, graph)});

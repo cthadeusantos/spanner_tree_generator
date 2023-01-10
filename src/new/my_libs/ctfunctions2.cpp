@@ -312,6 +312,19 @@ std::set<int> &articu_p, std::vector<std::pair<int,int>> &bridge, Graph &graph){
 
 }
 
+/**
+ * Join two vectors 
+ * @details Join vector 1 and vector 2
+ * @author Carlos Thadeu
+ * @param vector1 a vector
+ * @param vector2 a vector 
+ * @return a vector (vector 1 + vector 2)
+ */
+std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2){
+    for (int i=0; i < vector2.size(); i++)
+        vector1.push_back(vector2[i]);
+    return vector1;
+}
 
 /*
  * Funcoes que fazem a leitura/apoio do arquivo em redirections
@@ -468,4 +481,6 @@ int create_new_graphs(){
     }
     return 0;
 }
+
+
 

@@ -27,4 +27,5 @@ class Centrality
         static float vertex_importance(int vertex,  Graph &graph); // by Thadeu
         static std::vector <float> closeness_centrality(Graph &graph);
         static std::vector<std::pair<int,float>> closeness_centrality_list(std::set <int> &vertices,Graph &graph);
+        static std::vector<std::pair<int,float>> closeness_centrality_list(std::vector <int> &vertices,Graph &graph);
 };

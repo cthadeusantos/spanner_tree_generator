@@ -13,11 +13,14 @@
 #include "parallel.hpp"
 #include "centrality.hpp"
 
+#define INDUCED_CYCLE_SYZE_START 8
+
 sem_t semaforo;
 int total_arv = 0;
 std::mutex mtx;
 int num_threads;
 int max_induced_cycles;
+//extern std::atomic<bool> processando;
 
 /**
  * @brief Calculate stretch index using articulations
@@ -184,6 +187,9 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
                             index_local = f;
                             tree_local = tree;
                             if(index_local == lower_limit){// alteracao LF
+                                mtx.lock(); // Alteração CT
+                                g.set_signal(); // Alteração CT
+                                mtx.unlock(); // Alteração CT
                               break;// alteracao LF
                             }// alteracao LF
 
@@ -218,15 +224,17 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 */
 void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const int id, std::vector<int> edges_list )
 {
-    
+    bool execute = true;
     sem_wait(&semaforo);
-	//mtx.lock();
+    //sem_wait(&semaforo);
+    //sem_wait(&semaforo);
+	mtx.lock();
+    int lower_limit = graph.grt-1 ;
     Graph G1 = graph;   // Auxiliary graph - local graph
-    //mtx.unlock();
+    mtx.unlock();
 
     // remove the root edges from a cycle of previous threads
     // Edges removed will processed another threads
-    //mtx.lock();
     for (int i=0; i < id * 2 ; i=i+2){
         int v1=edges_list[i];
         int v2=edges_list[i+1];
@@ -235,8 +243,7 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
             G1.add_aresta(v1, v2);
             if (id == (i / 2 + 1)){
                 DEBUG std::cerr << "Thread " << id << " with v1: " << v1 << " v2: " << v2 << " cannot be removed!"  << std::endl;
-                sem_post(&semaforo); // a thread libera espaço para a proxima
-                return;
+                execute=false;
             }
 
         }
@@ -265,58 +272,58 @@ void find_index_induced_cycle(Graph &graph, int raiz, int neighbor_start, const 
     prox_vizinho[v] = start;
 
     //if (G1.grau(v) == 0) disconnected = true; // There's no way to build a tree
-    while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()) {
-   // while(G1.get_stretch_index() > G1.grt - 1 && G1.grau(v) > 0 && !(disconnected)) {
-        if(v == raiz){
-            if (prox_vizinho[v] == end){
-                break; // Fim do algoritmo
-            }
-        }
-        if ( prox_vizinho[v] == G1.grau(v) ){
-            prox_vizinho[v] = 0;
-            v = G1.ant_vertex(v);
-            tree.remove_aresta(v, ult_colocado[v]);
-            ult_colocado[v] = -1;
-        } else {
-            u = G1.adjList(v)[prox_vizinho[v]];
-            ++prox_vizinho[v];
-            if( not tree.possui_aresta(v, u) ){
-                tree.add_aresta(v, u);
-                ult_colocado[v] = u;
-
-                if(not OpBasic::is_cyclic(tree)){
-
-                    if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                        mtx.lock();
-                        int f = find_factor(graph, tree);
-                        mtx.unlock();
-                        G1.add_tree();
-
-                        if(f < index_local){
-                            index_local = f;
-                            tree_local = tree;
-                            if(index_local == G1.grt -1){
-                              break;
-                            }
-                        }
-                    } else {
-                        v = G1.next_vertex(v);
-                        continue;
-                    }
+    if (execute){
+        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()) {
+        //while(G1.get_stretch_index() > graph.grt - 1 && processando) {
+        // while(G1.get_stretch_index() > G1.grt - 1 && G1.grau(v) > 0 && !(disconnected)) {
+            if(v == raiz){
+                if (prox_vizinho[v] == end){
+                    break; // Fim do algoritmo
                 }
-                tree.remove_aresta(v, u);
+            }
+            if ( prox_vizinho[v] == G1.grau(v) ){
+                prox_vizinho[v] = 0;
+                v = G1.ant_vertex(v);
+                tree.remove_aresta(v, ult_colocado[v]);
+                ult_colocado[v] = -1;
+            } else {
+                u = G1.adjList(v)[prox_vizinho[v]];
+                ++prox_vizinho[v];
+                if( not tree.possui_aresta(v, u) ){
+                    tree.add_aresta(v, u);
+                    ult_colocado[v] = u;
+
+                    if(not OpBasic::is_cyclic(tree)){
+
+                        if(tree.getQtdArestas() == tree.getQtdVertices()-1){
+                            mtx.lock();
+                            int f = find_factor(graph, tree);
+                            mtx.unlock();
+                            G1.add_tree();
+
+                            if(f < index_local){
+                                index_local = f;
+                                tree_local = tree;
+                                if(index_local == lower_limit){// alteracao LF
+                                    break; // alteracao LF
+                                }// alteracao LF
+                                /* if(index_local == G1.grt - 1){
+                                    break;
+                                } */
+                            }
+                        } else {
+                            v = G1.next_vertex(v);
+                            continue;
+                        }
+                    }
+                    tree.remove_aresta(v, u);
+                }
             }
         }
     }
+
     int arvores = G1.get_total_tree();
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-/*     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores." << std::endl;
-        if( arvores == 0){
-        DEBUG std::cerr << "thread " << id << " nao criou arvores.\n";
-    }
-    else {
-        DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    } */
     
     mtx.lock();
     graph.sum_trees(G1.get_total_tree());
@@ -433,12 +440,8 @@ void create_threads(Graph& g)
 
 void create_threads_edge_max_degree(Graph& g)
 {
-    
-    
     //int qtd_th = g.maior_grau();
     int qtd_th = num_threads;
-
-
 
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
@@ -470,13 +473,18 @@ void create_threads_edge_max_degree(Graph& g)
     }
 }
 
+/**
+ * @brief Create threads to calculate stretch index induced cycles
+ * @details Create thread to calculate the stretch index induced cycles (if exists)
+ * This procedure will seek for induced cycles and calculate the stretch index.
+ * @author Carlos Thadeu
+ * @param g a graph that represents the graph
+ */
 void create_threads_big_cycle(Graph& g) {
     int qty = -1;
     int root = -1;
     int neighbor = -1;
     std::vector<int> edges_list = {};
-    std::vector<int> neighbors;
-    //int pos = -1;
 
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
@@ -484,53 +492,41 @@ void create_threads_big_cycle(Graph& g) {
     OpBasic op; // by thadeu
     g.grt = op.maxLowerCicle(g); // by thadeu
     // fim calcula grt
-    
-    int n = g.get_qty_vertex();
-    root = vertice_maior_grau(g);
-    int max_degree = g.grau(root);
-    int cycle_size;
- 
-    std::vector<int> big_cycle;
-    // find the largest induced cycle
-    
-    if (n < max_induced_cycles) max_induced_cycles=n;
 
-    //big_cycle = OpBasic::biggestCycle(g);
-    for (int i = max_induced_cycles; i > 2; i--){
-        DEBUG std::cerr << "Seeking for induced cycle - size: " << i << std::endl;
-        big_cycle = op.cycle(g, i);
-        
-        cycle_size = big_cycle.size();
-        if (cycle_size != 0){
-            DEBUG std::cerr << "Achei ciclo induzido de tamanho :" << cycle_size << std::endl;
-            break;
-        }
-    }
-    qty = cycle_size;
-    neighbors = big_cycle;
-           
-    std::thread vetor_th[qty];
+    std::vector<std::vector<int>> induced_cycles = seeking_induced_cycles(g);
+
     // build edge list to be deleted from original graph inside find_index_induced_cycle
     // Thread 1 remove 1st edge (inside find_index_induced_cycle)
     // Thread 2 remove 1st and 2nd edges (inside find_index_induced_cycle)
     // Thread 3 remove 1st, 2nd and 3rd edges (inside find_index_induced_cycle)
     // and go on deleting edges (inside find_index_induced_cycle)
-    for(int i = 0; i < qty; ++i){
-        root = neighbors[i];
-        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
-        edges_list.push_back(root);
-        edges_list.push_back(neighbor);
+
+    for (int j=0; j < induced_cycles.size(); j++){
+        for(int i = 0; i < induced_cycles[j].size()-1; ++i){
+            root = induced_cycles[j][i];
+            neighbor=induced_cycles[j][i+1];
+            edges_list.push_back(root);
+            edges_list.push_back(neighbor);
+        }
     }
+    
+    qty = int(edges_list.size() / 2);
+
+    if (qty > num_threads)
+        qty = num_threads;
+            
+    DEBUG std::cerr << "Threads usadas: " << qty << std::endl;
+    std::thread vetor_th[qty];
 
     for(int i = 0; i < qty; ++i){
-        root = neighbors[i];
-        neighbor = (i+1 == qty) ? neighbors[0] : neighbors[i+1];
+        root = edges_list[i*2];
+        neighbor = edges_list[i*2+1];
         // Here send edges' list to be deleted
         // Delete the edges ensures that there are no duplicate trees
         //vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
         vetor_th[i] = std::thread(find_index_induced_cycle, std::ref(g), root, neighbor, i, std::ref(edges_list));
     }
-
+    sem_wait(&semaforo);
     for(int i = 0; i < qty; ++i){
         vetor_th[i].join();
     }
@@ -651,6 +647,100 @@ void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Grap
         total_arv += arv;
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
-        if (index_local==graph.grt - 1) graph.set_signal();
+        if (index_local==graph.grt - 1){
+            graph.set_signal();
+            //processando.store(false,std::memory_order_release);
+        }
     }
+}
+
+
+/**
+ * @brief Search for induced cycles
+ * @details Search for induced cycles (if exists)
+ * @author Carlos Thadeu
+ * @param g a graph instance that represents the graph
+ * @return a vector of vector of integers that represents the induced cycles found 
+ */
+std::vector<std::vector<int>> seeking_induced_cycles(Graph &graph){
+    int cycle_size=INDUCED_CYCLE_SYZE_START;    // define the maximum number at edges at induced cycle
+	std::vector<std::vector<int>> select_cycles;
+
+	// Seleciona o vertice inicial
+    // Seleciona o vértice com maior grau, se houver empate usa a
+    // centralidade de proximidade para desempate
+    // caso o empate persista, pega o primeiro vértice da lista
+	std::vector <int>vertices = graph.vertices_de_maior_grau();
+	std::vector<std::pair<int,float>> centrality = Centrality::closeness_centrality_list(vertices, graph);
+	int root = Centrality::root_selection2(centrality);
+	
+    std::vector<int> neighbors = graph.adjList(root);   // Neighbors at root
+	int seek = Centrality::root_selection2(Centrality::closeness_centrality_list(neighbors, graph)); // aplica a centralidade de proximidade
+	// Fim da seleção do vértice inicial
+
+	std::vector<int> processed; // Processed vertices
+	std::vector<int> list_one;  //Vertices to be processed
+
+	//inicializa a lista
+	for (int i=0; i<graph.get_qty_vertex(); i++){
+		list_one.push_back(i);
+	}
+
+    std::vector<int> cycle;
+	while (true) {
+		DEBUG std::cerr << "(" << cycle_size<< ") ";
+		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
+		if (cycle.empty()){
+            // Não achei ciclo do tamanho pré-definido, procuro um menor
+			if (cycle_size > 3){ 
+				cycle_size--;
+				continue;
+			}
+			else {  // Não achei nem um triângulo
+				break;
+			}
+		} else {
+			cycle_size=INDUCED_CYCLE_SYZE_START;
+		}
+		join_vectors(processed, cycle);
+
+		// Apaga vertices ja processados
+		for (int j=0; j<cycle.size(); j++){
+			int index=get_index(cycle[j], list_one);
+			if (!list_one.empty() && index < list_one.size())
+				list_one.erase (list_one.begin() + index);
+			else
+                if (list_one.empty() ) 
+				    break;
+		}
+		cycle.push_back(root);
+		processed.push_back(root);
+		select_cycles.push_back(cycle);
+
+		if (list_one.empty()) break;
+
+		bool gameover = false;
+		while (!gameover){
+			// Escolhe nova raiz
+			centrality = Centrality::closeness_centrality_list(list_one, graph);
+			root = Centrality::root_selection2(centrality);
+			if (!in(root, processed) || list_one.empty()){
+				gameover=true;
+			}
+		}
+		gameover = false;
+		neighbors = graph.adjList(root);
+		while (!gameover){
+			seek = Centrality::root_selection2(Centrality::closeness_centrality_list(neighbors, graph));
+			if (!in(seek, processed)){
+				gameover=true;
+			} else {
+				int index=get_index(seek, neighbors);
+				neighbors.erase (neighbors.begin() + index);
+				if (neighbors.empty()) break;
+			}
+		}
+		if (neighbors.empty()) break;
+	}
+    return select_cycles;
 }
