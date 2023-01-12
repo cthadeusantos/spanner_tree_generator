@@ -38,7 +38,7 @@ sudo apt install build-essential
 
 The following bullets denote the pre-requisites to develop the project.
 
-* The main text editor is [Visual Studio Code](https://code.visualstudio.com/) under lubuntu 22.04.1 LTS or Windows 10 with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) hosting Ubuntu 20.04 LTS.
+* The main text editor is [Visual Studio Code](https://code.visualstudio.com/) under Linux Mint 21.1  LTS codename "Vera" under Ubuntu Jammy package base or Windows 10 with [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) hosting Ubuntu 20.04 LTS.
 * The configuration of the text editor is in the `.vscode` folder at the root of the repository. Anyone developing this project should install [WSL-Remote extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) for VSCode. Optionally, the developer may use the following extensions to aid the developing process:
   * [C/C++ Microsoft extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
   * [Better C/C++ Syntax](https://marketplace.visualstudio.com/items?itemName=jeff-hykin.better-cpp-syntax).

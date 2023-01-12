@@ -31,12 +31,44 @@ DEBUG_FLAGS := -g
 #TADM-CREATE := app_CREATE
 #app_CREATE_FILES := new/main_create_graphs.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 #ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE}
-#BF-PAR := app_BF-PAR
-#app_BF-PAR_FILES := new/main_BF-PAR.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+CREATE := app_CREATE
+app_CREATE_FILES := new/main-create.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+BF-SEQ := app_BF-SEQ
+app_BF-SEQ_FILES := new/brute-force/main-bf.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+BF-PAR := app_BF-PAR
+app_BF-PAR_FILES := new/brute-force/main-bf_par_threads.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+BF-DEGREE := app_BF-DEGREE
+app_BF-DEGREE_FILES := new/brute-force/main-bf_par_max_degree.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+BF-CYCLES := app_BF-CYCLES
+app_BF-CYCLES_FILES := new/brute-force/main-bf_par_cycles.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+BF-ARTICULATION := app_BF-ARTICULATION
+app_BF-ARTICULATION_FILES := new/brute-force/main-bf_par_articulation.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-H1v1 := app_HR-H1v1
+app_HR-H1v1_FILES := new/heuristic/main-hr_H1v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-H1v2 := app_HR-H1v2
+app_HR-H1v2_FILES := new/heuristic/main-hr_H1v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-H2v1 := app_HR-H2v1
+app_HR-H2v1_FILES := new/heuristic/main-hr_H2v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-H2v2 := app_HR-H2v2
+app_HR-H2v2_FILES := new/heuristic/main-hr_H2v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-BREADTH := app_HR-BREADTH
+app_HR-BREADTH_FILES := new/heuristic/main-hr_Hbreadth.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
 ##ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR}
-BF-MAIN := app_MAIN
-app_MAIN_FILES := new/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
-ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR} ${BF-MAIN}
+#BF-MAIN := app_MAIN
+#app_MAIN_FILES := new/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+ALL_APP := ${CREATE} ${BF-SEQ} ${BF-PAR} ${BF-DEGREE} ${BF-CYCLES} ${BF-ARTICULATION} ${HR-H1v1} ${HR-H1v2} ${HR-H2v1} ${HR-H2v2} ${HR-BREADTH} ${SEQ-OLD} ${PAR-OLD} ${TADM-CREATE} ${BF-MAIN}
 
 #--Main rule names--
 RELEASE_BUILD := build-release
