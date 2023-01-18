@@ -153,9 +153,9 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 2 vertex importance- wait!\n";
-	run_name = "Heuristic_2v2";
-	Heuristic::heuristica_2_modified(graph);
+	DEBUG std::cerr << "Solving with breadth heuristic - vertex importance- wait!\n";
+	run_name = "Breadth_heuristic";
+	Heuristic::breadth_heuristic(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
