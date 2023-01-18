@@ -332,11 +332,11 @@ std::vector<int> Graph::vertices_de_maior_grau()
     return list_vertices;
 }
 
-//! Get quantity of vertices with max degree
+//! Count the number of vertices that has a specific degree 
 /*!
-    Count the number of vertices with highest degree
-    \param grau is an integer
-    \return an integer
+    Count the number of vertices that has a specific degree 
+    \param grau is an integer that represents the degree seek
+    \return an integer that represents the quantity of vertices that has a specific degree
 */
 int Graph::qtd_vertex_grau(int grau)
 {

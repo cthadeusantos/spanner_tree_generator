@@ -18,6 +18,9 @@
 class Centrality
 {
     public:
+        Centrality(){}; // motivo de força maior
+        ~Centrality(){};
+
         static int root_selection(Graph &g); // By Thadeu   
         static int root_selection2(Graph &g); //By thadeu
         static int root_selection2(std::vector<std::pair<int,float>>);

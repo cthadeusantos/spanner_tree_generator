@@ -13,6 +13,65 @@
 #include "../my_libs/ctfunctions2.hpp"
 
 /**
+ * @brief T-admissibility Heuristic 3.
+ * @details The heuristic 3, that's a mix between heuristic 1 & heuristic 2
+ * @author Carlos Thadeu
+ * @param graph a graph instance that represents the graph.
+ */
+void Heuristic::heuristica_3(Graph &graph)
+{
+    Stretch stretch;
+    Graph tree(graph.getQtdVertices());
+    int raiz = graph.vertice_maior_grau();
+    std::set<int> lista;
+    std::vector<int> lista_relativa_valor;
+    std::vector<int> lista_relativa_vertice;
+    
+    
+    for( int v : graph.adjList(raiz))   // coloca o vertice de maior grau e os seus vizinhos na arvore
+        tree.add_aresta(raiz, v);
+
+    
+    for(int i = 0; i < graph.getQtdVertices(); ++i) // coloca todos os vertices do grafo na lista
+        lista.insert(i);
+
+
+    while( tree.qtd_vertex_grau(0) > 0 )    // stop condition
+    {
+        
+        // Ordena os vértices da lista pelo maior grau (ascendente)
+        for(int vertex : lista)
+        {
+            lista_relativa_valor.push_back(graph.grau(vertex) - func_aux_h2(tree, graph, vertex));
+            lista_relativa_vertice.push_back(vertex);
+        }
+        my_sort(lista_relativa_valor, lista_relativa_vertice); // Ordena os vértices na ascendente pelos graus
+        int u = lista_relativa_vertice.back(); // Seleciona o vértice de mais alto grau, em caso de empate, pega o último lista
+        // End of sort and vertex selection
+
+        lista.erase (lista.find(u)); // Delete vertex from list
+
+        for( int vertex : graph.adjList(u))
+        {
+            if( tree.grau(vertex) == 0)
+            {
+                tree.add_aresta(u, vertex);
+                lista.insert(vertex);
+            }
+        }
+
+        lista_relativa_valor.clear();
+        lista_relativa_vertice.clear();
+    }
+
+    int factor = stretch.find_factor(graph, tree);
+    graph.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, graph);
+}
+
+/**
  * @brief T-admissibility breadth heuristic - Heuristic 3.
  * @details The breadth heuristic - heuristic 3
  * That heuristic create a tree:
@@ -23,7 +82,7 @@
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
-int Heuristic::breadth_heuristic(Graph &graph)
+void Heuristic::breadth_heuristic(Graph &graph)
 {
     Stretch stretch;
     int counter = 0;
@@ -37,8 +96,7 @@ int Heuristic::breadth_heuristic(Graph &graph)
     std::vector <int> enqueued; // processed vertices that was enqueued anytime
 
 
-    std::vector <float> xxx = Centrality::closeness_centrality(graph);
-
+    //std::vector <float> xxx = Centrality::closeness_centrality(graph);
 
     root = Centrality::root_selection2(graph);
 
@@ -73,10 +131,14 @@ int Heuristic::breadth_heuristic(Graph &graph)
         neighbor_list.clear();
         degree_list.clear();
     }
-    int factor = stretch.find_factor(graph, tree);
+/*     int factor = stretch.find_factor(graph, tree);
     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree);
-    return 0;
+    graph.set_best_tree(tree); */
+    int factor = stretch.find_factor(graph, tree);
+    graph.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, graph);
 }
 
 /**
@@ -87,7 +149,7 @@ int Heuristic::breadth_heuristic(Graph &graph)
  * @author Daniel Juventude
  * @param g a graph instance that represents the graph.
  */
-int Heuristic::heuristica_1(Graph& g)
+void Heuristic::heuristica_1(Graph& g)
 {
     //Frontie'r' f;
     Stretch stretch;
@@ -125,7 +187,12 @@ int Heuristic::heuristica_1(Graph& g)
         }
         ++i;
     }
-    return stretch.find_factor(g, tree);
+    //return stretch.find_factor(g, tree);
+    int factor = stretch.find_factor(g, tree);
+    g.sum_trees(1);
+/*     g.set_stretch_index(factor);
+    g.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, g);
 }
 
 /**
@@ -164,7 +231,7 @@ void Heuristic::heuristica_1_modified(Graph& g)
     
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
-    for( int v : g.adjList(root) )
+    for( int v : g.adjList(root) )  // Start build tree , insert select vertex and all neighbors
     {
         tree.add_aresta(root, v);
     }
@@ -186,8 +253,13 @@ void Heuristic::heuristica_1_modified(Graph& g)
         ++i;
     }
     int factor = stretch.find_factor(g, tree);
-    g.set_stretch_index(factor);
+/*     g.set_stretch_index(factor);
     g.set_best_tree(tree);
+        int factor = stretch.find_factor(graph, tree); */
+    g.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, g);
 }
 
 /**
@@ -196,7 +268,7 @@ void Heuristic::heuristica_1_modified(Graph& g)
  * @author Daniel Juventude
  * @param g a graph instance that represents the graph.
  */
-int Heuristic::heuristica_2(Graph& g)
+void Heuristic::heuristica_2(Graph& g)
 {
     Stretch stretch;
     Graph tree(g.getQtdVertices());
@@ -210,6 +282,7 @@ int Heuristic::heuristica_2(Graph& g)
         lista.push_back(v);
         tree.add_aresta(raiz, v);
     }
+
     while( tree.qtd_vertex_grau() > 0)
     {
         for(int v : lista)
@@ -237,7 +310,12 @@ int Heuristic::heuristica_2(Graph& g)
         lista_relativa_vertice.clear();
     }
 
-    return stretch.find_factor(g, tree);
+    //return stretch.find_factor(g, tree);
+    int factor = stretch.find_factor(g, tree);
+    g.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, g);
 }
 
 /**
@@ -260,19 +338,19 @@ void Heuristic::heuristica_2_modified(Graph& graph)
 
     Graph tree(n);
     std::vector<int> lista;
-    std::vector<int> vertex_list(n, 0);
+    std::vector<int> vertex_list(n, 0); // by thadeu
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     std::vector<float> importance(n, 0); // by thadeu
-    std::vector<int> vertex;
-    std::vector<float> closeness;
+    std::vector<int> vertex;    // by thadeu
+    std::vector<float> closeness; // by thadeu
 
-    for( int i = 0; i < n; ++i)
+
+    for( int i = 0; i < n; ++i) // Listing vertices using closeness centrality
     {
         vertex_list[i] = i;
-        importance[i] = Centrality::vertex_importance(i, graph);
+        importance[i] = Centrality::vertex_importance(i, graph);    // calculate the vertex importance
     }
-
     Centrality::my_insertionSort(vertex_list, importance, graph);
 
     // After my_insertSort Probably root selection2 is not necessary
@@ -302,18 +380,17 @@ void Heuristic::heuristica_2_modified(Graph& graph)
         
         int max_degree = lista_relativa_valor.back();
 
-
-        for (int i=lista_relativa_valor.size(); i >= 0; i--){
+        for (int i=lista_relativa_valor.size(); i >= 0; i--){   // Seleciona vertices com mesmo grau
             if (lista_relativa_valor[i]==max_degree){
                 vertex.push_back(lista_relativa_vertice[i]);
                 closeness.push_back(importance[i]);
             }
             //if (lista_relativa_valor[i] < max_degree) break;
         }
-        float max_closeness = *max_element(closeness.begin(), closeness.end());
+        float max_closeness = *max_element(closeness.begin(), closeness.end()); // Valor da maior importancia de vértice
 
-        for (int i=0; i < vertex.size(); i++){
-            if (closeness[i]==max_closeness) {
+        for (int i=0; i < vertex.size(); i++){ // Seleciona vertice com a maior importancia de vertice
+            if (closeness[i]==max_closeness) { // se houver empate, o escolhido é o último achado no loop
                 u = vertex[i];
             }
         }
@@ -339,9 +416,14 @@ void Heuristic::heuristica_2_modified(Graph& graph)
         closeness.clear();
     }
 
-    int factor = stretch.find_factor(graph, tree);
+/*     int factor = stretch.find_factor(graph, tree);
     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree);
+    graph.set_best_tree(tree); */
+    int factor = stretch.find_factor(graph, tree);
+    graph.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, graph);
 }
 
 Graph Heuristic::heuristica_2_global(Graph& g)
@@ -396,10 +478,19 @@ void Heuristic::my_quicksort(std::vector<int>& vertices, int began, int end, Gra
 		my_quicksort(vertices, i, end, g);
 }
 
-int Heuristic::func_aux_h2(Graph& tree, Graph& g, int v)
+/**
+ * @brief Auxiliary function to count the degrees of the vertex 
+ * @details counts the degrees of the vertex that are in the tree and graph 
+ * @author Daniel Juventude
+ * @param graph a graph instance that represents the graph.
+ * @param tree a graph instance that represents the tree.
+ * @param vertex an integer that represents a vertex
+ * @return an integer 
+ */
+int Heuristic::func_aux_h2(Graph &tree, Graph &graph, int vertex)
 {
     int count = 0;
-    for(int u : g.adjList(v) ){
+    for(int u : graph.adjList(vertex) ){
         if( tree.grau(u) != 0){
             ++count;
         }
@@ -478,6 +569,21 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
     return total_layer; 
 }
 
+/**
+ * @brief Auxiliary function to setting all parameters after stretch index found
+ * @details Auxiliary function to setting all parameters after stretch index found
+ * @author Carlos Thadeu
+ */
+void Heuristic::set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph){
+    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+        graph.set_stretch_index(index_local);
+        graph.set_best_tree(tree_local);
+        if (index_local==graph.grt - 1){
+            graph.set_signal();
+            //processando.store(false,std::memory_order_release);
+        }
+    }
+}
 //**********************************************************************************************
 //
 // ESTES CÓDIGOS SÃO IGUAIS AS HEURÍSTICAS ORIGINAIS, APENAS RETORNAM A ÁRVORE AO INVÉS DO FATOR.

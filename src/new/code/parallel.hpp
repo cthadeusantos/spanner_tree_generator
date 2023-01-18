@@ -4,12 +4,16 @@
 
 
 void find_index_parallel(Graph &g, int raiz, int start, int end, const int id);
-void find_index_induced_cycle(Graph &graph, int raiz, int start, const int id, std::vector<int> edges_list );
+//void find_index_induced_cycle(Graph &graph, int raiz, int start, const int id, std::vector<int> edges_list );
+void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_start, const int id, std::vector<int> edges_list );
+void find_index_induced_cycle_method_2(Graph &graph, int raiz, int neighbor_start, const int id, std::vector<int> edges_list );
 
 void create_threads(Graph& g);
-void create_threads_big_cycle(Graph& g);
-void create_threads_articulations(Graph& g);
-void create_threads_edge_max_degree(Graph& g);
+void create_threads_induced_cycle(Graph &g);
+void create_threads_induced_cycle_method_1(Graph &g);
+void create_threads_induced_cycle_method_2(Graph &g);
+void create_threads_articulations(Graph &g);
+void create_threads_edge_max_degree(Graph &g);
 
 int adj_id(Graph& g, int v, int adj);
 int next(int a, int limite);
@@ -20,4 +24,5 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
 void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id);
 
 void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph);
-std::vector<std::vector<int>> seeking_induced_cycles(Graph &graph);
+//std::vector<std::vector<int>> seeking_induced_cycles_edges(Graph &graph);
+std::vector<int> seeking_induced_cycles_edges(Graph &graph) ;

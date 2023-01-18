@@ -70,7 +70,6 @@ void usage(const char* app_name){
 	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >>> OUTPUT_FILENAME" << std::endl;
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
-	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
@@ -97,10 +96,6 @@ void parseArgs(int argc, char** argv){
 		if(arg == "-h" || arg == "--help"){
 			usage(argv[0]);
 			exit(0);
-		}
-		else if(arg == "-t" || arg == "--thread"){
-			num_threads = std::atoi(argv[++i]);
-			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
 		}
 		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
@@ -158,9 +153,9 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with induced cycle - PARALLEL- wait!\n";
-	run_name = "Induced_cycle";
-	create_threads_big_cycle(graph);
+	DEBUG std::cerr << "Solving with heuristic 3 - wait!\n";
+	run_name = "Heuristic_3v1";
+	Heuristic::heuristica_3(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

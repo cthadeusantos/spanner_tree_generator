@@ -283,7 +283,7 @@ void create_threads(Graph& g)
     }
 }
 
-void create_threads_big_cycle(Graph& g, int type) {
+void create_threads_induced_cycle(Graph& g, int type) {
     int qty = -1;
     int root = -1;
     int neighbor = -1;
