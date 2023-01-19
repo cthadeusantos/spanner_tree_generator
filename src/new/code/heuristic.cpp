@@ -15,7 +15,8 @@
 /**
  * @brief T-admissibility Heuristic 3.
  * @details The heuristic 3, that's a mix between heuristic 1 & heuristic 2
- * @author Carlos Thadeu
+ * @author Daniel Juventude (original version with bug)
+ * @author Carlos Thadeu (modified version)
  * @param graph a graph instance that represents the graph.
  */
 void Heuristic::heuristica_3(Graph &graph)
@@ -27,20 +28,15 @@ void Heuristic::heuristica_3(Graph &graph)
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     
-    
     for( int v : graph.adjList(raiz))   // coloca o vertice de maior grau e os seus vizinhos na arvore
         tree.add_aresta(raiz, v);
-
     
     for(int i = 0; i < graph.getQtdVertices(); ++i) // coloca todos os vertices do grafo na lista
         lista.insert(i);
 
-
     while( tree.qtd_vertex_grau(0) > 0 )    // stop condition
     {
-        
-        // Ordena os vértices da lista pelo maior grau (ascendente)
-        for(int vertex : lista)
+        for(int vertex : lista) // Ordena os vértices da lista pelo maior grau (ascendente)
         {
             lista_relativa_valor.push_back(graph.grau(vertex) - func_aux_h2(tree, graph, vertex));
             lista_relativa_vertice.push_back(vertex);
@@ -72,17 +68,12 @@ void Heuristic::heuristica_3(Graph &graph)
 }
 
 /**
- * @brief T-admissibility breadth heuristic - Heuristic 3.
- * @details The breadth heuristic - heuristic 3
- * That heuristic create a tree:
- * 1. From a highest degree vertex, than insert all your neighbors
- * 2. Sort this neighbors inserted from the highest degree to lowest degree
- * 3. Next insert the neighbors of neighbors
- * 4. Repeat 2 until there isn't vertices 
+ * @brief T-admissibility breadth heuristic - Heuristic 4.v1
+ * @details The breadth heuristic - heuristic 4v1
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::breadth_heuristic(Graph &graph)
+void Heuristic::breadth_heuristic_1(Graph &graph)
 {
     Stretch stretch;
     int counter = 0;
@@ -142,6 +133,70 @@ void Heuristic::breadth_heuristic(Graph &graph)
 }
 
 /**
+ * @brief T-admissibility breadth heuristic - Heuristic 4v2.
+ * @details The breadth heuristic - heuristic 4v2
+ * @author Carlos Thadeu
+ * @param graph a graph instance that represents the graph.
+ */
+void Heuristic::breadth_heuristic_2(Graph &graph)
+{
+    Stretch stretch;
+    int counter = 0;
+    int root = 0;
+    int n = graph.getQtdVertices();
+    Graph tree(n);
+    
+    std::queue <int> QUEUE1;
+    std::vector <int> neighbor_list; // newline
+    std::vector <int> centrality_list; // newline
+    std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    
+    root = Centrality::root_selection2(vertices_closeness);
+
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
+
+    QUEUE1.push(root);
+    enqueued.push_back(root);
+
+    // the heuristic main loop 
+    while (!(QUEUE1.empty())){
+        root = QUEUE1.front();
+        QUEUE1.pop();
+
+        int num_neighbor = graph.adjList(root).size();
+        for (int i = 0; i < num_neighbor; ++i){
+            int neighbor = graph.adjList(root)[i];
+            if (tree.grau(neighbor) == 0) {
+                tree.add_aresta(root, neighbor);
+                neighbor_list.push_back(neighbor); // newline
+                centrality_list.push_back(graph.grau(neighbor));
+            }
+        }
+
+        Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+
+        for (int i = 0; i < num_neighbor; ++i){
+            if (!in( neighbor_list[i], enqueued)){
+                QUEUE1.push(neighbor_list[i]);
+                enqueued.push_back(neighbor_list[i]);
+            }
+        }
+        neighbor_list.clear();
+        centrality_list.clear();
+    }
+/*     int factor = stretch.find_factor(graph, tree);
+    graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    int factor = stretch.find_factor(graph, tree);
+    graph.sum_trees(1);
+/*     graph.set_stretch_index(factor);
+    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, graph);
+}
+
+/**
  * @brief T-admissibility heuristic 1.
  * @details List vertices in decreasing order.
  * Add to the tree the first vertex of the list is not in the tree yet and all neighbors
@@ -188,11 +243,11 @@ void Heuristic::heuristica_1(Graph& g)
         ++i;
     }
     //return stretch.find_factor(g, tree);
-    int factor = stretch.find_factor(g, tree);
-    g.sum_trees(1);
+    int factor = stretch.find_factor(g, tree); //By thadeu
+    g.sum_trees(1); //By thadeu
 /*     g.set_stretch_index(factor);
     g.set_best_tree(tree); */
-    set_graph_final_parameters(factor, tree, g);
+    set_graph_final_parameters(factor, tree, g); //By thadeu
 }
 
 /**
@@ -252,14 +307,14 @@ void Heuristic::heuristica_1_modified(Graph& g)
         }
         ++i;
     }
-    int factor = stretch.find_factor(g, tree);
+    int factor = stretch.find_factor(g, tree); //By thadeu
 /*     g.set_stretch_index(factor);
     g.set_best_tree(tree);
         int factor = stretch.find_factor(graph, tree); */
-    g.sum_trees(1);
+    g.sum_trees(1); //By thadeu
 /*     graph.set_stretch_index(factor);
     graph.set_best_tree(tree); */
-    set_graph_final_parameters(factor, tree, g);
+    set_graph_final_parameters(factor, tree, g); //By thadeu
 }
 
 /**
@@ -344,7 +399,6 @@ void Heuristic::heuristica_2_modified(Graph& graph)
     std::vector<float> importance(n, 0); // by thadeu
     std::vector<int> vertex;    // by thadeu
     std::vector<float> closeness; // by thadeu
-
 
     for( int i = 0; i < n; ++i) // Listing vertices using closeness centrality
     {

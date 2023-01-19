@@ -158,9 +158,9 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
-	run_name = "Brute force-parallel";
-	create_threads(graph);
+	DEBUG std::cerr << "Solving brute force with Maximum degree - PARALLEL- wait!\n";
+	run_name = "Max_degree_edges";
+	create_threads_edge_max_degree(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

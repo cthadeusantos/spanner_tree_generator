@@ -62,19 +62,22 @@ app_HR-H1v2_FILES := new/heuristic/main-hr_H1v2.cpp $(subst ${SRC_DIR}/, , $(she
 HR-H2v1 := app_HR-H2v1
 app_HR-H2v1_FILES := new/heuristic/main-hr_H2v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
-HR-H3v1 := app_HR-H3v1
-app_HR-H3v1_FILES := new/heuristic/main-hr_H3v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
-
 HR-H2v2 := app_HR-H2v2
 app_HR-H2v2_FILES := new/heuristic/main-hr_H2v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
-HR-BREADTH := app_HR-BREADTH
-app_HR-BREADTH_FILES := new/heuristic/main-hr_Hbreadth.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+HR-H3v1 := app_HR-H3v1
+app_HR-H3v1_FILES := new/heuristic/main-hr_H3v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-BREADTHv1 := app_HR-BREADTHv1
+app_HR-BREADTHv1_FILES := new/heuristic/main-hr_Hbreadthv1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+
+HR-BREADTHv2 := app_HR-BREADTHv2
+app_HR-BREADTHv2_FILES := new/heuristic/main-hr_Hbreadthv2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
 ##ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE} ${BF-PAR}
 #BF-MAIN := app_MAIN
 #app_MAIN_FILES := new/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
-ALL_APP := ${CREATE} ${BF-SEQ} ${BF-PAR} ${BF-DEGREE} ${BF-CYCLES_M1} ${BF-CYCLES_M2} ${BF-ARTICULATION} ${HR-H1v1} ${HR-H1v2} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-BREADTH} ${SEQ-OLD} ${PAR-OLD} ${TADM-CREATE} ${BF-MAIN}
+ALL_APP := ${CREATE} ${BF-SEQ} ${BF-PAR} ${BF-DEGREE} ${BF-CYCLES_M1} ${BF-CYCLES_M2} ${BF-ARTICULATION} ${HR-H1v1} ${HR-H1v2} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-BREADTHv1} ${HR-BREADTHv2} ${SEQ-OLD} ${PAR-OLD} ${TADM-CREATE} ${BF-MAIN}
 
 #--Main rule names--
 RELEASE_BUILD := build-release

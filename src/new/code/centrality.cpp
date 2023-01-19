@@ -46,10 +46,28 @@ int Centrality::root_selection2(std::vector<std::pair<int,float>> vector1){    /
     return selected;
 }
 
+int Centrality::root_selection2(std::vector<float> vector1){    // By thadeu
+
+    float max = 0;
+    float centrality=0;
+    int vertex = 0;
+    int selected = 0;
+
+    for (int i=0; i < vector1.size(); i++){
+        vertex=i;
+        centrality = vector1[i];
+        if (centrality > max) {
+            max = centrality;
+            selected = vertex;
+        }
+    }
+    return selected;
+}
+
 /**
- * Select a vertex to be root
- * @details Select a vertex to be root using closeness centrality.
- * @details That's a first version ... DEPRECATED
+ * Select a vertex to be root (DEPRECATED)
+ * @details Select a vertex to be root using closeness centrality. (DEPRECATED)
+ * @details That's a first version ... (DEPRECATED)
  * @author Carlos Thadeu
  * @param vector1 a vector of pair <int, float> that represents a vertex and your centrality
  * @return selected an integer that represents the vertex with max centrality 
@@ -150,6 +168,40 @@ std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(std::vec
     std::vector<std::pair<int,float>> closeness;
     for (auto i : vertices){
         closeness.push_back({i, vertex_importance(i, graph)});
+    }
+    return closeness;
+}
+
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for all vertices of the graph
+ * @author Carlos Thadeu
+ * @param vertices a set of vertices
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(Graph &graph){
+    std::vector<std::pair<int,float>> closeness;
+    int vertices=graph.get_qty_vertex();
+    for (int i=0; i < vertices; i++){
+        closeness.push_back({i, vertex_importance(i, graph)});
+    }
+    return closeness;
+}
+
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for all vertices of the graph
+ * @author Carlos Thadeu
+ * @param vertices a set of vertices
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+std::vector<float> Centrality::closeness_centrality_vector(Graph &graph){
+    std::vector<float> closeness(graph.getQtdVertices(), 0.00);
+    int vertices=graph.get_qty_vertex();
+    for (int i=0; i < vertices; i++){
+        closeness[i]=vertex_importance(i, graph);
     }
     return closeness;
 }
@@ -313,3 +365,4 @@ void Centrality::my_insertionSort(std::vector <int> &vector1, std::vector <int> 
 	    vector2[j + 1] = key2;
     }
 }
+
