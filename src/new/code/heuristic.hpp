@@ -10,6 +10,7 @@ class Heuristic
     private:
         
         static int func_aux_h2(Graph& tree, Graph& g, int v);
+        static int func_aux_h3(Graph& tree, Graph& g, int v);
         static void my_sort(std::vector<int>& v1, std::vector<int>& v2);
 
     public:
@@ -18,7 +19,8 @@ class Heuristic
         static void heuristica_1_modified(Graph &g); // by Thadeu
         static void heuristica_2(Graph &g);
         static void heuristica_2_modified(Graph &g); // by Thadeu
-        static void heuristica_3(Graph& g); // By thadeu
+        static void heuristica_3v1(Graph& g); // By thadeu
+        static void heuristica_3v2(Graph& g); // By thadeu
         static void breadth_heuristic_1(Graph& g); // By thadeu
         static void breadth_heuristic_2(Graph &graph);
         

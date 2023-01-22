@@ -390,12 +390,12 @@ std::vector<std::tuple<int, int>> Graph::get_best_tree(){
 void Graph::show_best_tree()
 {
     int node1 = 0, node2 = 0;
-    std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
+    //std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
     for (auto&& tuple: this->best_tree){
         std::tie(node1, node2) = tuple;
-        std::cerr << "(" << node1 << " , " << node2 << ") ";
+        std::cout << "(" << node1 << " , " << node2 << ") ";
     }
-    std::cerr << "\n" ;
+    std::cout << std::endl;
 };
 
 //! Assign value to stretch index
@@ -676,6 +676,59 @@ void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int>
     }
 }
 
+/**
+ * @brief Modify insert sort
+ * @details Details decription
+ * That's a modify code to sort two vectors at ascendind or descending.
+ * The sorting will be controlled by the first vector (it will be mandatory)
+ * The second vector will be sort following the first vector positions
+ * Use 'a' for ascending or 'd' for descending
+ * Example: v1={4,3,6,2} v2={1,2,3,4} ascending
+ * Result: v1={2,3,4,6} v2={4,2,1,3}
+ * @date 2022/12/17
+ * @author Original code rathbhupendra
+ * @author Modify code cthadeusantos
+ * @param vector1   That's an integer vector that will be sort
+ * @param vector2   That's an integer vector that will be sort following vector1 order
+ * @param order (optional) a - ascending d - descending
+ */
+void Graph::my_insertionSort_graph(std::vector <float> &vector1, std::vector <int> &vector2, char order='a')
+{
+    int n = vector1.size();
+    int i, key2, j;
+    float key1;
+
+    for (i = 1; i < n; i++)
+    {
+        key1 = vector1[i];
+        key2 = vector2[i];
+        j = i - 1;
+ 
+        // Move elements of arr[0..i-1], 
+        // that are greater than key, to one
+        // position ahead of their
+        // current position
+        if (order == 'a'){
+            while (j >= 0 && key1 < vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        } else if (order == 'd'){
+            while (j >= 0 && key1 > vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        }
+
+        vector1[j + 1] = key1;
+	    vector2[j + 1] = key2;
+    }
+}
+
 std::vector<int> Graph::select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2){
     std::vector<int> output;
     for (int i=0; i<vector1.size();i++){
@@ -683,4 +736,148 @@ std::vector<int> Graph::select_max_degree_vertices_at_list(int max, std::vector 
             output.push_back(vector1[i]);
     }
     return output;
+}
+
+std::vector<int> Graph::my_connected_vertices(){
+    std::vector<int> auxiliary;
+    for (int i=0; i < this->graph.size(); i++){
+        if (this->grau(i)>0)
+            auxiliary.push_back(i);
+    }
+    return auxiliary;
+}
+
+/// FLEURY ALGORITHM (WORKING)
+// To find cycle and path eulerian
+// was discarted because it is not promise
+// NOT BE TO USED
+void Graph::circuit(Graph g){
+    g.printEulerPathCircuit();
+}
+
+void Graph::addEdge(int u, int v){
+    this->graph[u].push_back(v);
+    this->graph[v].push_back(u);
+}
+
+
+void Graph::removeEdge(int v,int u){
+    
+    for(int i=0;i<this->graph[v].size();++i){
+        if(this->graph[v][i]==u){
+            std::swap(this->graph[v][i], this->graph[v][this->graph[v].size()-1]);
+            this->graph[v].pop_back();
+            break;
+        }
+    }
+    
+    
+    for(int i=0;i<this->graph[u].size();++i){
+        if(this->graph[u][i]==v){
+            std::swap(this->graph[u][i], this->graph[u][this->graph[u].size()-1]);
+            this->graph[u].pop_back();
+            break;
+        }
+    }
+    
+}
+
+
+void Graph::printEulerPathCircuit(){
+    
+    int odd = 0; 
+    int oddVertex = 0;
+    
+    for(int i=0; i < this->get_qty_vertex(); ++i){
+        if(this->adjList(i).size()%2==1){
+        //if(this->grau(i) & 1){
+            ++odd;
+            oddVertex = i;
+        }
+    }
+    
+    if(odd==0){
+    
+        DEBUG std::cerr <<"Euler Circuit: ";
+
+        printEuler(0);
+    }
+    else if(odd==2){
+        
+        DEBUG std::cerr <<"Euler Path: ";
+        printEuler(oddVertex);
+    }
+    else{
+        DEBUG std::cerr <<"Euler Path/Circuit Doesn't Exist"<<std::endl;
+    }
+    
+}
+
+
+void Graph::printEuler(int v){
+    
+    DEBUG std::cerr <<" "<<v<<" ";
+
+    if(this->graph[v].size()==0){
+        return;
+    }
+    
+
+    if(this->graph[v].size()==1){
+        int u = this->graph[v][0];
+        removeEdge(v, u);
+        printEuler(u);
+        return;
+    }	
+                
+
+    for(auto u: this->graph[v]){
+
+        if(isValidEdge(v, u)){
+        
+            removeEdge(v, u);
+            printEuler(u);
+            return;
+        }
+        
+    }
+    
+}
+
+
+bool Graph::isValidEdge(int v, int u){
+    
+    int c1, c2;
+    c1 = c2 = 0;
+    std::vector<bool> visited;
+    
+
+    removeEdge(v, u);
+    visited = std::vector<bool>(this->get_qty_vertex(),false);
+    c1 = countConnectedVertices(u, visited);
+    
+    addEdge(v, u);
+    //this->add_aresta(v, u);
+    visited = std::vector<bool>(this->get_qty_vertex(),false);
+    c2 = countConnectedVertices(u, visited);
+    
+    
+    if(c2 == c1) return true;
+        else
+            return false;
+    
+}
+
+// Specific for fleury algorithm
+int Graph::countConnectedVertices(int u, std::vector<bool> &visited){
+    
+    visited[u] = true;
+    int count = 1;
+    for(auto v: this->graph[u]){
+        if(!visited[v]){
+            count += countConnectedVertices(v, visited);
+        }
+    }
+    return count;
+    
 }

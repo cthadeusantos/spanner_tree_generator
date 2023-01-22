@@ -482,5 +482,60 @@ int create_new_graphs(){
     return 0;
 }
 
-
-
+void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph){
+    	// OUTPUT - nothing - screen - file - debug
+	if ((output & 1)==1){	// TO SCREEN
+		std::cout << "INSTANCE = " << filename << std::endl;
+		std::cout << "SOLUTION_TYPE = " << run_name << std::endl;
+		std::cout << "NUM_VERTICES = " << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES = " << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND = " << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX = " << graph.get_stretch_index() <<  std::endl;
+		std::cout << "SUM_TREES = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME(s) = " << lastExecutionTime <<  std::endl;
+        std::cout << "[BEST TREE]" <<  std::endl;
+		if (best) graph.show_best_tree();
+        std::cout << std::endl << std::endl;
+	}
+	if ((output & 2)==2){	// TO FILE
+		//std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
+/* 		std::cout <<	filename << " " <<
+						run_name << " " <<
+						graph.get_qty_vertex() << " " <<
+						graph.get_num_edges() << " " <<
+						lower_limit << " " <<
+						graph.get_stretch_index() << " " <<
+						graph.get_total_tree() << " " <<
+						lastExecutionTime << std::endl; */
+        std::cout << "INSTANCE=" << filename << std::endl;
+		std::cout << "SOLUTION_TYPE=" << run_name << std::endl;
+		std::cout << "NUM_VERTICES=" << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES=" << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND=" << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
+		std::cout << "SUM_TREES=" << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME(s)=" << lastExecutionTime <<  std::endl;
+        
+		if (best) graph.show_best_tree();
+        std::cout << std::endl;
+	}
+	if ((output & 64)==64){	// TO SCREEN AT DEBUGGER
+		std::cerr << "[INSTANCE]=" << filename << std::endl;
+		std::cerr << "[SOLUTION_TYPE]=" << run_name << std::endl;
+		std::cerr << "[NUM_VERTICES]=" << graph.get_qty_vertex() << std::endl;
+		std::cerr << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
+		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
+		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
+		std::cerr << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
+		std::cerr << "[RUNNING_TIME(s)]=" << lastExecutionTime <<  std::endl;
+        std::cerr << "[BEST TREE]" <<  std::endl;
+		if (best){
+			int node1 = 0, node2 = 0;
+			for (auto&& tuple: graph.best_tree){
+				std::tie(node1, node2) = tuple;
+				DEBUG std::cerr << "(" << node1 << " , " << node2 << ") ";
+			}
+		}
+        std::cerr << std::endl << std::endl;
+	}
+}

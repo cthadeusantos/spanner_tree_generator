@@ -162,50 +162,7 @@ int main(int argc, char** argv){
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
 
-	// OUTPUT - nothing - screen - file - debug
-	if ((output & 1)==1){	// TO SCREEN
-		std::cout << "Input filename: " << filename << std::endl;
-		std::cout << "Outputing the solution for " << run_name << std::endl;
-		std::cout << "Vertices: " << graph.get_qty_vertex() << std::endl;
-		std::cout << "Edges: " << graph.get_num_edges() << std::endl;
-		std::cout << "Limite inferior: " << lower_limit << std::endl;
-		std::cout << "Stretch index calculated: " << graph.get_stretch_index() <<  std::endl;
-		std::cout << "Total de árvores calculadas: " << graph.get_total_tree() <<  std::endl;
-		//std::cout << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
-		std::cout << "Running time (in seconds): " << lastExecutionTime <<  std::endl;
-		if (best) graph.show_best_tree();
-	}
-	if ((output & 2)==2){	// TO FILE
-		//std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
-		std::cout <<	filename << " " <<
-						run_name << " " <<
-						graph.get_qty_vertex() << " " <<
-						graph.get_num_edges() << " " <<
-						lower_limit << " " <<
-						graph.get_stretch_index() << " " <<
-						graph.get_total_tree() << " " <<
-						lastExecutionTime << std::endl;
-		if (best) graph.show_best_tree();
-	}
-	if ((output & 64)==64){	// TO SCREEN AT DEBUGGER
-		DEBUG std::cerr << "Input filename: " << filename << std::endl;
-		DEBUG std::cerr << "Outputing the solution for " << run_name << std::endl;
-		DEBUG std::cerr << "Vertices: " << graph.get_qty_vertex() << std::endl;
-		DEBUG std::cerr << "Edges: " << graph.get_num_edges() << std::endl;
-		DEBUG std::cerr << "Limite inferior: " << lower_limit << std::endl;
-	    DEBUG std::cerr << "Stretch index calculated: " << graph.get_stretch_index() <<  std::endl;
-		DEBUG std::cerr << "Total de árvores calculadas: " << graph.get_total_tree() <<  std::endl;
-		//DEBUG std::cerr << "Running time (in seconds): " << difftime(time_end, time_begin) <<  std::endl;
-		DEBUG std::cerr << "Running time (in seconds): " << lastExecutionTime <<  std::endl;
-
-		if (best){
-			int node1 = 0, node2 = 0;
-			for (auto&& tuple: graph.best_tree){
-				std::tie(node1, node2) = tuple;
-				DEBUG std::cerr << "(" << node1 << " , " << node2 << ") ";
-			}
-		}
-	}
+	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
     return 0;
 };
 

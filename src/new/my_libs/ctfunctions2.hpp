@@ -28,6 +28,10 @@ bool in(const int &value, std::set <int> &set );
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);
 
+//
+std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2);
+void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph);
+
 // Read and create graphs
 std::string get_filename();
 std::string get_enviroment_var(const char *enviroment_var);
@@ -43,4 +47,3 @@ void special_dfs(int cur,int par, int &tme,
         std::vector<std::pair<int,int>> &bridge, Graph &graph);
 
 
-std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2);

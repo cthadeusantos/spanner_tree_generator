@@ -79,8 +79,22 @@ public:
     bool get_signal();
     void set_signal();
 
-    void my_insertionSort_graph(std::vector <int> &vector1, std::vector <int> &vector2, char order);
+    std::vector<int> my_connected_vertices();
+
+    static void my_insertionSort_graph(std::vector <int> &vector1, std::vector <int> &vector2, char order);
+    static void my_insertionSort_graph(std::vector <float> &vector1, std::vector <int> &vector2, char order);
     std::vector<int> select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2);
+
+    // Methods to print Eulerian tour
+    // Fleury Algorithm
+    static void circuit(Graph g);
+    void addEdge(int u, int v);
+    void removeEdge(int v,int u);
+    void printEulerPathCircuit();
+    void printEuler(int v);
+    bool isValidEdge(int v, int u);
+    int countConnectedVertices(int u, std::vector<bool> &visited);
+
 
 };
 
