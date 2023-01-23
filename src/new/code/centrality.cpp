@@ -1,5 +1,14 @@
+#include <math.h>
+#include <thread>  // std::thread
+#include <mutex>   // std::mutex
+#include <semaphore.h> // sem_t, sem_init, sem_wait, sem_post, sem_destroy
+
 #include "centrality.hpp"
 #include "heuristic.hpp"
+
+extern int num_threads;
+extern sem_t semaforo;
+extern std::mutex mtx;
 
 /**
  * Select a vertex to be root
@@ -124,6 +133,7 @@ int Centrality::root_selection(Graph &g){    // By thadeu
     return nominees[index];
 }
 
+
 /**
  * Closeness centrality 
  * @details Calculate a closeness centrality for all vertices at graph
@@ -139,6 +149,49 @@ std::vector <float> Centrality::closeness_centrality(Graph &graph){
     }
     return closeness;
 }
+
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for all vertices at graph
+ * @author Carlos Thadeu
+ * @param g a graph
+ * @return a vector of float that represents closeness centrality
+ */
+std::vector <float> Centrality::closeness_centrality_thread(Graph &graph){
+    int start, end;
+    int n = graph.get_qty_vertex();
+    std::thread vetor_th[num_threads];
+    std::vector <float> closeness(n, 0.0);
+    int chunk = floor(n/num_threads);
+    int last_chunk = n - chunk;
+    for(int j=0; j < num_threads; j++){
+        if (j == num_threads-1){
+            start = j * chunk;
+            end = n;
+        } else {
+            start = j * chunk;
+            end = (j+1) * chunk;
+        }
+        vetor_th[j] = std::thread(thread_importance, start, end, std::ref(closeness), std::ref(graph));
+    }
+    for(int i=0; i < num_threads; ++i){
+        vetor_th[i].join();
+    }
+    return closeness;
+}
+
+void Centrality::thread_importance(int start, int end, std::vector <float> &closeness, Graph &graph){
+    //std::vector <float> closeness;
+    for (int i=start; i < end; i++){
+        float auxiliary = vertex_importance(i, graph);
+        mtx.lock();
+        closeness[i]=auxiliary;
+        mtx.unlock();
+    }
+    sem_post(&semaforo);
+}
+
+
 
 /**
  * Closeness centrality 

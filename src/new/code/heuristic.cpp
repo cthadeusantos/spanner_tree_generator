@@ -123,8 +123,9 @@ void Heuristic::heuristica_3v2(Graph &graph)
     std::vector<float> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     
-    raiz = Centrality::root_selection2(graph);
-    std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    //raiz = Centrality::root_selection2(graph);
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
+    raiz =Centrality::root_selection2(vertices_closeness);
 
     for( int v : graph.adjList(raiz))   // coloca o vertice de maior importancia e os seus vizinhos na arvore
         tree.add_aresta(raiz, v);
@@ -223,7 +224,9 @@ void Heuristic::breadth_heuristic_1(Graph &graph)
 
     //std::vector <float> xxx = Centrality::closeness_centrality(graph);
 
-    root = Centrality::root_selection2(graph);
+    //root = Centrality::root_selection2(graph);
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
+    root =Centrality::root_selection2(vertices_closeness);
 
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
@@ -285,15 +288,18 @@ void Heuristic::breadth_heuristic_2(Graph &graph)
     std::vector <int> centrality_list; // newline
     std::vector <int> enqueued; // processed vertices that was enqueued anytime
     //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
-    std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
+    //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
     
+    DEBUG std::cerr << "Selecting root" << std::endl;
     root = Centrality::root_selection2(vertices_closeness);
-
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     QUEUE1.push(root);
     enqueued.push_back(root);
 
+    DEBUG std::cerr << "Starting breath heuristic 2" << root << std::endl;
     // the heuristic main loop 
     while (!(QUEUE1.empty())){
         root = QUEUE1.front();
@@ -399,19 +405,24 @@ void Heuristic::heuristica_1_modified(Graph& g)
     int n = g.getQtdVertices();
     int root = 0;
     std::vector<int> vertex_list(n);
-    std::vector<float> importance(n); // by thadeu
+    //std::vector<float> importance(n); // by thadeu
 
-    for( int i = 0; i < n; ++i)
+    DEBUG std::cerr << "calculating vertices importance" << std::endl;
+/*     for( int i = 0; i < n; ++i)
     {
         vertex_list[i] = i;
         importance[i] = Centrality::vertex_importance(i, g);
-    }
+    } */
 
-    Centrality::my_insertionSort(vertex_list, importance, g); // Sort by vertices by degree and vertex importance 
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(g);
+    DEBUG std::cerr << "start my_insertion_sort" << std::endl;
+    Centrality::my_insertionSort(vertex_list, vertices_closeness, g); // Sort by vertices by degree and vertex importance 
 
     Graph tree(n);
 
-    root = Centrality::root_selection2(g);
+    //root = Centrality::root_selection2(g);
+    DEBUG std::cerr << "selecting root" << std::endl;
+    root= Centrality::root_selection2(vertices_closeness);
 /*     for (int i=0; i < n; i++){
         DEBUG std::cerr << i << "-" << Centrality::vertex_importance(i, g) << std::endl; 
     } */
@@ -528,16 +539,18 @@ void Heuristic::heuristica_2_modified(Graph& graph)
     std::vector<int> vertex_list(n, 0); // by thadeu
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
-    std::vector<float> importance(n, 0); // by thadeu
+    //std::vector<float> importance(n, 0); // by thadeu
     std::vector<int> vertex;    // by thadeu
     std::vector<float> closeness; // by thadeu
 
-    for( int i = 0; i < n; ++i) // Listing vertices using closeness centrality
+/*     for( int i = 0; i < n; ++i) // Listing vertices using closeness centrality
     {
         vertex_list[i] = i;
         importance[i] = Centrality::vertex_importance(i, graph);    // calculate the vertex importance
-    }
-    Centrality::my_insertionSort(vertex_list, importance, graph);
+    } */
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
+
+    Centrality::my_insertionSort(vertex_list, vertices_closeness, graph);
 
     // After my_insertSort Probably root selection2 is not necessary
     // because the choice is sorted in vertex list, then vertex_list[0]
@@ -569,7 +582,7 @@ void Heuristic::heuristica_2_modified(Graph& graph)
         for (int i=lista_relativa_valor.size(); i >= 0; i--){   // Seleciona vertices com mesmo grau
             if (lista_relativa_valor[i]==max_degree){
                 vertex.push_back(lista_relativa_vertice[i]);
-                closeness.push_back(importance[i]);
+                closeness.push_back(vertices_closeness[i]);
             }
             //if (lista_relativa_valor[i] < max_degree) break;
         }

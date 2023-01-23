@@ -17,6 +17,9 @@
 
 class Centrality
 {
+    private:
+        static void thread_importance(int start, int end, std::vector<float> &closeness, Graph &graph);
+
     public:
         Centrality(){}; // motivo de força maior
         ~Centrality(){};
@@ -30,8 +33,9 @@ class Centrality
         static void my_insertionSort(std::vector <int> &vector1, std::vector <int> &vector2, char order); // by Thadeu
         static float vertex_importance(int vertex,  Graph &graph); // by Thadeu
         static std::vector <float> closeness_centrality(Graph &graph);
+        static std::vector <float> closeness_centrality_thread(Graph &graph);
         static std::vector<std::pair<int,float>> closeness_centrality_list(std::set <int> &vertices,Graph &graph);
         static std::vector<std::pair<int,float>> closeness_centrality_list(std::vector <int> &vertices,Graph &graph);
         static std::vector<std::pair<int,float>> closeness_centrality_list(Graph &graph);
-        static std::vector<float> closeness_centrality_vector(Graph &graph);
+        static std::vector<float> closeness_centrality_vector(Graph &graph);        
 };
