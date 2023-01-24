@@ -160,14 +160,16 @@ int main(int argc, char** argv){
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with heuristic 1 vertex importance- wait!\n";
 	run_name = "Heuristic_1v2";
-	Heuristic::heuristica_1_modified(graph);
+	Heuristic::heuristica_1_V2(graph);
+	//Heuristic::heuristica_1_V2(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	sem_destroy(&semaforo);
+
     return 0;
 };
 

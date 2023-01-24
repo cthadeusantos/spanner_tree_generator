@@ -33,6 +33,7 @@ int min_vertices = 0;
 int max_vertices = 0;
 int num_graph = 0;
 float probability = 0.45;
+extern int num_threads;
 
 /// Basic debugging controller. See Debug.h for details.
 /* #ifdef MN_BF_SEQ_DEBUG
@@ -492,21 +493,15 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "LOWER_BOUND = " << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX = " << graph.get_stretch_index() <<  std::endl;
 		std::cout << "SUM_TREES = " << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME(s) = " << lastExecutionTime <<  std::endl;
-        std::cout << "[BEST TREE]" <<  std::endl;
-		if (best) graph.show_best_tree();
+		std::cout << "RUNNING_TIME = " << lastExecutionTime <<  std::endl;
+        std::cout << "THREADs = " << num_threads <<  std::endl;
+		if (best) {
+            std::cout << "[BEST TREE]" <<  std::endl;
+            graph.show_best_tree();
+        }
         std::cout << std::endl << std::endl;
 	}
 	if ((output & 2)==2){	// TO FILE
-		//std::cout << filename << " " << run_name << " " << lower_limit << " " << graph.get_stretch_index() << " " << graph.get_total_tree() << " " << difftime(time_end, time_begin) << std::endl;
-/* 		std::cout <<	filename << " " <<
-						run_name << " " <<
-						graph.get_qty_vertex() << " " <<
-						graph.get_num_edges() << " " <<
-						lower_limit << " " <<
-						graph.get_stretch_index() << " " <<
-						graph.get_total_tree() << " " <<
-						lastExecutionTime << std::endl; */
         std::cout << "INSTANCE=" << filename << std::endl;
 		std::cout << "SOLUTION_TYPE=" << run_name << std::endl;
 		std::cout << "NUM_VERTICES=" << graph.get_qty_vertex() << std::endl;
@@ -514,8 +509,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "LOWER_BOUND=" << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
 		std::cout << "SUM_TREES=" << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME(s)=" << lastExecutionTime <<  std::endl;
-        
+		std::cout << "RUNNING_TIME=" << lastExecutionTime <<  std::endl;
+        std::cout << "THREADS=" << num_threads <<  std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -527,9 +522,10 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cerr << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
-		std::cerr << "[RUNNING_TIME(s)]=" << lastExecutionTime <<  std::endl;
-        std::cerr << "[BEST TREE]" <<  std::endl;
+		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
+        std::cerr << "[THREADS]=" << num_threads <<  std::endl;
 		if (best){
+            std::cerr << "[BEST TREE]" <<  std::endl;
 			int node1 = 0, node2 = 0;
 			for (auto&& tuple: graph.best_tree){
 				std::tie(node1, node2) = tuple;

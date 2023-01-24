@@ -160,15 +160,15 @@ int main(int argc, char** argv){
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with heuristic H2v2 - wait!\n";
 	run_name = "heuristic_2v2";
-	Heuristic::heuristica_2_modified(graph);
+	Heuristic::heuristica_2_V2(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
+	sem_destroy(&semaforo);
     return 0;
 };
 

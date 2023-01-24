@@ -226,7 +226,7 @@ void Heuristic::breadth_heuristic_1(Graph &graph)
 
     //root = Centrality::root_selection2(graph);
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
-    root =Centrality::root_selection2(vertices_closeness);
+    root=Centrality::root_selection2(vertices_closeness);
 
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
@@ -399,35 +399,32 @@ void Heuristic::heuristica_1(Graph& g)
  * @date 2022/12/14
  * @param g a graph instance that represents the graph.
  */
-void Heuristic::heuristica_1_modified(Graph& g)
+void Heuristic::heuristica_1_V2(Graph& g)
 {
-    Stretch stretch;
     int n = g.getQtdVertices();
     int root = 0;
     std::vector<int> vertex_list(n);
     //std::vector<float> importance(n); // by thadeu
 
     DEBUG std::cerr << "calculating vertices importance" << std::endl;
-/*     for( int i = 0; i < n; ++i)
+    //fill(v.begin(),v.end(),1); // fill vector initialize vector
+    for( int i = 0; i < n; ++i)
     {
         vertex_list[i] = i;
-        importance[i] = Centrality::vertex_importance(i, g);
-    } */
+        //importance[i] = Centrality::vertex_importance(i, g);
+    }
 
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(g);
+    // Root must be select before sorting 
+    DEBUG std::cerr << "selecting root H1V2" << std::endl;
+    root= Centrality::root_selection2(vertices_closeness);
+    
     DEBUG std::cerr << "start my_insertion_sort" << std::endl;
     Centrality::my_insertionSort(vertex_list, vertices_closeness, g); // Sort by vertices by degree and vertex importance 
 
     Graph tree(n);
-
-    //root = Centrality::root_selection2(g);
-    DEBUG std::cerr << "selecting root" << std::endl;
-    root= Centrality::root_selection2(vertices_closeness);
-/*     for (int i=0; i < n; i++){
-        DEBUG std::cerr << i << "-" << Centrality::vertex_importance(i, g) << std::endl; 
-    } */
     
-    //DEBUG std::cerr << "Selected root: " << root << std::endl;
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     for( int v : g.adjList(root) )  // Start build tree , insert select vertex and all neighbors
     {
@@ -450,13 +447,8 @@ void Heuristic::heuristica_1_modified(Graph& g)
         }
         ++i;
     }
-    int factor = stretch.find_factor(g, tree); //By thadeu
-/*     g.set_stretch_index(factor);
-    g.set_best_tree(tree);
-        int factor = stretch.find_factor(graph, tree); */
+    int factor = Stretch::find_factor(g, tree); //By thadeu
     g.sum_trees(1); //By thadeu
-/*     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
     set_graph_final_parameters(factor, tree, g); //By thadeu
 }
 
@@ -528,7 +520,7 @@ void Heuristic::heuristica_2(Graph& g)
  * @date 2022/12/14
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::heuristica_2_modified(Graph& graph)
+void Heuristic::heuristica_2_V2(Graph& graph)
 {
     Stretch stretch;
     int root = 0; // by thadeu
@@ -550,13 +542,17 @@ void Heuristic::heuristica_2_modified(Graph& graph)
     } */
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
 
+    // Root must be select before sorting 
+    DEBUG std::cerr << "selecting root H1V2" << std::endl;
+    root= Centrality::root_selection2(vertices_closeness);
+
     Centrality::my_insertionSort(vertex_list, vertices_closeness, graph);
 
     // After my_insertSort Probably root selection2 is not necessary
     // because the choice is sorted in vertex list, then vertex_list[0]
     // is the root
     // To be analized
-    root = Centrality::root_selection2(graph);
+    //root = Centrality::root_selection2(graph);
 
     for( int v : graph.adjList(root))
     {

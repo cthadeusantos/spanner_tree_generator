@@ -30,7 +30,7 @@ class Stretch
         void find_index(Graph& g);
         void find_index_thread(Graph& g);
 
-        int find_factor(Graph& g, Graph& tree);
+        static int find_factor(Graph& g, Graph& tree);
 
         int getIndex(){ return index; }
         Graph getTree(){ return tree; }

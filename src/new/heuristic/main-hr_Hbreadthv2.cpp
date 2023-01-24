@@ -166,8 +166,9 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+
+	sem_destroy(&semaforo);
     return 0;
 };
 
