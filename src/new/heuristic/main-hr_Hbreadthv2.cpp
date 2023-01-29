@@ -104,15 +104,15 @@ void parseArgs(int argc, char** argv){
 		}
 		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
-			DEBUG std::cerr << "Changed output type to: " << type_running << '\n';
+			DEBUG std::cerr << "Changed output type to: " << output << '\n';
 		}
 		else if(arg == "-f" || arg == "--file"){
 			output = output + 2;
-			DEBUG std::cerr << "Changed output type to: " << type_running << '\n';
+			DEBUG std::cerr << "Changed output type to: " << output << '\n';
 		}
 		else if(arg == "-d" || arg == "--debug"){
 			output = output + 64;
-			DEBUG std::cerr << "Changed output type to: " << type_running << '\n';
+			DEBUG std::cerr << "Changed output type to: " << output << '\n';
 		}
 		else if(arg == "-b" || arg == "--best"){
 			best = true;
@@ -149,6 +149,7 @@ int main(int argc, char** argv){
 	Graph graph;
     graph = read_graph_file();
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
+	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	

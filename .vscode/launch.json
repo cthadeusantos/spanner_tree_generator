@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos_barabasi/gba_700_280__700_117600_0.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_20_2.txt"],
             "default": "${workspaceFolder}/instances/grafos/grafo_17.txt"
         }
     ],
@@ -138,7 +138,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-CYCLES_M2",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "16", "--debug", "--file" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "64", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

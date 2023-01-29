@@ -146,41 +146,6 @@ bool in(const int &value, std::set <int> &set) {
     return result;
 }
 
-/**
- * @brief Return an index from an elemento at a vector if that element exists
- * @details Return an index from an element at vector if that element exists
- * Return NULL if element not belongs a vector
- * (((  DEPRECATED  ))) will be remove at future
- * (((   REPLACED   ))) by get_index function
- * @param vector1 a vector that contains integers
- * @param value a seek element
- * @return an integer
- */
-/* int in(const int &value, std::vector <int> &vector) {
-    std::vector<int>::iterator itr = std::find(vector.begin(), vector.end(), value);
-    int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
-    if (itr != vector.cend()) {
-        result = std::distance(vector.begin(), itr);
-    }
-    return result;
-} */
-
-/**
- * @details Return an index from an element at set if that element exists
- * Return NULL if element not belongs a set
- * @param set a set that contains integers
- * @param value a seek element
- * @return an integer
- */
-/* int in(const int &value, std::set <int> &set) {
-    std::set<int>::iterator itr = std::find(set.begin(), set.end(), value);
-    int result = NULL; //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< change to NULL?
-    if (itr != set.cend()) {
-        result = std::distance(set.begin(), itr);
-    }
-    return result;
-} */
-
 
 /**
  * Split a string
@@ -218,11 +183,6 @@ std::string get_filename() {
 
     snprintf(buf, sizeof buf, "/proc/self/fd/%d", fileno(stdin));
     readlink(buf, file, sizeof file - 1);
-
-	/* 	DEBUG std::cerr << "Filename " << file;
-		printf("File name: %s\n", file); */
-
-	//std::string text = "Let me split this into words";
 
 	std::string text = file;
 	std::istringstream iss(text);
@@ -274,7 +234,6 @@ std::tuple<std::set<int>, std::vector<std::pair<int,int>>> seek_articulations(Gr
  * @param bridge a vector of pair that contains the bridges found
  * @param graph a graph that represents the graph
  */
-
 void special_dfs(int cur,int par, int &tme, std::vector <int> &disc, std::vector <int> &low,
 std::set<int> &articu_p, std::vector<std::pair<int,int>> &bridge, Graph &graph){
     int child_count=0;
@@ -483,6 +442,13 @@ int create_new_graphs(){
     return 0;
 }
 
+// END OF FILE & REDIRECTIONS FUNCTIONS
+
+/**
+ * Output data function 
+ * @details Show data at screen or file or debug mode
+ * @author Carlos Thadeu
+ */
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph){
     	// OUTPUT - nothing - screen - file - debug
 	if ((output & 1)==1){	// TO SCREEN
@@ -534,4 +500,98 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		}
         std::cerr << std::endl << std::endl;
 	}
+}
+
+/*
+Generate combinations
+struct combinations needs to combinatorics(int n, int r)
+*/
+struct combinations
+{
+    typedef std::vector<int> combination_t;
+
+    // initialize status
+   combinations(int N, int R) :
+       completed(N < 1 || R > N),
+       generated(0),
+       N(N), R(R)
+   {
+       for (int c = 1; c <= R; ++c)
+           curr.push_back(c);
+   }
+
+   // true while there are more solutions
+   bool completed;
+
+   // count how many generated
+   int generated;
+
+   // get current and compute next combination
+   combination_t next()
+   {
+       combination_t ret = curr;
+
+       // find what to increment
+       completed = true;
+       for (int i = R - 1; i >= 0; --i)
+           if (curr[i] < N - R + i + 1)
+           {
+               int j = curr[i] + 1;
+               while (i <= R-1)
+                   curr[i++] = j++;
+               completed = false;
+               ++generated;
+               break;
+           }
+
+       return ret;
+   }
+
+private:
+
+   int N, R;
+   combination_t curr;
+};
+
+/* int combinatorics(int n, int r){
+
+    combinations cs(n, r);
+    while (!cs.completed)
+    {
+        combinations::combination_t c = cs.next();
+        copy(c.begin(), c.end(), std::ostream_iterator<int>(std::cout, ","));
+        std::cout << std::endl;
+    }
+    return cs.generated;
+} */
+
+
+
+/**
+ * Generate a subsets r-element subsets in an n-element set  
+ * @details C(n, r) is read as "n" choose "r". It determines the number of combinations of
+ * n objects, taken r at a time (without replacement).
+ * Example : C(3,2), returns {(0,1), (0,2), (1,2)}
+ * Adapter from https://stackoverflow.com/questions/9430568/generating-combinations-in-c/9432150#9432150
+ * @author Carlos Thadeu
+ * @param n an integer that represents the initial set size
+ * @param r an integer that r-element subset
+ * @return a vector of vector of integers that represents the combinations
+ */
+
+std::vector<std::vector<int>> combinatorics(int n, int r){
+    std::vector<std::vector<int>> combinacoes;
+    combinations cs(n, r);
+    while (!cs.completed)
+    {
+        combinations::combination_t c = cs.next();
+        std::vector<int> prognosticos;
+        for (auto i = c.begin(); i != c.end(); ++i)
+        {
+            prognosticos.push_back(*i-1);
+        }
+
+        combinacoes.push_back(prognosticos);
+    }
+    return combinacoes;
 }

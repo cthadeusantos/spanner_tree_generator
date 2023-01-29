@@ -19,11 +19,8 @@ int get_index(int key, std::vector<int> v);
 
 // Search functions
 bool in(const int &value, std::vector <int> &vector);
-bool in( const int &value, const std::vector <int> &vector);
+bool in(const int &value, const std::vector <int> &vector);
 bool in(const int &value, std::set <int> &set );
-
-//int in(const int &value, std::vector <int> &vector); // (((  DEPRECATED  ))) will be remove at future / (((   REPLACED   ))) by get_index function
-//int in(const int &value, std::vector <int> &set);
 
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);
@@ -31,6 +28,8 @@ std::vector<std::string> split(const std::string& s, char delimiter);
 //
 std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2);
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph);
+
+std::vector<std::vector<int>> combinatorics(int n, int r);
 
 // Read and create graphs
 std::string get_filename();
@@ -45,5 +44,3 @@ std::tuple<std::set<int>, std::vector<std::pair<int,int>> > seek_articulations(G
 void special_dfs(int cur,int par, int &tme,
         std::vector <int> &disc, std::vector <int> &low, std::set<int> &articu_p,
         std::vector<std::pair<int,int>> &bridge, Graph &graph);
-
-
