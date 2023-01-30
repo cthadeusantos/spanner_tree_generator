@@ -133,7 +133,7 @@ void parseArgs(int argc, char** argv){
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
-	max_induced_cycles = 10;
+	max_induced_cycles = 6;
 	if(argc < 2){
 		usage("--help");
 		exit(0);
@@ -160,115 +160,74 @@ int main(int argc, char** argv){
 	sem_init(&semaforo, 0, num_threads);
 	
 	Graph graph_copy=graph;
+	// MAX DEGREE PARALLELISM
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
+	DEBUG std::cerr << "Solving with max degree - wait!\n";
 	
-	run_name = "H1v1";
-	Heuristic::heuristica_1(graph);
+	run_name = "MAX_DEGREE";
+	create_threads_edge_max_degree(graph);
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration0(end - start);
 	double lastExecutionTime = execution_duration0.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
-	// Heuristic 1 V2
+	// EDGE_PARALLELISM
 	// Start time counting
 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 1 vertex importance- wait!\n";
+	DEBUG std::cerr << "Solving with edge parallelism - wait!\n";
 	graph=graph_copy;
-	run_name = "H1v2";
-	Heuristic::heuristica_1_V2(graph);
+	run_name = "EDGE_PARALLELISM";
+	create_threads(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration1(end - start);
 	lastExecutionTime = execution_duration1.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
-	// Heuristic 2 V1
+	// INDUCED_CYCLE
 	// Start time counting
 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 2v1- wait!\n";
+	DEBUG std::cerr << "Solving with induced cycle - wait!\n";
 	graph=graph_copy;
-	run_name = "H2v1";
-	Heuristic::heuristica_2(graph);
+	run_name = "INDUCED_CYCLE";
+	create_threads_induced_cycle_method_2(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration2(end - start);
 	lastExecutionTime = execution_duration2.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
-	// Heuristic 2 V2
+	// ARTICULATIONS
 	// Start time counting
 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic H2v2 - wait!\n";
+	DEBUG std::cerr << "Solving with articulation - wait!\n";
 	graph=graph_copy;
-	run_name = "H2v2";
-	Heuristic::heuristica_2_V2(graph);
+	run_name = "ARTICULATION";
+	create_threads_articulations(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration3(end - start);
 	lastExecutionTime = execution_duration3.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
-	// Heuristic 3v1
+	// BRUTE FORCE
 	// Start time counting
 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 3v1 - wait!\n";
+	DEBUG std::cerr << "Solving with brute force - wait!\n";
 	graph=graph_copy;
-	run_name = "H3v1";
-	Heuristic::heuristica_3v1(graph);
+	run_name = "BRUTE_FORCE";
+	Stretch().sequential(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration4(end - start);
 	lastExecutionTime = execution_duration4.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
-
-	// Heuristic 3v2
-	// Start time counting
-	start = std::chrono::steady_clock::now();
-	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 3v2 - wait!\n";
-	graph=graph_copy;
-	run_name = "H3v2";
-	Heuristic::heuristica_3v2(graph);
-	// End time counting
-	end = std::chrono::steady_clock::now();	
-	std::chrono::duration<double> execution_duration5(end - start);
-	lastExecutionTime = execution_duration5.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
-
-	// Breadth heuristic V1
-	// Start time counting
-	start = std::chrono::steady_clock::now();
-	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with breadth heuristic version 1- vertex importance- wait!\n";
-	graph=graph_copy;
-	run_name = "H4v1";
-	Heuristic::breadth_heuristic_1(graph);
-	// End time counting
-	end = std::chrono::steady_clock::now();	
-	std::chrono::duration<double> execution_duration6(end - start);
-	lastExecutionTime = execution_duration6.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
-
-	// Breadth heuristic V2
-	// Start time counting
-	start = std::chrono::steady_clock::now();
-	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with breadth heuristic version 2- vertex importance- wait!\n";
-	graph=graph_copy;
-	run_name = "H4v2";
-	Heuristic::breadth_heuristic_2(graph);
-	// End time counting
-	end = std::chrono::steady_clock::now();	
-	std::chrono::duration<double> execution_duration7(end - start);
-	lastExecutionTime = execution_duration7.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
 	sem_destroy(&semaforo);
