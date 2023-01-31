@@ -516,6 +516,8 @@ void create_threads(Graph& g)
         id = adj_id(g, raiz, g.ant_vertex(raiz) );
     }
 
+    DEBUG std::cerr << "Threads to be used: " << qtd << std::endl;
+
     for(int i=0; i < qtd; ++i){
         vetor_th[i] = std::thread(find_index_parallel, std::ref(g), raiz, id, id+1, i);
         id = next(id, qtd);
@@ -528,8 +530,8 @@ void create_threads(Graph& g)
 
 void create_threads_edge_max_degree(Graph& g)
 {
-    //int qtd_th = g.maior_grau();
-    int qtd_th = num_threads;
+    int qtd_th = g.maior_grau();
+    //int qtd_th = num_threads;
 
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
@@ -542,11 +544,13 @@ void create_threads_edge_max_degree(Graph& g)
 
     std::vector<int> edges = OpBasic::edges_by_bigger_degree(g);
     
-    qtd_th = std::max({num_threads, g.maior_grau(), int(edges.size()/2)});
+/*     qtd_th = std::max({num_threads, g.maior_grau(), int(edges.size()/2)});
 
     if (qtd_th > num_threads){
         qtd_th = num_threads;
-    }
+    } */
+
+    DEBUG std::cerr << "Threads to be used: " << qtd_th << std::endl;
 
     for(int i=0; i < qtd_th; ++i){
         vetor_th[i] = std::thread(find_index_pararell_edge, std::ref(g), edges, i*2, i); // separação dos threats
@@ -695,7 +699,7 @@ void create_threads_induced_cycle_method_2(Graph& g) {
     if (qty > num_threads)
         qty = num_threads;
             
-    DEBUG std::cerr << "Threads usadas: " << qty << std::endl;
+    DEBUG std::cerr << "Threads to be used: " << qty << std::endl;
     std::thread vetor_th[qty];
 
     for(int i = 0; i < qty; ++i){
@@ -713,7 +717,6 @@ Graph remove_edges_cycle_M2(std::vector<int> combinations, std::vector<std::pair
     }
     return graph;
 }
-
 
 /**
  * @brief Create threads to calculate stretch index from articulations
@@ -952,8 +955,8 @@ std::vector<int> seeking_induced_cycles_edges_v1(Graph &graph){
  */
 std::vector<int> seeking_induced_cycles_edges_v2(Graph &graph){
   
-    int MAX_CYCLE_SIZE=floor(log2(num_threads + 1));
-    DEBUG std::cerr << "Define induced cycle to size: " << MAX_CYCLE_SIZE << std::endl;
+    int max_cycle_size=floor(log2(num_threads + 1));
+    DEBUG std::cerr << "Define induced cycle to size: " << max_cycle_size << std::endl;
     std::vector<std::vector<int>> select_cycles;    // 
 
 
@@ -968,7 +971,7 @@ std::vector<int> seeking_induced_cycles_edges_v2(Graph &graph){
 	int seek = Centrality::root_selection2(Centrality::closeness_centrality_list(neighbors, graph)); // aplica a centralidade de proximidade
 	// Fim da seleção do vértice inicial
 
-    search_for_induced_cycles_for_M2(seek, root, MAX_CYCLE_SIZE, select_cycles, graph);
+    search_for_induced_cycles_for_M2(seek, root, max_cycle_size, select_cycles, graph);
 
     // TO DO
     // TO DO - Make a better choice from select_cycles
@@ -976,12 +979,14 @@ std::vector<int> seeking_induced_cycles_edges_v2(Graph &graph){
 
     // Until make a better choice, select the first vector
     std::vector<int> edges_list;
-    edges_list=select_cycles[0];
+    if (!select_cycles.empty())
+        edges_list=select_cycles[0];
     return edges_list;
 }
 
 void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, Graph &graph){
-    int MAX_CYCLE_SIZE=floor(log2(num_threads + 1));
+    //int MAX_CYCLE_SIZE=floor(log2(num_threads + 1));
+    int initial_max_cycle=cycle_size;
 
     std::vector<std::pair<int,float>> centrality;
     std::vector<int> neighbors;
@@ -999,18 +1004,22 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
 		DEBUG std::cerr << "Searching for (" << cycle_size<< ") " << std::endl;
 		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
 		if (cycle.empty()){
-			if (cycle_size > 3){ // Não achei ciclo do tamanho pré-definido, procuro um menor
+			if (cycle_size > 3 && cycle_size > max_size_cycle){ // Não achei ciclo do tamanho pré-definido, procuro um menor
 				cycle_size--;
 				continue;
 			}
-			else {  // Não achei nem um triângulo
+			else {  // I didn't even find a triangle, then I quit the loop
 				break;
 			}
 		} else {
-			cycle_size=MAX_CYCLE_SIZE;
+            //max_size_cycle=cycle_size;
+			cycle_size=initial_max_cycle;
 		}
 
-		for (int j=0; j<cycle.size(); j++){ // Delete processed vertices
+/*         if (cycle_size < vertices_list.size())
+            break; */
+
+		for (int j=0; j < cycle.size(); j++){ // Delete processed vertices
 			int index=get_index(cycle[j], vertices_list);
 			if (!vertices_list.empty() && index < vertices_list.size())
 				vertices_list.erase (vertices_list.begin() + index);
@@ -1021,11 +1030,13 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
 		cycle.push_back(root);
 		processed.push_back(root);
 
-        if (!cycle.empty() && cycle.size() > max_size_cycle){   // Method 1 != Method 2
+        int acme=cycle.size()-1;
+        if (!cycle.empty() && acme > max_size_cycle){   // Method 1 != Method 2
     		select_cycles.clear();                              // Only cycles that has same size(maximum select)
             select_cycles.push_back(cycle);                     // will be selected
-            max_size_cycle=cycle.size();
-        } else if (!cycle.empty() && cycle.size() == max_size_cycle){   
+            if (cycle_size>max_size_cycle)
+                max_size_cycle=acme;
+        } else if (!cycle.empty() && acme == max_size_cycle){   
             select_cycles.push_back(cycle);
         }
 
