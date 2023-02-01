@@ -562,9 +562,10 @@ void create_threads_edge_max_degree(Graph& g)
 }
 
 /**
- * @brief Create threads to calculate stretch index for induced cycles (method 1)
+ * @brief Create threads to calculate stretch index for induced cycles (method 1) (DEPRECATED) will be remove at future
  * @details Create threads to calculate the stretch index using induced cycles (if exists)
  * Remove an edge of the graph, send new graph to thread, back with the edge to the original graph, remove the next edge and go on
+ * (DEPRECATED) will be remove at future
  * @author Carlos Thadeu
  * @param g a graph that represents the graph
  */
@@ -837,8 +838,9 @@ void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Grap
 }
 
 /**
- * @brief Search for induced cycles
+ * @brief Search for induced cycles (DEPRECATED) will be remove at future
  * @details Search for induced cycles (if exists)
+ * (DEPRECATED) will be remove at future
  * @author Carlos Thadeu
  * @param g a graph instance that represents the graph
  * @return a vector of vector of integers that represents the induced cycles found 

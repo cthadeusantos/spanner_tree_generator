@@ -204,7 +204,7 @@ int main(int argc, char** argv){
 
 	// ARTICULATIONS
 	// Start time counting
-	start = std::chrono::steady_clock::now();
+/* 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with articulation - wait!\n";
 	graph=graph_copy;
@@ -214,7 +214,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration3(end - start);
 	lastExecutionTime = execution_duration3.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph); */
 
 	// BRUTE FORCE
 	// Start time counting
