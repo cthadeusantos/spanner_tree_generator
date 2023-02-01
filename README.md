@@ -13,7 +13,8 @@
 This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
 
 ## 1. Usage
-	Usage: app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
+
+app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 
 	OPTIONS:
 	    -h | --help , help
@@ -29,8 +30,9 @@ This project is a collection of solutions for the T-admissibility problem. The b
     INPUT_FILENAME is mandatory
     OUTPUT_FILENAME is optional
 
-  Usage example:
-  ./build/release -t 32 -f < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
+Usage example:
+	
+	./build/release app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
 
 ## 2. Important links and work performed
 
