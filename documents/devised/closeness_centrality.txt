@@ -1,0 +1,9 @@
+Crie uma camada inicial
+Selecione o vertice inicial desejado e insira-o na camada
+Multiplique o número de vértices da camada pelo número da camada, este é o fator da camada
+Crie uma nova camada
+Insira os vértices que são vizinhos as vértices existentes da camada anterior e que não pertencem as camadas anteriores
+Multiplique o número de vértices da camada pelo número da camada, este é o fator da camada
+Enquanto existirem vértices não processados no grafo volte ao passo 4
+Some os fatores das camadas obtidos
+Inverta o valor obtido pela soma (este é a centralidade de proximidade do vértice)

@@ -245,7 +245,7 @@ int main(int argc, char** argv){
 
 	// Breadth heuristic V1
 	// Start time counting
-/* 	start = std::chrono::steady_clock::now();
+	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with breadth heuristic version 1- vertex importance- wait!\n";
 	graph=graph_copy;
@@ -255,7 +255,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration6(end - start);
 	lastExecutionTime = execution_duration6.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph); */
+	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
 
 	// Breadth heuristic V2
 	// Start time counting
