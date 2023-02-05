@@ -274,4 +274,5 @@ documents/doxygen/latex/
 !documents/doxygen/Doxyfile
 !documents/source-doc.html
 
+my_python_tools/.idea/*
 # End of https://www.toptal.com/developers/gitignore/api/c,c++,python,visualstudiocode,notepadpp
