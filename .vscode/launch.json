@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos/grafo_10.txt"],
+            "options": ["${workspaceFolder}/instances/examples/G14_centrallity.in"],
             "default": "${workspaceFolder}/instances/grafos/grafo_17.txt"
         }
     ],
@@ -374,10 +374,10 @@
             ]
         },
         {
-            "name": "[GDB] app_HR-BREADTHv1 < debug.in",
+            "name": "[GDB] app_HR-H4v1 < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_HR-BREADTHv1",
+            "program": "${workspaceFolder}/build/debug/app_HR-H4v1",
             "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "-t", "32", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -398,10 +398,10 @@
             ]
         },
         {
-            "name": "[GDB] app_HR-BREADTHv2 < debug.in",
+            "name": "[GDB] app_HR-H4v2 < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_HR-BREADTHv2",
+            "program": "${workspaceFolder}/build/debug/app_HR-H4v2",
             "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "32"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

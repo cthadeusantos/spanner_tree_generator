@@ -21,8 +21,8 @@ class Heuristic
         static void heuristica_2_V2(Graph &g); // by Thadeu
         static void heuristica_3v1(Graph& g); // By thadeu
         static void heuristica_3v2(Graph& g); // By thadeu
-        static void breadth_heuristic_1(Graph& g); // By thadeu
-        static void breadth_heuristic_2(Graph &graph);
+        static void Heuristica_4v1(Graph& g); // By thadeu
+        static void Heuristica_4v2(Graph &graph);
         
         static std::vector <int> breadth_criterion(Graph &graph, std::queue <int> &FILA,
                     std::vector <int> &visited, std::vector <int> &total_layer); // By thadeu

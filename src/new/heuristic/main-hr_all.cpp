@@ -250,7 +250,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with breadth heuristic version 1- vertex importance- wait!\n";
 	graph=graph_copy;
 	run_name = "H4v1";
-	Heuristic::breadth_heuristic_1(graph);
+	Heuristic::Heuristica_4v1(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration6(end - start);
@@ -264,7 +264,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with breadth heuristic version 2- vertex importance- wait!\n";
 	graph=graph_copy;
 	run_name = "H4v2";
-	Heuristic::breadth_heuristic_2(graph);
+	Heuristic::Heuristica_4v2(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration7(end - start);

@@ -208,7 +208,7 @@ void Heuristic::heuristica_3v2(Graph &graph)
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::breadth_heuristic_1(Graph &graph)
+void Heuristic::Heuristica_4v1(Graph &graph)
 {
     Stretch stretch;
     int counter = 0;
@@ -250,7 +250,7 @@ void Heuristic::breadth_heuristic_1(Graph &graph)
 
         Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
 
-        for (int i = 0; i < num_neighbor; ++i){
+        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
             if (!in( neighbor_list[i], enqueued)){
                 QUEUE1.push(neighbor_list[i]);
                 enqueued.push_back(neighbor_list[i]);
@@ -275,7 +275,7 @@ void Heuristic::breadth_heuristic_1(Graph &graph)
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::breadth_heuristic_2(Graph &graph)
+void Heuristic::Heuristica_4v2(Graph &graph)
 {
     Stretch stretch;
     int counter = 0;
@@ -317,7 +317,7 @@ void Heuristic::breadth_heuristic_2(Graph &graph)
 
         Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
 
-        for (int i = 0; i < num_neighbor; ++i){
+        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
             if (!in( neighbor_list[i], enqueued)){
                 QUEUE1.push(neighbor_list[i]);
                 enqueued.push_back(neighbor_list[i]);

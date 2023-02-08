@@ -14,7 +14,7 @@ for diretorio in diretorios:
             archive=line.split("/")
             diretorio=diretorio.replace('\n','')
             arquivo=archive[-1].replace('\n','')
-            executable = ('build/release/app_HR-ALL -t 32 --file < ', diretorio, arquivo, ' >> ', 'results/', output_file[counter])
+            executable = ('build/release/app_HR-ALL -t 64 --file < ', diretorio, arquivo, ' >> ', 'results/', output_file[counter])
             exec = ''.join(executable)
             os.system(exec)
     counter=counter+1
