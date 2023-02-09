@@ -124,7 +124,10 @@ keys_graphs=list(graphs.keys())
 keys_solutions=list(graphs[keys_graphs[0]].keys())
 keys_vertices=list(graphs[keys_graphs[0]][keys_solutions[0]].keys())
 
+LATEX=True
+
 for solution in keys_solutions:
+    latex_string=""
     print()
     print(f'{solution:^100}')
     print(f'{"         ":10}', f'{"n":^10}',  end=" ")
