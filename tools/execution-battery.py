@@ -1,18 +1,58 @@
 #Author: Anderson Zudio
-#Version: 2.7
-#Date: 12 october of 2021
+#Version: 3.0 customizada para este trabalho no dia 9 de fevereiro de 2023
+#Date: 07 june of 2022
+#Dependency: loader.py and PyYAML (pip3 install pyyaml).
+#Modificação: foi retirado a parte que necessita da entrada da seed. Pois, tudo é determinístico por enquanto.
 
-#TODO: Alter the input file format to work with .yaml. Philosofy: if you need a file to be human readable but it is used between two computer entities, then use JSON. Otherwise, if you need a human readable file that is operated by a human to be passed to a computer program, then use yaml.
+#Comentários originais:
+#TODO: Make a way to automatically recover from power surges.
+#TODO: Make a way to automatically execute everything that has failed. Do not implement a merge procedure though, may incorporate bad behaviour.
+#TODO: Put the exact command line used in every execution in the log. You'll have to alter each script that parse the log aswell.
+#TODO: Allow the input to load more than one battery from the same file.
 
 #--Description--
-#This script will record a full test battery based on multiple independent runs of a ${TARGET_PROGRAM} of the project. The result data is stored inside a ${WORKING_FOLDER} named by the user.
-#The ${INPUT_FILE} is a json made by the user containing: the ${WORKING_FOLDER} name, a list of instances to be solved, the path of the binary ${TARGET_PROGRAM} file, and some other parameters to customize the test battery. This tool outputs information to stderr when running. It will create a logfile in the working folder to be parsed by another tool.
-#The script will append the date of execution to the ${WORKING_FOLDER} and will create it at the "../workspace/" directory. The script may also append an increasing number to the ${WORKING_FOLDER} to identify multiple executions made in the same day by the user.
-#For each instance in the ${INPUT_FILE}, a subfolder is made with the same name as the instance being solved. If the same instance is specified multiple times in the ${INPUT_FILE}, the script appends an increasing number at the end of the subfolder to distinguish each setup.
-#Then the script calls the ${TARGET_PROGRAM} to solve the instance with an arbitrary number of iterations specified in the ${INPUT_FILE}. Each iteration consist of a single independent run. This script uses a seed passed through command line argument as "--seed #", it is expected that the ${TARGET_PROGRAM} knows how to handle this seed. The starting seed number may be given by the user in the ${INPUT_FILE} or left alone to be defaulted as '1'. This script increases the seed number by one for every subsequent iteration made with the ${TARGET_PROGRAM} for the instance being solved.
+#This script will perform a full execution battery based on multiple independent runs of a {TARGET_PROGRAM} of the project. The {TARGET_PROGRAM} will be searched in the "../build/" directory. The result data is stored inside a {WORKING_FOLDER} named by the user.
+#The {INPUT_FILE} is a YAML file made by the user containing: the {WORKING_FOLDER} name, a list of instances to be solved, the path of the binary {TARGET_PROGRAM} file, and some other parameters to customize the execution battery. This tool outputs information to stderr when running. It will create a logfile in the working folder that can be parsed by other tools.
+#The script will append the date of execution to the {WORKING_FOLDER} name and will create it at the "../workspace/" directory. The script may also append an increasing number to the {WORKING_FOLDER} to identify multiple batteries made in the same day by the user. For example, if the user uses this script naming the working folder as "RUN_EXAMPLE" on 12 of december 1993, it will attempt to create the folder "RUN_EXAMPLE-12121993-01" in "../workspace/" or "RUN_EXAMPLE-12121993-02", "RUN_EXAMPLE-12121993-03", and so on.
+#This script itself should be rarely edited. The user will have to program the loader.py instead to satisfy the following dependencies based on the problem at hand:
+#   File extensions: the loader module should tell which file extensions to use for input, output, and error log.
+#   Solution manipulation: the loader module should provide functions to read, check, and compare solutions of the problem at hand.
+#   The input of the loader tool is an acronym of the problem, like "tsp" for example. The module itself should have at least one example that the user can modify for its own needs.
+
+#--Usage--
+#python3 execution-battery.py [0/1 to disable/enable bks maintenance] < {INPUT_FILE}
+#{INPUT_FILE}: the YAML file passed by the user.
+#The bks maintenance is activated by default.
+
+#--Input format--
+#The expected input is a YAML file (see https://yaml.org/spec/). A copy of the original input will be stored inside the working folder for archiving purposes named "script_input.yaml".
+#The yaml file should be passed to the stdin and should be formatted as follows:
+#---
+#name: {EXECUTION_NAME}            #A name to identify the run. The script will use this name to create the "${WORKING_FOLDER}" as "{EXECUTION_NAME}-{TODAY_DATE}-{#}", where the last argument is a number that maintains the folder unique. [see below]
+#problem: {PROBLEM_ACRONYM}        #An identification of the problem that is being solved. Should be passed to the loader to determine what methods should be used to compare and read solutions. This will also determine what are the extesions that should be used to map the output file, error file, and the bks file.
+#exec: {EXECUTABLE_NAME}           #The executable name that should be located at the source build folder (../build/). This is the executable that will be used in every run.
+#description: STRING               #Optional paremeter that has a summary of your test battery to be shown in the log file.
+#default_timelimit: integer        #This will dictate the maximum time in seconds that each run can use. If this time expires, then the algorithm is taking too long. It will be denoted in the log if a premature stop is made.
+#default_iterations: integer       #This should inform how many independent runs should be done for each instance. Cannot be zero.
+#default_args: {FIXED_ARGS}        #Optional parameter that the user may give a list of arguments to be passed to the executable through command line for every run. This script will always append "--seed #" to these arguments, independent if this was specified or not. [see below]
+#default_starting_seed: integer    #Optional parameter that will inform the default starting seed. If this isn't given by the user, then the script will start at seed "1". Each output file is named after the seed used. This script will always pass the seed to the executable. [see below]
+#instance_list: sequence           #This is a sequence that should contain each instance to be solved as items in the YAML sequence in the following format: 
+#- instance: {INSTANCE_NAME}       #Inform which instance should be solved. The name of the instance should be based on the instance folder of the project (../instances/). You may specify the same instance multiple times. 
+#  timelimit: integer              #Optional parameter to override the default timelimit in seconds.
+#  iterations: integer             #Optional parameter to override the default quantity of executions.
+#  args: {ARGS}                    #Optional parameter to override the default argument list that will be passed to the executable.
+#  starting_seed: integer          #Optional parameter to override the default starting seed. This will be used only for the respective instance.
+#...
+#The user may specify the same instance multiple times. This may be necessary when the same instance has to be executed with varying configuration. In this case, starting from the second time the instance is listed, the script will register in the log that the run has a repeated instance. Also, a number will be attached to the instance identification to separate the output/error files and to identify each test battery after the first.
+#For example, if you specify the INSTANCE.txt three times, the first time it is found will be a normal execution with no changes in the logfile. The second and third time will be denoted in the log file and their indentification will be INSTANCE-02 and INSTANCE-03 respectively. This will ensure that the test battery result won't be mixed. BKS is mantained normally.
+#Each instance that isn't found from the main input file is noted in the log and is ignored by the script.
+
+#--Execution details--
+#For each instance in the {INPUT_FILE}, a subfolder is made with the same name as the instance being solved to store the battery data. If the same instance is specified multiple times in the {INPUT_FILE}, the script appends an increasing number at the end of the subfolder to distinguish each setup as metioned above.
+#The script will perform calls to the {TARGET_PROGRAM} to solve the instance with an arbitrary number of iterations specified in the {INPUT_FILE}. Each iteration consist of a single independent run. This script uses a seed passed through command line argument as "--seed #", it is expected that the ${TARGET_PROGRAM} knows how to handle this seed. The starting seed number may be given by the user in the ${INPUT_FILE} or left alone to be defaulted as '1'. This script increases the seed number by one for every subsequent iteration made with the ${TARGET_PROGRAM} for the instance being solved.
 #Inside each subfolder, the print of the stderr and stdout made by the ${TARGET_PROGRAM} is stored as separated files for each iteration of this tool. Those files are named based on the seed used during the run. 
-#For example, if the user start this script with `${WORKING_FOLDER} = RUN_EXAMPLE` on 28/01/2021 using the default starting seed to make two independent runs of instance1.txt and instance2.txt, then the following file structure will be created at "../workpace/" directory:
-#  /RUN_EXAMPLE-28012021-01/
+#For example, if the user start this script with `{WORKING_FOLDER} = RUN_EXAMPLE` on 12/12/1993 using the default starting seed to make two independent runs of instance1.txt and instance2.txt, then the following file structure will be created at "../workpace/" directory:
+#  /RUN_EXAMPLE-12121993-01/
 #               |----------- instance1/
 #               |               |--------- 1.out
 #               |               |--------- 1.err
@@ -26,57 +66,23 @@
 #               |               |--------- 2.err
 #               |               |--------- 2.out
 #               |----------- RUN_EXAMPLE.log
-#               |----------- script_input.json
+#               |----------- script_input.yaml
 #
-#If the "RUN_EXAMPLE-28012021-01" folder already exists, then the script will attempt to increase the appended number at the end until it is created successfully. For example: RUN_EXAMPLE-28012021-02, RUN_EXAMPLE-28012021-03, and so on.
-#This tool will automatically maintain the best known solution (bks) found through the project for each instance in the "../result/bks/" folder. The ${INPUT_FILE} should contain the acronym of the target problem, which is standardized across all the project. The idea is to help the user to mantain a result folder that contains the best solution found through all the runs made within the project.
+#If the "RUN_EXAMPLE-12121993-01" folder already exists, then the script will attempt to increase the appended number at the end until it is created successfully. For example: RUN_EXAMPLE-12121993-02, RUN_EXAMPLE-12121993-03, and so on.
+#This tool will automatically maintain the best known solution (bks) found through the project for each instance in the "../result/bks/" folder. The {INPUT_FILE} should contain the acronym of the target problem, which is standardized across all the project. The idea is to help the user to mantain a result folder that contains the best solution found through all the runs made within the project.
 #The script will look for each instances inside the "../instances/" directory. Each file must have an unique name or the script will behave incorrectly.
-#This script will make a copy of the ${INPUT_FILE} into the ${WORKING_FOLDER} named "script_input.json" for archiving purposes.
+#This script will make a copy of the {INPUT_FILE} into the {WORKING_FOLDER} named "script_input.yaml" for archiving purposes.
 #If you need to include another problem to work with this tool, you don't need to edit the code under this script. This tool should rarely be modified. The only module that should be coded is the loader module "loader.py" that should provide the respective methods needed to handle the files related to the target problem.
-#It also worth noting that if the execution of the ${TARGET_PROGRAM} fails by rising a non-zero return, time limit, or from an user made check, then this tool will register the occurence in the log file and the bks maintence is ignored.
-#Finally, the user may see some details about the ongoing run by catching the stderr output of this script. If anything goes wrong, you may cross the information printed to stderr with the generated log file inside the ${WORKING_FOLDER} to track the issue.
-
-#--Usage--
-#python3 execution-battery.py [0/1 to disable/enable bks maintenance] < {INPUT_FILE}
-#bks maintenance is activated by default.
+#It also worth noting that if the execution of the {TARGET_PROGRAM} fails by rising a non-zero return, time limit, or from an user made check, then this tool will register the occurence in the log file and the bks maintence is ignored.
+#Finally, the user may see some details about the ongoing run by catching the stderr output of this script. If anything goes wrong, you may cross the information printed to stderr with the generated log file inside the {WORKING_FOLDER} to track the issue.
 
 #--Warning--
 #Make sure that the main application (binary) is prepared to receive the "--seed #" command by line argument, even if the algorithm is deterministic.
-#This script will append the above argument at the beginning of every execution to guarantee that each run will generate a distinct but controlled output for run made. If the ${TARGET_PROGRAM} is well designed, then the execution will always be replicable.
+#This script will append the above argument at the beginning of every execution to guarantee that each run will generate a distinct but controlled output for each execution. If the {TARGET_PROGRAM} is well designed, then the execution will always be replicable.
 #Make sure that every instance has a unique name without special characters.
 #The number of iterations (independent runs) cannot be zero.
 #Do not manually edit the log file or modify the folder structure unless you know what you are doing. By not following the standard made by the script, other tools that use it may break.
 #Make sure that each instance has an unique name, even if they are in separated folders.
-
-#--Detailed Application Usage-- 
-#The ${INPUT_FILE} is a json that should provide the configuration the script to run: the ${TARGET_PROGRAM} path related on the source build folder "../sbuild/", and a list of instances to solve related to "../instances". The ${INPUT_FILE} should be passed to stdin.
-#You may configure a default number of runs (iterations), maximum time limit in seconds (to cancel the execution if too long), some fixed args to be passed to the executable, and the starting seed to use for all runs. 
-#Also, you may optionally provide a description of your run to be shown in the log.
-#As stated before, the list of instances to be solved should be related to the ones found in the instance folder ../instances/. The user may override the default parameters for specific instances and may also use the same instance multiple times.
-#Additionally, this script will maintain the bks found unless specified otherwise. The user can disable this by passing the number "0" as command line parameter to this script. If no argument is passed, then the default behaviour is to maintain the bks normally.
-
-#--Input format--
-#A copy of the original input will be stored inside the working folder for archiving purposes name "script_input.json".
-#The json file should be redirected to the stdin and should be formatted as follows:
-#
-#"name": "{EXECUTION_NAME}" -- Obrigatory: this will give a name to identify the run. The script will use this name to create the ${WORKING_FOLDER}" as "{EXECUTION_NAME}-{TODAY_DATE}-{#}", where the last argument is a number that maintains the folder unique.
-#"problem": "{PROBLEM_ACRONYM}" -- Obrigatory: identifies the problem that is being solved. Should be passed to the loader to determine what methods should be used to compare and read solutions. This will also determine what are the extesions that should be used to map the output file, error file, and the bks file.
-#"exec": "{EXECUTABLE_NAME}" -- Obrigatory: identifies the executable name that should be located at the source build folder (../sbuild/). This is the executable that will be used in every run.
-#"default_args": "{FIXED_ARGS}" -- Optional: the user may give a list of arguments to be passed to the executable through command line for every run. This script will always append "--seed #" to these arguments, independent if this was specified or not.
-#"default_timelimit": INT -- Obrigatory: this will dictate the maximum time in seconds that each run can use. If this time expires, then the algorithm is taking too long. It will be denoted in the log if a premature stop is made.
-#"default_starting_seed": INT -- Optional: this will inform the default starting seed. If this isn't given by the user, then the script will start at seed "1". Each output file is named after the seed used. This script will always pass the seed to the executable.
-#"default_iterations": INT -- Obrigatory: this should inform how many independent runs should be done for each instance. Cannot be zero.
-#"description": STRING -- Optional: a summary of your test battery to be shown in the log file.
-#"instance_list": [ LIST OF OBJECTS ] -- Obrigatory: this should contain each instance to be solved as a json object in the following format: 
-#   "instance": {INSTANCE_NAME} -- Obrigatory: inform which instance should be solved. The name of the instance should be based on the instance folder of the project (../instances/). You may specify the same instance multiple times. 
-#   "timelimit": INT -- Optional: you can pass this parameter to override the default time limit in seconds. This value will be used in this instance only. If no value is specified, then the default is used.
-#   "iterations": INT -- Optional: you can pass this parameter to override the default number of runs. This value will be used in this instance only. If no value is specified, then the default is used. Cannot be zero.
-#   "starting_seed": INT -- Optional: you can pass this parameter to override the default starting seed. This value will be used in this instance only. If no value is specified, then the default is used. Remeber that each file will be named after its seed.
-#   "args": {ARGS} -- Optional: you can pass this parameter to override the fixed args. This value will be used in this instance only. If no value is specified, then the fixed args is used. Even if this is given by the user, the script will append the "--seed #" to this argument line.
-#
-#The user may specify the same instance multiple times. This may be necessary when you want to run the same instance with varying configuration. In this case, starting from the second time the instance is listed, the script will register in the log that the run has a repeated instance. Also, a number will be attached to the instance identification to separate the output/error files and to identify each test battery after the first.
-#For example, if you specify the INSTANCE.txt three times, the first time it is found will be a normal execution with no changes in the logfile. The second and third time will be denoted in the log file and their indentification will be INSTANCE-02 and INSTANCE-03 respectively. This will ensure that the test battery result won't be mixed. BKS is mantained normally.
-#Each instance that isn't found from the main input file is noted in the log and is ignored by the script.
 
 #--Tips--
 #If you need to extend this script to work with another problem from the project, then you only need to edit the Loader class found in the "loader.py" module.
@@ -88,14 +94,14 @@
 #   --> Merge the new execution folder with the original one. If you changed the starting seed accordingly, then the files should go nicely with each other due to the naming convention.
 #   --> Manually edit the resulting original log to merge with the new one. Each text battery and iteration is logged individually, it is easy to merge the files with simple copy and paste.
 #   --> The bks is managed automatically. You don't need to worry about it. If any error is risen, it won't be updated.
-#   --> Run the "analyze-execution-battery.py" tool to devise a second log file with a pretty result summary.
-#Using this script for any serious test battery is highly recommend, as it will always maintain the bks found through your research project in the "../results/bks/" folder.
+#   --> Run the analyze tool to devise a second log file with a pretty result summary.
+#The user should use this script for any serious execution battery, as it will always maintain the bks found through your research project in the "../results/bks/" folder.
 #This script doesn't make a backup of the bks folder. It is important to keep the bks folder inside a proper versioning platform (like git) so you can recover incase of bad overwrite.
 
 import os
 import sys
 from datetime import datetime
-import json
+import yaml
 import subprocess
 import shutil
 import re
@@ -109,7 +115,7 @@ workspace_dir = "../workspace/" #the workspace folder of the project
 bks_dir = "../results/bks/" #where I should store the best known solution
 main_dir = '' #the directory that will hold the all the files generated by this script execution
 instance_base_dir = "../instances/" #The directory that has the instances
-build_dir = "../sbuild/" #The directory where the build files are
+build_dir = "../build/" #The directory where the build files are
 
 #Environment information
 date = {} #current computer date for execution logging
@@ -126,11 +132,11 @@ default_arguments = "" #Will keep the arguments that should be passed to the exe
 default_timelimit = 0 #how much time in seconds each run will have at maximum to execute.
 default_starting_seed = 0 #the starting seed that should be used for every test battery
 default_iteration = 0 #how many times each instance will be executed. 
-instance_list = [] #Will keep the json object (list) that should contain each configuration that should be solved
+instance_list = [] #Will keep the yaml sequence (list) that contain each configuration that should be solved
 description = "" #The user has the option to provide a summary for the test battery. This will be stored here.
 
 #Other variables
-data = {} #The original json data passed as input
+data = {} #The original yaml data passed as input
 log_file = "" #The file that will keep the log
 execution_folder = "" #The name of the folder that is being worked upon
 
@@ -144,7 +150,8 @@ err_extension = "" #The extension that should be used when outputing files to st
 bks_extension = "" #The extension that identifies the bks file.
 
 #--Script functions that does not need to be altered--
-def checkDir(): #Will check if the directories are accessible
+#Will check if the directories are accessible
+def checkDir(): 
     global workspace_dir
     global instance_base_dir
     global build_dir
@@ -156,11 +163,12 @@ def checkDir(): #Will check if the directories are accessible
         sys.stderr.write("Instance instance directory not found: " + instance_base_dir + " Aborting execution. (Did you move this script? Executing outside of the tools folder?)\n")
         exit()
     if(not os.path.exists(build_dir)):
-        sys.stderr.write("Build directory not found: " + build_sir + " Aborting execution. (Did you move this script? Executing outside of the tools folder?)\n")
+        sys.stderr.write("Build directory not found: " + build_dir + " Aborting execution. (Did you move this script? Executing outside of the tools folder?)\n")
         exit()
     sys.stderr.write("All directories are accessible.\n")
 
-def getProcessorName(): #will return the name of the current CPU
+#Will return the name of the current CPU
+def getProcessorName(): 
     if platform.system() == "Windows":
         return platform.processor()
     elif platform.system() == "Linux":
@@ -171,7 +179,8 @@ def getProcessorName(): #will return the name of the current CPU
                 return re.sub( ".*model name.*:", "", line,1).rstrip('\n')
     return ""
 
-def getRAM(): #Will return the amount of physical memory this computer has
+#Will return the amount of physical memory this computer has
+def getRAM(): 
     if platform.system() == "Linux":
         meminfo = dict((i.split()[0].rstrip(':'),int(i.split()[1])) for i in open('/proc/meminfo').readlines())
         mem_kib = int(meminfo['MemTotal'])
@@ -179,7 +188,8 @@ def getRAM(): #Will return the amount of physical memory this computer has
     else:
         return ""
 
-def loadSystemInformation(): #will fill the date settings of the script
+#Will fill the date settings of the script
+def loadSystemInformation(): 
     global date
     global cpu_name
     global ram_amount 
@@ -198,7 +208,8 @@ def loadSystemInformation(): #will fill the date settings of the script
     sys.stderr.write("Total Ram: " + ram_amount + " (gb) \n")
     sys.stderr.write("OS Information: " + operational_system + '\n')
 
-def readParam(): #will fill the script run parameters
+#Will fill the script run parameters
+def readParam(): 
     global maintain_bks
     if len(sys.argv) > 1:
         if(sys.argv[1] == "0"):
@@ -209,7 +220,8 @@ def readParam(): #will fill the script run parameters
     else:
         sys.stderr.write("No argument has been passed through command line. BKS maintenance enabled.\n")
 
-def loadJson(): #will load the json passed as input
+#Will load the yaml passed as input
+def loadYaml(): 
     global data
     global problem_name
     global run_name
@@ -221,23 +233,23 @@ def loadJson(): #will load the json passed as input
     global instance_list
     global description
 
-    data = json.load(sys.stdin)
+    data = yaml.load(sys.stdin, Loader = yaml.loader.SafeLoader)
     if(not "name" in data):
-        sys.stderr.write('Json input is missing the \'name\' key. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing the \'name\' key. Aborting execution.\n')
         exit()
     else:
         run_name = data["name"]
         sys.stderr.write('Loaded run name: ' + run_name + '\n')
 
     if(not "problem" in data):
-        sys.stderr.write('Json input is missing the \'problem\' key. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing the \'problem\' key. Aborting execution.\n')
         exit()
     else:
         problem_name = data["problem"]
         sys.stderr.write('Loaded problem name: ' + problem_name + '\n')
 
     if(not "exec" in data):
-        sys.stderr.write('Json input is missing the \'exec\' key. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing the \'exec\' key. Aborting execution.\n')
         exit()
     else:
         executable_file = data["exec"]
@@ -250,28 +262,28 @@ def loadJson(): #will load the json passed as input
             sys.stderr.write('Executable file found at ' + executable_path + '\n')
 
     if(not "default_args" in data):
-        sys.stderr.write('Json input is missing \'default_args\'. Only seed will be passed by default.\n')
+        sys.stderr.write('Yaml input is missing \'default_args\'. Only seed will be passed by default.\n')
         default_arguments = ""
     else:
         default_arguments = data["default_args"]
         sys.stderr.write('Default argument line: ' + default_arguments + '\n')
 
     if(not "default_timelimit" in data):
-        sys.stderr.write('Json input is missing \'default_timelimit\'. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing \'default_timelimit\'. Aborting execution.\n')
         exit()
     else:
         default_timelimit = int(data["default_timelimit"])
         sys.stderr.write('Default timelimit: ' + str(default_timelimit) + ' (s)\n')
 
     if(not "default_starting_seed" in data):
-        sys.stderr.write('Json input is missing \'default_starting_seed\'. Every test battery will start with seed zero by default.\n')
+        sys.stderr.write('Yaml input is missing \'default_starting_seed\'. Every test battery will start with seed zero by default.\n')
         default_starting_seed = 0
     else:
         default_starting_seed = int(data["default_starting_seed"])
         sys.stderr.write('Default starting seed number: ' + str(default_starting_seed) + '\n')
 
     if(not "default_iterations" in data):
-        sys.stderr.write('Json input is missing \'default_iterations\'. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing \'default_iterations\'. Aborting execution.\n')
         exit()
     else:
         default_iteration = int(data["default_iterations"])
@@ -281,20 +293,21 @@ def loadJson(): #will load the json passed as input
             exit()
 
     if(not "description" in data):
-        sys.stderr.write('Json input is missing \'description\'. The user has not specified a summary for this test battery. Using blank description.\n')
+        sys.stderr.write('Yaml input is missing \'description\'. The user has not specified a summary for this test battery. Using blank description.\n')
         description = ""
     else:
         description = data["description"]
         sys.stderr.write('Test battery description: ' + description + '\n')
 
     if(not "instance_list" in data):
-        sys.stderr.write('Json input is missing \'instance_list\'. Aborting execution.\n')
+        sys.stderr.write('Yaml input is missing \'instance_list\'. Aborting execution.\n')
         exit()
     else:
         instance_list = data["instance_list"]
         sys.stderr.write('Length of instance list object: ' + str(len(instance_list)) + '\n')
 
-def loadProblemInfo(): #Will load basic problem info based on the information given by the module loader.py
+#Will load basic problem info based on the information given by the module loader.py
+def loadProblemInfo(): 
     global problem_name
     global compare_function
     global read_function
@@ -322,7 +335,8 @@ def loadProblemInfo(): #Will load basic problem info based on the information gi
         sys.stderr.write("Error file extension: " + err_extension + "\n")
         sys.stderr.write("Bks file extension: " + bks_extension + "\n")
 
-def makeDirectory(): #creates the main execution dir with the same structure as the passed input
+#Creates the main execution dir with the same structure as the passed input
+def makeDirectory(): 
     global main_dir
     global execution_folder
     global run_name
@@ -341,7 +355,8 @@ def makeDirectory(): #creates the main execution dir with the same structure as 
             break
     sys.stderr.write("Successfully created the directory: " + main_dir + "\n")
 
-def loadBks(): #will load the bks directory. If it doesn't exist, then it will be created.
+#Will load the bks directory. If it doesn't exist, then it will be created.
+def loadBks(): 
     global bks_dir
     bks_dir += problem_name + os.sep
     if not os.path.exists(bks_dir):
@@ -350,7 +365,8 @@ def loadBks(): #will load the bks directory. If it doesn't exist, then it will b
     else:
         sys.stderr.write("Best known solution folder found: " + bks_dir + "\n")
 
-def createLogFile(): #This will create the log file and write the initial important stuff to it
+#This will create the log file and write the initial important stuff to it
+def createLogFile(): 
     global bks_dir
     global log_file
     global execution_folder
@@ -390,15 +406,17 @@ def createLogFile(): #This will create the log file and write the initial import
         log_file.write("Bks maintenance is disabled.\n")
     sys.stderr.write("Log file created successfully: " + log_file_dir + "\n")
 
-def logJsonInput(): #this will store the original json input file into the execution folder for archive purposes
+#This will store the original yaml input file into the execution folder for archive purposes
+def logYamlInput(): 
     global data
-    json_file_name = main_dir + "script_input.json"
-    json_file = open(json_file_name, "w")
-    json.dump(data, json_file, indent=4)
-    sys.stderr.write("Original input json dumped into: " + json_file_name)
-    json_file.close()
+    yaml_file_name = main_dir + "script_input.yaml"
+    yaml_file = open(yaml_file_name, "w")
+    yaml.dump(data, yaml_file, default_flow_style = False)
+    sys.stderr.write("Original input yaml dumped into: " + yaml_file_name)
+    yaml_file.close()
 
-def execute(): #the main execution step of the script
+#The main execution step of the script
+def execute(): 
     global log_file
     global instance_list
     global main_dir
@@ -491,8 +509,8 @@ def execute(): #the main execution step of the script
             file_out = open(out_full_path, "w+") #the output file that will receive the solution
             file_err = open(err_full_path, "w+")  #the file that will receive the stderr
             executable_list = [i for i in executable_line.split()] #this is the line that should be executed in the terminal
-            executable_list.append("-s") #passing the seed parameter to the algorithm
-            executable_list.append(str(actual_seed)) #passing the actual seed to the algorithm
+            #executable_list.append("-s") #passing the seed parameter to the algorithm
+            #executable_list.append(str(actual_seed)) #passing the actual seed to the algorithm
 
             try: #running the algorithm with the instance
                 subprocess.run(executable_list, stdin = file_in, stdout = file_out, stderr = file_err, check = True, timeout = current_timelimit) #main execution line
@@ -554,8 +572,8 @@ sys.stderr.write("Loading the system information.\n")
 loadSystemInformation()
 sys.stderr.write("Reading the command line parameters.\n")
 readParam()
-sys.stderr.write("Loading the input Json.\n")
-loadJson()
+sys.stderr.write("Loading the input Yaml.\n")
+loadYaml()
 sys.stderr.write("Loading problem info.\n")
 loadProblemInfo()
 sys.stderr.write("Making the target directory.\n")
@@ -564,8 +582,8 @@ sys.stderr.write("Loading bks solution files based on the given problem name.\n"
 loadBks()
 sys.stderr.write("Creating the main log file.\n")
 createLogFile()
-sys.stderr.write("Writing the input json inside the execution folder.\n")
-logJsonInput()
+sys.stderr.write("Writing the input yaml inside the execution folder.\n")
+logYamlInput()
 sys.stderr.write("Starting main execution routine.\n")
 execute()
 sys.stderr.write("Test battery finished successfully.\n")

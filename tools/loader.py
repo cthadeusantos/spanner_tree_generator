@@ -1,6 +1,8 @@
-#Author: Anderson Zudio
+#Author: Carlos Thadeu & Anderson Zudio
 #Version: 1.0
-#Date: 15 june 2022
+#Date: 9 de fevereiro de 2023
+#Esta é uma modificação do módulo loader.py para executar neste trabalho de T-admissibilidade.
+#Comentários originais:
 #This module does nothing by itself. This is part of execution-battery.py and execution-battery-analyser.py. 
 
 #--Description--
@@ -28,94 +30,99 @@
 
 import statistics
 
-class TSPLoader: #Contains the definition of every dependency of the TSP problem. 
-    in_extension = ".tsp"
-    out_extension = ".tsp.out"
-    err_extension = ".tsp.err"
-    bks_extension = ""
+class TadmissLoader: #Contains the definition of every dependency of the T-admissibility problem. 
+    in_extension = ".txt"
+    out_extension = ".out.txt"
+    err_extension = ".err.txt"
+    bks_extension = ".bks.txt"
 
     #Receives an object file. Should output a solution representation that can be read in the remaining funcitons.
     @staticmethod
-    def tspReadSolution(solution_file):
-        name = solution_file.readline().rstrip()
-        vertex_order_string = solution_file.readline().rstrip()
-        vertex_order = []
-        for word in vertex_order_string:
-            if(word != " "):
-                vertex_order.append(int(word))
-        total_distance = float(solution_file.readline().rstrip())
-        method = solution_file.readline().rstrip()
-        last_line_list = solution_file.readline().rstrip().split()
-        execution_time = float(last_line_list[0])
-        iteration_count = int(last_line_list[1])
+    def tadmissReadSolution(solution_file):
+        instance = solution_file.readline().rstrip().split('=')[1].lstrip()
+        solution_type = solution_file.readline().rstrip().split('=')[1].lstrip()
+        num_vertices = solution_file.readline().rstrip().split('=')[1].lstrip()
+        num_edges = solution_file.readline().rstrip().split('=')[1].lstrip()
+        lower_bound = solution_file.readline().rstrip().split('=')[1].lstrip()
+        stretch_index = solution_file.readline().rstrip().split('=')[1].lstrip()
+        sum_trees = solution_file.readline().rstrip().split('=')[1].lstrip()
+        running_time = solution_file.readline().rstrip().split('=')[1].lstrip()
+        threads = solution_file.readline().rstrip().split('=')[1].lstrip()
         solution = {
-            "name": name,
-            "distance": total_distance,
-            "method": method,
-            "time": execution_time,
-            "iteration": iteration_count,
-            "order": vertex_order
+            "instance" : instance,
+            "solution_type" : solution_type,
+            "num_vertices" : num_vertices,
+            "num_edges" : num_edges,
+            "lower_bound" : lower_bound,
+            "stretch_index" : stretch_index,
+            "sum_trees" : sum_trees,
+            "running_time" : running_time,
+            "threads" : threads 
         };
         return solution
 
     #Receive two solutions as input. Should return if the first one is strictly better than the second.
     @staticmethod
-    def tspCompare(solution, bks):
-        if(solution["distance"] < bks["distance"]):
+    def tadmissCompare(solution, bks):
+        if(int(solution["stretch_index"]) < int(bks["stretch_index"])):
             return True
         else:
             return False
 
     #Receive a solution. Should return True if it's valid, False otherwise.
     @staticmethod
-    def tspCheckSolution(solution):
-        return True
+    def tadmissCheckSolution(solution):
+        return (int(solution["stretch_index"]) < 10000)
 
     #Return the header (column names) of the summary table. The info has to be properly sorted.
     @staticmethod
-    def tspHeader():
-        return ['Avg execution time (s) (MIN/MAX) [std_dev]', 'Avg iteration count (MIN/MAX) [std_dev]', 'Avg distance (MIN/MAX) [std_dev]']
+    def tadmissHeader():
+        return ['Avg running time (s) (MIN/MAX) [std_dev]', 'Avg stretch index (MIN/MAX) [std_dev]', '#Vertex', '#Edges', 'Lower Bound']
 
     #Receive a solution list. Should output the info for the result table. This info has to be in the same order as the header given above.
     @staticmethod
-    def tspAddEntry(solution_list):
-        execution_time = []
-        iteration_count = []
-        distance = []
+    def tadmissAddEntry(solution_list):
+        running_time = []
+        stretch_index = []
+        n_vertex = int(solution_list[0]["num_vertices"])
+        n_edge = int(solution_list[0]["num_edges"])
+        lower_bound = int(solution_list[0]["lower_bound"])
 
         for solution in solution_list:
-            execution_time.append(solution["time"])
-            iteration_count.append(solution["iteration"])
-            distance.append(solution["distance"])
+            running_time.append(float(solution["running_time"]))
+            stretch_index.append(int(solution["stretch_index"]))
 
-        execution_time_avg = round(statistics.mean(execution_time), 1)
-        execution_time_dev = round(statistics.stdev(execution_time), 1)
-        execution_time_min = round(min(execution_time), 1)
-        execution_time_max = round(max(execution_time), 1)
-        iteration_count_avg = round(statistics.mean(iteration_count), 1)
-        iteration_count_dev = round(statistics.stdev(iteration_count), 1)
-        iteration_count_min = min(iteration_count)
-        iteration_count_max = max(iteration_count)
-        distance_avg = round(statistics.mean(distance), 1)
-        distance_dev = round(statistics.stdev(distance), 1)
-        distance_min = min(distance)
-        distance_max = max(distance)
+        running_time_avg = round(statistics.mean(running_time), 1)
+        running_time_min = round(min(running_time), 1)
+        running_time_max = round(max(running_time), 1)
+        stretch_index_avg = round(statistics.mean(stretch_index), 1)
+        stretch_index_min = min(stretch_index)
+        stretch_index_max = max(stretch_index)
 
-        return [str(execution_time_avg) + ' (' + str(execution_time_min) + '/' + str(execution_time_max) + ') [' + str(execution_time_dev) + ']', str(iteration_count_avg) + ' (' + str(iteration_count_min) + '/' + str(iteration_count_max) + ') [' + str(iteration_count_dev) + ']', str(distance_avg) + ' (' + str(distance_min) + '/' + str(distance_max) + ') [' + str(distance_dev) + ']' ]
+        if(len(solution_list) > 1):
+            running_time_dev = round(statistics.stdev(running_time), 1)
+            stretch_index_dev = round(statistics.stdev(stretch_index), 1)
+        else:
+            running_time_dev = 0
+            stretch_index_dev = 0
+
+
+
+        return [str(running_time_avg) + ' (' + str(running_time_min) + '/' + str(running_time_max) + ') [' + str(running_time_dev) + ']', str(stretch_index_avg) + ' (' + str(stretch_index_min) + '/' + str(stretch_index_max) + ') [' + str(stretch_index_dev) + ']', str(n_vertex), str(n_edge), str(lower_bound) ]
         
-#The main function that should be called from other tools. This should setup the variables to specify the dependencies
+#The main function that should be called from other tools. This should setup the variables to specify the dependencies.
 def load(problem_name):
-    if(problem_name == "tsp"):
+    if(problem_name == "tadmiss"):
         return {
-            "read_function": TSPLoader.tspReadSolution,
-            "compare_function": TSPLoader.tspCompare,
-            "check_function": TSPLoader.tspCheckSolution,
-            "header_function": TSPLoader.tspHeader,
-            "entry_function": TSPLoader.tspAddEntry,
-            "in_extension": TSPLoader.in_extension,
-            "out_extension": TSPLoader.out_extension,
-            "err_extension": TSPLoader.err_extension,
-            "bks_extension": TSPLoader.bks_extension,
+            "read_function": TadmissLoader.tadmissReadSolution,
+            "compare_function": TadmissLoader.tadmissCompare,
+            "check_function": TadmissLoader.tadmissCheckSolution,
+            "header_function": TadmissLoader.tadmissHeader,
+            "entry_function": TadmissLoader.tadmissAddEntry,
+            "in_extension": TadmissLoader.in_extension,
+            "out_extension": TadmissLoader.out_extension,
+            "err_extension": TadmissLoader.err_extension,
+            "bks_extension": TadmissLoader.bks_extension,
         }
     else: #unknown problem
         return {}

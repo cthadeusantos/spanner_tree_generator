@@ -1,0 +1,3 @@
+Vá na pasta de tools e executa:
+python3 execution-battery.py 1 < batteries/zudio-bf-example.yaml
+python3 execution-battery-analyzer.py ../workspace/zudio-bf-par-example-09022023-01
