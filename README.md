@@ -32,6 +32,8 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 
 Usage example:
 	
+  ./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt > results/grafo10_results.txt
+
 	./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
 
 ## 2. Important links and work performed

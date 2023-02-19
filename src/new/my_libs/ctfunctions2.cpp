@@ -380,6 +380,46 @@ Graph read_graph_file() {
     return graph;
 }
 
+/**
+ * @details Read a graph file using redirections.
+ * @param g a graph instance that represents a graph.
+ * @return a integer the graph contains a cycle.
+ */
+Graph read_graph_file_edges_list() {
+
+    char Ch = ' ';
+    std::string value_str = "";
+    int dimension = 0;
+    int row = 0;
+    int col = 0;
+    int LetterCount = 0;
+    int WordCount = 0;
+    Graph graph;
+
+    while (std::cin.get(Ch)) {
+        if ((Ch == '\n') || (Ch == ' ')) {
+            LetterCount = 0;
+            if (value_str.size()) {
+                if (WordCount++ == 0) {
+                    dimension = std::stoi(value_str);
+                    graph.add_vertices(dimension);
+                } else {
+                    std::vector<std::string> nodes = split(value_str, ',');
+                    int node1 = stoi(nodes[0]);
+                    int node2 = stoi(nodes[1]);
+                    if (!graph.possui_aresta(node1, node2))
+                        graph.add_aresta(node1, node2);
+                }
+                value_str = "";
+            }
+        } else {
+            value_str += Ch;
+            ++LetterCount;
+        }
+    }
+    return graph;
+}
+
 int create_new_graphs(){
     DEBUG std::cerr << "Creating new graphs.\n";
 

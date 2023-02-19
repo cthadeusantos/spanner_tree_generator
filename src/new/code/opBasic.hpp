@@ -92,7 +92,7 @@ public:
     // Get the eccentricity of a vertex
     static int eccentricity(Graph &graph, int vertex);
 
-    
+    static bool has_cycle(Graph &graph, int vertex);
 };
 
 #endif

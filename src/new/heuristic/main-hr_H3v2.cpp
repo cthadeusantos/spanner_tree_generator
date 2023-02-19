@@ -56,6 +56,8 @@ extern int max_induced_cycles;
 int output = 0;
 bool best = false;
 
+int matrix_t=0;
+
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.
  * @details The instance file should be passed to standard input following the /doc/input_format.md specification.
@@ -71,6 +73,8 @@ void usage(const char* app_name){
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
+	std::cout << "\t     | --adjacency \t\tDefine which type will be read. (adjacency list)[default]" << std::endl  << std::endl;
+	std::cout << "\t     | --edges   \t\tDefine which type will be read. (edges list)" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
@@ -101,6 +105,14 @@ void parseArgs(int argc, char** argv){
 		else if(arg == "-t" || arg == "--thread"){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
+		}
+		else if(arg == "--adjacency"){
+			matrix_t = 0;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
+		}
+		else if(arg == "--edges"){
+			matrix_t = 1;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
 		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
@@ -160,7 +172,7 @@ int main(int argc, char** argv){
 
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with heuristic 3 version 2 - wait!\n";
-	run_name = "Heuristic_3v2";
+	run_name = "H3v2";
 	Heuristic::heuristica_3v2(graph);
 
 	// End time counting

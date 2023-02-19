@@ -56,6 +56,8 @@ extern int max_induced_cycles;
 int output = 0;
 bool best = false;
 
+int matrix_t=0;
+
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.
  * @details The instance file should be passed to standard input following the /doc/input_format.md specification.
@@ -102,6 +104,14 @@ void parseArgs(int argc, char** argv){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
 		}
+		else if(arg == "--adjacency"){
+			matrix_t = 0;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
+		}
+		else if(arg == "--edges"){
+			matrix_t = 1;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
+		}
 		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
 			DEBUG std::cerr << "Changed output type to: " << output << '\n';
@@ -147,7 +157,11 @@ int main(int argc, char** argv){
 
 	//TODO: Leitura do grafo
 	Graph graph;
-    graph = read_graph_file();
+	if (matrix_t==1)
+		graph = read_graph_file_edges_list();
+	else
+		graph = read_graph_file();
+
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 

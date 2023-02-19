@@ -1107,3 +1107,7 @@ int OpBasic::eccentricity(Graph &graph, int vertex){
     }
     return max;
 }
+
+bool OpBasic::has_cycle(Graph &graph, int vertex){
+    return cyclic(graph, vertex);
+}

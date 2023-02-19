@@ -37,6 +37,7 @@ std::string get_enviroment_var(const char *enviroment_var);
 std::string get_current_dir();
 void create_directory(std::string auxiliary);
 Graph read_graph_file();
+Graph read_graph_file_edges_list();
 int create_new_graphs();
 
 // Special search

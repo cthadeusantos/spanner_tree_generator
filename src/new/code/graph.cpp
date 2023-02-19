@@ -102,13 +102,15 @@ void Graph::add_aresta(std::vector<int> arestas)
  * @author Carlos Thadeu
  * @param vertex an integer that represents the vertex to be deleted
  */
-void Graph::delete_vertex(int vertex){
+void Graph::delete_vertex(int vertex)
+{
     std::vector<int>::iterator it;
     std::vector<int> neighbors;
     neighbors = adjList(vertex);
 
     // otimizar usando iterator
-    for (int i = 0; i < neighbors.size(); i++){
+    for (int i = 0; i < neighbors.size(); i++)
+    {
         remove_aresta(vertex, neighbors[i]);
     }
 }
@@ -332,9 +334,9 @@ std::vector<int> Graph::vertices_de_maior_grau()
     return list_vertices;
 }
 
-//! Count the number of vertices that has a specific degree 
+//! Count the number of vertices that has a specific degree
 /*!
-    Count the number of vertices that has a specific degree 
+    Count the number of vertices that has a specific degree
     \param grau is an integer that represents the degree seek
     \return an integer that represents the quantity of vertices that has a specific degree
 */
@@ -370,7 +372,7 @@ void Graph::set_best_tree(Graph graph)
     this->best_tree = {};
     for (int i = 0; i < graph.edgeList().size(); i = i + 2)
     {
-        this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i+1]));
+        this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i + 1]));
     }
 };
 
@@ -379,7 +381,8 @@ void Graph::set_best_tree(Graph graph)
     Return a best tree found
     \return a vector of tuples that represents edges from best tree
 */
-std::vector<std::tuple<int, int>> Graph::get_best_tree(){
+std::vector<std::tuple<int, int>> Graph::get_best_tree()
+{
     return this->best_tree;
 }
 
@@ -390,8 +393,9 @@ std::vector<std::tuple<int, int>> Graph::get_best_tree(){
 void Graph::show_best_tree()
 {
     int node1 = 0, node2 = 0;
-    //std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
-    for (auto&& tuple: this->best_tree){
+    // std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
+    for (auto &&tuple : this->best_tree)
+    {
         std::tie(node1, node2) = tuple;
         std::cout << "(" << node1 << " , " << node2 << ") ";
     }
@@ -418,7 +422,7 @@ int Graph::get_stretch_index()
     return this->stretch_index;
 }
 
-//! Add new vertices to graph create without vertices Graph() 
+//! Add new vertices to graph create without vertices Graph()
 /*!
     Add new vertices to graph create without vertices Graph()
     \param n a integer that represents the number of vertices of graph
@@ -431,54 +435,63 @@ void Graph::add_vertices(int n)
     };
 };
 
-std::vector<int> Graph::induced_cycle(Graph &g, int n){
+std::vector<int> Graph::induced_cycle(Graph &g, int n)
+{
     OpBasic a = OpBasic();
     return a.cycle(g, n);
 }
 
-bool Graph::has_chord(Graph &g, std::vector<int> x){
+bool Graph::has_chord(Graph &g, std::vector<int> x)
+{
     OpBasic a = OpBasic();
     return a.possuiCorda(g, x);
 }
 
-void Graph::add_tree(){
+void Graph::add_tree()
+{
     this->total_tree++;
 }
 
-void Graph::sum_trees(int value){
+void Graph::sum_trees(int value)
+{
     this->total_tree = this->total_tree + value;
 }
 
-int Graph::get_total_tree(){
+int Graph::get_total_tree()
+{
     return this->total_tree;
 }
 
-int Graph::get_qty_vertex(){
+int Graph::get_qty_vertex()
+{
     return this->qtdVertices;
 }
 
 // Get the index from vertex
-int Graph::neighbor_index(int vertex, int neighbor){
+int Graph::neighbor_index(int vertex, int neighbor)
+{
     int index = -1;
     int size = this->adjList(vertex).size();
     for (int i = 0; i < size; ++i)
+    {
+        if (this->adjList(vertex)[i] == neighbor)
         {
-            if (this->adjList(vertex)[i] == neighbor){
-                index = i;
-                break;
-            }
+            index = i;
+            break;
         }
+    }
     return index;
 }
 
-int Graph::eccentricity(Graph &graph, int vertex){
+int Graph::eccentricity(Graph &graph, int vertex)
+{
     return OpBasic().eccentricity(graph, vertex);
 }
 
 /**
  * @brief Deep first search
  * @details Deep first search using stack
- * Returns all reachable verttices from initial vertex 
+ * Returns all reachable verttices from initial vertex
  * adapter from https://www.geeksforgeeks.org/iterative-depth-first-traversal/
  * @author Carlos Thadeu
  * @param vertex an integer that represents a vertex
@@ -487,22 +500,22 @@ int Graph::eccentricity(Graph &graph, int vertex){
 std::vector<int> Graph::DFS(int vertex)
 {
     // Initially mark all vertices as not visited
-    //std::vector<bool> visited(V, false);
+    // std::vector<bool> visited(V, false);
     std::vector<bool> visited(get_qty_vertex(), false);
     std::vector<int> vertices_dfs;
 
     // Create a stack for DFS
     std::stack<int> stack;
- 
+
     // Push the current source node.
     stack.push(vertex);
- 
+
     while (!stack.empty())
     {
         // Pop a vertex from stack and print it
         int vertex = stack.top();
         stack.pop();
- 
+
         // Stack may contain same vertex twice. So
         // we need to print the popped item only
         // if it is not visited.
@@ -511,87 +524,102 @@ std::vector<int> Graph::DFS(int vertex)
             vertices_dfs.push_back(vertex);
             visited[vertex] = true;
         }
- 
+
         // Get all adjacent vertices of the popped vertex s
         // If a adjacent has not been visited, then push it
         // to the stack.
-        //for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
-        //for (auto i = adjList(s).begin(); i != adjList(s).end(); ++i)
-        for (int i=0; i < adjList(vertex).size(); i++){
+        // for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+        // for (auto i = adjList(s).begin(); i != adjList(s).end(); ++i)
+        for (int i = 0; i < adjList(vertex).size(); i++)
+        {
             if (!visited[adjList(vertex)[i]])
                 stack.push(adjList(vertex)[i]);
         }
-
     }
     return vertices_dfs;
 }
 
 /**
  * @brief Find subgraphs from an articulations at the original graph
- * @details Seek subgraphs from an articulations the original graph 
+ * @details Seek subgraphs from an articulations the original graph
  * @author Carlos Thadeu
  * @param articulations a set that represents the articulations of graph
  * @param subgraph a vector of vectors that represents the subgraphs
  * @param g a graph that represents the original graph
  */
-void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g){
+void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g)
+{
     Graph graph;
     // transform set at vector
     graph = g;
     std::vector<int> list_articulations(articulations.begin(), articulations.end());
-    //std::vector<std::vector<int>> neighbors;
+    // std::vector<std::vector<int>> neighbors;
     std::set<int> visited;
-    for (auto root : list_articulations){
-        //neighbors.push_back(this->adjList(root));
+    for (auto root : list_articulations)
+    {
+        // neighbors.push_back(this->adjList(root));
         graph.delete_vertex(root);
     }
-    for (auto root : list_articulations){
+    for (auto root : list_articulations)
+    {
 
-        //for (int i=0; i < neighbors.size(); i++){
-        for (auto neighbor : g.adjList(root)){
-            //if (!in(visited, neighbors[i])){
-            if (!in(neighbor, visited) && (!in( neighbor, list_articulations))){
-                //subgraph.push_back(this->DFS(neighbors[i])); //add vertices
-                subgraph.push_back(graph.DFS(neighbor)); //add vertices 
-                //subgraph[subgraph.size()-1].push_back(root); // add root vertex
-                for (const auto& t : subgraph.back()) { // reference avoids copying element
-                    visited.insert(t);      // element can not be changed
+        // for (int i=0; i < neighbors.size(); i++){
+        for (auto neighbor : g.adjList(root))
+        {
+            // if (!in(visited, neighbors[i])){
+            if (!in(neighbor, visited) && (!in(neighbor, list_articulations)))
+            {
+                // subgraph.push_back(this->DFS(neighbors[i])); //add vertices
+                subgraph.push_back(graph.DFS(neighbor)); // add vertices
+                // subgraph[subgraph.size()-1].push_back(root); // add root vertex
+                for (const auto &t : subgraph.back())
+                {                      // reference avoids copying element
+                    visited.insert(t); // element can not be changed
                 }
-                //if (subgraph[subgraph.size()-1].size() < 3){ // Usa isto Se usar subgraph[subgraph.size()-1].push_back(root);
-                if (subgraph[subgraph.size()-1].size() < 2){
-                    for (auto i: subgraph[subgraph.size()-1]){
+                // if (subgraph[subgraph.size()-1].size() < 3){ // Usa isto Se usar subgraph[subgraph.size()-1].push_back(root);
+                if (subgraph[subgraph.size() - 1].size() < 2)
+                {
+                    for (auto i : subgraph[subgraph.size() - 1])
+                    {
                         visited.erase(i);
                     }
-                    subgraph.erase(subgraph.begin()+subgraph.size()-1);
-                } 
+                    subgraph.erase(subgraph.begin() + subgraph.size() - 1);
+                }
             }
         }
-
     }
     int count = 0;
-    for (auto sb : subgraph){
-        for (auto v : sb){
-            for (auto neighbor: g.adjList(v)){
-                    if (in(neighbor, list_articulations) && (!in(neighbor, subgraph[count]))){
-                        subgraph[count].push_back(neighbor);
-                    }
+    for (auto sb : subgraph)
+    {
+        for (auto v : sb)
+        {
+            for (auto neighbor : g.adjList(v))
+            {
+                if (in(neighbor, list_articulations) && (!in(neighbor, subgraph[count])))
+                {
+                    subgraph[count].push_back(neighbor);
+                }
             }
         }
         count++;
     }
 }
 
-Graph Graph::build_subgraph(std::vector<int> &subgraph){
+Graph Graph::build_subgraph(std::vector<int> &subgraph)
+{
     Graph new_graph(subgraph.size());
 
     std::vector<int> adjacentes;
     int index = 0;
-    for (auto v1 : subgraph){
+    for (auto v1 : subgraph)
+    {
         int e1 = get_index(v1, subgraph);
         int e2;
         adjacentes = this->adjList(v1);
-        for (auto v2 : adjacentes){
-            if (in(v2, subgraph) && v2 != v1 ){
+        for (auto v2 : adjacentes)
+        {
+            if (in(v2, subgraph) && v2 != v1)
+            {
                 e2 = get_index(v2, subgraph);
                 if ((!in(e2, new_graph.adjList(e1))) && (!in(e1, new_graph.adjList(e2))))
                     new_graph.add_aresta(e1, e2);
@@ -608,7 +636,8 @@ Graph Graph::build_subgraph(std::vector<int> &subgraph){
  * Lower limit reached, signal is false.
  * @author Carlos Thadeu
  */
-bool Graph::get_signal(){
+bool Graph::get_signal()
+{
     return this->signal;
 }
 
@@ -620,8 +649,9 @@ bool Graph::get_signal(){
  * Not reached, signal is true. Reached, signal is false.
  * @author Carlos Thadeu
  */
-void Graph::set_signal(){
-    this->signal=false;
+void Graph::set_signal()
+{
+    this->signal = false;
 }
 
 /**
@@ -640,7 +670,7 @@ void Graph::set_signal(){
  * @param vector2   That's an integer vector that will be sort following vector1 order
  * @param order (optional) a - ascending d - descending
  */
-void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int> &vector2, char order='a')
+void Graph::my_insertionSort_graph(std::vector<int> &vector1, std::vector<int> &vector2, char order = 'a')
 {
     int n = vector1.size();
     int i, key1, key2, j;
@@ -650,19 +680,22 @@ void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int>
         key1 = vector1[i];
         key2 = vector2[i];
         j = i - 1;
- 
-        // Move elements of arr[0..i-1], 
+
+        // Move elements of arr[0..i-1],
         // that are greater than key, to one
         // position ahead of their
         // current position
-        if (order == 'a'){
+        if (order == 'a')
+        {
             while (j >= 0 && key1 < vector1[j])
             {
                 vector1[j + 1] = vector1[j];
                 vector2[j + 1] = vector2[j];
                 j = j - 1;
             }
-        } else if (order == 'd'){
+        }
+        else if (order == 'd')
+        {
             while (j >= 0 && key1 > vector1[j])
             {
                 vector1[j + 1] = vector1[j];
@@ -672,7 +705,7 @@ void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int>
         }
 
         vector1[j + 1] = key1;
-	    vector2[j + 1] = key2;
+        vector2[j + 1] = key2;
     }
 }
 
@@ -692,7 +725,7 @@ void Graph::my_insertionSort_graph(std::vector <int> &vector1, std::vector <int>
  * @param vector2   That's an integer vector that will be sort following vector1 order
  * @param order (optional) a - ascending d - descending
  */
-void Graph::my_insertionSort_graph(std::vector <float> &vector1, std::vector <int> &vector2, char order='a')
+void Graph::my_insertionSort_graph(std::vector<float> &vector1, std::vector<int> &vector2, char order = 'a')
 {
     int n = vector1.size();
     int i, key2, j;
@@ -703,19 +736,22 @@ void Graph::my_insertionSort_graph(std::vector <float> &vector1, std::vector <in
         key1 = vector1[i];
         key2 = vector2[i];
         j = i - 1;
- 
-        // Move elements of arr[0..i-1], 
+
+        // Move elements of arr[0..i-1],
         // that are greater than key, to one
         // position ahead of their
         // current position
-        if (order == 'a'){
+        if (order == 'a')
+        {
             while (j >= 0 && key1 < vector1[j])
             {
                 vector1[j + 1] = vector1[j];
                 vector2[j + 1] = vector2[j];
                 j = j - 1;
             }
-        } else if (order == 'd'){
+        }
+        else if (order == 'd')
+        {
             while (j >= 0 && key1 > vector1[j])
             {
                 vector1[j + 1] = vector1[j];
@@ -725,23 +761,27 @@ void Graph::my_insertionSort_graph(std::vector <float> &vector1, std::vector <in
         }
 
         vector1[j + 1] = key1;
-	    vector2[j + 1] = key2;
+        vector2[j + 1] = key2;
     }
 }
 
-std::vector<int> Graph::select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2){
+std::vector<int> Graph::select_max_degree_vertices_at_list(int max, std::vector<int> &vector1, std::vector<int> &vector2)
+{
     std::vector<int> output;
-    for (int i=0; i<vector1.size();i++){
-        if (vector2[i]==max)
+    for (int i = 0; i < vector1.size(); i++)
+    {
+        if (vector2[i] == max)
             output.push_back(vector1[i]);
     }
     return output;
 }
 
-std::vector<int> Graph::my_connected_vertices(){
+std::vector<int> Graph::my_connected_vertices()
+{
     std::vector<int> auxiliary;
-    for (int i=0; i < this->graph.size(); i++){
-        if (this->grau(i)>0)
+    for (int i = 0; i < this->graph.size(); i++)
+    {
+        if (this->grau(i) > 0)
             auxiliary.push_back(i);
     }
     return auxiliary;
@@ -751,133 +791,141 @@ std::vector<int> Graph::my_connected_vertices(){
 // To find cycle and path eulerian
 // was discarted because it is not promise
 // NOT BE TO USED
-void Graph::circuit(Graph g){
+void Graph::circuit(Graph g)
+{
     g.printEulerPathCircuit();
 }
 
-void Graph::addEdge(int u, int v){
+void Graph::addEdge(int u, int v)
+{
     this->graph[u].push_back(v);
     this->graph[v].push_back(u);
 }
 
+void Graph::removeEdge(int v, int u)
+{
 
-void Graph::removeEdge(int v,int u){
-    
-    for(int i=0;i<this->graph[v].size();++i){
-        if(this->graph[v][i]==u){
-            std::swap(this->graph[v][i], this->graph[v][this->graph[v].size()-1]);
+    for (int i = 0; i < this->graph[v].size(); ++i)
+    {
+        if (this->graph[v][i] == u)
+        {
+            std::swap(this->graph[v][i], this->graph[v][this->graph[v].size() - 1]);
             this->graph[v].pop_back();
             break;
         }
     }
-    
-    
-    for(int i=0;i<this->graph[u].size();++i){
-        if(this->graph[u][i]==v){
-            std::swap(this->graph[u][i], this->graph[u][this->graph[u].size()-1]);
+
+    for (int i = 0; i < this->graph[u].size(); ++i)
+    {
+        if (this->graph[u][i] == v)
+        {
+            std::swap(this->graph[u][i], this->graph[u][this->graph[u].size() - 1]);
             this->graph[u].pop_back();
             break;
         }
     }
-    
 }
 
+void Graph::printEulerPathCircuit()
+{
 
-void Graph::printEulerPathCircuit(){
-    
-    int odd = 0; 
+    int odd = 0;
     int oddVertex = 0;
-    
-    for(int i=0; i < this->get_qty_vertex(); ++i){
-        if(this->adjList(i).size()%2==1){
-        //if(this->grau(i) & 1){
+
+    for (int i = 0; i < this->get_qty_vertex(); ++i)
+    {
+        if (this->adjList(i).size() % 2 == 1)
+        {
+            // if(this->grau(i) & 1){
             ++odd;
             oddVertex = i;
         }
     }
-    
-    if(odd==0){
-    
-        DEBUG std::cerr <<"Euler Circuit: ";
+
+    if (odd == 0)
+    {
+
+        DEBUG std::cerr << "Euler Circuit: ";
 
         printEuler(0);
     }
-    else if(odd==2){
-        
-        DEBUG std::cerr <<"Euler Path: ";
+    else if (odd == 2)
+    {
+
+        DEBUG std::cerr << "Euler Path: ";
         printEuler(oddVertex);
     }
-    else{
-        DEBUG std::cerr <<"Euler Path/Circuit Doesn't Exist"<<std::endl;
+    else
+    {
+        DEBUG std::cerr << "Euler Path/Circuit Doesn't Exist" << std::endl;
     }
-    
 }
 
+void Graph::printEuler(int v)
+{
 
-void Graph::printEuler(int v){
-    
-    DEBUG std::cerr <<" "<<v<<" ";
+    DEBUG std::cerr << " " << v << " ";
 
-    if(this->graph[v].size()==0){
+    if (this->graph[v].size() == 0)
+    {
         return;
     }
-    
 
-    if(this->graph[v].size()==1){
+    if (this->graph[v].size() == 1)
+    {
         int u = this->graph[v][0];
         removeEdge(v, u);
         printEuler(u);
         return;
-    }	
-                
+    }
 
-    for(auto u: this->graph[v]){
+    for (auto u : this->graph[v])
+    {
 
-        if(isValidEdge(v, u)){
-        
+        if (isValidEdge(v, u))
+        {
+
             removeEdge(v, u);
             printEuler(u);
             return;
         }
-        
     }
-    
 }
 
+bool Graph::isValidEdge(int v, int u)
+{
 
-bool Graph::isValidEdge(int v, int u){
-    
     int c1, c2;
     c1 = c2 = 0;
     std::vector<bool> visited;
-    
 
     removeEdge(v, u);
-    visited = std::vector<bool>(this->get_qty_vertex(),false);
+    visited = std::vector<bool>(this->get_qty_vertex(), false);
     c1 = countConnectedVertices(u, visited);
-    
+
     addEdge(v, u);
-    //this->add_aresta(v, u);
-    visited = std::vector<bool>(this->get_qty_vertex(),false);
+    // this->add_aresta(v, u);
+    visited = std::vector<bool>(this->get_qty_vertex(), false);
     c2 = countConnectedVertices(u, visited);
-    
-    
-    if(c2 == c1) return true;
-        else
-            return false;
-    
+
+    if (c2 == c1)
+        return true;
+    else
+        return false;
 }
 
 // Specific for fleury algorithm
-int Graph::countConnectedVertices(int u, std::vector<bool> &visited){
-    
+int Graph::countConnectedVertices(int u, std::vector<bool> &visited)
+{
+
     visited[u] = true;
     int count = 1;
-    for(auto v: this->graph[u]){
-        if(!visited[v]){
+    for (auto v : this->graph[u])
+    {
+        if (!visited[v])
+        {
             count += countConnectedVertices(v, visited);
         }
     }
     return count;
-    
 }

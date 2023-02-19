@@ -18,7 +18,7 @@ class Heuristic
         static void heuristica_1(Graph &g);
         static void heuristica_1_V2(Graph &g); // by Thadeu
         static void heuristica_2(Graph &g);
-        static void heuristica_2_V2(Graph &g); // by Thadeu
+        static void heuristica_2v2(Graph &g); // by Thadeu
         static void heuristica_3v1(Graph& g); // By thadeu
         static void heuristica_3v2(Graph& g); // By thadeu
         static void Heuristica_4v1(Graph& g); // By thadeu

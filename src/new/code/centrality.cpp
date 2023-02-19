@@ -419,3 +419,14 @@ void Centrality::my_insertionSort(std::vector <int> &vector1, std::vector <int> 
     }
 }
 
+int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness){
+    float max = 0;
+    int best_vertex=-1;
+    for (auto vertex: vertex_list){
+        if (closeness[vertex] > max){
+            max = closeness[vertex];
+            best_vertex = vertex;
+        }
+    }
+    return best_vertex;
+}

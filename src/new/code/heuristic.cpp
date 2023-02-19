@@ -10,6 +10,8 @@
 #include "graph.hpp"
 #include "centrality.hpp"
 
+#include "opBasic.hpp"
+
 #include "../my_libs/ctfunctions2.hpp"
 
 /**
@@ -23,27 +25,23 @@ void Heuristic::heuristica_3v1(Graph &graph)
 {
     Stretch stretch;
     Graph tree(graph.getQtdVertices());
-    int raiz = graph.vertice_maior_grau();
+    int source = graph.vertice_maior_grau();
     std::vector<int> lista;
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     
-    for( int v : graph.adjList(raiz))   // coloca o vertice de maior grau e os seus vizinhos na arvore
-        tree.add_aresta(raiz, v);
-    
     for(int i = 0; i < graph.getQtdVertices(); ++i) // coloca todos os vertices do grafo na lista
         lista.push_back(i);
+    
+    for( int v : graph.adjList(source))  
+        tree.add_aresta(source, v); // coloca o vertice de maior grau e os seus vizinhos na arvore
 
-    int index = get_index(raiz, lista);
-    lista.erase(lista.begin()+index);
+    int index = get_index(source, lista); 
+    lista.erase(lista.begin()+index);   // Remove o raiz da lista , 
 
-    int last;
-    bool disconnected=true;
-    int source;
-    while(disconnected && !lista.empty())
+    while(!lista.empty())
     {
-        // Ordena os vértices da lista pelo maior grau (ascendente)
-        disconnected=true;
+        // Subtrai do grauos vertices da lista o grau dos vertices que já estão na arvore
         for(int vertex : lista) 
         {
             int a=graph.grau(vertex);
@@ -56,52 +54,48 @@ void Heuristic::heuristica_3v1(Graph &graph)
             }
 
         }
-        if (tree.my_connected_vertices().size()==graph.get_qty_vertex())
-            disconnected=false;
+
         //my_sort(lista_relativa_valor, lista_relativa_vertice); // Ordena os vértices na ascendente pelos graus
-        
+        // Ordena os vértices da lista pelo maior grau (ascendente)
         Graph::my_insertionSort_graph(lista_relativa_valor, lista_relativa_vertice, 'a');
         
         // escolhe o vertice de mais alto grau da lista que nao esta na árvore
-        int max=0;
-        last=source;
-        source=-1;
-        for (int xpto=0; xpto < lista_relativa_vertice.size(); xpto++){
-            if (!(in(lista_relativa_vertice[xpto], tree.my_connected_vertices()))){
-                if (lista_relativa_valor[xpto] > max){
-                    max = lista_relativa_valor[xpto];
-                    source = lista_relativa_vertice[xpto];
-                    last=source;
-                }
-            }
-        }
+        //int max=0;
+        //for (int xpto=0; xpto < lista_relativa_vertice.size(); xpto++){
+        //    if (!(in(lista_relativa_vertice[xpto], tree.my_connected_vertices()))){
+        //        if (lista_relativa_valor[xpto] > max){
+        //            max = lista_relativa_valor[xpto];
+        //            source = lista_relativa_vertice[xpto];
+        //        }
+        //    }
+        //}
+        source = lista_relativa_vertice[lista_relativa_vertice.size()-1];
 
-       if (!disconnected){
-            source=last;
-       }
-
+       bool connect = false;    // if source vertex connect to leaf, it cannot connect a leaf again 
         for( int vertex : graph.adjList(source))
         {
-            if( tree.grau(vertex) == 0)
+            if (tree.grau(vertex)==0)
             {
-                tree.add_aresta(source, vertex);
-                if (!(in(vertex, lista)))
-                    lista.push_back(vertex);
-            } else if ( tree.grau(vertex) != 0 && disconnected){
-                if (!tree.possui_aresta(source, vertex)){
+                if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-                    break;
-                }
+            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                tree.add_aresta(source, vertex);
+                connect = true;
             }
         }
-         if (!lista.empty() && disconnected){
+        if (!lista.empty()){
             int index = get_index(source, lista);
             lista.erase(lista.begin()+index);
-         }
+        }
 
         lista_relativa_valor.clear();
         lista_relativa_vertice.clear();
+        if (tree.get_num_edges() + 1 == graph.get_qty_vertex())
+            lista.clear();
     }
+
+    if (OpBasic::is_tree(tree))
+        DEBUG std::cerr << "´É Arvore" << std::endl;
 
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
@@ -118,84 +112,97 @@ void Heuristic::heuristica_3v2(Graph &graph)
 {
     Stretch stretch;
     Graph tree(graph.getQtdVertices());
-    int raiz = graph.vertice_maior_grau();
+    std::vector<int> lista_vertices_candidatos = graph.vertices_de_maior_grau();
+
+    int source = graph.vertice_maior_grau();
     std::vector<int> lista;
     std::vector<float> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
     
     //raiz = Centrality::root_selection2(graph);
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
-    raiz =Centrality::root_selection2(vertices_closeness);
 
-    for( int v : graph.adjList(raiz))   // coloca o vertice de maior importancia e os seus vizinhos na arvore
-        tree.add_aresta(raiz, v);
-    
+    source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness);
+    //raiz =Centrality::root_selection2(vertices_closeness);
+    DEBUG std::cerr << "Root:" << source << std::endl;
+
     for(int i = 0; i < graph.getQtdVertices(); ++i) // coloca todos os vertices do grafo na lista
         lista.push_back(i);
 
-    int index = get_index(raiz, lista);
+    for( int v : graph.adjList(source))   // coloca o vertice de maior importancia e os seus vizinhos na arvore
+        tree.add_aresta(source, v);
+
+    int index = get_index(source, lista);
     lista.erase(lista.begin()+index);
 
-    int last;
-    bool disconnected=true;
-    int source;
-    while(disconnected && !lista.empty())
+        while(!lista.empty())
     {
-        // Ordena os vértices da lista pelo maior grau (ascendente)
-        disconnected=true;
+        // Subtrai do grauos vertices da lista o grau dos vertices que já estão na arvore
         for(int vertex : lista) 
         {
-            if (!(in(vertex, tree.my_connected_vertices()))){
-                lista_relativa_valor.push_back(vertices_closeness[vertex]);
-                lista_relativa_vertice.push_back(vertex);
+            int a=graph.grau(vertex);
+            lista_relativa_vertice.push_back(vertex);
+            if ((in(vertex, tree.my_connected_vertices()))){
+                int b=func_aux_h3(tree, graph, vertex);
+                lista_relativa_valor.push_back(a - b);
+            } else {
+                lista_relativa_valor.push_back(a);
             }
 
         }
-        if (tree.my_connected_vertices().size()==graph.get_qty_vertex())
-            disconnected=false;
+
         //my_sort(lista_relativa_valor, lista_relativa_vertice); // Ordena os vértices na ascendente pelos graus
-        
+        // Ordena os vértices da lista pelo maior grau (ascendente)
         Graph::my_insertionSort_graph(lista_relativa_valor, lista_relativa_vertice, 'a');
         
         // escolhe o vertice de mais alto grau da lista que nao esta na árvore
-        int max=0;
-        last=source;
-        source=-1;
-        for (int xpto=0; xpto < lista_relativa_vertice.size(); xpto++){
-            if (!(in(lista_relativa_vertice[xpto], tree.my_connected_vertices()))){
-                if (lista_relativa_valor[xpto] > max){
-                    max = lista_relativa_valor[xpto];
-                    source = lista_relativa_vertice[xpto];
-                    last=source;
-                }
+        //int max=0;
+        //for (int xpto=0; xpto < lista_relativa_vertice.size(); xpto++){
+        //    if (!(in(lista_relativa_vertice[xpto], tree.my_connected_vertices()))){
+        //        if (lista_relativa_valor[xpto] > max){
+        //            max = lista_relativa_valor[xpto];
+        //            source = lista_relativa_vertice[xpto];
+        //        }
+        //    }
+        //}
+        int max_degree = lista_relativa_valor[lista_relativa_valor.size()-1];
+        lista_vertices_candidatos.clear();
+        for (int i=lista_relativa_valor.size()-1; i > 0; i--){
+            if (lista_relativa_valor[i]==max_degree){
+                lista_vertices_candidatos.push_back(lista_relativa_vertice[i]);
+            }
+            else{
+                break;
             }
         }
+        source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness);
+        //source = lista_relativa_vertice[lista_relativa_vertice.size()-1];
 
-       if (!disconnected){
-            source=last;
-       }
-
+       bool connect = false;    // if source vertex connect to leaf, it cannot connect a leaf again 
         for( int vertex : graph.adjList(source))
         {
-            if( tree.grau(vertex) == 0)
+            if (tree.grau(vertex)==0)
             {
-                tree.add_aresta(source, vertex);
-                if (!(in(vertex, lista)))
-                    lista.push_back(vertex);
-            } else if ( tree.grau(vertex) != 0 && disconnected){
-                if (!tree.possui_aresta(source, vertex)){
+                if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-                    break;
-                }
+            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                tree.add_aresta(source, vertex);
+                connect = true;
             }
         }
-         if (!lista.empty() && disconnected){
+        if (!lista.empty()){
             int index = get_index(source, lista);
             lista.erase(lista.begin()+index);
-         }
+        }
+
         lista_relativa_valor.clear();
         lista_relativa_vertice.clear();
+        if (tree.get_num_edges() + 1 == graph.get_qty_vertex())
+            lista.clear();
     }
+    
+    if (OpBasic::is_tree(tree))
+        DEBUG std::cerr << "´É Arvore" << std::endl;
 
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
@@ -290,6 +297,7 @@ void Heuristic::Heuristica_4v2(Graph &graph)
     //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
     //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
     
     DEBUG std::cerr << "Selecting root" << std::endl;
@@ -299,7 +307,7 @@ void Heuristic::Heuristica_4v2(Graph &graph)
     QUEUE1.push(root);
     enqueued.push_back(root);
 
-    DEBUG std::cerr << "Starting breath heuristic 2" << root << std::endl;
+    DEBUG std::cerr << "Starting Heuristica_4v2" << root << std::endl;
     // the heuristic main loop 
     while (!(QUEUE1.empty())){
         root = QUEUE1.front();
@@ -420,6 +428,8 @@ void Heuristic::heuristica_1_V2(Graph& g)
     root= Centrality::root_selection2(vertices_closeness);
     
     DEBUG std::cerr << "start my_insertion_sort" << std::endl;
+
+    // Ordena os vértices já considerando a importancia dos vertices como criterio de desempate
     Centrality::my_insertionSort(vertex_list, vertices_closeness, g); // Sort by vertices by degree and vertex importance 
 
     Graph tree(n);
@@ -520,7 +530,7 @@ void Heuristic::heuristica_2(Graph& g)
  * @date 2022/12/14
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::heuristica_2_V2(Graph& graph)
+void Heuristic::heuristica_2v2(Graph& graph)
 {
     Stretch stretch;
     int root = 0; // by thadeu
@@ -611,13 +621,8 @@ void Heuristic::heuristica_2_V2(Graph& graph)
         closeness.clear();
     }
 
-/*     int factor = stretch.find_factor(graph, tree);
-    graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
-/*     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
     set_graph_final_parameters(factor, tree, graph);
 }
 

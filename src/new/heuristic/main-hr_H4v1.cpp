@@ -29,6 +29,7 @@
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
 
+
 ///Basic debugging controller. See Debug.h for details.
 #ifdef MN_BF_SEQ_DEBUG
 	#define DEBUG
@@ -56,6 +57,8 @@ extern int max_induced_cycles;
 int output = 0;
 bool best = false;
 
+int matrix_t=0;
+
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.
  * @details The instance file should be passed to standard input following the /doc/input_format.md specification.
@@ -67,10 +70,12 @@ bool best = false;
  * @param app_name The name of the application as called in the command line.
  */
 void usage(const char* app_name){
-	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >>> OUTPUT_FILENAME" << std::endl;
+	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl;
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
+	std::cout << "\t     | --adjacency \t\tDefine which type will be read. (adjacency list)[default]" << std::endl  << std::endl;
+	std::cout << "\t     | --edges   \t\tDefine which type will be read. (edges list)" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
@@ -101,6 +106,14 @@ void parseArgs(int argc, char** argv){
 		else if(arg == "-t" || arg == "--thread"){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
+		}
+		else if(arg == "--adjacency"){
+			matrix_t = 0;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
+		}
+		else if(arg == "--edges"){
+			matrix_t = 1;
+			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
 		else if(arg == "-s" || arg == "--screen"){
 			output = output + 1;
@@ -147,7 +160,11 @@ int main(int argc, char** argv){
 
 	//TODO: Leitura do grafo
 	Graph graph;
-    graph = read_graph_file();
+	if (matrix_t==1)
+		graph = read_graph_file_edges_list();
+	else
+		graph = read_graph_file();
+
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
@@ -159,8 +176,8 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with breadth heuristic - vertex importance- wait!\n";
-	run_name = "Breadth_heuristic";
+	DEBUG std::cerr << "Solving with Heuristic 4- Max degree - wait!\n";
+	run_name = "H4v1";
 	Heuristic::Heuristica_4v1(graph);
 
 	// End time counting
