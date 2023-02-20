@@ -18,7 +18,7 @@
 #include <chrono>	// contributor AZ
 
 #include "../Debug.h"
-
+#include "../code/parameters.hpp"
 #include "../my_libs/ctfunctions2.hpp"
 #include "../code/parallel.hpp"
 #include "../code/frontier.hpp"
@@ -57,93 +57,12 @@ int output = 0;
 bool best = false;
 int matrix_t=0;
 
-/**
- * @brief Auxiliary function to show application usage instruction at terminal.
- * @details The instance file should be passed to standard input following the /doc/input_format.md specification.
- * The following parameters can be passed through command line:
- * `-h` or `--help` will some usage instructions.
- * The remaining parameters are optional and can be passed followed by a value:
- * PARAM		    					/ DESCRIPTION                 								/ VALUE TYPE
- * `-s` or `--seed` 					/ Setup this application seed 								/ integer
- * @param app_name The name of the application as called in the command line.
- */
-void usage(const char* app_name){
-	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >>> OUTPUT_FILENAME" << std::endl;
-	std::cout << std::endl << "OPTIONS: " << std::endl;
-	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
-	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
-	std::cout << "\t     | --adjacency \t\tDefine which type will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t     | --edges   \t\tDefine which type will be read. (edges list)" << std::endl  << std::endl ;
-
-	std::cout << "Show info:" << std::endl;
-	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
-	std::cout << "\t-s | --screen \t\tAt screen. [current " << output << "]" << std::endl;
-	std::cout << "\t-d | --debug \t\tAt screen only debug mode. [current " << output << "]" << std::endl;
-	std::cout << "\t-b | --best \t\tShow the best tree found." << std::endl;
-	std::cout << "You can combine summary, expo, debug and show" << std::endl << std::endl;
-}
-
-/**
- * @brief Auxiliary function to parse the contents of the command line arguments.
- * @authors { Anderson Zudio[AZ] /  Carlos Thadeu [CT] (contributor)}
- * @details This is a simple auxiliary function that will parse the args from the command line. You may see the entire specification at the terminal using the -help argument.
- */
-void parseArgs(int argc, char** argv){
-    if (argc <= 1){
-        printf("You must have parameters, type -h to help!\n");
-        exit(-1);
-    }
-	for(int i = 1; i < argc; ++i){
-		std::string arg(argv[i]);
-
-		DEBUG std::cerr << "Received param: " << arg << '\n';
-		if(arg == "-h" || arg == "--help"){
-			usage(argv[0]);
-			exit(0);
-		}
-		else if(arg == "-t" || arg == "--thread"){
-			num_threads = std::atoi(argv[++i]);
-			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
-		}
-		else if(arg == "--adjacency"){
-			matrix_t = 0;
-			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
-		}
-		else if(arg == "--edges"){
-			matrix_t = 1;
-			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
-		}
-
-		else if(arg == "-s" || arg == "--screen"){
-			output = output + 1;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
-		}
-		else if(arg == "-f" || arg == "--file"){
-			output = output + 2;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
-		}
-		else if(arg == "-d" || arg == "--debug"){
-			output = output + 64;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
-		}
-		else if(arg == "-b" || arg == "--best"){
-			best = true;
-			DEBUG std::cerr << "Changed best tree visualization to: " << best << '\n';
-		}
-		else {
-			DEBUG std::cerr << "Unknown param: " << arg << "\n";
-			exit(1);
-		};
-	};
-};
-
-
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
 	max_induced_cycles = 1;
 	if(argc < 2){
-		usage("--help");
+		Parameters::usage("--help");
 		exit(0);
 	}
 
@@ -153,7 +72,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << filename << std::endl;
 
 	DEBUG std::cerr << "Calculate stretch index.\n";
-	parseArgs(argc, argv); //Will setup globals
+	Parameters::parseArgs(argc, argv); //Will setup globals
 
 	DEBUG std::cerr << "Reading the graph\n";
 

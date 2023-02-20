@@ -21,6 +21,7 @@
 
 //#include "my_libs/ctfunctions.cpp"
 
+#include "code/parameters.hpp"
 #include "my_libs/ctfunctions2.hpp"
 //#include "my_libs/externals.hpp"
 #include "code/parallel.hpp"
@@ -60,6 +61,7 @@ extern int max_induced_cycles;
 //int type_running = 0;
 int output = 0;
 bool best = false;
+int matrix_t=0;
 
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.

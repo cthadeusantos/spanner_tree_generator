@@ -1,5 +1,8 @@
 # changes
 
+## 0.1.2.3-alpha (2023/02/19)
+Class Parameters added
+
 ## 0.1.2.2-alpha (2023/02/19)
 * Rebuild heuristic 3 v1&v2
 * New reading format added
