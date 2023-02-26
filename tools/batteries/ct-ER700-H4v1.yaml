@@ -1,0 +1,121 @@
+---                               
+
+name: ct-ER700-H4v1                  
+problem: tadmiss                   
+description: Running heuristic H4v1
+exec: release/app_HR-H4v1
+default_timelimit: 1200
+default_iterations: 10
+instance_list:
+- instance: grafos_erdos/ger_700_50__700_121978_0.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_121978_0.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_121978_0.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_121978_0.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_121978_0.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122452_1.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122452_1.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122452_1.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122452_1.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122452_1.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122224_2.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122224_2.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122224_2.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122224_2.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122224_2.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122653_3.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122653_3.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122653_3.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122653_3.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122653_3.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122369_4.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122369_4.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122369_4.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122369_4.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122369_4.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122424_5.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122424_5.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122424_5.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122424_5.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122424_5.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122662_6.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122662_6.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122662_6.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122662_6.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122662_6.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122781_7.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122781_7.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122781_7.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122781_7.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122781_7.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122764_8.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122764_8.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122764_8.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122764_8.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122764_8.txt
+  args: -t 64 -s
+
+- instance: grafos_erdos/ger_700_50__700_122162_9.txt
+  args: -t 4 -s
+- instance: grafos_erdos/ger_700_50__700_122162_9.txt
+  args: -t 8 -s
+- instance: grafos_erdos/ger_700_50__700_122162_9.txt
+  args: -t 16 -s                    
+- instance: grafos_erdos/ger_700_50__700_122162_9.txt
+  args: -t 32 -s
+- instance: grafos_erdos/ger_700_50__700_122162_9.txt
+  args: -t 64 -s
+
+
+...                               

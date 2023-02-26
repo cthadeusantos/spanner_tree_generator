@@ -1,0 +1,121 @@
+---                               
+
+name: ct-WA700-H2v1
+problem: tadmiss                   
+description: Running heuristic H2v1
+exec: release/app_HR-H2v1
+default_timelimit: 1200
+default_iterations: 10
+instance_list:
+- instance: grafos_watts/gws_700_280_30__700_98000_0.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_0.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_0.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_0.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_0.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_1.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_1.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_1.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_1.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_1.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_2.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_2.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_2.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_2.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_2.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_3.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_3.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_3.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_3.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_3.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_4.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_4.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_4.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_4.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_4.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_5.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_5.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_5.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_5.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_5.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_6.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_6.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_6.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_6.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_6.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_7.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_7.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_7.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_7.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_7.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_8.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_8.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_8.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_8.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_8.txt
+  args: -t 64 -s
+
+- instance: grafos_watts/gws_700_280_30__700_98000_9.txt
+  args: -t 4 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_9.txt
+  args: -t 8 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_9.txt
+  args: -t 16 -s                    
+- instance: grafos_watts/gws_700_280_30__700_98000_9.txt
+  args: -t 32 -s
+- instance: grafos_watts/gws_700_280_30__700_98000_9.txt
+  args: -t 64 -s
+
+
+...                               

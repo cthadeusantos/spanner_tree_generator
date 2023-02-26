@@ -87,13 +87,13 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
+	// Start time counting
+	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	
 	sem_init(&semaforo, 0, num_threads);
 	
-	// Start time counting
-	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with induced cycle method 1 - PARALLEL- wait!\n";
 	run_name = "Induced_cycle";

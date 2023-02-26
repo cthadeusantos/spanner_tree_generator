@@ -94,9 +94,6 @@ void Heuristic::heuristica_3v1(Graph &graph)
             lista.clear();
     }
 
-    if (OpBasic::is_tree(tree))
-        DEBUG std::cerr << "´É Arvore" << std::endl;
-
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
     set_graph_final_parameters(factor, tree, graph);
@@ -200,9 +197,6 @@ void Heuristic::heuristica_3v2(Graph &graph)
         if (tree.get_num_edges() + 1 == graph.get_qty_vertex())
             lista.clear();
     }
-    
-    if (OpBasic::is_tree(tree))
-        DEBUG std::cerr << "´É Arvore" << std::endl;
 
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
@@ -240,6 +234,8 @@ void Heuristic::Heuristica_4v1(Graph &graph)
     QUEUE1.push(root);
     enqueued.push_back(root);
 
+    Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
+
     // the heuristic main loop 
     while (!(QUEUE1.empty())){
         root = QUEUE1.front();
@@ -266,13 +262,9 @@ void Heuristic::Heuristica_4v1(Graph &graph)
         neighbor_list.clear();
         degree_list.clear();
     }
-/*     int factor = stretch.find_factor(graph, tree);
-    graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
+
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
-/*     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
     set_graph_final_parameters(factor, tree, graph);
 }
 
@@ -282,7 +274,7 @@ void Heuristic::Heuristica_4v1(Graph &graph)
  * @author Carlos Thadeu
  * @param graph a graph instance that represents the graph.
  */
-void Heuristic::Heuristica_4v2(Graph &graph)
+void Heuristic::Heuristica_4v2r1(Graph &graph)
 {
     Stretch stretch;
     int counter = 0;
@@ -307,7 +299,9 @@ void Heuristic::Heuristica_4v2(Graph &graph)
     QUEUE1.push(root);
     enqueued.push_back(root);
 
-    DEBUG std::cerr << "Starting Heuristica_4v2" << root << std::endl;
+    DEBUG std::cerr << "Starting Heuristica_4v2r1 - Closeness centrality - better precision" << root << std::endl;
+
+    Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
     // the heuristic main loop 
     while (!(QUEUE1.empty())){
         root = QUEUE1.front();
@@ -334,13 +328,75 @@ void Heuristic::Heuristica_4v2(Graph &graph)
         neighbor_list.clear();
         centrality_list.clear();
     }
-/*     int factor = stretch.find_factor(graph, tree);
-    graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
+
     int factor = stretch.find_factor(graph, tree);
     graph.sum_trees(1);
-/*     graph.set_stretch_index(factor);
-    graph.set_best_tree(tree); */
+    set_graph_final_parameters(factor, tree, graph);
+}
+
+/**
+ * @brief T-admissibility breadth heuristic - Heuristic 4v2_2.
+ * @details The breadth heuristic - heuristic 4v2_2
+ * @author Carlos Thadeu
+ * @param graph a graph instance that represents the graph.
+ */
+void Heuristic::Heuristica_4v2r2(Graph &graph)
+{
+    Stretch stretch;
+    int counter = 0;
+    int root = 0;
+    int n = graph.getQtdVertices();
+    Graph tree(n);
+    
+    std::queue <int> QUEUE1;
+    std::vector <int> neighbor_list; // newline
+    std::vector <int> centrality_list; // newline
+    std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
+    DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
+    //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread_V2(graph);
+    
+    DEBUG std::cerr << "Selecting root" << std::endl;
+    root = Centrality::root_selection2(vertices_closeness);
+    DEBUG std::cerr << "Selected root: " << root << std::endl;
+
+    QUEUE1.push(root);
+    enqueued.push_back(root);
+
+    DEBUG std::cerr << "Starting Heuristica_4v2r2 - - Closeness centrality - calculated" << root << std::endl;
+
+    Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+    // the heuristic main loop 
+    while (!(QUEUE1.empty())){
+        root = QUEUE1.front();
+        QUEUE1.pop();
+
+        int num_neighbor = graph.adjList(root).size();
+        for (int i = 0; i < num_neighbor; ++i){
+            int neighbor = graph.adjList(root)[i];
+            if (tree.grau(neighbor) == 0) {
+                tree.add_aresta(root, neighbor);
+                neighbor_list.push_back(neighbor); // newline
+                centrality_list.push_back(graph.grau(neighbor));
+            }
+        }
+
+        Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+
+        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
+            if (!in( neighbor_list[i], enqueued)){
+                QUEUE1.push(neighbor_list[i]);
+                enqueued.push_back(neighbor_list[i]);
+            }
+        }
+        neighbor_list.clear();
+        centrality_list.clear();
+    }
+
+    int factor = stretch.find_factor(graph, tree);
+    graph.sum_trees(1);
     set_graph_final_parameters(factor, tree, graph);
 }
 

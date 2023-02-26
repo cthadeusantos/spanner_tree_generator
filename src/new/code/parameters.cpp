@@ -1,5 +1,9 @@
 #include <iostream>
-
+#ifdef MN_BF_SEQ_DEBUG
+	#define DEBUG
+#else
+	#define DEBUG while(false)
+#endif
 #include "../Debug.h"
 #include "parameters.hpp"
 
@@ -18,8 +22,8 @@ void Parameters::usage(const char* app_name){
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
-	std::cout << "\t     | --adjacency \t\tDefine which type will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t     | --edges   \t\tDefine which type will be read. (edges list)" << std::endl  << std::endl ;
+	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
+	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;

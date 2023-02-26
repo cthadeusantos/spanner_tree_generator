@@ -92,16 +92,22 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
+
+	// CALCULATE LOWER LIMIT
+	// NOT COMPUTE IN TIME IN THIS SCRIPT
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	
+
 	sem_init(&semaforo, 0, num_threads);
 	
 	Graph graph_copy=graph;
+
+	// MAIN PROCEDURE
+	
+	// Heuristic 1 V1
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
-	
 	run_name = "H1v1";
 	Heuristic::heuristica_1(graph);
 	// End time counting
@@ -198,10 +204,10 @@ int main(int argc, char** argv){
 	// Start time counting
 	start = std::chrono::steady_clock::now();
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with breadth heuristic version 2- vertex importance- wait!\n";
+	DEBUG std::cerr << "Solving with Heuristic 4 version 2 revisao 1 wait!\n";
 	graph=graph_copy;
 	run_name = "H4v2";
-	Heuristic::Heuristica_4v2(graph);
+	Heuristic::Heuristica_4v2r1(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration7(end - start);

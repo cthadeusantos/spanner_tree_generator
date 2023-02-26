@@ -407,7 +407,7 @@ Graph read_graph_file_edges_list() {
                     std::vector<std::string> nodes = split(value_str, ',');
                     int node1 = stoi(nodes[0]);
                     int node2 = stoi(nodes[1]);
-                    if (!graph.possui_aresta(node1, node2))
+                    if (!(graph.possui_aresta(node1, node2) && graph.possui_aresta(node2, node1)))
                         graph.add_aresta(node1, node2);
                 }
                 value_str = "";

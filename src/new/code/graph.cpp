@@ -787,6 +787,49 @@ std::vector<int> Graph::my_connected_vertices()
     return auxiliary;
 }
 
+// BFS algorithm
+//https://www.programiz.com/dsa/graph-bfs
+std::vector<int> Graph::BFS(int vertex) {
+    // Initially mark all vertices as not visited
+    // std::vector<bool> visited(V, false);
+    std::vector<bool> visited(get_qty_vertex(), false);
+    std::vector<int> vertices_bfs;
+  
+    // Create a queue for BFS
+    std::queue<int> queue;
+
+    queue.push(vertex);
+
+    while (!queue.empty())
+    {
+        // Pop a vertex from stack and print it
+        int vertex = queue.front();
+        queue.pop();
+
+        // Queue may contain same vertex twice. So
+        // we need to print the popped item only
+        // if it is not visited.
+        if (!visited[vertex])
+        {
+            vertices_bfs.push_back(vertex);
+            visited[vertex] = true;
+        }
+
+        // Get all adjacent vertices of the popped vertex s
+        // If a adjacent has not been visited, then push it
+        // to the queue.
+        // for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+        // for (auto i = adjList(s).begin(); i != adjList(s).end(); ++i)
+        for (int i = 0; i < adjList(vertex).size(); i++)
+        {
+            if (!visited[adjList(vertex)[i]])
+                queue.push(adjList(vertex)[i]);
+        }
+    }
+    return vertices_bfs;
+}
+
+
 /// FLEURY ALGORITHM (WORKING)
 // To find cycle and path eulerian
 // was discarted because it is not promise

@@ -1,7 +1,17 @@
 # changes
 
+## 0.1.2.3-alpha (2023/02/26)
+* Change init measure point with chronos before lower bound calc
+* Fixed wrong split threads at  closeness_centrality_thread
+* Add thread_importanceV2 and vertex_importanceV2
+Now we estimate vertex_importance
+* Add new heuristic4v2 (now R1 & R2)
+R1 accurately calculates the importance of vertice
+R2 R1 calculates through estimation the importance of vertice
+* Batteries added
+
 ## 0.1.2.3-alpha (2023/02/19)
-Class Parameters added
+* Class Parameters added
 
 ## 0.1.2.2-alpha (2023/02/19)
 * Rebuild heuristic 3 v1&v2

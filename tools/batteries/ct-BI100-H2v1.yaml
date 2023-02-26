@@ -1,0 +1,121 @@
+---                               
+
+name: ct-BI100-H2v1
+problem: tadmiss                   
+description: Running heuristic H2v1
+exec: release/app_HR-H2v1
+default_timelimit: 1200
+default_iterations: 10
+instance_list:
+- instance: grafos_bi_partido/gb_50_50_30__100_774_0.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_774_0.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_774_0.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_774_0.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_774_0.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_730_1.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_730_1.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_730_1.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_730_1.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_730_1.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_782_2.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_782_2.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_782_2.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_782_2.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_782_2.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_702_3.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_702_3.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_702_3.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_702_3.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_702_3.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_733_4.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_733_4.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_733_4.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_733_4.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_733_4.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_756_5.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_756_5.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_756_5.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_756_5.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_756_5.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_775_6.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_775_6.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_775_6.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_775_6.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_775_6.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_754_7.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_754_7.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_754_7.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_754_7.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_754_7.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_751_8.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_751_8.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_751_8.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_751_8.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_751_8.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_50_50_30__100_752_9.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_752_9.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_752_9.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_50_50_30__100_752_9.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_50_50_30__100_752_9.txt
+  args: -t 64 -s
+
+
+...                               

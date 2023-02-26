@@ -5,6 +5,12 @@
 
 #include "centrality.hpp"
 #include "heuristic.hpp"
+///Basic debugging controller. See Debug.h for details.
+/* #ifdef MN_BF_SEQ_DEBUG
+	#define DEBUG
+#else
+	#define DEBUG while(false)
+#endif */
 
 extern int num_threads;
 extern sem_t semaforo;
@@ -160,38 +166,132 @@ std::vector <float> Centrality::closeness_centrality(Graph &graph){
 std::vector <float> Centrality::closeness_centrality_thread(Graph &graph){
     int start, end;
     int n = graph.get_qty_vertex();
+    int chunk;
     std::thread vetor_th[num_threads];
     std::vector <float> closeness(n, 0.0);
-    int chunk = floor(n/num_threads);
-    int last_chunk = n - chunk;
-    for(int j=0; j < num_threads; j++){
+
+    int execute_thread = num_threads;
+    chunk = floor(n / execute_thread);
+
+    if (execute_thread > n){
+        execute_thread = n;
+        chunk = ceil(n / num_threads)+1;
+    }
+
+    DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
+    for(int j=0; j < execute_thread; j++){
         if (j == num_threads-1){
-            start = j * chunk;
-            end = n;
+            start = j * chunk ;
+            end = n - 1;
         } else {
             start = j * chunk;
-            end = (j+1) * chunk;
+            end = (j+1) * chunk - 1;
         }
-        vetor_th[j] = std::thread(thread_importance, start, end, std::ref(closeness), std::ref(graph));
+        DEBUG std::cerr << "Thread: " << j << " start: " << start << " end: " << end << std::endl ;
+        vetor_th[j] = std::thread(thread_importance, start, end + 1, std::ref(closeness), std::ref(graph));
     }
-    for(int i=0; i < num_threads; ++i){
+    for(int i=0; i < execute_thread; ++i){
         vetor_th[i].join();
     }
     return closeness;
 }
 
+/**
+ * Closeness centrality 
+ * @details Calculate a closeness centrality for all vertices at graph
+ * @author Carlos Thadeu
+ * @param g a graph
+ * @return a vector of float that represents closeness centrality
+ */
+std::vector <float> Centrality::closeness_centrality_thread_V2(Graph &graph){
+    int start, end;
+    int n = graph.get_qty_vertex();
+    int chunk;
+    std::thread vetor_th[num_threads];
+    std::vector <float> closeness(n, 0.0);
+
+    int execute_thread = num_threads;
+    chunk = floor(n / execute_thread);
+
+    if (execute_thread > n){
+        execute_thread = n;
+        chunk = ceil(n / num_threads)+1;
+    }
+
+    DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
+    for(int j=0; j < execute_thread; j++){
+        if (j == num_threads-1){
+            start = j * chunk ;
+            end = n - 1;
+        } else {
+            start = j * chunk;
+            end = (j+1) * chunk - 1;
+        }
+        DEBUG std::cerr << "Thread: " << j << " start: " << start << " end: " << end << std::endl ;
+        vetor_th[j] = std::thread(thread_importanceV2, start, end + 1, std::ref(closeness), std::ref(graph));
+    }
+    for(int i=0; i < execute_thread; ++i){
+        vetor_th[i].join();
+    }
+    return closeness;
+}
+
+/**
+ * Split vertices to threads 
+ * @details split vertices to threads
+ * @author Carlos Thadeu
+ * @param start an integer that represents the first vertex to be processed
+ * @param end an integer that represents last vertex
+ * @param closeness a float vector with importance vertex
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+// USING VERTEX IMPORTANCE V2 
+// IF YOU WOULD LIKE USE VERTEX IMPORTANCE V1
+// UNCOMMENT float auxiliary = vertex_importance(i, graph);
+// AND COMMENT
+// float auxiliary = vertex_importance_v2(i, graph);
+// VERTEX IMPORTANCE 1 IS MUCH MORE PRECISE BUT MORE SLOW TO CALCULATE
 void Centrality::thread_importance(int start, int end, std::vector <float> &closeness, Graph &graph){
-    //std::vector <float> closeness;
+    DEBUG std::cerr << "START: " << start << " END: " << end << std::endl;
     for (int i=start; i < end; i++){
         float auxiliary = vertex_importance(i, graph);
+        //float auxiliary = vertex_importance_v2(i, graph);
         mtx.lock();
         closeness[i]=auxiliary;
         mtx.unlock();
+        DEBUG std::cerr << i << " importance: " << std::setprecision(15) << auxiliary << std::endl;
     }
     sem_post(&semaforo);
 }
 
-
+/**
+ * Split vertices to threads 
+ * @details split vertices to threads
+ * @author Carlos Thadeu
+ * @param start an integer that represents the first vertex to be processed
+ * @param end an integer that represents last vertex
+ * @param closeness a float vector with importance vertex
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+// USING VERTEX IMPORTANCE V2 
+// IF YOU WOULD LIKE USE VERTEX IMPORTANCE V1
+// UNCOMMENT float auxiliary = vertex_importance(i, graph);
+// AND COMMENT
+// float auxiliary = vertex_importance_v2(i, graph);
+// VERTEX IMPORTANCE 1 IS MUCH MORE PRECISE BUT MORE SLOW TO CALCULATE
+void Centrality::thread_importanceV2(int start, int end, std::vector <float> &closeness, Graph &graph){
+    for (int i=start; i < end; i++){
+        //float auxiliary = vertex_importance(i, graph);
+        float auxiliary = vertex_importance_v2(i, graph);
+        mtx.lock();
+        closeness[i]=auxiliary;
+        mtx.unlock();
+        DEBUG std::cerr << i << " importance: " << std::setprecision(15) << auxiliary << std::endl;
+    }
+    sem_post(&semaforo);
+}
 
 /**
  * Closeness centrality 
@@ -205,6 +305,7 @@ std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(std::set
     std::vector<std::pair<int,float>> closeness;
     for (auto i : vertices){
         closeness.push_back({i, vertex_importance(i, graph)});
+        vertex_importance_v2(i, graph);
     }
     return closeness;
 }
@@ -221,6 +322,7 @@ std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(std::vec
     std::vector<std::pair<int,float>> closeness;
     for (auto i : vertices){
         closeness.push_back({i, vertex_importance(i, graph)});
+        vertex_importance_v2(i, graph);
     }
     return closeness;
 }
@@ -238,6 +340,7 @@ std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(Graph &g
     int vertices=graph.get_qty_vertex();
     for (int i=0; i < vertices; i++){
         closeness.push_back({i, vertex_importance(i, graph)});
+        vertex_importance_v2(i, graph);
     }
     return closeness;
 }
@@ -255,6 +358,7 @@ std::vector<float> Centrality::closeness_centrality_vector(Graph &graph){
     int vertices=graph.get_qty_vertex();
     for (int i=0; i < vertices; i++){
         closeness[i]=vertex_importance(i, graph);
+        vertex_importance_v2(i, graph);
     }
     return closeness;
 }
@@ -298,6 +402,24 @@ float Centrality::vertex_importance(int root,  Graph &graph){
         level++;
     }
     return (1 / sum);
+}
+
+float Centrality::vertex_importance_v2(int root,  Graph &graph){
+    float Z = 8;
+    int sum_degree=0;
+    for (auto i: graph.adjList(root)){
+        float beta = ( (1.0 / (Z - 1.0)) + (log(Z -1.0) / log(Z)) + ((1 / log(Z)) * log(graph.get_qty_vertex())));
+        float index = (-1 / log(Z)) * log (graph.grau(i)) + beta;       
+        sum_degree = sum_degree + index; 
+    }
+    //float average = (graph.get_num_edges() * 2 - (graph.grau(root) + sum_degree_leaves)) / graph.get_qty_vertex();
+    //float z_bar =  log(graph.get_num_edges() * 2 - (graph.grau(root) + sum_degree_leaves)) ;
+    float beta = ( (1.0 / (Z - 1.0)) + (log(Z -1.0) / log(Z)) + ((1 / log(Z)) * log(graph.get_qty_vertex())));
+    float index = (-1 / log(Z)) * log (graph.grau(root)) + beta;
+    float centra = index - sum_degree;
+    //float index = (-1 / log(Z)) * log (graph.grau(root)) + beta;
+    //DEBUG std::cerr << root << "---"<< std::setprecision(15) << 1/index << std::endl; 
+    return 1 / index;
 }
 
 /**

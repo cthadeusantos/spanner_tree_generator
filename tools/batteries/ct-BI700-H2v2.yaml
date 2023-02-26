@@ -1,0 +1,121 @@
+---                               
+
+name: ct-BI700-H2v2                  
+problem: tadmiss                   
+description: Running heuristic H2v2
+exec: release/app_HR-H2v2
+default_timelimit: 1200
+default_iterations: 10
+instance_list:
+- instance: grafos_bi_partido/gb_350_350_30__700_36728_0.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36728_0.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36728_0.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36728_0.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36728_0.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36850_1.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36850_1.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36850_1.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36850_1.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36850_1.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36753_2.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36753_2.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36753_2.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36753_2.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36753_2.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36630_3.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36630_3.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36630_3.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36630_3.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36630_3.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36719_4.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36719_4.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36719_4.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36719_4.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36719_4.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36570_5.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36570_5.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36570_5.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36570_5.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36570_5.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36864_6.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36864_6.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36864_6.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36864_6.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36864_6.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36537_7.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36537_7.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36537_7.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36537_7.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36537_7.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36831_8.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36831_8.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36831_8.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36831_8.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36831_8.txt
+  args: -t 64 -s
+
+- instance: grafos_bi_partido/gb_350_350_30__700_36695_9.txt
+  args: -t 4 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36695_9.txt
+  args: -t 8 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36695_9.txt
+  args: -t 16 -s                    
+- instance: grafos_bi_partido/gb_350_350_30__700_36695_9.txt
+  args: -t 32 -s
+- instance: grafos_bi_partido/gb_350_350_30__700_36695_9.txt
+  args: -t 64 -s
+
+
+...                               

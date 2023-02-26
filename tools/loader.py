@@ -1,4 +1,4 @@
-#Author: Carlos Thadeu & Anderson Zudio
+#Author: Anderson Zudio & Carlos Thadeu
 #Version: 1.0
 #Date: 9 de fevereiro de 2023
 #Esta é uma modificação do módulo loader.py para executar neste trabalho de T-admissibilidade.
