@@ -92,13 +92,14 @@ int main(int argc, char** argv){
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
 	run_name = "H1v1";
-	Heuristic::heuristica_1(graph);
+	Heuristic::heuristica_1v1(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

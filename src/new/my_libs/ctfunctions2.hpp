@@ -45,3 +45,5 @@ std::tuple<std::set<int>, std::vector<std::pair<int,int>> > seek_articulations(G
 void special_dfs(int cur,int par, int &tme,
         std::vector <int> &disc, std::vector <int> &low, std::set<int> &articu_p,
         std::vector<std::pair<int,int>> &bridge, Graph &graph);
+
+float logBn(float n, float b);

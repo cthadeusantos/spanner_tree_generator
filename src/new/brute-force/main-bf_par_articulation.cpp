@@ -89,6 +89,7 @@ int main(int argc, char** argv){
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
 	

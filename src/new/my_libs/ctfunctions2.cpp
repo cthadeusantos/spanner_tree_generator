@@ -644,3 +644,7 @@ std::vector<std::vector<int>> combinatorics(int n, int r){
     }
     return combinacoes;
 }
+
+float logBn(float n, float b){
+    return log(n) / log(b);
+}

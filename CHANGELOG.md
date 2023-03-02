@@ -1,5 +1,21 @@
 # changes
 
+## 0.1.3.1(2023/03/01)
+* Leverage centrality implemented
+* Closeness centrality calculated implemented
+* Heuristics 1, 2, 3 & 4 now are using closeness and leverage calculated
+* H2v1 & v2 using my_insertSort, old mySort has a bug!
+* H2v2, new tiebreaker implemented
+* H4v1, using closeness and leverage calculated
+* H4v2r1, using closeness with precision, much more slow at bigger graphs
+* H4v2r2, using only closeness calculated
+* H4v2r3 implemented using closeness and leverage centrality calculated
+* Method the logarithm of n to the base b implemented (logBn)
+* New my_insertSort using 3 vectors
+* New root selection added (root_selection3)
+* Makefile has changed
+* Minor fixes
+
 ## 0.1.3 (2023/02/26)
 * Change init measure point with chronos before lower bound calc
 * Fixed wrong split threads at  closeness_centrality_thread

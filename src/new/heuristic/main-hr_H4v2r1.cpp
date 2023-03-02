@@ -92,13 +92,14 @@ int main(int argc, char** argv){
 	
 	DEBUG std::cerr << "Calculando limite inferior"  << std::endl;
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	DEBUG std::cerr << "Iniciando...."  << std::endl;
 	sem_init(&semaforo, 0, num_threads);
 	
 
 
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with H4v2 - wait!" << std::endl;
+	DEBUG std::cerr << "Solving with H4v2r1 - wait!" << std::endl;
 	run_name = "H4v2r1";
 	Heuristic::Heuristica_4v2r1(graph);
 

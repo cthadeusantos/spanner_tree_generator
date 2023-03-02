@@ -15,9 +15,9 @@ class Heuristic
 
     public:
         static void my_quicksort(std::vector<int>& vertices, int began, int end, Graph& g);
-        static void heuristica_1(Graph &g);
-        static void heuristica_1_V2(Graph &g); // by Thadeu
-        static void heuristica_2(Graph &g);
+        static void heuristica_1v1(Graph &g);
+        static void heuristica_1v2(Graph &g); // by Thadeu
+        static void heuristic_2v1(Graph &g);
         static void heuristica_2v2(Graph &g); // by Thadeu
         static void heuristica_3v1(Graph& g); // By thadeu
         static void heuristica_3v2(Graph& g); // By thadeu
@@ -25,7 +25,8 @@ class Heuristic
         static void Heuristica_4v2r1(Graph &graph);
         // Heuristic 4v2-2 Create only purpose compare with H4v2
         static void Heuristica_4v2r2(Graph &graph);
-        
+        static void Heuristica_4v2r3(Graph &graph);
+
         static std::vector <int> breadth_criterion(Graph &graph, std::queue <int> &FILA,
                     std::vector <int> &visited, std::vector <int> &total_layer); // By thadeu
 
@@ -35,14 +36,6 @@ class Heuristic
                     const std::tuple<int, int> &b); // By Thadeu
         static void set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph);
 
-        // OLD FUNCTIONS
-        // Developed by Daniel to return a best tree
-        // and not stretch index like heuristica_X_global
-        static Graph heuristica_1_tree(Graph& g);
-        static Graph heuristica_2_tree(Graph& g);
-        static Graph heuristica_2_tree(Graph& g, int raiz);
-        static Graph heuristica_3_tree(Graph& g);
-        static Graph heuristica_2_global(Graph& g);
 };
 
 #endif

@@ -96,8 +96,8 @@ int main(int argc, char** argv){
 	// CALCULATE LOWER LIMIT
 	// NOT COMPUTE IN TIME IN THIS SCRIPT
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
-
 	sem_init(&semaforo, 0, num_threads);
 	
 	Graph graph_copy=graph;
@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 	DEBUG std::cerr << "Solving with heuristic 1 - wait!\n";
 	run_name = "H1v1";
-	Heuristic::heuristica_1(graph);
+	Heuristic::heuristica_1v1(graph);
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration0(end - start);
@@ -123,7 +123,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with heuristic 1 vertex importance- wait!\n";
 	graph=graph_copy;
 	run_name = "H1v2";
-	Heuristic::heuristica_1_V2(graph);
+	Heuristic::heuristica_1v2(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration1(end - start);
@@ -137,7 +137,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with heuristic 2v1- wait!\n";
 	graph=graph_copy;
 	run_name = "H2v1";
-	Heuristic::heuristica_2(graph);
+	Heuristic::heuristic_2v1(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration2(end - start);

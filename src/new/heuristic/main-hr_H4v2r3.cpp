@@ -30,11 +30,11 @@
 #include "../code/centrality.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
-#ifdef MN_BF_SEQ_DEBUG
+/* #ifdef MN_BF_SEQ_DEBUG
 	#define DEBUG
 #else
 	#define DEBUG while(false)
-#endif
+#endif */
 
 //#include <atomic>
 //std::atomic<bool> processando(true);
@@ -83,22 +83,26 @@ int main(int argc, char** argv){
 		graph = read_graph_file_edges_list();
 	else
 		graph = read_graph_file();
-
-	// Start time counting
-	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-
+		
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
+	// Start time counting
+	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+	
+	DEBUG std::cerr << "Calculando limite inferior"  << std::endl;
     int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
+	DEBUG std::cerr << "Iniciando...."  << std::endl;
 	sem_init(&semaforo, 0, num_threads);
 	
+
+
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with heuristic 3 version 1 - wait!\n";
-	run_name = "H3v1";
-	Heuristic::heuristica_3v1(graph);
+	DEBUG std::cerr << "Solving with H4v2r3 - wait!" << std::endl;
+	run_name = "H4v2r3";
+	Heuristic::Heuristica_4v2r3(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
