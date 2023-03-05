@@ -1,10 +1,10 @@
 ---                               
 
-name: ct-hr-H4v2r1
+name: ct-bf-degree                  
 problem: tadmiss                   
-description: Running heuristic H4v2r1
-exec: release/app_HR-H4v2r1
-default_timelimit: 1200
+description: Running brute force parallel (max degree mode)
+exec: release/app_BF-DEGREE
+default_timelimit: 10800
 default_iterations: 10
 instance_list:
 - instance: grafos/grafo_10.txt
@@ -127,5 +127,4 @@ instance_list:
   args: -t 32 -s
 - instance: grafos/grafo_20.txt
   args: -t 64 -s
-
 ...                               

@@ -1,10 +1,10 @@
 ---                               
 
-name: ct-bf-seq                  
+name: ct-bf-inducedM2                  
 problem: tadmiss                   
-description: Running brute force sequential
-exec: release/app_BF-SEQ
-default_timelimit: 1200
+description: Running brute force parallel (induced cycle)
+exec: release/app_BF-CYCLES_M2
+default_timelimit: 10800
 default_iterations: 10
 instance_list:
 - instance: grafos/grafo_10.txt
@@ -127,5 +127,4 @@ instance_list:
   args: -t 32 -s
 - instance: grafos/grafo_20.txt
   args: -t 64 -s
-
 ...                               
