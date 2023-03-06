@@ -51,7 +51,7 @@ extern int index_global;
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
 extern int num_threads;
-extern int max_induced_cycles;
+//extern int max_induced_cycles;
 //int type_running = 0;
 int output = 0;
 bool best = false;
@@ -61,7 +61,7 @@ int matrix_t=0;
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
-	max_induced_cycles = 1;
+	//max_induced_cycles = 1;
 	if(argc < 2){
 		Parameters::usage("--help");
 		exit(0);
@@ -97,7 +97,7 @@ int main(int argc, char** argv){
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with induced cycle Method 2 - PARALLEL- wait!\n";
-	run_name = "INDUCED_CYCLE";
+	run_name = "INDUCED_CYCLE-M2";
 	create_threads_induced_cycle_method_2(graph);
 
 	// End time counting

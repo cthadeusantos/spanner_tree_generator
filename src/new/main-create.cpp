@@ -57,7 +57,7 @@ extern int index_global;
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
 extern int num_threads;
-extern int max_induced_cycles;
+//extern int max_induced_cycles;
 //int type_running = 0;
 int output = 0;
 bool best = false;
@@ -146,7 +146,7 @@ void parseArgs(int argc, char** argv){
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
-	max_induced_cycles = 1;
+	//max_induced_cycles = 1;
 	if(argc < 2){
 		usage("--help");
 		exit(0);

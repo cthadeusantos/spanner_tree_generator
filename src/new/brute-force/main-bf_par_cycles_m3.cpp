@@ -52,7 +52,6 @@ extern int index_global;
 int seed = 0;
 extern int num_threads;
 //extern int max_induced_cycles;
-int max_induced_cycles;
 //int type_running = 0;
 int output = 0;
 bool best = false;
@@ -62,7 +61,7 @@ int matrix_t=0;
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
-	max_induced_cycles = 1;
+	//max_induced_cycles = 1;
 	if(argc < 2){
 		Parameters::usage("--help");
 		exit(0);
@@ -84,7 +83,7 @@ int main(int argc, char** argv){
 		graph = read_graph_file_edges_list();
 	else
 		graph = read_graph_file();
-	
+		
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
@@ -97,9 +96,9 @@ int main(int argc, char** argv){
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with induced cycle method 1 - PARALLEL- wait!\n";
-	run_name = "Induced_cycle";
-	create_threads_induced_cycle_method_1(graph);
+	DEBUG std::cerr << "Solving with induced cycle Method 3 - PARALLEL- wait!\n";
+	run_name = "INDUCED_CYCLE-M3";
+	create_threads_induced_cycle_method_3(graph);
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

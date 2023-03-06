@@ -64,7 +64,7 @@ int matrix_t=0;
 /// @brief  The main method
 int main(int argc, char** argv){
 	num_threads = 1;
-	max_induced_cycles = 6;
+	//max_induced_cycles = 6;
 	if(argc < 2){
 		Parameters::usage("--help");
 		exit(0);
