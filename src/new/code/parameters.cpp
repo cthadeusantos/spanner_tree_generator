@@ -1,9 +1,9 @@
 #include <iostream>
-#ifdef MN_BF_SEQ_DEBUG
+/* #ifdef MN_BF_SEQ_DEBUG
 	#define DEBUG
 #else
 	#define DEBUG while(false)
-#endif
+#endif */
 #include "../Debug.h"
 #include "parameters.hpp"
 

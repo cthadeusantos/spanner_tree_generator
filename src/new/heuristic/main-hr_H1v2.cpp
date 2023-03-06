@@ -31,11 +31,11 @@
 #include "../code/centrality.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
-#ifdef MN_BF_SEQ_DEBUG
+/* #ifdef MN_BF_SEQ_DEBUG
 	#define DEBUG
 #else
 	#define DEBUG while(false)
-#endif
+#endif */
 
 //#include <atomic>
 //std::atomic<bool> processando(true);

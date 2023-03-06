@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos/grafo_10.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_14.txt"],
             "default": "${workspaceFolder}/instances/grafos/grafo_19.txt"
         }
     ],

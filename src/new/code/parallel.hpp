@@ -25,7 +25,11 @@ void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Grap
 //std::vector<std::vector<int>> seeking_induced_cycles_edges_v1(Graph &graph);
 std::vector<int> seeking_induced_cycles_edges_v1(Graph &graph);
 std::vector<int> seeking_induced_cycles_edges_v2(Graph &graph);
+std::vector<int> seeking_induced_cycles_edges_v3(Graph &graph);
 
 void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, Graph &graph);
+void search_for_induced_cycles_for_M2_revision1(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph);
+void search_for_induced_cycles_for_M2_revision1_only_one(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph);
+
 std::vector<std::pair<int,int>> make_edges_list(std::vector<int> cycle_vertices_list);
 Graph remove_edges_cycle_M2(std::vector<int> combinations, std::vector<std::pair<int, int>> edges, Graph graph);

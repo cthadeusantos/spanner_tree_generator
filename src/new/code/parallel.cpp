@@ -653,7 +653,7 @@ void create_threads_induced_cycle_method_2(Graph& g) {
     // fim calcula grt
 
     DEBUG std::cerr << "Searching for induced cycles using method 2!"  << std::endl;
-    edges_list = seeking_induced_cycles_edges_v2(g);
+    edges_list = seeking_induced_cycles_edges_v3(g);
 
     std::vector<std::pair<int,int>> edges_to_be_processed = make_edges_list(edges_list);
     DEBUG std::cerr << "Pre-processing edges!"  << std::endl;
@@ -949,8 +949,8 @@ std::vector<int> seeking_induced_cycles_edges_v1(Graph &graph){
 }
 
 /**
- * @brief Search for an induced cycle
- * @details Search for an induced cycle (if exists)
+ * @brief Search for an induced cycle - PRECISION CLOSENESS - MUCH MORE SLOW
+ * @details Search for an induced cycle (if exists) PRECISION CLOSENESS - MUCH MORE SLOW
  * @author Carlos Thadeu
  * @param g a graph instance that represents the graph
  * @return a vector of vector of integers that represents the induced cycles found 
@@ -986,6 +986,55 @@ std::vector<int> seeking_induced_cycles_edges_v2(Graph &graph){
     return edges_list;
 }
 
+/**
+ * @brief Search for an induced cycle (USING CLOSENESS CALCULATED)
+ * @details Search for an induced cycle (if exists) (USING CLOSENESS CALCULATED)
+ * @author Carlos Thadeu
+ * @param g a graph instance that represents the graph
+ * @return a vector of vector of integers that represents the induced cycles found 
+ */
+std::vector<int> seeking_induced_cycles_edges_v3(Graph &graph){
+  
+    int max_cycle_size=floor(log2(num_threads + 1));
+    DEBUG std::cerr << "Define induced cycle to size: " << max_cycle_size << std::endl;
+    std::vector<std::vector<int>> select_cycles;    // 
+
+	// Seleciona o vertice inicial 
+    // Seleciona o vértice com maior grau, se houver empate usa a
+    // centralidade de proximidade para desempate
+    // caso o empate persista, pega o primeiro vértice da lista
+	std::vector <int>vertices = graph.vertices_de_maior_grau();
+    
+    DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread_V2(graph);
+    std::vector<float> vertices_leverage = Centrality::leverage_centrality_thread(graph);
+    
+    DEBUG std::cerr << "Selecting root" << std::endl;
+    int root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
+    
+    DEBUG std::cerr << "Selected neighbor from root: " << root << std::endl;
+    std::vector<int> neighbors = graph.adjList(root);   // Neighbors at root
+	int seek = Centrality::tiebreaker(neighbors, vertices_closeness, vertices_leverage); 
+    
+    // Fim da seleção do vértice inicial
+
+    // MANY CYCLES ARE SEARCH - UNCOMMENT BELOW LINE WHEN to do * Make a better choice from select_cycles*
+    // search_for_induced_cycles_for_M2_revision1(seek, root, max_cycle_size, select_cycles, vertices_closeness, vertices_leverage, graph);
+    
+    // ONLY ONE CYCLE IS SEARCH - COMMENT BELOW LINE WHEN YOU USE search_for_induced_cycles_for_M2_revision1
+    search_for_induced_cycles_for_M2_revision1_only_one(seek, root, max_cycle_size, select_cycles, vertices_closeness, vertices_leverage, graph);
+
+    // TO DO
+    // TO DO - Make a better choice from select_cycles
+    // TO DO
+
+    // Until make a better choice, select the first vector
+    std::vector<int> edges_list;
+    if (!select_cycles.empty())
+        edges_list=select_cycles[0];
+    return edges_list;
+}
+
 void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, Graph &graph){
     //int MAX_CYCLE_SIZE=floor(log2(num_threads + 1));
     int initial_max_cycle=cycle_size;
@@ -1003,7 +1052,7 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
     int max_size_cycle=0;   // Define Max size list found  // Method 1 != Method 2
 
 	while (true) {
-		DEBUG std::cerr << "Searching for (" << cycle_size<< ") " << std::endl;
+		DEBUG std::cerr << "Searching for (" << cycle_size<< ") cycle size" << std::endl;
 		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
 		if (cycle.empty()){
 			if (cycle_size > 3 && cycle_size > max_size_cycle){ // Não achei ciclo do tamanho pré-definido, procuro um menor
@@ -1014,13 +1063,8 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
 				break;
 			}
 		} else {
-            //max_size_cycle=cycle_size;
 			cycle_size=initial_max_cycle;
 		}
-
-/*         if (cycle_size < vertices_list.size())
-            break; */
-
 		for (int j=0; j < cycle.size(); j++){ // Delete processed vertices
 			int index=get_index(cycle[j], vertices_list);
 			if (!vertices_list.empty() && index < vertices_list.size())
@@ -1032,7 +1076,7 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
 		cycle.push_back(root);
 		processed.push_back(root);
 
-        int acme=cycle.size()-1;
+        int acme=cycle.size()-1;    //auxiliary var
         if (!cycle.empty() && acme > max_size_cycle){   // Method 1 != Method 2
     		select_cycles.clear();                              // Only cycles that has same size(maximum select)
             select_cycles.push_back(cycle);                     // will be selected
@@ -1066,6 +1110,122 @@ void search_for_induced_cycles_for_M2(int seek, int root, int cycle_size, std::v
 			}
 		}
 		if (neighbors.empty()) break;
+	}
+}
+
+/*
+    SEARCH FOR MANY CYCLES
+*/
+void search_for_induced_cycles_for_M2_revision1(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph){
+    int initial_max_cycle=cycle_size;
+
+    std::vector<std::pair<int,float>> centrality;
+    std::vector<int> neighbors;
+
+    std::vector<int> processed;                     // Processed vertices
+	std::vector<int> vertices_list;                 // Vertices to be processed
+	for (int i=0; i<graph.get_qty_vertex(); i++){   //inicializa a lista
+		vertices_list.push_back(i);
+	}
+    std::vector<int> cycle(1,0); // create and initialize an auxiliary list
+
+    int max_size_cycle=0;   // Define Max size list found  // Method 1 != Method 2
+
+	while (true) {
+		DEBUG std::cerr << "Searching for (" << cycle_size<< ") cycle size" << std::endl;
+		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
+		if (cycle.empty()){
+			if (cycle_size > 3 && cycle_size > max_size_cycle){ // Não achei ciclo do tamanho pré-definido, procuro um menor
+				cycle_size--;
+				continue;
+			}
+			else {  // I didn't even find a triangle, then I quit the loop
+				break;
+			}
+		} else {
+			cycle_size=initial_max_cycle;
+		}
+
+		for (int j=0; j < cycle.size(); j++){ // Delete processed vertices
+			int index=get_index(cycle[j], vertices_list);
+			if (!vertices_list.empty() && index < vertices_list.size())
+				vertices_list.erase (vertices_list.begin() + index);
+			else
+                if (vertices_list.empty() ) 
+				    break;
+		}
+		cycle.push_back(root);
+		processed.push_back(root);
+
+        int acme=cycle.size()-1;    //auxiliary var
+        if (!cycle.empty() && acme > max_size_cycle){   // Method 1 != Method 2
+    		select_cycles.clear();                              // Only cycles that has same size(maximum select)
+            select_cycles.push_back(cycle);                     // will be selected
+            if (cycle_size > max_size_cycle)
+                max_size_cycle=acme;
+        } else if (!cycle.empty() && acme == max_size_cycle){   
+            select_cycles.push_back(cycle);
+        }
+
+		if (vertices_list.empty()) break;
+
+		bool gameover = false;
+		while (!gameover){  // Escolhe nova raiz
+            root = Centrality::tiebreaker(vertices_list, vertices_closeness, vertices_leverage);
+			if (!in(root, processed) || vertices_list.empty()){
+				gameover=true;
+			}
+		}
+		gameover = false;
+		neighbors = graph.adjList(root);
+		while (!gameover){
+            seek = Centrality::tiebreaker(neighbors, vertices_closeness, vertices_leverage);
+			if (!in(seek, processed)){
+				gameover=true;
+			} else {
+				int index=get_index(seek, neighbors);
+				neighbors.erase (neighbors.begin() + index);
+				if (neighbors.empty()) break;
+			}
+		}
+		if (neighbors.empty()) break;
+	}
+}
+
+
+/*
+    SEARCH FOR ONE CYCLE
+*/
+void search_for_induced_cycles_for_M2_revision1_only_one(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph){
+    int initial_max_cycle=cycle_size;
+
+    std::vector<std::pair<int,float>> centrality;
+    std::vector<int> neighbors;
+
+    std::vector<int> processed;                     // Processed vertices
+	std::vector<int> vertices_list;                 // Vertices to be processed
+	for (int i=0; i<graph.get_qty_vertex(); i++){   //inicializa a lista
+		vertices_list.push_back(i);
+	}
+    std::vector<int> cycle(1,0); // create and initialize an auxiliary list
+
+    int max_size_cycle=0;   // Define Max size list found  // Method 1 != Method 2
+
+	while (true) {
+		DEBUG std::cerr << "Searching for (" << cycle_size<< ") cycle size" << std::endl;
+		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
+		if (cycle.empty()){
+			if (cycle_size > 3 && cycle_size > max_size_cycle){ // Não achei ciclo do tamanho pré-definido, procuro um menor
+				cycle_size--;
+				continue;
+			}
+			else {  // I didn't even find a triangle, then I quit the loop
+				break;
+			}
+		} else {
+			select_cycles.push_back(cycle);
+            break; 
+		}
 	}
 }
 

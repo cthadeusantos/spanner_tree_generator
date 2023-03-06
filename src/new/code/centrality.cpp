@@ -479,6 +479,23 @@ std::vector<std::pair<int,float>> Centrality::closeness_centrality_list(Graph &g
 
 /**
  * Closeness centrality 
+ * @details Calculate a closeness centrality for specific vertices
+ * @author Carlos Thadeu
+ * @param vertices a vector of vertices
+ * @param graph a graph 
+ * @return a vector of pair (int, float) that represents vertex and closeness centrality
+ */
+std::vector<std::pair<int,float>> Centrality::closeness_centrality_list_V2(std::vector <int> &vertices,Graph &graph){
+    std::vector<std::pair<int,float>> closeness;
+    for (auto i : vertices){
+        float aux = vertex_importance_v2(i, graph);
+        closeness.push_back({i, aux});
+    }
+    return closeness;
+}
+
+/**
+ * Closeness centrality 
  * @details Calculate a closeness centrality for all vertices of the graph
  * @author Carlos Thadeu
  * @param vertices a set of vertices
@@ -752,26 +769,5 @@ int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> clo
             best_vertex=vertex;
         }
     }
-
-/*     std::vector<int> selected;
-    for (auto vertex: vertex_list){
-        if (closeness[vertex] > max){
-            selected.clear();
-            max = closeness[vertex];
-            selected.push_back(vertex);
-        } else if (closeness[vertex] == max){
-            selected.push_back(vertex);
-        }
-    }
-    best_vertex=selected[0];
-    float min = leverage[best_vertex];
-    for (auto vertex: selected){
-        if (leverage[vertex] > min){
-            min = leverage[vertex];
-            best_vertex=vertex;
-        } else if (leverage[vertex] == min){
-            best_vertex=vertex;
-        }
-    } */
     return best_vertex;
 }
