@@ -51,9 +51,9 @@ extern int index_global;
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
 extern int num_threads;
-//extern int max_induced_cycles;
+
 int max_induced_cycles;
-//int type_running = 0;
+
 int output = 0;
 bool best = false;
 

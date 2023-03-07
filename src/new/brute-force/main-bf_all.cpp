@@ -56,7 +56,7 @@ extern int seed; */
 int seed = 0;
 extern int num_threads;
 extern int max_induced_cycles;
-//int type_running = 0;
+
 int output = 0;
 bool best = false;
 int matrix_t=0;
@@ -131,26 +131,12 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with induced cycle - wait!\n";
 	graph=graph_copy;
 	run_name = "INDUCED_CYCLE";
-	create_threads_induced_cycle_method_2(graph);
+	create_threads_induced_cycle_method_3(graph);
 	// End time counting
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration2(end - start);
 	lastExecutionTime = execution_duration2.count();
 	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
-
-	// ARTICULATIONS
-	// Start time counting
-/* 	start = std::chrono::steady_clock::now();
-	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with articulation - wait!\n";
-	graph=graph_copy;
-	run_name = "ARTICULATION";
-	create_threads_articulations(graph);
-	// End time counting
-	end = std::chrono::steady_clock::now();	
-	std::chrono::duration<double> execution_duration3(end - start);
-	lastExecutionTime = execution_duration3.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph); */
 
 	// BRUTE FORCE
 	// Start time counting
