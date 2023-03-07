@@ -1,0 +1,66 @@
+---                               
+
+name: example-ct-bf-cycles-M3              
+problem: tadmiss                   
+description: Running brute force parallel (induced cycle M3)
+exec: release/app_BF-CYCLES_M3
+default_timelimit: 7200
+default_iterations: 10
+instance_list:
+- instance: grafos/grafo_10.txt
+  args: -t 4 -s
+- instance: grafos/grafo_10.txt
+  args: -t 8 -s
+- instance: grafos/grafo_10.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_10.txt
+  args: -t 32 -s
+- instance: grafos/grafo_10.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_11.txt
+  args: -t 4 -s
+- instance: grafos/grafo_11.txt
+  args: -t 8 -s
+- instance: grafos/grafo_11.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_11.txt
+  args: -t 32 -s
+- instance: grafos/grafo_11.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_12.txt
+  args: -t 4 -s
+- instance: grafos/grafo_12.txt
+  args: -t 8 -s
+- instance: grafos/grafo_12.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_12.txt
+  args: -t 32 -s
+- instance: grafos/grafo_12.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_13.txt
+  args: -t 4 -s
+- instance: grafos/grafo_13.txt
+  args: -t 8 -s
+- instance: grafos/grafo_13.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_13.txt
+  args: -t 32 -s
+- instance: grafos/grafo_13.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_14.txt
+  args: -t 4 -s
+- instance: grafos/grafo_14.txt
+  args: -t 8 -s
+- instance: grafos/grafo_14.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_14.txt
+  args: -t 32 -s
+- instance: grafos/grafo_14.txt
+  args: -t 64 -s
+
+
+...                               
