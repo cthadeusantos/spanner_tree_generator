@@ -1,5 +1,15 @@
 # changes
 
+## 0.1.3.2(2023/03/07)
+* Induced cycle M3 version implementation
+* Change Induced cycle M2 to M3 (M2 was discarted)
+* Move batteries induced cycle M2 to M3
+* Remove comments
+* Comment code unused
+* Remove induced cycle M2 from makefile
+* Minor fixes
+* Makefile updated
+
 ## 0.1.3.1(2023/03/01)
 * Leverage centrality implemented
 * Closeness centrality calculated implemented
