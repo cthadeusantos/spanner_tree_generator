@@ -62,6 +62,6 @@ class Centrality
         static std::vector<float> closeness_centrality_vector(Graph &graph);
 
         static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness);
-        static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> closeness, std::vector<float> leverage);    
+        static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);    
 
 };

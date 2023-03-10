@@ -1,5 +1,9 @@
 # changes
 
+## 0.1.3.3 (2023/03/10)
+* Fixed wrong parameters passed to method tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);
+* Fix tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage) parameters
+
 ## 0.1.3.2(2023/03/07)
 * Induced cycle M3 version implementation
 * Change Induced cycle M2 to M3 (M2 was discarted)

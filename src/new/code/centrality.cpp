@@ -751,7 +751,7 @@ int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &cl
     return best_vertex;
 }
 
-int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> closeness, std::vector<float> leverage){
+int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage){
     if (vertex_list.size() == 1)
         return vertex_list[0];
     int best_vertex=vertex_list[0];

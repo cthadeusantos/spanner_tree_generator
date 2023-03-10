@@ -37,7 +37,7 @@ void Heuristic::heuristica_1v1(Graph& g)
     my_quicksort(vertex_list, 0, n, g);
     Graph tree(n);
     root = vertex_list[0];
-    //DEBUG std::cerr << "Selected root: " << root << std::endl;
+
     for( int v : g.adjList(root) )
     {
         tree.add_aresta(root, v);
@@ -59,11 +59,8 @@ void Heuristic::heuristica_1v1(Graph& g)
         }
         ++i;
     }
-    //return stretch.find_factor(g, tree);
     int factor = stretch.find_factor(g, tree); //By thadeu
     g.sum_trees(1); //By thadeu
-/*     g.set_stretch_index(factor);
-    g.set_best_tree(tree); */
     set_graph_final_parameters(factor, tree, g); //By thadeu
 }
 
@@ -83,10 +80,9 @@ void Heuristic::heuristica_1v2(Graph& graph)
     int n = graph.getQtdVertices();
     int root = 0;
     std::vector<int> vertex_list(n);
-    //std::vector<float> importance(n); // by thadeu
 
     DEBUG std::cerr << "calculating vertices importance" << std::endl;
-    //fill(v.begin(),v.end(),1); // fill vector initialize vector
+    
     for( int i = 0; i < n; ++i)
     {
         vertex_list[i] = i;
@@ -113,8 +109,6 @@ void Heuristic::heuristica_1v2(Graph& graph)
 
     Graph tree(n);
     
-    //DEBUG std::cerr << "Selected root: " << root << std::endl;
-
     for( int v : graph.adjList(root) )  // Start build tree , insert select vertex and all neighbors
     {
         tree.add_aresta(root, v);
@@ -382,6 +376,8 @@ void Heuristic::heuristica_3v1(Graph &graph)
        bool connect = false;    // if source vertex connect to leaf, it cannot connect a leaf again 
         for( int vertex : graph.adjList(source))
         {
+            // If vertex to be added not create a cycle
+            // add edge (source, vertex)
             if (tree.grau(vertex)==0)
             {
                 if (tree.possui_aresta(source, vertex)==false)
@@ -490,12 +486,14 @@ void Heuristic::heuristica_3v2(Graph &graph)
                 break;
             }
         }
-        source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness);
+        source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness, vertices_leverage);
         //source = lista_relativa_vertice[lista_relativa_vertice.size()-1];
 
-       bool connect = false;    // if source vertex connect to leaf, it cannot connect a leaf again 
+        bool connect = false;    // if source vertex connect to leaf, it cannot connect a leaf again
         for( int vertex : graph.adjList(source))
         {
+            // If vertex to be added not create a cycle
+            // add edge (source, vertex)
             if (tree.grau(vertex)==0)
             {
                 if (tree.possui_aresta(source, vertex)==false)
@@ -616,14 +614,6 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     DEBUG std::cerr << "Selecting root" << std::endl;
     root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
     DEBUG std::cerr << "Selected root: " << root << std::endl;
-
-    ////std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
-    //DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
-    ////std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
-    //std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
-    //DEBUG std::cerr << "Selecting root" << std::endl;
-    //root = Centrality::root_selection2(vertices_closeness);
-    //DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     QUEUE1.push(root);
     enqueued.push_back(root);
