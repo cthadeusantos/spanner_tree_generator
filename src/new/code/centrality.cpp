@@ -77,7 +77,7 @@ std::vector <float> Centrality::leverage_centrality_thread(Graph &graph){
         chunk = ceil(n / num_threads)+1;
     }
 
-    DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
+    //DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
     for(int j=0; j < execute_thread; j++){
         if (j == num_threads-1){
             start = j * chunk ;
@@ -289,8 +289,10 @@ std::vector <float> Centrality::closeness_centrality(Graph &graph){
 }
 
 /**
- * Closeness centrality 
+ * Closeness centrality (precision closeness)
  * @details Calculate a closeness centrality for all vertices at graph
+ * This method will compute vertex-to-vertex
+ * This method is slow that Closeness centrality - compute mathematically
  * @author Carlos Thadeu
  * @param g a graph
  * @return a vector of float that represents closeness centrality
@@ -310,7 +312,7 @@ std::vector <float> Centrality::closeness_centrality_thread(Graph &graph){
         chunk = ceil(n / num_threads)+1;
     }
 
-    DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
+    //DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
     for(int j=0; j < execute_thread; j++){
         if (j == num_threads-1){
             start = j * chunk ;
@@ -329,8 +331,10 @@ std::vector <float> Centrality::closeness_centrality_thread(Graph &graph){
 }
 
 /**
- * Closeness centrality 
+ * Closeness centrality - compute mathematically
  * @details Calculate a closeness centrality for all vertices at graph
+ * This method will calculate mathematically the closeness centrality
+ * This method is much faster the Closeness centrality method (precision closeness)
  * @author Carlos Thadeu
  * @param g a graph
  * @return a vector of float that represents closeness centrality
@@ -350,7 +354,7 @@ std::vector <float> Centrality::closeness_centrality_thread_V2(Graph &graph){
         chunk = ceil(n / num_threads)+1;
     }
 
-    DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
+    //DEBUG std::cerr << "execute_thread: " << execute_thread << " , chunk: " << chunk << std::endl ;
     for(int j=0; j < execute_thread; j++){
         if (j == num_threads-1){
             start = j * chunk ;
@@ -648,6 +652,7 @@ void Centrality::my_insertionSort(std::vector <int> &vertex, std::vector <float>
  * @author Modify code cthadeusantos
  * @param vertex - That's a vector that represents a vertices list
  * @param closeness - That's a vector that represents a closeness complexity (vertex importance)
+ * @param leverage - That's a vector that represents a leverage complexity
  * @param graph - That's an instance that represents a graph
  */
 void Centrality::my_insertionSort(std::vector <int> &vertex, std::vector <float> &closeness, std::vector <float> &leverage, Graph &graph)

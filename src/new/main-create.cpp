@@ -57,11 +57,10 @@ extern int index_global;
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
 int seed = 0;
 extern int num_threads;
-
-
 int output = 0;
 bool best = false;
 int matrix_t=0;
+bool nolb = false;
 
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.

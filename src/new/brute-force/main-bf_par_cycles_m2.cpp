@@ -52,11 +52,10 @@ extern int index_global;
 int seed = 0;
 extern int num_threads;
 
-
 int output = 0;
 bool best = false;
-
 int matrix_t=0;
+bool nolb = false;
 
 /// @brief  The main method
 int main(int argc, char** argv){

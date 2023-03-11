@@ -57,8 +57,8 @@ extern int num_threads;
 
 int output = 0;
 bool best = false;
-
 int matrix_t=0;
+bool nolb = false;
 
 /// @brief  The main method
 int main(int argc, char** argv){
@@ -91,9 +91,10 @@ int main(int argc, char** argv){
 
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
-	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
-	
+	int lower_limit = 1;
+	if (!nolb)
+		lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;	
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE

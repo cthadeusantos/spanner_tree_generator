@@ -4,6 +4,8 @@ extern int num_threads;
 extern int output;
 extern int matrix_t;
 extern bool best;
+extern bool nolb;
+
 class Parameters
 {
     public:

@@ -55,8 +55,8 @@ extern int num_threads;
 
 int output = 0;
 bool best = false;
-
 int matrix_t=0;
+bool nolb = false;
 
 /// @brief  The main method
 int main(int argc, char** argv){
@@ -90,7 +90,9 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
-    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	int lower_limit = 1;
+	if (!nolb)
+		lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);

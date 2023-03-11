@@ -60,6 +60,7 @@ extern int max_induced_cycles;
 int output = 0;
 bool best = false;
 int matrix_t=0;
+bool nolb = false;
 
 /// @brief  The main method
 int main(int argc, char** argv){

@@ -52,11 +52,10 @@ extern int index_global;
 int seed = 0;
 extern int num_threads;
 
-
 int output = 0;
 bool best = false;
-
 int matrix_t=0;
+bool nolb = false;
 
 /// @brief  The main method
 int main(int argc, char** argv){
@@ -91,14 +90,14 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 	
 	DEBUG std::cerr << "Calculando limite inferior"  << std::endl;
-    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	int lower_limit = 1;
+	if (!nolb)
+		lower_limit = OpBasic::maxLowerCicle(graph) - 1;
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	DEBUG std::cerr << "Iniciando...."  << std::endl;
 	sem_init(&semaforo, 0, num_threads);
 	
-
-
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with H4v2r3 - wait!" << std::endl;
 	run_name = "H4v2r3";

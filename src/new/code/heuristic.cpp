@@ -528,7 +528,7 @@ void Heuristic::heuristica_3v2(Graph &graph)
 void Heuristic::Heuristica_4v1(Graph &graph)
 {
     Stretch stretch;
-    int counter = 0;
+    //int counter = 0;
     int root = 0;
     int n = graph.getQtdVertices();
     Graph tree(n);
@@ -536,14 +536,17 @@ void Heuristic::Heuristica_4v1(Graph &graph)
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline
     std::vector <int> degree_list; // newline
-    std::vector <int> enqueued; // processed vertices that was enqueued anytime
-
+    //std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    std::vector <bool> visited(n, false); // processed vertices that was enqueued anytime
 
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread_V2(graph);
     std::vector<float> vertices_leverage = Centrality::leverage_centrality_thread(graph);
+
+    std::vector<int> lista_vertices_candidatos = graph.vertices_de_maior_grau();
     DEBUG std::cerr << "Selecting root" << std::endl;
-    root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
+    //root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
+    root = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness, vertices_leverage);
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     ////std::vector <float> xxx = Centrality::closeness_centrality(graph);
@@ -553,31 +556,45 @@ void Heuristic::Heuristica_4v1(Graph &graph)
     //DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     QUEUE1.push(root);
-    enqueued.push_back(root);
+    //enqueued.push_back(root);
+    visited[root]=true;
 
-    Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
+    //Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
 
     // the heuristic main loop 
     while (!(QUEUE1.empty())){
         root = QUEUE1.front();
         QUEUE1.pop();
 
-        int num_neighbor = graph.adjList(root).size();
-        for (int i = 0; i < num_neighbor; ++i){
-            int neighbor = graph.adjList(root)[i];
-            if (tree.grau(neighbor) == 0) {
-                tree.add_aresta(root, neighbor);
-                neighbor_list.push_back(neighbor); // newline
-                degree_list.push_back(graph.grau(neighbor));
+        //int num_neighbor = graph.adjList(root).size();
+        //for (int i = 0; i < num_neighbor; ++i){
+        //    int neighbor = graph.adjList(root)[i];
+        //    if (tree.grau(neighbor) == 0) {
+        //        tree.add_aresta(root, neighbor);
+        //        neighbor_list.push_back(neighbor); // newline
+        //        degree_list.push_back(graph.grau(neighbor));
+        //    }
+        //}
+        for (auto vertex: graph.adjList(root)){
+            if (tree.grau(vertex) == 0) {
+                tree.add_aresta(root, vertex);
+                neighbor_list.push_back(vertex); // newline
+                degree_list.push_back(graph.grau(vertex));
             }
         }
 
         Centrality::my_insertionSort(degree_list, neighbor_list, 'd');
 
-        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
-            if (!in( neighbor_list[i], enqueued)){
-                QUEUE1.push(neighbor_list[i]);
-                enqueued.push_back(neighbor_list[i]);
+        //for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
+        //    if (!in( neighbor_list[i], enqueued)){
+        //        QUEUE1.push(neighbor_list[i]);
+        //        enqueued.push_back(neighbor_list[i]);
+        //    }
+        //}
+        for (auto vertex : neighbor_list){
+            if (!visited[vertex]){
+                QUEUE1.push(vertex);
+                visited[vertex]=true;
             }
         }
         neighbor_list.clear();
@@ -598,7 +615,7 @@ void Heuristic::Heuristica_4v1(Graph &graph)
 void Heuristic::Heuristica_4v2r1(Graph &graph)
 {
     Stretch stretch;
-    int counter = 0;
+    //int counter = 0;
     int root = 0;
     int n = graph.getQtdVertices();
     Graph tree(n);
@@ -606,7 +623,8 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline
     std::vector <int> centrality_list; // newline
-    std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    //std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    std::vector <bool> visited(n, false); // processed vertices that was enqueued anytime
 
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
@@ -616,7 +634,8 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     DEBUG std::cerr << "Selected root: " << root << std::endl;
 
     QUEUE1.push(root);
-    enqueued.push_back(root);
+    //enqueued.push_back(root);
+    visited[root]=true;
 
     DEBUG std::cerr << "Starting Heuristica_4v2r1 - Closeness centrality - better precision" << root << std::endl;
 
@@ -626,24 +645,37 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
         root = QUEUE1.front();
         QUEUE1.pop();
 
-        int num_neighbor = graph.adjList(root).size();
-        for (int i = 0; i < num_neighbor; ++i){
-            int neighbor = graph.adjList(root)[i];
-            if (tree.grau(neighbor) == 0) {
-                tree.add_aresta(root, neighbor);
-                neighbor_list.push_back(neighbor); // newline
-                centrality_list.push_back(graph.grau(neighbor));
+        //int num_neighbor = graph.adjList(root).size();
+        //for (int i = 0; i < num_neighbor; ++i){
+        //    int neighbor = graph.adjList(root)[i];
+        //    if (tree.grau(neighbor) == 0) {
+        //        tree.add_aresta(root, neighbor);
+        //        neighbor_list.push_back(neighbor); // newline
+        //        centrality_list.push_back(graph.grau(neighbor));
+        //    }
+        //}
+        for (auto vertex: graph.adjList(root)){
+            if (tree.grau(vertex) == 0) {
+                tree.add_aresta(root, vertex);
+                neighbor_list.push_back(vertex); // newline
+                centrality_list.push_back(graph.grau(vertex));
             }
         }
 
-        //Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+        Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
 
-        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
-            if (!in( neighbor_list[i], enqueued)){
-                QUEUE1.push(neighbor_list[i]);
-                enqueued.push_back(neighbor_list[i]);
+        //for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
+        //    if (!in( neighbor_list[i], enqueued)){
+        //        QUEUE1.push(neighbor_list[i]);
+        //        enqueued.push_back(neighbor_list[i]);
+        //    }
+        //}
+        for (auto vertex : neighbor_list){
+            if (!visited[vertex]){
+                QUEUE1.push(vertex);
+                visited[vertex]=true;
             }
-        }
+        }   
         neighbor_list.clear();
         centrality_list.clear();
     }
@@ -662,7 +694,7 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
 void Heuristic::Heuristica_4v2r2(Graph &graph)
 {
     Stretch stretch;
-    int counter = 0;
+    //int counter = 0;
     int root = 0;
     int n = graph.getQtdVertices();
     Graph tree(n);
@@ -670,7 +702,8 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline
     std::vector <int> centrality_list; // newline
-    std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    //std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    std::vector <bool> visited(n, false); // processed vertices that was enqueued anytime
     //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
     //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
@@ -683,7 +716,8 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
     //root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
     DEBUG std::cerr << "Selected root: " << root << std::endl;
     QUEUE1.push(root);
-    enqueued.push_back(root);
+    //enqueued.push_back(root);
+    visited[root]=true;
 
     DEBUG std::cerr << "Starting Heuristica_4v2r2 - - Closeness centrality - calculated" << root << std::endl;
 
@@ -693,24 +727,37 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
         root = QUEUE1.front();
         QUEUE1.pop();
 
-        int num_neighbor = graph.adjList(root).size();
-        for (int i = 0; i < num_neighbor; ++i){
-            int neighbor = graph.adjList(root)[i];
-            if (tree.grau(neighbor) == 0) {
-                tree.add_aresta(root, neighbor);
-                neighbor_list.push_back(neighbor); // newline
-                centrality_list.push_back(graph.grau(neighbor));
+        //int num_neighbor = graph.adjList(root).size();
+        //for (int i = 0; i < num_neighbor; ++i){
+        //    int neighbor = graph.adjList(root)[i];
+        //    if (tree.grau(neighbor) == 0) {
+        //        tree.add_aresta(root, neighbor);
+        //        neighbor_list.push_back(neighbor); // newline
+        //        centrality_list.push_back(graph.grau(neighbor));
+        //    }
+        //}
+        for (auto vertex: graph.adjList(root)){
+            if (tree.grau(vertex) == 0) {
+                tree.add_aresta(root, vertex);
+                neighbor_list.push_back(vertex); // newline
+                centrality_list.push_back(graph.grau(vertex));
             }
         }
 
-        //Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+        Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
 
-        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
-            if (!in( neighbor_list[i], enqueued)){
-                QUEUE1.push(neighbor_list[i]);
-                enqueued.push_back(neighbor_list[i]);
+        //for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
+        //    if (!in( neighbor_list[i], enqueued)){
+        //        QUEUE1.push(neighbor_list[i]);
+        //        enqueued.push_back(neighbor_list[i]);
+        //    }
+        //}
+        for (auto vertex : neighbor_list){
+            if (!visited[vertex]){
+                QUEUE1.push(vertex);
+                visited[vertex]=true;
             }
-        }
+        } 
         neighbor_list.clear();
         centrality_list.clear();
     }
@@ -729,7 +776,7 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
 void Heuristic::Heuristica_4v2r3(Graph &graph)
 {
     Stretch stretch;
-    int counter = 0;
+    //int counter = 0;
     int root = 0;
     int n = graph.getQtdVertices();
     Graph tree(n);
@@ -737,7 +784,8 @@ void Heuristic::Heuristica_4v2r3(Graph &graph)
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline
     std::vector <int> centrality_list; // newline
-    std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    //std::vector <int> enqueued; // processed vertices that was enqueued anytime
+    std::vector<bool> visited(n, 0);
     //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
     //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
@@ -750,7 +798,8 @@ void Heuristic::Heuristica_4v2r3(Graph &graph)
     root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
     DEBUG std::cerr << "Selected root: " << root << std::endl;
     QUEUE1.push(root);
-    enqueued.push_back(root);
+    //enqueued.push_back(root);
+    visited[root]=true;
 
     DEBUG std::cerr << "Starting Heuristica_4v2r3 - - Closeness centrality using leverage centrality - calculated" << root << std::endl;
 
@@ -760,24 +809,37 @@ void Heuristic::Heuristica_4v2r3(Graph &graph)
         root = QUEUE1.front();
         QUEUE1.pop();
 
-        int num_neighbor = graph.adjList(root).size();
-        for (int i = 0; i < num_neighbor; ++i){
-            int neighbor = graph.adjList(root)[i];
-            if (tree.grau(neighbor) == 0) {
-                tree.add_aresta(root, neighbor);
-                neighbor_list.push_back(neighbor); // newline
-                centrality_list.push_back(graph.grau(neighbor));
+        //int num_neighbor = graph.adjList(root).size();
+        //for (int i = 0; i < num_neighbor; ++i){
+        //    int neighbor = graph.adjList(root)[i];
+        //    if (tree.grau(neighbor) == 0) {
+        //        tree.add_aresta(root, neighbor);
+        //        neighbor_list.push_back(neighbor); // newline
+        //        centrality_list.push_back(graph.grau(neighbor));
+        //    }
+        //}
+        for (auto vertex: graph.adjList(root)){
+            if (tree.grau(vertex) == 0) {
+                tree.add_aresta(root, vertex);
+                neighbor_list.push_back(vertex); // newline
+                centrality_list.push_back(graph.grau(vertex));
             }
         }
 
-        //Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
+        Centrality::my_insertionSort(centrality_list, neighbor_list, 'd');
 
-        for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
-            if (!in( neighbor_list[i], enqueued)){
-                QUEUE1.push(neighbor_list[i]);
-                enqueued.push_back(neighbor_list[i]);
+        //for (int i = 0; i < neighbor_list.size(); ++i){ // Fixed core dumped BUG - change num_neighbor for neighbor_list.size()
+        //    if (!in( neighbor_list[i], enqueued)){
+        //        QUEUE1.push(neighbor_list[i]);
+        //        enqueued.push_back(neighbor_list[i]);
+        //    }
+        //}
+        for (auto vertex : neighbor_list){
+            if (!visited[vertex]){
+                QUEUE1.push(vertex);
+                visited[vertex]=true;
             }
-        }
+        } 
         neighbor_list.clear();
         centrality_list.clear();
     }

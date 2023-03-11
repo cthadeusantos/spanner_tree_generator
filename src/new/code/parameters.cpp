@@ -24,6 +24,7 @@ void Parameters::usage(const char* app_name){
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
 	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
+	std::cout << "\t     | --nolb   \t\tNot calculate lower bound (only heuristics)" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
@@ -78,6 +79,10 @@ void Parameters::parseArgs(int argc, char** argv){
 		else if(arg == "-b" || arg == "--best"){
 			best = true;
 			DEBUG std::cerr << "Changed best tree visualization to: " << best << '\n';
+		}
+		else if(arg == "--nolb"){
+			nolb = true;
+			DEBUG std::cerr << "Disable lower bound compute." << nolb << '\n';
 		}
 		else {
 			DEBUG std::cerr << "Unknown param: " << arg << "\n";

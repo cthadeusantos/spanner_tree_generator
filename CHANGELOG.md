@@ -1,5 +1,12 @@
 # changes
 
+## 0.1.3.4 (2023/03/11)
+* Add parameter --nolb to avoid compute lower bound using heuristics with big graphs
+* Heuristics updated 
+* H4v1 updated to select root using degree centrality , if are tie, applied closeness and leverage centrality to select root
+* Replaced std::vector <int> enqueued to std::vector <bool> visited(n, false) in heuristics 4, now complexity to check if vertex was visited is O(1)
+* Batteries H4v2r2 not will run anymore
+
 ## 0.1.3.3 (2023/03/10)
 * Fixed wrong parameters passed to method tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);
 * Fix tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage) parameters
