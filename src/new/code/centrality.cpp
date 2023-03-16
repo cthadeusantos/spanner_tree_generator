@@ -206,6 +206,7 @@ int Centrality::root_selection3(std::vector<float> vertices_closeness, std::vect
         centrality = vertices_leverage[i];
         if (centrality < min) {
             vertex = i;
+            min = centrality;
         }
     }
     return vertex;
