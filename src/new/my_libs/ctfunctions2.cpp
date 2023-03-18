@@ -417,6 +417,27 @@ Graph read_graph_file_edges_list() {
             ++LetterCount;
         }
     }
+    // Fix bug on read edge list file
+    // If file not end with endline or space
+    // last edge not added at adjacency matrix
+    // TO DO AT FUTURE: A function because this code is duplicate  less than IF clause
+    if (!((Ch == '\n') || (Ch == ' '))) {
+            LetterCount = 0;
+            if (value_str.size()) {
+                if (WordCount++ == 0) {
+                    dimension = std::stoi(value_str);
+                    graph.add_vertices(dimension);
+                } else {
+                    std::vector<std::string> nodes = split(value_str, ',');
+                    node1 = stoi(nodes[0]);
+                    node2 = stoi(nodes[1]);
+                    if (!(graph.possui_aresta(node1, node2) && graph.possui_aresta(node2, node1)))
+                        graph.add_aresta(node1, node2);
+                }
+                value_str = "";
+            }
+    }
+    return graph;
     return graph;
 }
 
