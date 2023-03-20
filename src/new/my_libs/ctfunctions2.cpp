@@ -394,6 +394,8 @@ Graph read_graph_file_edges_list() {
     int col = 0;
     int LetterCount = 0;
     int WordCount = 0;
+    int node1 = 0;
+    int node2 = 0;
     Graph graph;
 
     while (std::cin.get(Ch)) {

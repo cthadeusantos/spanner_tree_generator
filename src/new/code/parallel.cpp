@@ -1114,11 +1114,15 @@ std::vector<int> seeking_induced_cycles_edges_v3(Graph &graph){
 std::vector<int> seeking_induced_cycles_edges_v3r1(Graph &graph){
     int max_cycle_size_SPECIAL;
     int n = graph.get_qty_vertex();
-    if ( num_threads < 7){
-        max_cycle_size_SPECIAL=floor(log2(127 + 1));
-    } else {
-        max_cycle_size_SPECIAL=floor(log2(num_threads + 1));
-    }
+    // BELOW - DEFINE SIZE OF INDUCED CYCLE BASED ON THREADS NUMBERS
+    //if ( num_threads < 7){
+    //    max_cycle_size_SPECIAL=floor(log2(127 + 1));
+    //} else {
+    //    max_cycle_size_SPECIAL=floor(log2(num_threads + 1));
+    //}
+
+    // BELOW - FIXED MAX SIZE OF INDUCED CYCLE TO BE SEARCH
+    max_cycle_size_SPECIAL=7;
     DEBUG std::cerr << "Define induced cycle to size: " << max_cycle_size_SPECIAL << std::endl;
     std::vector<std::vector<int>> select_cycles;    // 
 
