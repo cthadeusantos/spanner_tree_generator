@@ -284,6 +284,7 @@ workspace/ct-WA*
 workspace/ct-BI*
 workspace/ct-ER*
 workspace/ct-BA*
+workspace/ct-bf*
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*
