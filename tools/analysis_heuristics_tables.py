@@ -96,7 +96,7 @@ avg_edges = {}
 for key in key3:
     avg_edges[key] = []
 
-k4=''
+k4 = ''
 for k1 in key1:
     for k2 in key2:
         for k3 in key3:
@@ -182,7 +182,11 @@ if latex:
                 for k3 in key3:
                     deviation = truncate_float(output[k1][k2][k3][k4]["deviation"], 2)
                     avg_diff = truncate_float(output[k1][k2][k3][k4]["avg_diff"], 2)
-                    string = string + "& \\backslashbox[1.4cm]{" + str(avg_diff) + "}" + "{" + str(deviation) + "}"
+                    if deviation != '0.0':
+                        colore2 = "{\\textbf{\\color{red}" + str(deviation) + '}}'
+                    else:
+                        colore2 = str(deviation)
+                    string = string + "& \\backslashbox[1.4cm]{" + str(avg_diff) + "}" + "{" + colore2 + "}"
                 string = string + "\\\ \\hline\n"
             string = string + "\\end{tabular}\n"
             string = string + "\\end{footnotesize}\n"
