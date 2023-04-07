@@ -1,5 +1,25 @@
 # changes
 
+## 0.1.3.6a (2023/03/07)
+
+* All 0.1.3.6 updates
+* Update my analisys tools (not for users)
+* Update sequential yaml to use only 1 thread
+* Analysis tools added, working but waiting for refactoring
+* Old struct zipped, directory removed
+* Add analysis tools for graphs with 10 until 20 vertices
+* Update makefile to compile linux and macOS(not testing)
+
+## 0.1.3.6 (2023/03/20)
+
+* Fixed not defined type var for node1 and node2
+at read_graph_file_edges_list() (forgot after last update)
+* Var max_cycle_size_SPECIAL is defined to be
+8 (max induced cicle to be searched)
+* We comment procedure to define size of
+induced cycle(max_cycle_size_SPECIAL) based
+on threads number thread to be used at future
+
 ## 0.1.3.5 (2023/03/20)
 * Fixed not defined type var for node1 and node2 at read_graph_file_edges_list() (forgot after last update)
 * Var max_cycle_size_SPECIAL is defined to be 8 (max induced cicle to be searched)

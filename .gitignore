@@ -281,6 +281,7 @@ instances/datasets/
 workspace/example-ct*
 workspace/zudio-bf*
 workspace/ct-*
+workspace/images
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*

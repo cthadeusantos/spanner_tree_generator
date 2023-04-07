@@ -36,7 +36,7 @@ for k1 in key1:
                 dictionary[k1][k2][k3][k4] = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
 
-root_dir = '.'
+root_dir = '../workspace'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
