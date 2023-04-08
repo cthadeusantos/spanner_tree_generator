@@ -38,6 +38,8 @@ public:
     int vertice_maior_grau();
     std::vector<int> vertices_de_maior_grau();
 
+    void reset_trees();
+
     // Assing stretch index calculated to stretch_index attribute
     void set_stretch_index(int value);
     // Get stretch index attribute

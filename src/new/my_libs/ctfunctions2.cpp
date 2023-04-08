@@ -34,6 +34,7 @@ int max_vertices = 0;
 int num_graph = 0;
 float probability = 0.45;
 extern int num_threads;
+extern int used_threads;
 
 /// Basic debugging controller. See Debug.h for details.
 /* #ifdef MN_BF_SEQ_DEBUG
@@ -538,6 +539,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "SUM_TREES = " << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME = " << lastExecutionTime <<  std::endl;
         std::cout << "THREADs = " << num_threads <<  std::endl;
+        std::cout << "USED_THREADs = " << used_threads <<  std::endl;
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
@@ -554,6 +556,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
         std::cout << "[THREADS]=" << num_threads <<  std::endl;
+        std::cout << "[USED_THREADS]=" << used_threads <<  std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -567,6 +570,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
+        std::cerr << "[USED_THREADS]=" << used_threads <<  std::endl;
 		if (best){
             std::cerr << "[BEST TREE]" <<  std::endl;
 			int node1 = 0, node2 = 0;

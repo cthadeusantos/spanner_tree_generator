@@ -18,9 +18,10 @@
 sem_t semaforo;
 int total_arv = 0;
 std::mutex mtx;
-int num_threads;
-//int max_induced_cycles;
-//extern std::atomic<bool> processando;
+extern int num_threads;
+extern int used_threads;
+
+extern bool abort_for_timeout;
 
 /**
  * @brief Calculate stretch index using articulations
@@ -66,7 +67,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     int stretch_index = graph.get_stretch_index();
     mtx.unlock();
 
-    while(stretch_index > lower_limit && graph.get_signal())
+    while(stretch_index > lower_limit && graph.get_signal() and !(abort_for_timeout))
     {
         if(v == raiz){
             if(prox_vizinho[v] == end){
@@ -154,7 +155,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int lower_limit = g.grt-1 ;
     mtx.unlock();
 
-    while(stretch_index > lower_limit && g.get_signal() )
+    while(stretch_index > lower_limit && g.get_signal() and !(abort_for_timeout))
     {
         if(v == raiz){
             if(prox_vizinho[v] == end){
@@ -263,7 +264,7 @@ void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_star
     prox_vizinho[v] = start;
 
     if (execute){ // THE MAIN LOOP
-        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()) {
+        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal() and !(abort_for_timeout)) {
             if(v == raiz){
                 if (prox_vizinho[v] == end){
                     break; // Fim do algoritmo
@@ -337,9 +338,9 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
     mtx.lock();
     int lower_limit = graph.grt-1 ; // calculate lower limit
     Graph G1 = graph;   // Auxiliary graph - local graph
-    mtx.unlock();
-
+    G1.reset_trees();
     G1=remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
+    mtx.unlock();
 
     int tamanho=combinacoes[id].size();
     int raiz=edges_to_be_processed[id%tamanho].first;
@@ -359,7 +360,7 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
     prox_vizinho[v] = start;
 
     if (execute){
-        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()) {
+        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()  and !(abort_for_timeout)) {
             if(v == raiz){
                 if (prox_vizinho[v] == end){
                     break; // Fim do algoritmo
@@ -404,12 +405,13 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
             }
         }
     }
-
-    int arvores = G1.get_total_tree();
+    int arvores;    
+    arvores = G1.get_total_tree();
+ 
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    
+
     mtx.lock();
-    graph.sum_trees(G1.get_total_tree());
+    graph.sum_trees(arvores);
     int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
     mtx.unlock();
@@ -445,7 +447,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     }
     if( OpBasic::is_connected(gTeste)){
         if(g.get_stretch_index() > g.grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
-            while(indice[0] < start+2  && g.get_signal()){ //Update by thadeu
+            while(indice[0] < start+2  && g.get_signal() and !(abort_for_timeout)){ //Update by thadeu
                 if( indice[j]/2 > m-(n-1-j) ){
                     --j;
                     tree.remove_aresta(edges[indice[j]],edges[indice[j]+1]);
@@ -510,13 +512,14 @@ void create_threads(Graph& g)
     }
 
     DEBUG std::cerr << "Threads to be used: " << qtd << std::endl;
+    used_threads = qtd;
 
-    for(int i=0; i < qtd; ++i){
+    for(int i=0; i < used_threads; ++i){
         vetor_th[i] = std::thread(find_index_parallel, std::ref(g), raiz, id, id+1, i);
-        id = next(id, qtd);
+        id = next(id, used_threads);
     }
 
-    for(int i=0; i < qtd; ++i){
+    for(int i=0; i < used_threads; ++i){
         vetor_th[i].join();
     }
 }
@@ -538,8 +541,9 @@ void create_threads_edge_max_degree(Graph& g)
     std::vector<int> edges = OpBasic::edges_by_bigger_degree(g);
     
     DEBUG std::cerr << "Threads to be used: " << qtd_th << std::endl;
+    used_threads = qtd_th;
 
-    for(int i=0; i < qtd_th; ++i){
+    for(int i=0; i < used_threads; ++i){
         vetor_th[i] = std::thread(find_index_pararell_edge, std::ref(g), edges, i*2, i); // separação dos threats
     }
 
@@ -779,7 +783,90 @@ void create_threads_induced_cycle_method_3(Graph& g) {
             vetor_th[j].join();
         }
     }
+}
 
+/**
+ * @brief Create threads to calculate stretch index for induced cycles (method 3)
+ * @details Create threads to calculate the stretch index using induced cycles found(if exists)
+ * @details Create threads from combinations (n,1) until (n,n)
+ * @author Carlos Thadeu
+ * @param g a graph that represents the graph
+ */
+void create_threads_induced_cycle_method_3v2(Graph& g) {
+    int qty = -1;
+    int root = -1;
+    int neighbor = -1;
+    int n;
+    std::vector<int> edges_list = {};
+
+    // Calcula atributo grt
+    // por enquanto fica aqui, no futuro retirar 
+    // pois o método create_thread nao é para calcular nada do grafo
+    //OpBasic op; // by thadeu
+    //g.grt = op.maxLowerCicle(g); // by thadeu
+    // fim calcula grt
+
+    DEBUG std::cerr << "Searching for induced cycles using method 3!"  << std::endl;
+    edges_list = seeking_induced_cycles_edges_v3r1(g);
+
+    std::vector<std::pair<int,int>> edges_to_be_processed = make_edges_list(edges_list);
+    DEBUG std::cerr << "Pre-processing edges!"  << std::endl;
+    
+    edges_to_be_processed=detect_valid_edges(edges_to_be_processed, g);
+
+    int r;   // Generate the combinations
+    std::vector<std::vector<int>> combinacoes;
+    n=edges_to_be_processed.size();
+    for (int i=n; i > 0; i--){
+        std::vector<std::vector<int>> edges_to_remove = combinatorics(n, i);
+        for (int j=0; j < edges_to_remove.size(); j++){
+            combinacoes.push_back(edges_to_remove[j]);
+        }
+    }   // End of generate the combinations
+
+    qty = combinacoes.size();
+
+    DEBUG std::cerr << "Edges numbers to use!" << qty << std::endl;
+
+    //if (qty > num_threads)
+    //    qty = num_threads;
+            
+    DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+
+    int threads=0;
+    int block=1;
+    int chunk;
+    if (num_threads >= qty){
+        used_threads = qty;
+    } else if (num_threads < qty){
+        used_threads = num_threads;
+        block=floor(qty / num_threads);
+    }
+    chunk = qty - num_threads * block;
+    DEBUG std::cerr << "Threads to allocated: " << used_threads << std::endl;
+    std::thread vetor_th[used_threads];
+
+    for(int i = 0; i < block; ++i){
+        for (int j = 0; j < used_threads; j++){
+            int index = i * used_threads + j;
+            vetor_th[j] = std::thread(find_index_induced_cycle_method_2, index, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(g));
+        }
+        sem_wait(&semaforo);
+        for(int j = 0; j < used_threads; ++j){
+            vetor_th[j].join();
+        }
+    }
+
+        if (qty % used_threads){
+        for (int j = 0; j < chunk; j++){
+            int index = block * used_threads + j;
+            vetor_th[j] = std::thread(find_index_induced_cycle_method_2, index, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(g));
+        }
+        sem_wait(&semaforo);
+        for(int j = 0; j < chunk; ++j){
+            vetor_th[j].join();
+        }
+    }
 }
 
 Graph remove_edges_cycle_M2(std::vector<int> combinations, std::vector<std::pair<int, int>> edges, Graph graph){
@@ -814,7 +901,7 @@ void create_threads_articulations(Graph& g) {
 
     int qtd = subgraph.size();
     DEBUG std::cerr << "Articulacoes detectadas: " << qtd << std::endl;
-    
+    used_threads = qtd + 1;
     std::thread vetor_th[qtd];
 
     int id = 0;
@@ -1153,6 +1240,7 @@ std::vector<int> seeking_induced_cycles_edges_v3r1(Graph &graph){
 
     // TO DO
     // TO DO - Make a better choice from select_cycles
+    // TO DO - Needs improve cycle choice HERE
     // TO DO
 
     // Until make a better choice, select the first vector
@@ -1321,7 +1409,7 @@ void search_for_induced_cycles_for_M2_revision1(int seek, int root, int cycle_si
 
 
 /*
-    SEARCH FOR ONE CYCLE
+    SEARCH FOR ONE CYCLE - LIKE ADVISORS SUGGEST for that time
 */
 void search_for_induced_cycles_for_M2_revision1_only_one(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph){
     int initial_max_cycle=cycle_size;

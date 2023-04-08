@@ -1,5 +1,9 @@
 # changes
 
+## 0.1.3.7 (2023/03/08)
+* Added parameter (-rt | --running_time) to stop execution after X miliseconds (all applications)
+* Class Watchdog added
+
 ## 0.1.3.6a (2023/03/07)
 
 * All 0.1.3.6 updates
