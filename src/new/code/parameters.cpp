@@ -22,6 +22,7 @@ void Parameters::usage(const char* app_name){
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
+	std::cout << "\t-rt X| --running_time X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
 	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
 	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
 	std::cout << "\t     | --nolb   \t\tNot calculate lower bound (only heuristics)" << std::endl  << std::endl ;
@@ -55,6 +56,10 @@ void Parameters::parseArgs(int argc, char** argv){
 		else if(arg == "-t" || arg == "--thread"){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
+		}
+		else if(arg == "-rt" || arg == "--running_time"){
+			running_time = std::atoi(argv[++i]);
+			DEBUG std::cerr << "Changed running time to: " << running_time << '\n';
 		}
 		else if(arg == "--adjacency"){
 			matrix_t = 0;

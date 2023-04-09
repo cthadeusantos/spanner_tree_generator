@@ -1,13 +1,22 @@
 # Python program to
 # calculate average and deviation
 # for t-admissibility
-# sum_edges not work
+# and BUILD LATEX TABLES FROM result_summary.txt in directories ct-WA
+
+
 import math
 import os
+
 
 # Python program to get average of a list
 def average(lst):
     return sum(lst) / len(lst)
+
+
+def truncate_float(num, digits):
+    l = str(float(num)).split('.')
+    digits = min(len(l[1]), digits)
+    return l[0] + '.' + l[1][:digits]
 
 FINISH = 8 # data at line from instance [ 0(instance) ... 8(threads) ]
 
@@ -27,7 +36,7 @@ for k1 in key1:
                 dictionary[k1][k2][k3][k4] = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
 
-root_dir = '.'
+root_dir = '../workspace'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
@@ -87,6 +96,7 @@ avg_edges = {}
 for key in key3:
     avg_edges[key] = []
 
+k4=''
 for k1 in key1:
     for k2 in key2:
         for k3 in key3:
@@ -130,11 +140,64 @@ for k1 in key1:
 
                 output[k1][k2][k3][k4] = {'v': sum(dictionary[k1][k2][k3][k4]['v'])/size, 'e': avg_edges[k3], 'avg_diff': media, 'deviation': desvio_padrao, 't': [], 'lb': lb,  's': []}
 
+<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
 latex= False
+========
+latex = True
+
+
+# LATEX TABLE MODEL - EXIT
+
+#\begin{table}[H]
+#\begin{footnotesize}
+#\caption{\label{table:H4v2}H4v2 - ESCREVA O QUE QUISER AQUI }
+#\hspace{-2.2cm}\small\begin{tabular}{|l|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|}\hline\\diagbox{Class}{$n$ \\ $Av(m)$}
+# & 100 1.9k & 200 7.6k & 300 17.2k & 400 30.6k & 500 47.8k & 600 68.8k & 700 93.7k & 800 122.3k & 900 154.9k & 1000 191.2k\\ \hline
+#"\textrm{barabasi}& \backslashbox[1.4cm]{1.9}{0.3}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}\\ \hline"
+#\textrm{erdos}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}\\ \hline
+#\textrm{watts}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}\\ \hline
+#\textrm{bipartite}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}& \backslashbox[1.4cm]{2.0}{0.0}\\ \hline
+#\end{tabular}
+#\end{footnotesize}
+#\end{table}
+>>>>>>>> main:tools/analysis_quality_heuristics.py
 
 if latex:
-    pass
+    # Build latex table and save at file
+    for k2 in key2:
+        for k1 in key1:
+            string = "\\begin{table}[H]\n\\begin{footnotesize}\caption{\label{table:"
+            MyTuple = (string, k2, k1, "}", k2, " ", str(k1), " threads", "}\n")
+            string = "".join(MyTuple)
+            string1 = "\\hspace{-2.2cm}\\small\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Class}{$n$ \\\ $Av(m)$}\n"
+            MyTuple = (string, string1)
+            string = ''.join(MyTuple)
+            for index, k3 in enumerate(key3):
+                # k4 is the last graph name from k4 (WARNING! PAY ATTENTION IF YOU CHANGE ANYTHING)
+                # it is only reference to get average edges in any graphs
+                # they are the same in all graphs
+                value = truncate_float(output[k1][k2][k3][k4]["e"] / 1000, 1)
+                value2 = truncate_float(k3, 1)
+                string = string + "&" + " " + str(value2) + " " + str(value) +"k"
+            string = string + "\\\ \\hline\n"
+
+            for k4 in key4:
+                string = string + "\n\\textrm{" + k4 + "}"
+                for k3 in key3:
+                    deviation = truncate_float(output[k1][k2][k3][k4]["deviation"], 2)
+                    avg_diff = truncate_float(output[k1][k2][k3][k4]["avg_diff"], 2)
+                    string = string + "& \\backslashbox[1.4cm]{" + str(avg_diff) + "}" + "{" + str(deviation) + "}"
+                string = string + "\\\ \\hline\n"
+            string = string + "\\end{tabular}\n"
+            string = string + "\\end{footnotesize}\n"
+            string = string + "\\end{table}\n"
+            DIR = "../no_commit/tables/"
+            filename = DIR + "table" + k2 + "_" + k1 + ".tex"
+            text_file = open(filename, "w")
+            text_file.write(string)
+            text_file.close()
 else:
+    # Build at screen summary about graphs
     for k2 in key2:
         for k1 in key1:
             print(k2, k1,)
@@ -161,6 +224,7 @@ else:
                     print(f'{output[k1][k2][k3][k4]["avg_diff"]: >8.2f}', end=" ")
                 print()
             print('\n')
+<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
 
 
 #
@@ -184,3 +248,5 @@ else:
 #                     for vertex in keys_vertices:
 #                         print(f'{graphs[graph][solution][vertex]["diff"]: >6.2f}', end=" ")
 #                     print()
+========
+>>>>>>>> main:tools/analysis_quality_heuristics.py

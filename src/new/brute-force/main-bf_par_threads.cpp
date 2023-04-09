@@ -28,39 +28,14 @@
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
-
-///Basic debugging controller. See Debug.h for details.
-/* #ifdef MN_BF_SEQ_DEBUG
-	#define DEBUG
-#else
-	#define DEBUG while(false)
-#endif */
-
-//#include <atomic>
-//std::atomic<bool> processando(true);
-
-extern sem_t semaforo;
-extern int index_global;
-//extern Graph tree_global;
-
-/**
- * @addtogroup bfseqparam
- * Available globally on the main_BF-PAR.cpp file scope.
- * @{
- */
-///The seed only exists because of external tools. The algorithm itself is deterministic.
-int seed = 0;
-extern int num_threads;
-
-
-int output = 0;
-bool best = false;
-int matrix_t=0;
-bool nolb = false;
+#include "../code/watchdog.hpp"
+#include "../code/initial_settings.hpp"
 
 /// @brief  The main method
 int main(int argc, char** argv){
-	num_threads = 1;
+	MyWatchdogTimer wdt;
+
+	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
 		Parameters::usage("--help");
@@ -98,7 +73,14 @@ int main(int argc, char** argv){
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
 	run_name = "EDGE_PARALLELISM";
-	create_threads(graph);
+	if (running_time > 0){
+        wdt.kick(running_time);
+        create_threads(graph);
+        wdt.stop();
+    } else {
+        create_threads(graph);
+    }
+	
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

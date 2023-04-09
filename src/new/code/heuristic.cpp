@@ -1005,7 +1005,7 @@ std::vector <int> Heuristic::breadth_criterion(Graph &graph, std::queue <int> &F
  * @author Carlos Thadeu
  */
 void Heuristic::set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph){
-    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+    if(index_local < graph.get_stretch_index() && index_local != 1) {
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
         if (index_local==graph.grt - 1){

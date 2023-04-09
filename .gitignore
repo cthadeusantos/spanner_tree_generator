@@ -274,17 +274,14 @@ documents/doxygen/latex/
 !documents/doxygen/Doxyfile
 !documents/source-doc.html
 
-my_python_tools/.idea/*
+__pycache__
+.idea
 no_commit/
 instances/datasets/
 workspace/example-ct*
 workspace/zudio-bf*
-workspace/ct-ER*
-workspace/ct-WA*
-workspace/ct-BI*
-workspace/ct-ER*
-workspace/ct-BA*
-workspace/ct-bf*
+workspace/ct-*
+workspace/images
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*

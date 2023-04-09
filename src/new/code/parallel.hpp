@@ -12,6 +12,7 @@ void create_threads(Graph& g);
 //void create_threads_induced_cycle_method_1(Graph &g);
 //void create_threads_induced_cycle_method_2(Graph &g);
 void create_threads_induced_cycle_method_3(Graph &g);
+void create_threads_induced_cycle_method_3v2(Graph &g);
 void create_threads_articulations(Graph &g);
 void create_threads_edge_max_degree(Graph &g);
 

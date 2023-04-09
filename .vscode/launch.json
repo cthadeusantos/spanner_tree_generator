@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/examples/G9_paper_pag4.in"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_14.txt"],
             "default": "${workspaceFolder}/instances/grafos/grafo_19.txt"
         }
     ],
@@ -38,36 +38,12 @@
                 }
             ]
         },
-        //{
-        //    "name": "[GDB] app_MAIN < debug.in",
-        //    "type": "cppdbg",
-        //    "request": "launch",
-        //    "program": "${workspaceFolder}/build/debug/app_MAIN",
-        //    "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-r", "4", "-c", "10", "-t", "64", "--debug", "--file" ],
-        //    "stopAtEntry": false,
-        //    "cwd": "${fileDirname}",
-        //    "environment": [],
-        //    "externalConsole": false,
-        //    "MIMode": "gdb",
-        //    "setupCommands": [
-        //        {
-        //            "description": "Enable pretty-printing for gdb",
-        //            "text": "-enable-pretty-printing",
-        //            "ignoreFailures": true
-        //        },
-        //        {
-        //            "description":  "Set Disassembly Flavor to Intel",
-        //            "text": "-gdb-set disassembly-flavor intel",
-        //            "ignoreFailures": true
-        //        }
-        //    ]
-        //},
         {
             "name": "[GDB] app_BF_SEQ < debug.in",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-SEQ",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "1"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -91,7 +67,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-PAR",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "64", "--debug", "--file" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -134,30 +110,6 @@
                 }
             ]
         },
-        //{
-        //    "name": "[GDB] app_BF_CYCLES_M1 < debug.in",
-        //    "type": "cppdbg",
-        //    "request": "launch",
-        //    "program": "${workspaceFolder}/build/debug/app_BF-CYCLES_M1",
-        //    "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "64", "--debug", "--file" ],
-        //    "stopAtEntry": false,
-        //    "cwd": "${fileDirname}",
-        //    "environment": [],
-        //    "externalConsole": false,
-        //    "MIMode": "gdb",
-        //    "setupCommands": [
-        //        {
-        //            "description": "Enable pretty-printing for gdb",
-        //            "text": "-enable-pretty-printing",
-        //            "ignoreFailures": true
-        //        },
-        //        {
-        //            "description":  "Set Disassembly Flavor to Intel",
-        //            "text": "-gdb-set disassembly-flavor intel",
-        //            "ignoreFailures": true
-        //        }
-        //    ]
-        //},
         {
             "name": "[GDB] app_BF_CYCLES_M2 < debug.in",
             "type": "cppdbg",
@@ -187,7 +139,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-CYCLES_M3",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "4", "--debug", "--file" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "-rt", "30000", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -206,30 +158,6 @@
                 }
             ]
         },
-        //{
-        //    "name": "[GDB] app_BF_ARTICULATION < debug.in",
-        //    "type": "cppdbg",
-        //    "request": "launch",
-        //    "program": "${workspaceFolder}/build/debug/app_BF-ARTICULATION",
-        //    "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "--debug", "--file" ],
-        //    "stopAtEntry": false,
-        //    "cwd": "${fileDirname}",
-        //    "environment": [],
-        //    "externalConsole": false,
-        //    "MIMode": "gdb",
-        //    "setupCommands": [
-        //        {
-        //            "description": "Enable pretty-printing for gdb",
-        //            "text": "-enable-pretty-printing",
-        //            "ignoreFailures": true
-        //        },
-        //        {
-        //            "description":  "Set Disassembly Flavor to Intel",
-        //            "text": "-gdb-set disassembly-flavor intel",
-        //            "ignoreFailures": true
-        //        }
-        //    ]
-        //},
         {
             "name": "[GDB] app_HR-ALL < debug.in",
             "type": "cppdbg",

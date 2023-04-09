@@ -34,6 +34,8 @@
 #include "code/opBasic.hpp"
 #include "code/stretch.hpp"
 #include "code/centrality.hpp"
+#include "code/watchdog.hpp"
+#include "code/initial_settings.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
 /* #ifdef MN_BF_SEQ_DEBUG
@@ -45,8 +47,8 @@
 //#include <atomic>
 //std::atomic<bool> processando(true);
 
-extern sem_t semaforo;
-extern int index_global;
+//extern sem_t semaforo;
+//extern int index_global;
 //extern Graph tree_global;
 
 /**
@@ -55,12 +57,13 @@ extern int index_global;
  * @{
  */
 ///The seed only exists because of external tools. The algorithm itself is deterministic.
-int seed = 0;
-extern int num_threads;
-int output = 0;
-bool best = false;
-int matrix_t=0;
-bool nolb = false;
+// int seed = 0;
+// extern int num_threads;
+// int output = 0;
+// bool best = false;
+// int matrix_t=0;
+// bool nolb = false;
+// float running_time = 0;
 
 /**
  * @brief Auxiliary function to show application usage instruction at terminal.
@@ -144,7 +147,7 @@ void parseArgs(int argc, char** argv){
 
 /// @brief  The main method
 int main(int argc, char** argv){
-	num_threads = 1;
+	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
 		usage("--help");
