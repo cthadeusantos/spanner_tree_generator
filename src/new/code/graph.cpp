@@ -467,6 +467,11 @@ void Graph::reset_trees()
     this->total_tree = 0;
 }
 
+void Graph::reset_trees(int value)
+{
+    this->total_tree = value;
+}
+
 int Graph::get_qty_vertex()
 {
     return this->qtdVertices;

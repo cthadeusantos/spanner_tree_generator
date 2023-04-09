@@ -112,7 +112,13 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     }
 
     mtx.lock();
+    int arvores;
+    arvores = arv;
 
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
     mtx.unlock();
@@ -206,8 +212,14 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     }
 
     mtx.lock();
+    int arvores;
+    arvores = arv;
 
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
+    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
 
     mtx.unlock();
@@ -313,7 +325,13 @@ void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_star
         }
     }
 
-    int arvores = G1.get_total_tree();
+    int arvores;
+    arvores = G1.get_total_tree();
+
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     
     mtx.lock();
@@ -341,7 +359,7 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
     int lower_limit = graph.grt-1 ; // calculate lower limit
     Graph G1 = graph;   // Auxiliary graph - local graph
     G1.reset_trees();
-    G1=remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
+    G1 = remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
     mtx.unlock();
 
     int tamanho=combinacoes[id].size();
@@ -386,18 +404,19 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
                         if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                             mtx.lock();
                             int f = find_factor(graph, tree);
-                            mtx.unlock();
                             G1.add_tree();
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
                                 if(index_local == lower_limit){// alteracao LF
+                                    graph.set_signal();
                                     break; // alteracao LF
                                 }// alteracao LF
                                 /* if(index_local == G1.grt - 1){
                                     break;
                                 } */
                             }
+                            mtx.unlock();
                         } else {
                             v = G1.next_vertex(v);
                             continue;
@@ -408,8 +427,15 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
             }
         }
     }
-    int arvores;    
+
+    int arvores;
     arvores = G1.get_total_tree();
+
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+        G1.reset_trees(arvores);
+    }
  
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
 
@@ -489,7 +515,14 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     }
     
     mtx.lock();
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+    int arvores;
+    arvores =arv;
+
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
+    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
     mtx.unlock();
     sem_post(&semaforo);
