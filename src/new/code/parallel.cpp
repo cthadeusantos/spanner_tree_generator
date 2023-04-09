@@ -112,7 +112,13 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     }
 
     mtx.lock();
+    int arvores;
+    arvores = arv;
 
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
     mtx.unlock();
@@ -206,8 +212,14 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     }
 
     mtx.lock();
+    int arvores;
+    arvores = arv;
 
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
+    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
 
     mtx.unlock();
@@ -503,7 +515,14 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     }
     
     mtx.lock();
-    DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
+    int arvores;
+    arvores =arv;
+
+    if (index_local == (int)INFINITY){
+        index_local = 1;
+        arvores = 0;
+    }
+    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
     mtx.unlock();
     sem_post(&semaforo);
