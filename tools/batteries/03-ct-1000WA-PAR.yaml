@@ -1,0 +1,41 @@
+---                               
+
+name: ct-WA1000-PAR
+problem: tadmiss                   
+description: Running BRUTE FORCE PARALLEL
+exec: release/app_BF-PAR
+default_timelimit: 7200
+default_iterations: 1
+instance_list:
+- instance: grafos_watts/gws_1000_400_30__1000_200000_0.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_1.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_2.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_3.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_4.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_5.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_6.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_7.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_8.txt
+  args: -t 64 -s -rt 3600000
+
+- instance: grafos_watts/gws_1000_400_30__1000_200000_9.txt
+  args: -t 64 -s -rt 3600000
+
+
+...                               
