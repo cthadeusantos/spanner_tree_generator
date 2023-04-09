@@ -38,7 +38,6 @@ public:
     int vertice_maior_grau();
     std::vector<int> vertices_de_maior_grau();
 
-    void reset_trees();
 
     // Assing stretch index calculated to stretch_index attribute
     void set_stretch_index(int value);
@@ -68,9 +67,13 @@ public:
     void show_best_tree();
     std::vector<int> induced_cycle(Graph &g, int n);
     bool has_chord(Graph &g, std::vector<int> x);
+
     void add_tree();
     void sum_trees(int value);
+    void reset_trees();
+    void reset_trees(int value);
     int get_total_tree();
+
     int get_qty_vertex();
     int neighbor_index(int vertex, int neighbor);
     int eccentricity(Graph &graph, int vertex);
