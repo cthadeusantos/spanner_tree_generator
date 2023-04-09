@@ -140,6 +140,9 @@ for k1 in key1:
 
                 output[k1][k2][k3][k4] = {'v': sum(dictionary[k1][k2][k3][k4]['v'])/size, 'e': avg_edges[k3], 'avg_diff': media, 'deviation': desvio_padrao, 't': [], 'lb': lb,  's': []}
 
+<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
+latex= False
+========
 latex = True
 
 
@@ -157,6 +160,7 @@ latex = True
 #\end{tabular}
 #\end{footnotesize}
 #\end{table}
+>>>>>>>> main:tools/analysis_quality_heuristics.py
 
 if latex:
     # Build latex table and save at file
@@ -220,3 +224,29 @@ else:
                     print(f'{output[k1][k2][k3][k4]["avg_diff"]: >8.2f}', end=" ")
                 print()
             print('\n')
+<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
+
+
+#
+#             for solution in keys_solutions:
+#                 print()
+#                 print(f'{solution:^100}')
+#                 print(f'{"         ":10}', f'{"n":^10}', end=" ")
+#                 for vertex in keys_vertices:
+#                     print(f'{vertex: >6}', end=" ")
+#                 print()
+#                 print(f'{"         ":10}', f'{"Av(m)":^10}', end=" ")
+#                 for vertex in keys_vertices:
+#                     print(f'{avg_graphs[solution][vertex]: >5.1f}k', end=" ")
+#                 print()
+#                 for graph in keys_graphs:
+#                     print(f'{graph:10}', f'{"Deviation":10}', end=" ")
+#                     for vertex in keys_vertices:
+#                         print(f'{graphs[graph][solution][vertex]["deviation"]: >6.2f}', end=" ")
+#                     print()
+#                     print(f'{"          ":10}', f'{"Average":10}', end=" ")
+#                     for vertex in keys_vertices:
+#                         print(f'{graphs[graph][solution][vertex]["diff"]: >6.2f}', end=" ")
+#                     print()
+========
+>>>>>>>> main:tools/analysis_quality_heuristics.py

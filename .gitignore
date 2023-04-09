@@ -280,16 +280,8 @@ no_commit/
 instances/datasets/
 workspace/example-ct*
 workspace/zudio-bf*
-<<<<<<< HEAD
-workspace/ct-ER*
-workspace/ct-WA*
-workspace/ct-BI*
-workspace/ct-ER*
-workspace/ct-BA*
-workspace/ct-bf*
-=======
 workspace/ct-*
->>>>>>> main
+workspace/images
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*

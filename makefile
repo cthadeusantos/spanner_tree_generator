@@ -1,6 +1,16 @@
 #Main build setup of the project. 
 #It is extended by ´run.mk` in each component directory. See those files for run examples.
 
+# HIL: No spaces or comments after otherwise it captures them!
+# Determine the platform
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
+	CXX := clang++ -arch x86_64
+else
+	CXX := g++
+endif
+
 #--Configuration--
 .DEFAULT_GOAL := build
 

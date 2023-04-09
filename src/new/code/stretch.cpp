@@ -10,12 +10,36 @@
 #include "../Debug.h"
 
 
+
+//extern float running_time;
+extern bool abort_for_timeout;
+//bool abort_for_timeout = false;
+
+// class MyWatchdogTimer : public WatchdogTimer
+// {
+// public:
+//   virtual void on_timeout()
+//   {
+//     // To do when your dog is bark.
+//     abort_for_timeout = true;
+//   }
+// };
+
 /*************************************************************************************************
 Faziam parte do arquivo sequential_functions.cpp
 **************************************************************************************************/
 void Stretch::sequential(Graph& graph){
-	//Stretch acme; // Lonney Tunes rocks!
-	find_index(graph);
+	// MyWatchdogTimer wdt;
+
+	// //Stretch acme; // Lonney Tunes rocks!
+    // if (running_time > 0){
+    //     wdt.kick(running_time);
+    //     find_index(graph);
+    //     wdt.stop();
+    // } else {
+    //     find_index(graph);
+    // }
+    find_index(graph);
 }
 
 /**
@@ -46,7 +70,7 @@ void Stretch::find_index(Graph& g)
         ult_colocado[i] = -1;
     }
 
-    while( v >= 0 ){
+    while( v >= 0 and !(abort_for_timeout)){
         if( prox_vizinho[v] == g.grau(v) ){
             prox_vizinho[v] = 0;
             --v;
@@ -255,7 +279,7 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
-    if (factor < 2) factor = (int)INFINITY; // by Thadeu
+    //if (factor < 2) factor = (int)INFINITY; // by Thadeu REMOVIDA PQ STRETCH INDEX AGORA DEFAULT=1
     g.set_stretch_index(factor);    // Insert by Thadeu
     g.set_best_tree(tree);          // Insert by Thadeu
     return factor;
