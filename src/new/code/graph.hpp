@@ -14,7 +14,7 @@ private:
     std::vector< std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
-    int stretch_index = (int)INFINITY; // by Thadeu
+    int stretch_index = 1; // by Thadeu
     int total_tree = 0; // by Thadeu
     bool signal=true;
   

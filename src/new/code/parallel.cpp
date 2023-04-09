@@ -67,7 +67,8 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     int stretch_index = graph.get_stretch_index();
     mtx.unlock();
 
-    while(stretch_index > lower_limit && graph.get_signal() and !(abort_for_timeout))
+    //while((stretch_index > lower_limit || stretch_index == 1) && graph.get_signal() and !(abort_for_timeout))
+    while(graph.get_signal() and !(abort_for_timeout))
     {
         if(v == raiz){
             if(prox_vizinho[v] == end){
@@ -155,7 +156,8 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int lower_limit = g.grt-1 ;
     mtx.unlock();
 
-    while(stretch_index > lower_limit && g.get_signal() and !(abort_for_timeout))
+    //while((stretch_index > lower_limit || stretch_index == 1) && g.get_signal() && !(abort_for_timeout))
+    while(g.get_signal() && !(abort_for_timeout))
     {
         if(v == raiz){
             if(prox_vizinho[v] == end){
@@ -264,7 +266,7 @@ void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_star
     prox_vizinho[v] = start;
 
     if (execute){ // THE MAIN LOOP
-        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal() and !(abort_for_timeout)) {
+        while((G1.get_stretch_index() > graph.grt - 1 || G1.get_stretch_index() ==1) && graph.get_signal() and !(abort_for_timeout)) {
             if(v == raiz){
                 if (prox_vizinho[v] == end){
                     break; // Fim do algoritmo
@@ -360,7 +362,8 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
     prox_vizinho[v] = start;
 
     if (execute){
-        while(G1.get_stretch_index() > graph.grt - 1 && graph.get_signal()  and !(abort_for_timeout)) {
+        //while((G1.get_stretch_index() > graph.grt - 1 || G1.get_stretch_index() ==1) && graph.get_signal()  and !(abort_for_timeout)) {
+        while(graph.get_signal()  and !(abort_for_timeout)) {
             if(v == raiz){
                 if (prox_vizinho[v] == end){
                     break; // Fim do algoritmo
@@ -446,7 +449,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
         gTeste.add_aresta(edges[i], edges[i+1]);
     }
     if( OpBasic::is_connected(gTeste)){
-        if(g.get_stretch_index() > g.grt-1) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
+        if((g.get_stretch_index() > g.grt-1 || g.get_stretch_index()==1)) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
             while(indice[0] < start+2  && g.get_signal() and !(abort_for_timeout)){ //Update by thadeu
                 if( indice[j]/2 > m-(n-1-j) ){
                     --j;
@@ -983,7 +986,7 @@ int vertice_maior_grau(Graph& g)
  * @author Carlos Thadeu
  */
 void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph){
-    if(index_local < graph.get_stretch_index() && index_local != (int)INFINITY) {
+    if((index_local < graph.get_stretch_index() && index_local != 1) || graph.get_stretch_index()==1) {
         total_arv += arv;
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);

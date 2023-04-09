@@ -515,19 +515,11 @@ int create_new_graphs(){
  */
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph){
     	// OUTPUT - nothing - screen - file - debug
-	
-
-/*     if (lower_limit < 2)
-        lower_limit = (int)INFINITY; */
 
     if (lower_limit == (int)INFINITY)
         lower_limit = 1;
 
     int stretch_index = graph.get_stretch_index();
-/*     if (stretch_index < 2)
-        stretch_index = (int)INFINITY; */
-    if (stretch_index == (int)INFINITY)
-        stretch_index = 1;
 
     if ((output & 1)==1){	// TO SCREEN
 		std::cout << "INSTANCE = " << filename << std::endl;
