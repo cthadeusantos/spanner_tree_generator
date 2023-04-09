@@ -5,6 +5,7 @@ extern int output;
 extern int matrix_t;
 extern bool best;
 extern bool nolb;
+extern float running_time;
 
 class Parameters
 {

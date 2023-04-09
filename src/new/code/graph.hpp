@@ -14,7 +14,7 @@ private:
     std::vector< std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
-    int stretch_index = (int)INFINITY; // by Thadeu
+    int stretch_index = 1; // by Thadeu
     int total_tree = 0; // by Thadeu
     bool signal=true;
   
@@ -37,6 +37,8 @@ public:
     int maior_grau();
     int vertice_maior_grau();
     std::vector<int> vertices_de_maior_grau();
+
+    void reset_trees();
 
     // Assing stretch index calculated to stretch_index attribute
     void set_stretch_index(int value);
