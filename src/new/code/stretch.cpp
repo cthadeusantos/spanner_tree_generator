@@ -2,6 +2,7 @@
 #include "opBasic.hpp"
 #include "genGraph.hpp"
 //#include "frontier.hpp"
+#include "graph.hpp"
 
 #include <tuple>
 #include <iostream>
@@ -9,6 +10,7 @@
 
 #include "../Debug.h"
 
+extern bool noindex;
 
 
 //extern float running_time;
@@ -60,10 +62,11 @@ void Stretch::find_index(Graph& g)
     //index = INF_VALUE;
     index = (int)INFINITY;
 
-    OpBasic op; // alteracao LF
+    //OpBasic op; // alteracao LF
 
     Graph tree(g.getQtdVertices());
-    grt = op.maxLowerCicle(g); // alteração DJ
+    //grt = op.maxLowerCicle(g); // alteração DJ
+    grt = g.get_grt();
 
     for(int i=0; i < g.getQtdVertices(); ++i){
         prox_vizinho[i] = 0;
@@ -86,7 +89,9 @@ void Stretch::find_index(Graph& g)
                 ult_colocado[v] = u;
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                        int f = find_factor(g, tree);
+                        int f=1;
+                        if (!noindex)
+                            f = find_factor(g, tree);
                         ++arv;
                         //g.sum_tree();
                         g.add_tree();
@@ -140,7 +145,9 @@ void Stretch::find_index_edge(Graph& g)
             tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
             if( !OpBasic::is_cyclic(tree) ){
                 if(j == n-2){ // achou uma arvore geradora
-                    int f = find_factor(g, tree);
+                    int f=1;
+                    if (!noindex)
+                        f = find_factor(g, tree);
                     ++arv;
                     if(f < index){
                         index = f;
@@ -207,7 +214,9 @@ void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
                 ult_colocado[v] = u;
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
-                        int f = Stretch::find_factor(g, tree);
+                        int f=1;
+                        if (!noindex)
+                            f = Stretch::find_factor(g, tree);
                         // ++arv;
                         if(f < index){
                             //mtx.lock(); // LOCK
@@ -308,4 +317,77 @@ void Stretch::find_index_cycle(Graph& g, int m)
 int Stretch::lowerBound(Graph& g)
 {
     return OpBasic::maxLowerCicle(g) - 1;
+}
+
+/**
+ * @details Find a stretch index from a graph.
+ * Returns a integer that represents a stretch index.
+ * That's the main method, the sequential t-admissibility algorithm.
+ * @param g a graph instance that represents a graph.
+ * @return a integer the graph contains a cycle.
+ */
+int Stretch::find_index(Graph &original, Graph &change)
+{
+    Graph G2=original;
+    int prox_vizinho[change.getQtdVertices()];
+    int ult_colocado[change.getQtdVertices()];
+    int v = 0;
+    int u;
+    int arv = 0;
+    int grt;
+    //index = INF_VALUE;
+    index = (int)INFINITY;
+
+    OpBasic op; // alteracao LF
+
+    Graph tree(change.getQtdVertices());
+    grt = op.maxLowerCicle(change); // alteração DJ
+
+    for(int i=0; i < change.getQtdVertices(); ++i){
+        prox_vizinho[i] = 0;
+        ult_colocado[i] = -1;
+    }
+
+    while( v >= 0 and !(abort_for_timeout)){
+        if( prox_vizinho[v] == change.grau(v) ){
+            prox_vizinho[v] = 0;
+            --v;
+            if(v < 0) break; // acaba o algoritmo
+            tree.remove_aresta(v, ult_colocado[v]);
+            ult_colocado[v] = -1;
+
+        }else{
+            u = change.adjList(v)[prox_vizinho[v]];
+            ++prox_vizinho[v];
+            if( not tree.possui_aresta(v, u) ){
+                tree.add_aresta(v, u);
+                ult_colocado[v] = u;
+                if(not OpBasic::is_cyclic(tree)){
+                    if(tree.getQtdArestas() == tree.getQtdVertices()-1){
+                        int f=1;
+                        if (!noindex)
+                            f = find_factor(G2, tree);
+                        ++arv;
+                        //g.sum_tree();
+                        change.add_tree();
+                        if(f < index){
+                            index = f;
+                            this->tree = tree;
+                            if(index == G2.grt - 1){// alteracao LF
+                              break;// alteracao LF
+                            }// alteracao LF
+                        }
+                    }else{
+                        ++v;
+                        continue;
+                    }
+                }
+                tree.remove_aresta(v, u);
+            }
+        }
+    }
+    this->total_arv = arv;
+    change.set_stretch_index(index);
+    change.set_best_tree(tree);
+    return index;
 }

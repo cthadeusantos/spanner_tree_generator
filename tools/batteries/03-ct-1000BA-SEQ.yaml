@@ -1,0 +1,41 @@
+---                               
+
+name: ct-BA1000-SEQ
+problem: tadmiss                   
+description: Running BRUTE FORCE SEQUENTIAL
+exec: release/app_BF-SEQ
+default_timelimit: 7200
+default_iterations: 1
+instance_list:
+- instance: grafos_barabasi/gba_1000_400__1000_240000_0.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb 
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_1.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_2.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_3.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_4.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_5.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_6.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_7.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_8.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: grafos_barabasi/gba_1000_400__1000_240000_9.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+
+...                               

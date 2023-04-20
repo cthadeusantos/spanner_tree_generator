@@ -66,8 +66,11 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
 	int lower_limit = 1;
-	if (!nolb)
-		lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	if (!nolb){
+		graph.grt = OpBasic::maxLowerCicle(graph);
+		lower_limit = graph.grt - 1;
+	}
+
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);

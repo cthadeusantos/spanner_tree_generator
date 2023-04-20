@@ -145,7 +145,7 @@ void Heuristic::heuristic_2v1(Graph& graph)
 {
     Stretch stretch;
     Graph tree(graph.getQtdVertices());
-    int raiz = graph.vertice_maior_grau();
+    int raiz = graph.highest_degree_vertex();
     int source;
     
     std::vector<int> lista;
@@ -327,7 +327,7 @@ void Heuristic::heuristica_3v1(Graph &graph)
 {
     Stretch stretch;
     Graph tree(graph.getQtdVertices());
-    int source = graph.vertice_maior_grau();
+    int source = graph.highest_degree_vertex();
     std::vector<int> lista;
     std::vector<int> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;
@@ -415,7 +415,7 @@ void Heuristic::heuristica_3v2(Graph &graph)
     Graph tree(graph.getQtdVertices());
     std::vector<int> lista_vertices_candidatos = graph.vertices_de_maior_grau();
 
-    int source = graph.vertice_maior_grau();
+    int source = graph.highest_degree_vertex();
     std::vector<int> lista;
     std::vector<float> lista_relativa_valor;
     std::vector<int> lista_relativa_vertice;

@@ -65,7 +65,13 @@ int main(int argc, char** argv){
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
-    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	int lower_limit = 1;
+	if (!nolb){
+		graph.grt = OpBasic::maxLowerCicle(graph);
+		lower_limit = graph.grt - 1;
+		graph.set_lower_limit(lower_limit);
+	}
+
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
@@ -75,10 +81,10 @@ int main(int argc, char** argv){
 	run_name = "MAX_DEGREE";
 	if (running_time > 0){
         wdt.kick(running_time);
-        create_threads_edge_max_degree(graph);
+        create_threads_edge_max_degreeV2(graph);
         wdt.stop();
     } else {
-        create_threads_edge_max_degree(graph);
+        create_threads_edge_max_degreeV2(graph);
     }
 	
 

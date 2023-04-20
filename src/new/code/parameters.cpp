@@ -5,6 +5,7 @@
 	#define DEBUG while(false)
 #endif */
 #include "../Debug.h"
+#include "version.hpp"
 #include "parameters.hpp"
 
 /**
@@ -23,9 +24,12 @@ void Parameters::usage(const char* app_name){
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 	std::cout << "\t-rt X| --running_time X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t-ci X| --induced_cycle X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
 	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
+	std::cout << "\t-v	 | --version\tWhich version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
 	std::cout << "\t     | --nolb   \t\tNot calculate lower bound (only heuristics)" << std::endl  << std::endl ;
+	std::cout << "\t     | --noindex\t\tNot calculate stretch index" << std::endl  << std::endl ;
 
 	std::cout << "Show info:" << std::endl;
 	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
@@ -57,9 +61,17 @@ void Parameters::parseArgs(int argc, char** argv){
 			num_threads = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of threads to: " << num_threads << '\n';
 		}
+		else if(arg == "-v" || arg == "--version"){
+			std::cout << "T-Admissibility version " << Version().version() << '\n';
+			exit(0);
+		}
 		else if(arg == "-rt" || arg == "--running_time"){
 			running_time = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed running time to: " << running_time << '\n';
+		}
+		else if(arg == "-ci" || arg == "--induced_cycle"){
+			global_induced_cycle = std::atoi(argv[++i]);
+			DEBUG std::cerr << "Changed number of induced cycle to: " << global_induced_cycle << '\n';
 		}
 		else if(arg == "--adjacency"){
 			matrix_t = 0;
@@ -88,6 +100,10 @@ void Parameters::parseArgs(int argc, char** argv){
 		else if(arg == "--nolb"){
 			nolb = true;
 			DEBUG std::cerr << "Disable lower bound compute." << nolb << '\n';
+		}
+		else if(arg == "--noindex"){
+			noindex = true;
+			DEBUG std::cerr << "Disable stretch index compute." << nolb << '\n';
 		}
 		else {
 			DEBUG std::cerr << "Unknown param: " << arg << "\n";
