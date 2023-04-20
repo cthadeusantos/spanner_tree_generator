@@ -168,13 +168,39 @@ const std::vector<int> Graph::adjList(int v)
 }
 
 //! Check if edge exist
-/*!
+/*! DEPRECATED WILL BE REMOVED AT FUTURE
+    REPLACED BY METHOD has_edge(int v, int u)
     Seek at vertex's adjacency list if edge exist
     \param v a integer that represents the vertex
     \param u a integer that represents the neighborhood
     \return a boolean
 */
 bool Graph::possui_aresta(int v, int u)
+{
+    for (int x : adjList(v))
+    {
+        if (x == u)
+        {
+            for (int y : adjList(u))
+            {
+                if (y == v)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+//! Check if edge exist
+/*!
+    Seek at vertex's adjacency list if edge exist
+    \param v a integer that represents the vertex
+    \param u a integer that represents the neighborhood
+    \return a boolean
+*/
+bool Graph::has_edge(int v, int u)
 {
     for (int x : adjList(v))
     {
@@ -297,7 +323,7 @@ int Graph::maior_grau()
     Seek for vertex with max degree
     \return a integer
 */
-int Graph::vertice_maior_grau()
+int Graph::highest_degree_vertex()
 {
     int maior = grau(0);
     int v = 0;
@@ -402,6 +428,7 @@ void Graph::show_best_tree()
     std::cout << std::endl;
 };
 
+
 //! Assign value to stretch index
 /*!
     Assign value to stretch index
@@ -447,7 +474,14 @@ bool Graph::has_chord(Graph &g, std::vector<int> x)
     return a.possuiCorda(g, x);
 }
 
+/// @brief DEPRECATED WILL BE REMOVED AT FUTURE - REPLACED BY sum_tree()
 void Graph::add_tree()
+{
+    this->total_tree++;
+}
+
+
+void Graph::sum_trees()
 {
     this->total_tree++;
 }
@@ -472,7 +506,13 @@ void Graph::reset_trees(int value)
     this->total_tree = value;
 }
 
+/// @brief DEPRECATED WILL BE REMOVE AT FUTURE - REPLACE BY get_num_vertices
 int Graph::get_qty_vertex()
+{
+    return this->qtdVertices;
+}
+
+int Graph::get_num_vertices()
 {
     return this->qtdVertices;
 }
@@ -981,4 +1021,133 @@ int Graph::countConnectedVertices(int u, std::vector<bool> &visited)
         }
     }
     return count;
+}
+
+void Graph::set_girth(int value){
+    this->girth = value;
+}
+
+int Graph::get_girth(){
+    return this->girth;
+}
+
+std::vector<std::pair<int, int>> Graph::get_edges_set(){
+    std::vector<std::pair<int, int>> edges_list;
+    std::vector<std::vector<int>> vector = this->graph;
+    int vertex = 0;
+    int *ptr = &vertex;
+    std::pair<int,int> edge;
+    //I am using iterators , if you read the code and not understand
+    for (auto it = vector.begin(); it != vector.cend(); ++it){
+        for (auto itt = it->begin(); itt != it->cend(); ++itt){
+            if (*itt > *ptr){
+                edge = std::make_pair(*itt, *ptr);
+                edges_list.push_back(edge);
+                //DEBUG std::cerr << "("<< *ptr << ", " << *itt << ")" ;
+            }
+        }
+        *ptr = *ptr + 1;
+    }
+    return edges_list;
+}
+
+std::vector<int> Graph::get_neighbors(int vertex){
+    return this->graph[vertex];
+}
+
+/**
+ * @brief Calculate the girth of graph
+ * @details Calculate the girth of graph
+ * That's an alternative to compute the girth developed by DJ at OpBasic class
+ * @date 2023/04/17
+ * @author cthadeusantos
+ * @param adjacency That's a vector of vector (an adjacencies list)
+ * @return min_waist That's an integer
+ */
+int Graph::waist(std::vector<std::vector<int>> adjacency) {
+    int n = adjacency.size();
+    int min_waist = n;
+    for (int i = 0; i < n; i++) {
+        std::vector<int> distances(n, -1);
+        distances[i] = 0;
+        std::queue<int> q;
+        q.push(i);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int v : adjacency[u]) {
+                if (distances[v] == -1) {
+                    distances[v] = distances[u] + 1;
+                    q.push(v);
+                } else if (v != i && v != u) {
+                    min_waist = std::min(min_waist, distances[u] + distances[v] + 1);
+                }
+            }
+        }
+    }
+    return min_waist;
+}
+
+/**
+ * @brief Calculate the girth of graph
+ * @details Calculate the girth of graph
+ * That's an alternative to compute the girth developed by DJ at OpBasic class
+ * @date 2023/04/17
+ * @author cthadeusantos
+ * @return min_waist That's an integer
+ */
+int Graph::waist() {
+    std::vector<std::vector<int>> adjacency = this->get_neighbors();
+    int n = adjacency.size();
+    int min_waist = n;
+    for (int i = 0; i < n; i++) {
+        std::vector<int> distances(n, -1);
+        distances[i] = 0;
+        std::queue<int> q;
+        q.push(i);
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int v : adjacency[u]) {
+                if (distances[v] == -1) {
+                    distances[v] = distances[u] + 1;
+                    q.push(v);
+                } else if (v != i && v != u) {
+                    min_waist = std::min(min_waist, distances[u] + distances[v] + 1);
+                }
+            }
+        }
+    }
+    return min_waist;
+}
+
+std::vector<std::vector<int>> Graph::get_neighbors(){
+    return this->graph;
+}
+
+
+
+
+
+
+
+
+
+void Graph::show_edges()
+{
+    // std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
+    for (int i=0; i < this->get_qty_vertex(); i++){
+        for (auto neighbor : this->get_neighbors(i)){
+            DEBUG std::cerr << "(" << i << " , " << neighbor << ") ";
+        }
+    }
+};
+
+void Graph::check_integrity(){
+    //Check integrity of graph 
+    for (int i=0; i < this->getQtdVertices();i++){
+        if (this->get_neighbors(i).size() < 1){
+            DEBUG std::cerr << "INTEGRIDADE COMPROMETIDA" << std::endl;
+        }
+    }
 }

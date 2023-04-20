@@ -21,6 +21,7 @@ int get_index(int key, std::vector<int> v);
 bool in(const int &value, std::vector <int> &vector);
 bool in(const int &value, const std::vector <int> &vector);
 bool in(const int &value, std::set <int> &set );
+bool in( const std::pair<int, int> &edge, const std::vector<std::pair<int, int>> &vector);
 
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);
