@@ -1,15 +1,26 @@
 # changes
 
-## 0.1.3.7a (2023/03/09)
+## 0.1.4a (2023/04/19)
+* New parameters add (--version , --noindex)
+* Parameter nolb now working with brute-force
+* Paralell max degree was modified, now there is a V2
+* New method for induced cycle in progress (not working yet)
+* Many minor fixes, new tools, new batteries
+
+## 0.1.4 (2023/04/11)
+* Fix wrong dates at CHANGELOG.md
+* Implemented new method to induced cycles, now seek for induced cycles using girth with reference
+
+## 0.1.3.7a (2023/04/09)
 * Fix bugs at SUM_TREES in INDUCED CYCLE that return invalid value in specific cases with few threads that was missing and not commit in 0.1.3.7
 * All updates for 0.1.3.7
 
-## 0.1.3.7 (2023/03/08)
+## 0.1.3.7 (2023/04/08)
 * Added parameter (-rt | --running_time) to stop execution after X miliseconds (all applications)
 * Class Watchdog added
 * Fix bugs at SUM_TREES in INDUCED CYCLE that return invalid value in specific cases with few threads 
 
-## 0.1.3.6a (2023/03/07)
+## 0.1.3.6a (2023/04/07)
 
 * All 0.1.3.6 updates
 * Update my analisys tools (not for users)

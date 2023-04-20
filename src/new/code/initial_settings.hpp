@@ -8,6 +8,7 @@ int num_threads = 1;
 int used_threads = 1;
 
 bool nolb = false;
+bool noindex = false;
 bool best = false;
 
 float running_time = 0;

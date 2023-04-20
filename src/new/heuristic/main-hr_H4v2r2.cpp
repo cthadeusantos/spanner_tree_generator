@@ -66,9 +66,13 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 	
 	DEBUG std::cerr << "Calculando limite inferior"  << std::endl;
+
 	int lower_limit = 1;
-	if (!nolb)
-		lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	if (!nolb){
+		graph.grt = OpBasic::maxLowerCicle(graph);
+		lower_limit = graph.grt - 1;
+	}
+
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	DEBUG std::cerr << "Iniciando...."  << std::endl;

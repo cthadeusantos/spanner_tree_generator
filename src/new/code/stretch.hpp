@@ -47,6 +47,9 @@ class Stretch
         // Mantidos até ter certeza que não são necessários CT
         void setIndex(int val) { index = val; } // Precisei criar por força maior... DJ
         void setTree(Graph t) { tree = t; } // Precisei criar por força maior... DJ
+
+
+        int find_index(Graph &original, Graph &change); //
 };
 
 #endif
