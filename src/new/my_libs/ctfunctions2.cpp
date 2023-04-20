@@ -149,6 +149,24 @@ bool in(const int &value, std::set <int> &set) {
 
 
 /**
+ * @details Is the value belongs the vector?
+ * @param vector a vector that contains integers
+ * @param pair a pair searched
+ * @return a boolean
+ */
+bool in( const std::pair<int, int> &pair, const std::vector<std::pair<int, int>> &vector) {
+    bool result = false;
+    for(auto edge : vector) {
+        if ((edge.first == pair.first &&  edge.second == pair.second)
+        || (edge.first == pair.second &&  edge.second == pair.first)) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
+/**
  * Split a string
  * @details Split a string
  * The delimiter is not optional because there isn't implemented default, you must select one.

@@ -65,20 +65,25 @@ int main(int argc, char** argv){
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
-    int lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+	int lower_limit = 1;
+	if (!nolb){
+		graph.grt = OpBasic::maxLowerCicle(graph);
+		lower_limit = graph.grt - 1;
+	}
+
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with parallel brute force limited by threads - wait!\n";
+	DEBUG std::cerr << "Solving with parallel brute force parallelized using edge parallism - wait!\n";
 	run_name = "EDGE_PARALLELISM";
 	if (running_time > 0){
         wdt.kick(running_time);
-        create_threads(graph);
+        create_threadsV2(graph);
         wdt.stop();
     } else {
-        create_threads(graph);
+        create_threadsV2(graph);
     }
 	
 

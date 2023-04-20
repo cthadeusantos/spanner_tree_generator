@@ -718,7 +718,7 @@ std::vector<int> OpBasic::edges_by_bigger_degree(Graph& g)
     std::vector<int> myEdges;
 
     myEdges = OpBasic::edges(g);
-    int vertex = g.vertice_maior_grau();
+    int vertex = g.highest_degree_vertex();
     int lastMoved = 0;
 
     for( int i = 0; i < myEdges.size(); i += 2)
