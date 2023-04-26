@@ -18,12 +18,18 @@ private:
     int total_tree = 0; // by Thadeu
     bool signal = true;
     int girth = 0;
-  
+    int lower_limit = 1;
+
 public:
     Graph(int n);
     Graph();
     ~Graph();
     
+    void set_grt(Graph graph);
+    int get_grt();
+    void set_lower_limit(int value);
+    void set_lower_limit(Graph graph);
+    int get_lower_limit();
     //void create(int dimension);
     void add_vertex();
     void add_aresta(int v, int u);
@@ -100,18 +106,6 @@ public:
     static void my_insertionSort_graph(std::vector <float> &vector1, std::vector <int> &vector2, char order);
     std::vector<int> select_max_degree_vertices_at_list(int max, std::vector <int> &vector1, std::vector <int> &vector2);
 
-    // Methods to print Eulerian tour
-    // Fleury Algorithm  (NOTHING THIS IS USED!!!!!!!!!!)
-    static void circuit(Graph g);
-    void addEdge(int u, int v);
-    void removeEdge(int v,int u);
-    void printEulerPathCircuit();
-    void printEuler(int v);
-    bool isValidEdge(int v, int u);
-    int countConnectedVertices(int u, std::vector<bool> &visited);
-    // Fleury Algorithm END
-
-
     std::vector<std::pair<int, int>> get_edges_set();
     std::vector<int> get_neighbors(int vertex);
     std::vector<std::vector<int>> get_neighbors();
@@ -121,6 +115,17 @@ public:
 
     void show_edges();
     void check_integrity();
+
+        // Methods to print Eulerian tour
+    // Fleury Algorithm  (NOTHING THIS IS USED!!!!!!!!!!)
+    static void circuit(Graph g);
+    void addEdge(int u, int v);
+    void removeEdge(int v,int u);
+    void printEulerPathCircuit();
+    void printEuler(int v);
+    bool isValidEdge(int v, int u);
+    int countConnectedVertices(int u, std::vector<bool> &visited);
+    // Fleury Algorithm END
 
 };
 

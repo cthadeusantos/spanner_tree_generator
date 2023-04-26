@@ -38,6 +38,8 @@
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
 
+	pthread_mutex_init(&mutex_signal, NULL);
+
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
@@ -67,30 +69,19 @@ int main(int argc, char** argv){
 
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+	//Stretch().find_index(graph);
 
 	int lower_limit = 1;
 	if (!nolb){
-		graph.grt = OpBasic::maxLowerCicle(graph);
-		lower_limit = graph.grt - 1;
+		//graph.grt = OpBasic::maxLowerCicle(graph);
+		graph.set_grt(graph);
+		lower_limit = graph.get_grt() - 1;
+		graph.set_lower_limit(lower_limit);
 	}
-
-	
+	//Stretch().find_index(graph);
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
-	
-	//open file for writing
-	// std::ofstream fw("saida.txt", std::ofstream::out);
-	// //check if file was successfully opened for writing
-	// if (fw.is_open()){
-	// 	for (auto i: graph.get_edges_set()){
-	// 		fw << i.first << " " << i.second << std::endl;
-	// 		DEBUG std::cerr << i.first << " " << i.second << std::endl;
-	// 	}
-	// 	fw.close();
-	// } else {
-	// 	DEBUG std::cerr << "Problem with opening file";
-	// }
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with induced cycle Method 4 - PARALLEL- induced cycle from girth wait!\n";
