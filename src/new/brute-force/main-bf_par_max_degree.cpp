@@ -69,6 +69,7 @@ int main(int argc, char** argv){
 	if (!nolb){
 		graph.grt = OpBasic::maxLowerCicle(graph);
 		lower_limit = graph.grt - 1;
+		graph.set_lower_limit(lower_limit);
 	}
 
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;

@@ -1,5 +1,10 @@
 # changes
 
+## 0.1.4b (2023/04/26)
+* Add tools
+* App max_degree and edge paralellism now are limited by thread numbers
+* App induced cycle M4 not working yet
+
 ## 0.1.4a (2023/04/19)
 * New parameters add (--version , --noindex)
 * Parameter nolb now working with brute-force
