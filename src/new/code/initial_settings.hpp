@@ -13,3 +13,5 @@ bool best = false;
 
 float running_time = 0;
 
+pthread_mutex_t mutex_signal;
+

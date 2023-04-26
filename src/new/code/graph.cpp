@@ -1125,14 +1125,6 @@ std::vector<std::vector<int>> Graph::get_neighbors(){
     return this->graph;
 }
 
-
-
-
-
-
-
-
-
 void Graph::show_edges()
 {
     // std::cerr << "Stretch index : " << this->get_stretch_index() << "\n" << std::endl;
@@ -1150,4 +1142,24 @@ void Graph::check_integrity(){
             DEBUG std::cerr << "INTEGRIDADE COMPROMETIDA" << std::endl;
         }
     }
+}
+
+void Graph::set_grt(Graph graph){
+    this->grt = OpBasic::maxLowerCicle(graph);
+}
+
+int Graph::get_grt(){
+    return this->grt;
+}
+
+void Graph::set_lower_limit(int value){
+    this->lower_limit = value;
+}
+
+void Graph::set_lower_limit(Graph graph){
+    this->lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+}
+
+int Graph::get_lower_limit(){
+    return this->lower_limit;
 }
