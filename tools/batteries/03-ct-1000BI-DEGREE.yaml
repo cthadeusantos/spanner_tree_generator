@@ -1,0 +1,41 @@
+---                               
+
+name: ct-BI1000-DEG
+problem: tadmiss                   
+description: Running BRUTE FORCE DEGREE
+exec: release/app_BF-DEGREE
+default_timelimit: 7200
+default_iterations: 1
+instance_list:
+- instance: grafos_bi_partido/gb_500_500_30__1000_75267_0.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_75128_1.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_74970_2.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_75040_3.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_74737_4.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_74940_5.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_75214_6.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_74983_7.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_75394_8.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+- instance: grafos_bi_partido/gb_500_500_30__1000_74992_9.txt
+  args: -t 64 -s --noindex --nolb -rt 3600000
+
+
+...                               
