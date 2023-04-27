@@ -24,6 +24,7 @@ void Parameters::usage(const char* app_name){
 	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
 	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 	std::cout << "\t-rt X| --running_time X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t-ci X| --induced_cycle X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
 	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
 	std::cout << "\t-v	 | --version\tWhich version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
@@ -67,6 +68,10 @@ void Parameters::parseArgs(int argc, char** argv){
 		else if(arg == "-rt" || arg == "--running_time"){
 			running_time = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed running time to: " << running_time << '\n';
+		}
+		else if(arg == "-ci" || arg == "--induced_cycle"){
+			global_induced_cycle = std::atoi(argv[++i]);
+			DEBUG std::cerr << "Changed number of induced cycle to: " << global_induced_cycle << '\n';
 		}
 		else if(arg == "--adjacency"){
 			matrix_t = 0;

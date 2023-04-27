@@ -81,6 +81,14 @@ int main(int argc, char** argv){
 	//Stretch().find_index(graph);
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
+	//Stretch().find_index(graph);
+	//int value = graph.get_stretch_index();
+	//std::cout << "Valor achado: " << value << std::endl;
+
+	//Stretch().find_index(graph);
+	//value = graph.get_stretch_index();
+	//std::cout << "Valor achado: " << value << std::endl;
+
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE

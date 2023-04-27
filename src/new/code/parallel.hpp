@@ -30,7 +30,7 @@ void search_for_induced_cycles_for_M4(int seek, int root, int cycle_size, std::v
 
 std::tuple <int, int, int> define_block_chuck(int &num_threads, int &qty);
 std::tuple <int, int, int> define_block_chuck_for_max_degree(int &num_threads, int &num_elements);
-
+std::tuple <int, int, int> define_block_chuck_for_cycleM4(int &num_threads, int &num_elements);
 int adj_id(Graph& g, int v, int adj);
 int next(int a, int limite);
 int find_factor(Graph& g, Graph& tree);
