@@ -2,6 +2,7 @@
 #include "opBasic.hpp"
 #include "genGraph.hpp"
 //#include "frontier.hpp"
+#include "graph.hpp"
 
 #include <tuple>
 #include <iostream>
@@ -61,10 +62,11 @@ void Stretch::find_index(Graph& g)
     //index = INF_VALUE;
     index = (int)INFINITY;
 
-    OpBasic op; // alteracao LF
+    //OpBasic op; // alteracao LF
 
     Graph tree(g.getQtdVertices());
-    grt = op.maxLowerCicle(g); // alteração DJ
+    //grt = op.maxLowerCicle(g); // alteração DJ
+    grt = g.get_grt();
 
     for(int i=0; i < g.getQtdVertices(); ++i){
         prox_vizinho[i] = 0;

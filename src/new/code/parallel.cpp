@@ -23,6 +23,7 @@ std::mutex mtx;
 extern int num_threads;
 extern int used_threads;
 extern bool noindex;
+extern int global_induced_cycle;
 
 extern bool abort_for_timeout;
 extern pthread_mutex_t mutex_signal;
@@ -44,6 +45,8 @@ void create_threadV4_auxiliary( int start, int end, const int id, std::vector<st
  * @param graph a graph that represents the graph
  */
 void create_threads_induced_cycle_method_4v1(Graph &graph) {
+	//int value = graph.get_stretch_index();
+	//std::cout << "Valor achado: " << value << std::endl;
     int qty = 0;
     int root = -1;
     int neighbor = -1;
@@ -80,20 +83,24 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
     DEBUG std::cerr << "Edges numbers to use!" << qty << std::endl;
     DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
 
-    auto acme = define_block_chuck(num_threads,qty);
+    auto acme = define_block_chuck_for_cycleM4(num_threads,qty);
     int block_size = std::get<0>(acme);
     int chunk_size = std::get<1>(acme);
     used_threads = std::get<2>(acme);
 
     DEBUG std::cerr << "Threads to allocated: " << used_threads << std::endl;
 
+    //std::cout << qty << " " << num_threads << " " << block_size << " " << chunk_size << " " << used_threads << " " << std::endl;
+
     std::thread vetor_th[used_threads];
 
     // Adjust if block size is odd, remember, edges are pairs (u,v)
-    if ((block_size % 2)){
-        block_size++;
-        chunk_size = qty - block_size * (used_threads - 1);
-    }
+    //if ((block_size % 2) && block_size > 1){
+    //    block_size++;
+    //    chunk_size = qty - block_size * (used_threads - 1);
+    //}
+
+    //std::cout << qty << " " << num_threads << " " << block_size << " " << chunk_size << " " << used_threads << " " << std::endl;
 
     for(int i = 0; i < used_threads; ++i){
         int start = i * block_size;
@@ -180,8 +187,11 @@ void new_find_index(int root, Graph &G1, Graph &graph){
         }
     }
     //total_arv = arv;
-    //G1.set_stretch_index(index);
+    G1.set_stretch_index(index); // *********************************
     G1.set_best_tree(tree);
+    /*pthread_mutex_lock (&mutex_signal);
+    graph.sum_trees();
+    pthread_mutex_unlock (&mutex_signal);*/
     //return index;
 }
 
@@ -199,6 +209,26 @@ std::tuple <int, int, int> define_block_chuck(int &num_threads, int &num_element
             block_size = floor(num_elements/ used_threads1);
     }
     chunk_size = num_elements - block_size * (used_threads1 - 1);
+
+    //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
+    return std::make_tuple(block_size, chunk_size, used_threads1);
+}
+
+std::tuple <int, int, int> define_block_chuck_for_cycleM4(int &num_threads, int &num_elements){
+    //DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+    int block_size = 1;
+    int chunk_size = 0;
+    int used_threads1 = num_threads;
+    if (used_threads1 >= num_elements){
+        used_threads1 = num_elements;
+    } else if (used_threads1 < num_elements){
+        if (!(num_elements % used_threads1))
+            block_size = floor(num_elements / used_threads1);
+        else
+            block_size = floor(num_elements/ used_threads1);
+            chunk_size = num_elements - block_size * (used_threads1 - 1);
+    }
+    
 
     //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
     return std::make_tuple(block_size, chunk_size, used_threads1);
@@ -680,7 +710,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     Graph tree(num_vertices);
     int num = combinacoes[id].size() - 1;
     int root = edges_to_be_processed[num].second;
-DEBUG std::cerr << "NUM ROOT" << root<< std::endl;
+    DEBUG std::cerr << "NUM ROOT" << root<< std::endl;
     new_find_index(root, G1, graph);
 
     int arvores;
@@ -2156,11 +2186,10 @@ void search_for_induced_cycles_for_M4(int seek, int root, int cycle_size, std::v
 				if (neighbors.empty()) break;
 			}
 		}
-		if (neighbors.empty() || cycles_found >= 0) break;
+		if (neighbors.empty() || cycles_found >= (global_induced_cycle - 1)) break;
         cycles_found++;
 	}
 }
-
 
 /**
  * @brief Build a edges' list 

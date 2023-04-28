@@ -7,6 +7,7 @@ extern bool best;
 extern bool nolb;
 extern bool noindex;
 extern float running_time;
+extern int global_induced_cycle;
 
 class Parameters
 {
