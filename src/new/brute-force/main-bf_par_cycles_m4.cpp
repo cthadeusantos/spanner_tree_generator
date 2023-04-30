@@ -78,16 +78,7 @@ int main(int argc, char** argv){
 		lower_limit = graph.get_grt() - 1;
 		graph.set_lower_limit(lower_limit);
 	}
-	//Stretch().find_index(graph);
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
-	
-	//Stretch().find_index(graph);
-	//int value = graph.get_stretch_index();
-	//std::cout << "Valor achado: " << value << std::endl;
-
-	//Stretch().find_index(graph);
-	//value = graph.get_stretch_index();
-	//std::cout << "Valor achado: " << value << std::endl;
 
 	sem_init(&semaforo, 0, num_threads);
 	
@@ -102,7 +93,6 @@ int main(int argc, char** argv){
         create_threads_induced_cycle_method_4v1(graph);
     }
 	
-
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
