@@ -31,6 +31,7 @@ void search_for_induced_cycles_for_M4(int seek, int root, int cycle_size, std::v
 std::tuple <int, int, int> define_block_chuck(int &num_threads, int &qty);
 std::tuple <int, int, int> define_block_chuck_for_max_degree(int &num_threads, int &num_elements);
 std::tuple <int, int, int> define_block_chuck_for_cycleM4(int &num_threads, int &num_elements);
+std::tuple <int, int, int, int, int> define_block_chuck_for_cycleM4v2(int &num_threads, int &num_elements);
 int adj_id(Graph& g, int v, int adj);
 int next(int a, int limite);
 int find_factor(Graph& g, Graph& tree);
@@ -56,6 +57,7 @@ std::vector<std::vector<std::pair<int,int>>> make_edges_list(std::vector<std::ve
 
 std::vector<std::pair<int,int>> detect_valid_edges_M4( std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 
-void new_find_index(int root, Graph &G1, Graph &graph);
+void find_index_cycleM4(int start, Graph &G1, Graph &graph);
+void find_index_cycleM4_1(int start, Graph &G1, Graph &graph);
 
 #endif
