@@ -1,5 +1,18 @@
 # changes
 
+## 0.1.5 (2023/04/29)
+* Induced cycle M4 method implemented
+* Add sum trees cycle M4
+* New parameters add (--version , --noindex)
+* Parameter nolb now working with brute-force
+* Paralell max degree was modified, now there is a V2
+* App max_degree and edge paralellism now are limited by thread numbers
+* New define block size and chunk size for threads implemented
+* Remove compute grt inside create_thread (parallel)
+* Replace name new_find_index to find_index_cycleM4 (parallel.cpp)
+* Many minor fixes, new tools, new batteries
+* Add tools
+
 ## 0.1.4b (2023/04/26)
 * Add tools
 * App max_degree and edge paralellism now are limited by thread numbers
