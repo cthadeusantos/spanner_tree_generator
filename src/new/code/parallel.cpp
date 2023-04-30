@@ -960,8 +960,8 @@ void create_threadsV2(Graph& graph)
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
-    OpBasic op; // by thadeu
-    graph.grt = op.maxLowerCicle(graph); // by thadeu
+    //OpBasic op; // by thadeu
+    //graph.grt = op.maxLowerCicle(graph); // by thadeu
     // fim calcula grt
 
     if(graph.possui_aresta(raiz, graph.ant_vertex(raiz) ) ){
@@ -1052,7 +1052,7 @@ void create_threads_edge_max_degreeV2(Graph& graph)
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
     OpBasic op; // by thadeu
-    graph.grt = op.maxLowerCicle(graph); // by thadeu
+    //graph.grt = op.maxLowerCicle(graph); // by thadeu
     // fim calcula grt
 
     //std::vector< std::thread> vetor_th(qtd_th);
