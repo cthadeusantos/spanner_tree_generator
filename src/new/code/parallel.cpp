@@ -102,6 +102,25 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
     //     std::cout << "****Start:" << start << "  End: " << end << " Therad" << used_threads << " Combina " << combinacoes.size() << std::endl;
     //     vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
     // }
+    std::reverse(combinacoes.begin(), combinacoes.end());
+    std::vector<std::vector<int>> auxiliar = combinacoes;
+    int num_comb = combinacoes.size();
+    int idx_last = combinacoes[num_comb -1].size();
+    int jump = num_comb / combinacoes[idx_last].size();
+
+    int counter = 0;
+    for (int ixt = 0; ixt <= idx_last; ixt++){
+        for (int iyt = ixt; iyt <= num_comb; iyt = iyt + jump){
+            int g = ixt * jump + iyt;
+            if ( g < num_comb){
+                auxiliar[counter]= combinacoes[g];
+                counter++;
+            }
+        }
+    }
+
+    combinacoes = auxiliar;
+
     int start, end;
     for(int i = 0; i < used_threads; ++i){
         // int start = i * block_size;
