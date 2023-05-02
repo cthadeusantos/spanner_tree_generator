@@ -1,6 +1,6 @@
 ---                               
 
-name: ct-bf-inducedM4              
+name: ct-bf-inducedM4v1c2              
 problem: tadmiss                   
 description: Running brute force parallel (induced cycle)
 exec: release/app_BF-CYCLES_M4
