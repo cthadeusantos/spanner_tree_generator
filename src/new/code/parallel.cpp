@@ -104,16 +104,17 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
     // }
     std::reverse(combinacoes.begin(), combinacoes.end());
     std::vector<std::vector<int>> auxiliar = combinacoes;
-    int num_comb = combinacoes.size();
-    int idx_last = combinacoes[num_comb -1].size();
-    int jump = num_comb / combinacoes[idx_last].size();
+    // int num_comb = combinacoes.size();
+    // int jump = num_comb / combinacoes[idx_last].size();
 
+    int idx_last = combinacoes[qty - 1].size();
+    
     int counter = 0;
-    for (int ixt = 0; ixt <= idx_last; ixt++){
-        for (int iyt = ixt; iyt <= num_comb; iyt = iyt + jump){
-            int g = ixt * jump + iyt;
-            if ( g < num_comb){
-                auxiliar[counter]= combinacoes[g];
+    for (int idx_size = 0; idx_size < idx_last; idx_size++){
+        for (int iyt = idx_size; iyt < qty; iyt = iyt + idx_last){
+            //int g = idx_size + iyt ;
+            if ( iyt < qty){
+                auxiliar[counter]= combinacoes[iyt];
                 counter++;
             }
         }
@@ -122,11 +123,11 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
     combinacoes = auxiliar;
 
     int start, end;
+    
     for(int i = 0; i < used_threads; ++i){
-        // int start = i * block_size;
-        // int end = start + ((i != used_threads - 1) * block_size) + ((i == used_threads - 1) * chunk_size );
-        // if (end == start) end++;
-
+                    // int start = i * block_size;
+                    // int end = start + ((i != used_threads - 1) * block_size) + ((i == used_threads - 1) * chunk_size );
+                    // if (end == start) end++;
 
         if (i < qty_block){
             start = i * block_size;
@@ -140,10 +141,12 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
             end = start + chunk_size;
         }
 
-        //std::cout <<i << " ****Start:" << start << "  End: " << end << " Therad" << used_threads  << " bs " << block_size << " cs " << chunk_size << " Combina " << combinacoes.size() << std::endl;
         vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
     }
 
+    // for(int i = 0; i < combinacoes.size(); ++i){
+    //     vetor_th[i] = std::thread(find_index_induced_cycle_method_4, i , std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
+    // }
 
     sem_wait(&semaforo);
 
