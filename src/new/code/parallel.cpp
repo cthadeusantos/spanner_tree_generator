@@ -897,6 +897,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     //mtx.lock();
     pthread_mutex_lock (&mutex_signal);
     Graph G1 = graph;   // Auxiliary graph - local graph
+    Graph G2 = graph;   // Auxiliary graph - local graph
     pthread_mutex_unlock (&mutex_signal);
     //mtx.unlock();
 
@@ -907,7 +908,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     Graph tree(num_vertices);
     int num = combinacoes[id].size() - 1;
     int root = edges_to_be_processed[num].second;
-    find_index_cycleM4(root, G1, graph);
+    find_index_cycleM4(root, G1, G2);
 
     int arvores;
     arvores = G1.get_total_tree();
@@ -1112,8 +1113,8 @@ void create_threads(Graph& graph)
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
-    OpBasic op; // by thadeu
-    graph.grt = op.maxLowerCicle(graph); // by thadeu
+    //OpBasic op; // by thadeu
+    //graph.grt = op.maxLowerCicle(graph); // by thadeu
     // fim calcula grt
 
     if(graph.possui_aresta(raiz, graph.ant_vertex(raiz) ) ){
