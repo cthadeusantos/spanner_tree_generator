@@ -81,10 +81,10 @@ int main(int argc, char** argv){
 	run_name = "MAX_DEGREE";
 	if (running_time > 0){
         wdt.kick(running_time);
-        create_threads_edge_max_degreeV2(graph);
+        create_threads_edge_max_degree(graph);
         wdt.stop();
     } else {
-        create_threads_edge_max_degreeV2(graph);
+        create_threads_edge_max_degree(graph);
     }
 	
 

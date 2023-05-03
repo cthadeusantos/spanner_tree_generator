@@ -1174,9 +1174,10 @@ void create_threadsV2(Graph& graph)
     std::thread vetor_th[used_threads];
     
     for(int i = 0; i < used_threads; ++i){
-        int start = i * block_size;
-        int end = (i != used_threads - 1) * (i+1) * block_size + (i == used_threads - 1) * start + chunk_size;
-        vetor_th[i] = std::thread(create_threadV2_auxiliary, std::ref(graph), raiz, start, end, i);
+        //int start = i * block_size;
+        //int end = (i != used_threads - 1) * (i+1) * block_size + (i == used_threads - 1) * start + chunk_size;
+        //vetor_th[i] = std::thread(create_threadV2_auxiliary, std::ref(graph), raiz, start, end, i);
+        vetor_th[i] = std::thread(create_threadV2_auxiliary, std::ref(graph), raiz, id, id+1, i);
     }
 
     sem_wait(&semaforo);
@@ -1194,8 +1195,8 @@ void create_threads_edge_max_degree(Graph& g)
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
-    OpBasic op; // by thadeu
-    g.grt = op.maxLowerCicle(g); // by thadeu
+    //OpBasic op; // by thadeu
+    //g.grt = op.maxLowerCicle(g); // by thadeu
     // fim calcula grt
 
     std::vector< std::thread> vetor_th(qtd_th);
