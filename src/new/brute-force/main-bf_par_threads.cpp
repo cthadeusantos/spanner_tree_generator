@@ -81,10 +81,10 @@ int main(int argc, char** argv){
 	run_name = "EDGE_PARALLELISM";
 	if (running_time > 0){
         wdt.kick(running_time);
-        create_threadsV2(graph);
+        create_threads(graph);
         wdt.stop();
     } else {
-        create_threadsV2(graph);
+        create_threads(graph);
     }
 	
 
