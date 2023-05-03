@@ -1,4 +1,7 @@
 - [1. Usage](#1-usage)
+  - [Usage example (running):](#usage-example-running)
+  - [Usage example (running batteries):](#usage-example-running-batteries)
+  - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
 - [2. Important links and work performed](#2-important-links-and-work-performed)
 - [3. Project Architecture](#3-project-architecture)
   - [3.1. Pre-requisites](#31-pre-requisites)
@@ -32,12 +35,25 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
     INPUT_FILENAME is mandatory
     OUTPUT_FILENAME is optional
 
-Usage example:
+### Usage example (running):
 	
 ```bash
 ./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt > results/grafo10_results.txt
 ./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
 ```
+### Usage example (running batteries):
+Go to tools directory and run
+python3 execution-battery-analyzer.py ../workspace/zudio-bf-par-example-09022023-01
+
+```bash
+python3 execution-battery.py 1 < batteries/BATTERY-NAME.yaml
+```
+### Usage example (analisys batteries):
+After execute battery, go to tools directory and run
+```bash
+python3 execution-battery-analyzer.py ../workspace/BATTERY-NAME-DIRECTORY
+```
+
 
 ## 2. Important links and work performed
 

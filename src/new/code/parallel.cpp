@@ -186,7 +186,7 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
     grt = graph.get_grt();
     graph.set_lower_limit(grt-1);
     lower_limit = graph.get_lower_limit();
-    Graph G2 = graph;
+    //Graph G2 = graph;
     pthread_mutex_unlock (&mutex_signal);
 
     while( graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout)){
@@ -210,8 +210,8 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
                         int f = 1;
                         if (!noindex){ // LF request
                             //pthread_mutex_lock (&mutex_signal);
-                            f = find_factor(G2, tree);
-                            //f = find_factor(graph, tree);
+                            //f = find_factor(G2, tree);
+                            f = find_factor(graph, tree);
                             //pthread_mutex_unlock (&mutex_signal);
                         }
                         G1.add_tree();
@@ -897,7 +897,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     //mtx.lock();
     pthread_mutex_lock (&mutex_signal);
     Graph G1 = graph;   // Auxiliary graph - local graph
-    Graph G2 = graph;   // Auxiliary graph - local graph
+    //Graph G2 = graph;   // Auxiliary graph - local graph
     pthread_mutex_unlock (&mutex_signal);
     //mtx.unlock();
 
@@ -908,7 +908,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     Graph tree(num_vertices);
     int num = combinacoes[id].size() - 1;
     int root = edges_to_be_processed[num].second;
-    find_index_cycleM4(root, G1, G2);
+    find_index_cycleM4(root, G1, graph);
 
     int arvores;
     arvores = G1.get_total_tree();

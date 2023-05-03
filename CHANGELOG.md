@@ -1,5 +1,13 @@
 # changes
 
+## 0.1.7 (2023/05/03)
+* Fix the error that caused slowdown in cycle M4 method
+
+## 0.1.6 (2023/05/02)
+* Reorganize tools directories
+* Return to classical settings MAX and EDGES parallelism
+* Bug fixes at reorganize combinations(cycle M4, create thread)
+
 ## 0.1.5 (2023/04/29)
 * Induced cycle M4 method implemented
 * Add sum trees cycle M4
