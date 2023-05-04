@@ -21,21 +21,21 @@
 void Parameters::usage(const char* app_name){
 	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl;
 	std::cout << std::endl << "OPTIONS: " << std::endl;
-	std::cout << "\t-h | --help \t\tShow this message." << std::endl;
-	std::cout << "\t-t X | --thread X\tDefine the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
-	std::cout << "\t-rt X| --running_time X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
-	std::cout << "\t-ci X| --induced_cycle X\tDefine execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
-	std::cout << "\t     | --adjacency \t\tDefine which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t-v	 | --version\tWhich version is this app." << std::endl  << std::endl ;
-	std::cout << "\t     | --edges   \t\tDefine which type file will be read. (edges list)" << std::endl  << std::endl ;
-	std::cout << "\t     | --nolb   \t\tNot calculate lower bound (only heuristics)" << std::endl  << std::endl ;
-	std::cout << "\t     | --noindex\t\tNot calculate stretch index" << std::endl  << std::endl ;
+	std::cout << "\t-h	| --help	Show this message." << std::endl;
+	std::cout << "\t-t X	| --thread X	Define the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
+	std::cout << "\t-rt X	| --running_time X	Define execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
+	std::cout << "\t-v	 | --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
+	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
+	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
 
-	std::cout << "Show info:" << std::endl;
-	std::cout << "\t-f | --file \t\tAt file. [current " << output << "]" << std::endl;
-	std::cout << "\t-s | --screen \t\tAt screen. [current " << output << "]" << std::endl;
-	std::cout << "\t-d | --debug \t\tAt screen only debug mode. [current " << output << "]" << std::endl;
-	std::cout << "\t-b | --best \t\tShow the best tree found." << std::endl;
+	std::cout << "Options to show info:" << std::endl;
+	std::cout << "\t-f 	| --file \t\tAt file. [current " << output << "]" << std::endl;
+	std::cout << "\t-s 	| --screen \t\tAt screen. [current " << output << "]" << std::endl;
+	std::cout << "\t-d 	| --debug \t\tAt screen only debug mode. [current " << output << "]" << std::endl;
+	std::cout << "\t-b 	| --best \t\tShow the best tree found." << std::endl;
 	std::cout << "You can combine summary, expo, debug and show" << std::endl << std::endl;
 }
 
@@ -46,7 +46,7 @@ void Parameters::usage(const char* app_name){
  */
 void Parameters::parseArgs(int argc, char** argv){
     if (argc <= 1){
-        printf("You must have parameters, type -h to help!\n");
+		std::cout << "You must have parameters, type -h to help!" << std::endl;
         exit(-1);
     }
 	for(int i = 1; i < argc; ++i){
@@ -106,7 +106,8 @@ void Parameters::parseArgs(int argc, char** argv){
 			DEBUG std::cerr << "Disable stretch index compute." << nolb << '\n';
 		}
 		else {
-			DEBUG std::cerr << "Unknown param: " << arg << "\n";
+			std::cout << "Unknown parameter: " << arg << std::endl;
+			std::cout << "Type --help for more informations!" << arg << std::endl;
 			exit(1);
 		};
 	};

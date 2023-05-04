@@ -22,15 +22,23 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
 
 	OPTIONS:
-	    -h | --help , help
-	    -t X | --thread X , Define the numbers of threads. X is the number of threads 
+      -h      | --help            This help
+	          | --adjacency       Define which type file will be read. (adjacency list)[default]
+	          | --edges           Define which type file will be read. (edges list)
+              | --nolb            Not calculate lower bound
+              | --noindex         Not calculate stretch index
+	    -rt X | --running_time X  Define execution time in miliseconds until STOP! default is 0
+	    -ci X | --induced_cycle X Define execution time in miliseconds until STOP! default is 0
+	    -t X  | --thread X        Define the numbers of threads. X is the number of threads 
+	    -v	  | --version         Which version is this app.
+
 
 	  Show info:
-	    -f | --file Output at file.
-	    -s | --screen Output at screen.
-	    -d | --debug  Output screen only debug mode.
-	    -b | --best Show the best tree found (default is not show). Try only with few vertices and edges.
-	    You can combine summary, expo, debug and show
+	    -f | --file               Output at file.
+	    -s | --screen             Output at screen.
+	    -d | --debug              Output screen only debug mode.
+	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
+	    You can combine file, screen and debug
 
     INPUT_FILENAME is mandatory
     OUTPUT_FILENAME is optional

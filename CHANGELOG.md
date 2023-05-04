@@ -1,5 +1,9 @@
 # changes
 
+## 0.1.7a (2023/05/03)
+* Fix parameters file bug that not show "warning" if unknown parameters are passed
+* Update README.md
+
 ## 0.1.7 (2023/05/03)
 * Fix the error that caused slowdown in cycle M4 method
 
