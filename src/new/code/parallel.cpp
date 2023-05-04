@@ -15,6 +15,8 @@
 
 #include "../Debug.h"
 
+#include <chrono>	// contributor AZ
+
 //#define INDUCED_CYCLE_SYZE_START 5
 
 sem_t semaforo;
@@ -32,9 +34,19 @@ extern pthread_mutex_t mutex_signal;
 void create_threadV4_auxiliary( int start, int end, const int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph){
     //int idx = (end - start) * id;
     int acme = end - start;
+    std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
+
     for (int i = 0; i < acme; i=i+1 ){
         //std::cout << std::endl<< "i" << i << "Start:" << start << "  End: " << end << " ACme:: "<< acme << " start+i:" << i+ start << std::endl;
         find_index_induced_cycle_method_4(i + start , combinacoes, edges_to_be_processed, graph);
+    }
+    std::chrono::time_point<std::chrono::steady_clock>	end1 = std::chrono::steady_clock::now();	
+    std::chrono::duration<double> execution_duration1(end1 - start1);
+    double lastExecutionTime1 = execution_duration1.count();
+    std::cout << "Thread " << id << "Combinacoes: " << "Factor"<< graph.get_stretch_index() << combinacoes.size() << "[RUNNING_TIME]=" << lastExecutionTime1 <<  std::endl;
+        for (auto i: combinacoes[id]){
+        if (i != -1)
+            std::cout << "Thread "<< id << "(" << edges_to_be_processed[i].first << "," << edges_to_be_processed[i].second << ")" << std::endl;
     }
 }
 
@@ -124,6 +136,7 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
 
     int start, end;
     
+
     for(int i = 0; i < used_threads; ++i){
                     // int start = i * block_size;
                     // int end = start + ((i != used_threads - 1) * block_size) + ((i == used_threads - 1) * chunk_size );
@@ -143,6 +156,7 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
 
         vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
     }
+
 
     // for(int i = 0; i < combinacoes.size(); ++i){
     //     vetor_th[i] = std::thread(find_index_induced_cycle_method_4, i , std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
@@ -182,13 +196,13 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
     Graph tree(G1.getQtdVertices());
     Graph tree_local(G1.getQtdVertices());
 
-    pthread_mutex_lock (&mutex_signal);
+    //pthread_mutex_lock (&mutex_signal);
     grt = graph.get_grt();
-    graph.set_lower_limit(grt-1);
+    //graph.set_lower_limit(grt-1);
     lower_limit = graph.get_lower_limit();
     //Graph G2 = graph;
-    pthread_mutex_unlock (&mutex_signal);
-
+    //pthread_mutex_unlock (&mutex_signal);
+    std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     while( graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout)){
         if( idx_next_neighbor[vertex_v] == G1.grau(vertex_v) ){
             idx_next_neighbor[vertex_v] = 0;
@@ -205,13 +219,19 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
             if( not tree.possui_aresta(vertex_v, vertex_u) ){
                 tree.add_aresta(vertex_v, vertex_u);
                 idx_last_neighbor[vertex_v] = vertex_u;
+                
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.get_num_edges() == (tree.get_num_vertices() - 1)){
                         int f = 1;
                         if (!noindex){ // LF request
                             //pthread_mutex_lock (&mutex_signal);
                             //f = find_factor(G2, tree);
+                            //std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
                             f = find_factor(graph, tree);
+                            //std::chrono::time_point<std::chrono::steady_clock>	end1 = std::chrono::steady_clock::now();	
+	                        //std::chrono::duration<double> execution_duration1(end1 - start1);
+                            //double lastExecutionTime1 = execution_duration1.count();
+                            //std::cout << "[RUNNING_TIME]=" << lastExecutionTime1 <<  std::endl;
                             //pthread_mutex_unlock (&mutex_signal);
                         }
                         G1.add_tree();
