@@ -51,7 +51,6 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
 ### Usage example (running batteries):
 Go to tools directory and run
-python3 execution-battery-analyzer.py ../workspace/zudio-bf-par-example-09022023-01
 
 ```bash
 python3 execution-battery.py 1 < batteries/BATTERY-NAME.yaml
