@@ -34,20 +34,20 @@ extern pthread_mutex_t mutex_signal;
 void create_threadV4_auxiliary( int start, int end, const int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph){
     //int idx = (end - start) * id;
     int acme = end - start;
-    std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
+    //std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
 
     for (int i = 0; i < acme; i=i+1 ){
         //std::cout << std::endl<< "i" << i << "Start:" << start << "  End: " << end << " ACme:: "<< acme << " start+i:" << i+ start << std::endl;
         find_index_induced_cycle_method_4(i + start , combinacoes, edges_to_be_processed, graph);
     }
-    std::chrono::time_point<std::chrono::steady_clock>	end1 = std::chrono::steady_clock::now();	
-    std::chrono::duration<double> execution_duration1(end1 - start1);
-    double lastExecutionTime1 = execution_duration1.count();
-    std::cout << "Thread " << id << "Combinacoes: " << "Factor"<< graph.get_stretch_index() << combinacoes.size() << "[RUNNING_TIME]=" << lastExecutionTime1 <<  std::endl;
-        for (auto i: combinacoes[id]){
-        if (i != -1)
-            std::cout << "Thread "<< id << "(" << edges_to_be_processed[i].first << "," << edges_to_be_processed[i].second << ")" << std::endl;
-    }
+    //std::chrono::time_point<std::chrono::steady_clock>	end1 = std::chrono::steady_clock::now();	
+    //std::chrono::duration<double> execution_duration1(end1 - start1);
+    //double lastExecutionTime1 = execution_duration1.count();
+    //std::cout << "Thread " << id << "Combinacoes: " << "Factor"<< graph.get_stretch_index() << combinacoes.size() << "[RUNNING_TIME]=" << lastExecutionTime1 <<  std::endl;
+        //for (auto i: combinacoes[id]){
+        //if (i != -1)
+        //    std::cout << "Thread "<< id << "(" << edges_to_be_processed[i].first << "," << edges_to_be_processed[i].second << ")" << std::endl;
+    //}
 }
 
 /**
@@ -179,7 +179,7 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
  * @param G1 a graph that represents the graph without vertices from combinations
  * @param graph a graph that represents the graph
  */
-void find_index_cycleM4(int root, Graph &G1, Graph &graph){
+void find_index_cycleM4(int root, const std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &G1, Graph &graph){
     //int start = root;
     //int end = (root - 1) * (root!=0) + (G1.get_num_vertices() - 1) * (root==0);
     //DEBUG std::cerr << "(" << start << "," << end << ")";
@@ -202,7 +202,7 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
     lower_limit = graph.get_lower_limit();
     //Graph G2 = graph;
     //pthread_mutex_unlock (&mutex_signal);
-    std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+    //std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     while( graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout)){
         if( idx_next_neighbor[vertex_v] == G1.grau(vertex_v) ){
             idx_next_neighbor[vertex_v] = 0;
@@ -210,7 +210,9 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
             if(vertex_v < 0){
                 break; // stop the algorithm
             } 
-            tree.remove_aresta(vertex_v, idx_last_neighbor[vertex_v]);
+            if (!in(idx_last_neighbor[vertex_v], vertex_v, edges_to_be_processed)){
+                tree.remove_aresta(vertex_v, idx_last_neighbor[vertex_v]);
+            }
             idx_last_neighbor[vertex_v] = -1;
 
         } else {
@@ -254,7 +256,9 @@ void find_index_cycleM4(int root, Graph &G1, Graph &graph){
                         continue;
                     }
                 } // End IF of check cycle
-                tree.remove_aresta(vertex_v, idx_last_neighbor[vertex_v]);
+                if (!in(idx_last_neighbor[vertex_v], vertex_v, edges_to_be_processed)){
+                    tree.remove_aresta(vertex_v, idx_last_neighbor[vertex_v]);
+                }
             }
         }
     }
@@ -928,7 +932,7 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     Graph tree(num_vertices);
     int num = combinacoes[id].size() - 1;
     int root = edges_to_be_processed[num].second;
-    find_index_cycleM4(root, G1, graph);
+    find_index_cycleM4(root, edges_to_be_processed, G1, graph);
 
     int arvores;
     arvores = G1.get_total_tree();
