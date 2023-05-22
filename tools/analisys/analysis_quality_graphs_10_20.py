@@ -6,7 +6,18 @@
 
 import math
 import os
+from datetime import date
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--latex', dest='latex', default=True, action='store_true')
+parser.add_argument('-s', '--scale', dest='scale', default=1, type=float)
+args = parser.parse_args()
+latex = args.latex
+scale = args.scale
+
+# storing today's date in a variable
+today = date.today().isoformat()
 
 # Python program to get average of a list
 def average(lst):
@@ -43,19 +54,20 @@ key4 = []
 
 dict_aux = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
-root_dir = '../workspace/'
+root_dir = '../../workspace/'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
 tipo = ''
 for item in lista_diretorio:
-    if item[:5] == 'ct-hr' or item[:5] == 'ct-bf':
+    if (item[:5] == 'ct-hr' and '03042023-01' in item) or (item[:5] == 'ct-bf' and '17032023-01' in item):
         item = item.split('/')
-        filename = root_dir + item[0] + '/' + 'result_summary.txt'
+        directory = root_dir + item[0]
 
-        isDirectory = os.path.isdir(filename)
+        isDirectory = os.path.isdir(directory)
         if isDirectory is False:
             continue
+        filename = directory + '/' + 'result_summary.txt'
         print(filename)
         file1 = open(filename, 'r')
         while True:
@@ -196,13 +208,22 @@ latex = True
 #\end{footnotesize}
 #\end{table}
 
+standard_text1 = 'The values in each cell represents the difference between the true value found by sequential '
+standard_text2 = ' brute-force algorithm and the value found by heuristics. [0, there was a hit, any another value '
+standard_text3 = ' represents the difference to true value (less is better)].'
 if latex:
     # Build latex table and save at file
     k1 = '64'
     string = "\\begin{table}[H]\n\\begin{footnotesize}\caption{\label{table:"
-    MyTuple = (string, k1, k1, "}", 'Error rate', "}\n")
+    MyTuple = (string, k1, k1, "}", standard_text1, standard_text2, standard_text3, "}\n")
     string = "".join(MyTuple)
-    string1 = "\\hspace{-2.2cm}\\small\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Vertices}{$ $ \\\ $Type$}\n"
+    #string1 = "\\hspace{-2.2cm}\\small\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Vertices}{$ $ \\\ $Type$}\n"
+    string1 = "\\hspace{-2.2cm}\\small\\small\\begin{center}\\scalebox{" + str(scale) + "}{\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>" \
+              "{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>" \
+              "{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>" \
+              "{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>" \
+              "{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>" \
+              "{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Vertices}{$ $ \\\ $Type$}\n"
     MyTuple = (string, string1)
     string = ''.join(MyTuple)
     for index, k2 in enumerate(key2):
@@ -227,17 +248,24 @@ if latex:
                 if avg_diff != '0.0':
                     colore1 = "{\\textbf{\\color{red}" + str(avg_diff) + '}}'
                 else:
-                    colore1 = str(avg_diff)
-                if deviation != '0.0':
-                    colore2 = "{\\textbf{\\color{red}" + str(deviation) + '}}'
-                else:
-                    colore2 = str(deviation)
-                string = string + "& \\backslashbox[1.4cm]{" + colore1 + "}" + "{" + colore2 + "}"
+                    colore1 = "{\\textbf{\\color{blue}" + str(avg_diff) + '}}'
+                # if deviation != '0.0':
+                #     colore2 = "{\\textbf{\\color{red}" + str(deviation) + '}}'
+                # else:
+                #     colore2 = str(deviation)
+                #string = string + "& \\backslashbox[1.4cm]{" + colore1 + "}" + "{" + colore2 + "}"
+                string = string + "& {" + colore1 + "}"
             string = string + "\\\ \\hline\n"
-    string = string + "\\end{tabular}\n"
-    string = string + "\\end{footnotesize}\n"
-    string = string + "\\end{table}\n"
-    DIR = "../no_commit/tables/"
+    string = string + "\\end{tabular}\n}\n\\end{center}\n"
+    string = string + "\\end{footnotesize}\n\\end{table}\n"
+    # string = string + "\\end{tabular}\n"
+    # string = string + "\\end{footnotesize}\n"
+    # string = string + "\\end{table}\n"
+
+    DIR = "../../no_commit/tables/" + today + "/"
+    # If folder doesn't exists, create it ##
+    if not os.path.isdir(DIR):
+        os.mkdir(DIR)
     filename = DIR + "erro_grafos_10a20" + ".tex"
     text_file = open(filename, "w")
     text_file.write(string)

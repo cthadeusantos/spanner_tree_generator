@@ -3,9 +3,21 @@
 # for t-admissibility
 # and BUILD LATEX TABLES FROM result_summary.txt in directories ct-WA
 
-
+from datetime import date
 import math
 import os
+
+# import sys
+# name_of_script = sys.argv[0]
+# position = sys.argv[1]
+# sample = sys.argv[2]
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--latex', dest='latex', action='store_true')
+
+args = parser.parse_args()
+latex = args.latex
 
 
 # Python program to get average of a list
@@ -36,15 +48,18 @@ for k1 in key1:
                 dictionary[k1][k2][k3][k4] = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
 
-root_dir = '../workspace'
+root_dir = '../../workspace'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
 tipo = ''
 for item in lista_diretorio:
-    if item[:5] == 'ct-WA' or item[:5] == 'ct-ER' or item[:5] == 'ct-BI' or item[:5] == 'ct-BA':
+    if (item[:5] == 'ct-WA' or item[:5] == 'ct-ER' or item[:5] == 'ct-BI' or item[:5] == 'ct-BA')\
+            and ('24032023-01' in item or '23032023-01' in item or '22032023-01' in item\
+            or '21032023-01' in item or '20032023-01' in item or '19032023-01' in item\
+            or '29032023-01' in item or '28032023-01' in item or '25032023-01' in item):
         item = item.split('/')
-        filename = item[0] + '/' + 'result_summary.txt'
+        filename = root_dir + '/' + item[0] + '/' + 'result_summary.txt'
         print(filename)
         file1 = open(filename, 'r')
         while True:
@@ -96,7 +111,7 @@ avg_edges = {}
 for key in key3:
     avg_edges[key] = []
 
-k4=''
+k4 = ''
 for k1 in key1:
     for k2 in key2:
         for k3 in key3:
@@ -140,12 +155,6 @@ for k1 in key1:
 
                 output[k1][k2][k3][k4] = {'v': sum(dictionary[k1][k2][k3][k4]['v'])/size, 'e': avg_edges[k3], 'avg_diff': media, 'deviation': desvio_padrao, 't': [], 'lb': lb,  's': []}
 
-<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
-latex= False
-========
-latex = True
-
-
 # LATEX TABLE MODEL - EXIT
 
 #\begin{table}[H]
@@ -160,7 +169,11 @@ latex = True
 #\end{tabular}
 #\end{footnotesize}
 #\end{table}
->>>>>>>> main:tools/analysis_quality_heuristics.py
+
+
+
+# storing today's date in a variable
+today = date.today().isoformat()
 
 if latex:
     # Build latex table and save at file
@@ -191,7 +204,10 @@ if latex:
             string = string + "\\end{tabular}\n"
             string = string + "\\end{footnotesize}\n"
             string = string + "\\end{table}\n"
-            DIR = "../no_commit/tables/"
+            DIR = "../../no_commit/tables/" + today + "/"
+            # If folder doesn't exists, create it ##
+            if not os.path.isdir(DIR):
+                os.mkdir(DIR)
             filename = DIR + "table" + k2 + "_" + k1 + ".tex"
             text_file = open(filename, "w")
             text_file.write(string)
@@ -224,8 +240,6 @@ else:
                     print(f'{output[k1][k2][k3][k4]["avg_diff"]: >8.2f}', end=" ")
                 print()
             print('\n')
-<<<<<<<< HEAD:workspace/thadeu/my_analysis.py
-
 
 #
 #             for solution in keys_solutions:
@@ -248,5 +262,3 @@ else:
 #                     for vertex in keys_vertices:
 #                         print(f'{graphs[graph][solution][vertex]["diff"]: >6.2f}', end=" ")
 #                     print()
-========
->>>>>>>> main:tools/analysis_quality_heuristics.py

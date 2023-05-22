@@ -3,10 +3,26 @@
 # for t-admissibility
 # and BUILD LATEX TABLES FROM result_summary.txt in directories ct-WA
 
-
+from datetime import date
 import math
 import os
 
+# import sys
+# name_of_script = sys.argv[0]
+# position = sys.argv[1]
+# sample = sys.argv[2]
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--latex', dest='latex', default=False, action='store_true')
+parser.add_argument('-s', '--scale', dest='scale', default=1, type=float)
+
+args = parser.parse_args()
+latex = args.latex
+scale = args.scale
+
+# storing today's date in a variable
+today = date.today().isoformat()
 
 # Python program to get average of a list
 def average(lst):
@@ -36,15 +52,19 @@ for k1 in key1:
                 dictionary[k1][k2][k3][k4] = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
 
-root_dir = '../workspace'
+root_dir = '../../workspace'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
 tipo = ''
 for item in lista_diretorio:
-    if item[:5] == 'ct-WA' or item[:5] == 'ct-ER' or item[:5] == 'ct-BI' or item[:5] == 'ct-BA':
+    if (item[:5] == 'ct-WA' or item[:5] == 'ct-ER' or item[:5] == 'ct-BI' or item[:5] == 'ct-BA')\
+            and ('24032023-01' in item or '23032023-01' in item or '22032023-01' in item
+                 or '21032023-01' in item or '20032023-01' in item or '19032023-01' in item
+                 or '29032023-01' in item or '28032023-01' in item or '25032023-01' in item):
         item = item.split('/')
-        filename = item[0] + '/' + 'result_summary.txt'
+        #filename = item[0] + '/' + 'result_summary.txt'
+        filename = root_dir + '/' + item[0] + '/' + 'result_summary.txt'
         print(filename)
         file1 = open(filename, 'r')
         while True:
@@ -140,8 +160,6 @@ for k1 in key1:
 
                 output[k1][k2][k3][k4] = {'v': sum(dictionary[k1][k2][k3][k4]['v'])/size, 'e': avg_edges[k3], 'avg_diff': media, 'deviation': desvio_padrao, 't': [], 'lb': lb,  's': []}
 
-latex = True
-
 
 # LATEX TABLE MODEL - EXIT
 
@@ -158,14 +176,19 @@ latex = True
 #\end{footnotesize}
 #\end{table}
 
+standart_text1 = 'Analysis of '
+standart_text2 = ' for the presented graphs classes. In each cell, the bottom(the top) values is the average (the standard deviation) between the difference of the returned value of '
+standart_text3 = ' and the smallest-e-cycle lower bound.'
+
 if latex:
     # Build latex table and save at file
     for k2 in key2:
         for k1 in key1:
-            string = "\\begin{table}[H]\n\\begin{footnotesize}\caption{\label{table:"
-            MyTuple = (string, k2, k1, "}", k2, " ", str(k1), " threads", "}\n")
+            string = "\\begin{table}[H]\n\\begin{footnotesize}\caption{"
+            string_ab = "}\label{table:"
+            MyTuple = (string, standart_text1, k2, standart_text2, k2, standart_text3, string_ab, k2, "_", k1, "}", "\n")
             string = "".join(MyTuple)
-            string1 = "\\hspace{-2.2cm}\\small\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Class}{$n$ \\\ $Av(m)$}\n"
+            string1 = "\\hspace{-2.2cm}\\small\\begin{center}\\scalebox{" + str(scale) + "}{\\begin{tabular}{|l|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|>{\\centering\\arraybackslash}p{1cm}|}\\hline\\diagbox{Class}{$n$ \\\ $Av(m)$}\n"
             MyTuple = (string, string1)
             string = ''.join(MyTuple)
             for index, k3 in enumerate(key3):
@@ -185,13 +208,16 @@ if latex:
                     if deviation != '0.0':
                         colore2 = "{\\textbf{\\color{red}" + str(deviation) + '}}'
                     else:
-                        colore2 = str(deviation)
+                        colore2 = "{\\textbf{\\color{blue}" + str(deviation) + '}}'
                     string = string + "& \\backslashbox[1.4cm]{" + str(avg_diff) + "}" + "{" + colore2 + "}"
                 string = string + "\\\ \\hline\n"
-            string = string + "\\end{tabular}\n"
-            string = string + "\\end{footnotesize}\n"
-            string = string + "\\end{table}\n"
-            DIR = "../no_commit/tables/"
+            string = string + "\\end{tabular}\n}\n\\end{center}\n"
+            string = string + "\\end{footnotesize}\n\\end{table}\n"
+            #string = string + "\\end{table}\n"
+            DIR = "../../no_commit/tables/" + today + "/"
+            # If folder doesn't exists, create it ##
+            if not os.path.isdir(DIR):
+                os.mkdir(DIR)
             filename = DIR + "table" + k2 + "_" + k1 + ".tex"
             text_file = open(filename, "w")
             text_file.write(string)
