@@ -58,6 +58,5 @@ std::vector<std::vector<std::pair<int,int>>> make_edges_list(std::vector<std::ve
 std::vector<std::pair<int,int>> detect_valid_edges_M4( std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 
 void find_index_cycleM4(int start, const std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &G1, Graph &graph);
-void find_index_cycleM4_1(int start, Graph &G1, Graph &graph);
 
 #endif
