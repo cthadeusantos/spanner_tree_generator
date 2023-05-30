@@ -73,11 +73,11 @@ void Parameters::parseArgs(int argc, char** argv){
 			global_induced_cycle = std::atoi(argv[++i]);
 			DEBUG std::cerr << "Changed number of induced cycle to: " << global_induced_cycle << '\n';
 		}
-		else if(arg == "--adjacency"){
+		else if(arg == "-a" || arg == "--adjacency"){
 			matrix_t = 0;
 			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
-		else if(arg == "--edges"){
+		else if(arg == "-e" || arg == "--edges"){
 			matrix_t = 1;
 			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
