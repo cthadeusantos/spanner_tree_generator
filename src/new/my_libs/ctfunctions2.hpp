@@ -49,3 +49,7 @@ void special_dfs(int cur,int par, int &tme,
         std::vector<std::pair<int,int>> &bridge, Graph &graph);
 
 float logBn(float n, float b);
+
+bool validarEntradaArestas(std::string entrada);
+bool validarEntradaAdjacencia(std::string entrada);
+std::vector<double> extrairNumeros(std::string entrada);

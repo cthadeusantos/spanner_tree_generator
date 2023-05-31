@@ -116,16 +116,7 @@ public:
     void show_edges();
     void check_integrity();
 
-        // Methods to print Eulerian tour
-    // Fleury Algorithm  (NOTHING THIS IS USED!!!!!!!!!!)
-    static void circuit(Graph g);
-    void addEdge(int u, int v);
-    void removeEdge(int v,int u);
-    void printEulerPathCircuit();
-    void printEuler(int v);
-    bool isValidEdge(int v, int u);
-    int countConnectedVertices(int u, std::vector<bool> &visited);
-    // Fleury Algorithm END
+
 
 };
 

@@ -10,6 +10,7 @@
 
 #include <iterator>
 #include <set>
+#include <regex>
 
 #include <cstdlib>
 #include <sys/types.h>
@@ -387,6 +388,11 @@ Graph read_graph_file() {
                     dimension = std::stoi(value_str);
                     graph.add_vertices(dimension);
                 } else {
+                    if (!validarEntradaAdjacencia(value_str)) {
+                        std::cout << "WARNING! INVALID FILE! Please check if your file is an adjacency matrix!" << std::endl;
+                        DEBUG std::cerr << "WARNING! INVALID FILE! Please check if your file is an adjacency matrix!" << std::endl;
+                        exit(1);
+                    }
                     if (std::stoi(value_str)) {
                         if (col >= dimension || row >=dimension) {
                             printf("Ponto de parada");
@@ -442,6 +448,11 @@ Graph read_graph_file_edges_list() {
                     dimension = std::stoi(value_str);
                     graph.add_vertices(dimension);
                 } else {
+                    if (!validarEntradaArestas(value_str)) {
+                        std::cout << "WARNING! INVALID FILE! Please check if your file is a list edges!" << std::endl;
+                        DEBUG std::cerr << "WARNING! INVALID FILE! Please check if your file is a list edges!" << std::endl;
+                        exit(1);
+                    }
                     std::vector<std::string> nodes = split(value_str, ',');
                     int node1 = stoi(nodes[0]);
                     int node2 = stoi(nodes[1]);
@@ -466,6 +477,11 @@ Graph read_graph_file_edges_list() {
                     dimension = std::stoi(value_str);
                     graph.add_vertices(dimension);
                 } else {
+                    if (!validarEntradaArestas(value_str)) {
+                        std::cout << "WARNING! INVALID FILE! Please check if your file is a list edges!" << std::endl;
+                        DEBUG std::cerr << "WARNING! INVALID FILE! Please check if your file is a list edges!" << std::endl;
+                        exit(1);
+                    }
                     std::vector<std::string> nodes = split(value_str, ',');
                     node1 = stoi(nodes[0]);
                     node2 = stoi(nodes[1]);
@@ -475,7 +491,10 @@ Graph read_graph_file_edges_list() {
                 value_str = "";
             }
     }
-    return graph;
+    if (dimension != graph.get_num_vertices()){
+        std::cout << "Invalid file!" << std::endl;
+        exit(1);
+    }
     return graph;
 }
 
@@ -706,4 +725,26 @@ std::vector<std::vector<int>> combinatorics(int n, int r){
 
 float logBn(float n, float b){
     return log(n) / log(b);
+}
+
+bool validarEntradaArestas(std::string entrada) {
+    std::regex padrao("\\s*-?\\d+(\\.\\d+)?\\s*,\\s*-?\\d+(\\.\\d+)?\\s*");
+    return regex_match(entrada, padrao);
+}
+
+bool validarEntradaAdjacencia(std::string entrada) {
+    std::regex padrao("\\s*-?\\d+(\\.\\d+)?(\\s+-?\\d+(\\.\\d+)?)*\\s*");
+    return regex_match(entrada, padrao);
+}
+
+std::vector<double> extrairNumeros(std::string entrada) {
+    std::vector<double> numeros;
+    std::istringstream iss(entrada);
+    std::string numero;
+
+    while (iss >> numero) {
+        numeros.push_back(std::stod(numero));
+    }
+
+    return numeros;
 }

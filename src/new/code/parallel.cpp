@@ -94,7 +94,7 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
     //int end = G1.get_num_vertices();
     //idx_next_neighbor[vertex_v] = raiz;
 
-
+    DEBUG std::cerr << id << "ORIGINAL "<< graph.getQtdArestas() << " QTE ARESTAS: " << G1.getQtdArestas() << std::endl;
     while( graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout)) {
         // if(vertex_v == raiz){
         //     if(idx_next_neighbor[vertex_v] == end){
@@ -146,10 +146,11 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                     tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
                 }
             } else { // ELSE OF IF HAS EDGE -- CHAVE 001
-            if (in(vertex_u, vertex_v, immovable_edges)) {
-                last_neighbor[vertex_v] = vertex_u;
-            }
-                if (in(last_neighbor[vertex_v], vertex_v, immovable_edges)) { // for modify  - CHANGE 002
+                // if (in(vertex_u, vertex_v, immovable_edges)) {
+                //     last_neighbor[vertex_v] = vertex_u;
+                // }
+                // if (in(last_neighbor[vertex_v], vertex_v, immovable_edges)) { // for modify  - CHANGE 002
+                if (in(vertex_u, vertex_v, immovable_edges)) { // for modify  - CHANGE 002
                     //DEBUG std::cerr << std::endl << id << "Inside " << vertex_v << " -- " << last_neighbor[vertex_v] << std::endl;
                     last_neighbor[vertex_v] = vertex_u;
                     if (not OpBasic::is_cyclic(tree)) {
@@ -215,7 +216,7 @@ void find_index_cycleM4_1(int id, int root, std::vector<std::pair<int,int>> &imm
     Graph tree_local(G1.getQtdVertices());
 
     for (auto edge: immovable_edges){
-        tree.addEdge(edge.first, edge.second);
+        tree.add_aresta(edge.first, edge.second);
     }
     pthread_mutex_lock (&mutex_signal);
     lower_limit = graph.get_lower_limit();
@@ -415,6 +416,8 @@ void create_threadV4_auxiliary( int start, int end, const int id, std::vector<st
     int acme = end - start;
     //std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
 
+    DEBUG std::cerr << "Start: " << start << "End " << end << std::endl;
+    
     for (int i = 0; i < acme; i=i+1 ){
         //std::cout << std::endl<< "i" << i << "Start:" << start << "  End: " << end << " ACme:: "<< acme << " start+i:" << i+ start << std::endl;
         if ((i + start) > combinacoes.size() - 1) break;
@@ -487,13 +490,6 @@ void create_threads_induced_cycle_method_4v1(Graph &graph) {
 
     std::thread vetor_th[used_threads];
 
-    // for(int i = 0; i < used_threads; ++i){
-    //     int start = i * block_size;
-    //     int end = start + ((i != used_threads - 1) * block_size) + ((i == used_threads - 1) * chunk_size );
-    //     if (end == start) end++;
-    //     std::cout << "****Start:" << start << "  End: " << end << " Therad" << used_threads << " Combina " << combinacoes.size() << std::endl;
-    //     vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph));
-    // }
     std::reverse(combinacoes.begin(), combinacoes.end());
     std::vector<std::vector<int>> auxiliar = combinacoes;
     // int num_comb = combinacoes.size();
@@ -623,8 +619,8 @@ std::tuple <int, int, int, int, int> define_block_chuck_for_cycleM4v2(int &num_t
         qty_chunk = 0;
     } else {
         int resto = num_elements % num_threads;
-        int divisor = num_threads;
-        if (resto < divisor && resto != 0){
+        int quociente = num_threads;
+        if (resto < quociente && resto != 0){
             qty_block = num_threads - 1;
             qty_chunk = 1;
             int divide = num_threads - 1;
@@ -1146,14 +1142,16 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
 
     //mtx.lock();
     pthread_mutex_lock (&mutex_signal);
-    Graph G1 = graph;   // Auxiliary graph - local graph
+    //Graph G1 = graph;   // Auxiliary graph - local graph
+    Graph G1 = Graph();
+    OpBasic::copy(G1, graph);
     //Graph G2 = graph;   // Auxiliary graph - local graph
     pthread_mutex_unlock (&mutex_signal);
     //mtx.unlock();
 
     G1.reset_trees(0);
     G1 = remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
-
+    
     std::vector<std::pair<int,int>> immovable_edges = immovable(id, combinacoes, edges_to_be_processed); 
 
     int num_vertices = G1.get_num_vertices();
@@ -1652,7 +1650,7 @@ std::vector<std::pair<int,int>> detect_valid_edges_M4( std::vector<std::pair<int
             G1.remove_aresta(v1, v2);
             connect = OpBasic::distance(G1, v1, v2);
             if (connect == -1){
-                G1.addEdge(v1, v2);
+                G1.add_aresta(v1, v2);
             } else {
                 aux.push_back(std::make_pair(v1,v2));
             }
@@ -2558,6 +2556,121 @@ void search_for_induced_cycles_for_M2_revision1_only_one(int seek, int root, int
 }
 
 
+/* ****************************************************************
+    SEARCH FOR MANY CYCLES --- CHANGE LOGIC 
+**************************************************************** */
+void search_for_induced_cycles_for_M4v2(int seek, int root, int cycle_size, std::vector<std::vector<int>> &select_cycles, std::vector<float> &vertices_closeness, std::vector<float> &vertices_leverage, Graph &graph){
+    int initial_max_cycle=cycle_size;
+
+    std::vector<std::pair<int,float>> centrality;
+    std::vector<int> neighbors;
+    std::vector<int> processed;                     // Processed vertices
+	std::vector<int> vertices_list;                 // Vertices to be processed
+
+
+    std::vector<int> vertices(vertices_closeness.size(), 0);
+    for (int i = 0; i < vertices_closeness.size(); i++) vertices_closeness[i] = 0;
+
+
+
+	for (int i=0; i<graph.get_qty_vertex(); i++){   //inicializa a lista
+		vertices_list.push_back(i);
+	}
+    std::vector<int> cycle(1,0); // create and initialize an auxiliary list
+
+    int max_size_cycle=0;   // Define Max size list found  // Method 1 != Method 2
+
+    int cycles_found = 0;
+    std::vector<int> neighbor_root=graph.adjList(root);
+    int counter=0;
+    seek=neighbor_root[counter];
+
+
+	while (true) {
+		DEBUG std::cerr << "Searching for (" << cycle_size<< ") cycle size" << std::endl;
+		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
+        if (cycle.empty()){
+            counter++;
+            if (counter >= neighbor_root.size()){
+                counter = 0;
+                root++;
+                if (root>=graph.get_num_vertices()){
+                    root = 0;
+                }
+                continue;
+            }
+            seek=neighbor_root[counter];
+            continue;
+        } 
+        //cycle=OpBasic::cycle(graph, cycle_size);
+		for (int j=0; j < cycle.size(); j++){ // Delete processed vertices
+			int index=get_index(cycle[j], vertices_list);
+			if (!vertices_list.empty() && index < vertices_list.size())
+				vertices_list.erase (vertices_list.begin() + index);
+			else
+                if (vertices_list.empty() ) 
+				    break;
+		}
+		cycle.push_back(root);
+		processed.push_back(root);
+
+        int acme=cycle.size()-1;    //auxiliary var
+        if (!cycle.empty() && acme > max_size_cycle){   // Method 1 != Method 2
+    		select_cycles.clear();                              // Only cycles that has same size(maximum select)
+            select_cycles.push_back(cycle);                     // will be selected
+            if (cycle_size > max_size_cycle)
+                max_size_cycle=acme;
+        } else if (!cycle.empty() && acme == max_size_cycle){   
+            select_cycles.push_back(cycle);
+        }
+
+		if (vertices_list.empty()) break;
+
+		bool gameover = false;
+		while (!gameover){  // Escolhe nova raiz
+            root = Centrality::tiebreaker(vertices_list, vertices_closeness, vertices_leverage);
+        
+			if (!in(root, processed) || vertices_list.empty()){
+				gameover=true;
+			} else if (in(root, processed)){
+
+                for (auto it = vertices_list.begin(); it != vertices_list.end();) {
+                    if (*it == root) {
+                        it = vertices_list.erase(it);
+                    } else {
+                        ++it;
+                    }
+                }
+
+            }
+		}
+		gameover = false;
+		neighbors = graph.adjList(root);
+		while (!gameover){
+            seek = Centrality::tiebreaker(neighbors, vertices_closeness, vertices_leverage);
+			if (!in(seek, processed)){
+				gameover=true;
+			} else {
+				int index=get_index(seek, neighbors);
+				neighbors.erase (neighbors.begin() + index);
+				if (neighbors.empty()) break;
+			}
+		}
+		if (neighbors.empty() || cycles_found >= (global_induced_cycle - 1)) break;
+        cycles_found++;
+
+        // For new cycle, select new root
+        root++;
+        if (root>=graph.get_num_vertices()){
+            root = 0;
+        }
+        neighbor_root=graph.adjList(root);
+        counter=0;
+        seek=neighbor_root[counter];
+	}
+}
+
+
 /*
     SEARCH FOR MANY CYCLES
 */
@@ -2580,6 +2693,8 @@ void search_for_induced_cycles_for_M4(int seek, int root, int cycle_size, std::v
     std::vector<int> neighbor_root=graph.adjList(root);
     int counter=0;
     seek=neighbor_root[counter];
+
+
 	while (true) {
 		DEBUG std::cerr << "Searching for (" << cycle_size<< ") cycle size" << std::endl;
 		cycle=OpBasic::cycle(graph, cycle_size, seek, root);
