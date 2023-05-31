@@ -120,9 +120,9 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                     if (tree.getQtdArestas() == tree.getQtdVertices()-1) {
                         int f=1;
                         if (!noindex){ // LF request - only sum tree
-                            pthread_mutex_lock (&mutex_signal);
+                            //pthread_mutex_lock (&mutex_signal);
                             f = find_factor(graph, tree);
-                            pthread_mutex_unlock (&mutex_signal);
+                            //pthread_mutex_unlock (&mutex_signal);
                         }
                         G1.add_tree();
                         if(f < index_local){
@@ -157,9 +157,9 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                             //DEBUG std::cerr << "id:" << id << " TREE edges: " << tree.get_num_edges() << "  vertx" << tree.get_num_vertices()<< std::endl;
                             int f=1;
                             if (!noindex){ // LF request - only sum tree
-                                pthread_mutex_lock (&mutex_signal);
+                                //pthread_mutex_lock (&mutex_signal);
                                 f = find_factor(graph, tree);
-                                pthread_mutex_unlock (&mutex_signal);
+                                //pthread_mutex_unlock (&mutex_signal);
                             }
                             G1.add_tree();
                             if(f < index_local){
