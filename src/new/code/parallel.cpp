@@ -6,12 +6,15 @@
 #include <cmath>
 #include <iostream>
 #include <tuple> // for tuple
+#include <string>
 
 #include "graph.hpp"
 #include "opBasic.hpp"
 #include "stretch.hpp"
 #include "parallel.hpp"
 #include "centrality.hpp"
+
+#include "../my_libs/library3.hpp"
 
 #include "../Debug.h"
 
@@ -32,7 +35,7 @@ extern pthread_mutex_t mutex_signal;
 
 
 /**
- * @brief Define immutable edges at induced cycle method M4
+ * @brief Define immutable edges at induced cycle method M4 for a thread
  * @details Define immutable edges at induced cycle method M4
  * @author Carlos Thadeu
  */
@@ -95,6 +98,10 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
     //idx_next_neighbor[vertex_v] = raiz;
 
     DEBUG std::cerr << id << "ORIGINAL "<< graph.getQtdArestas() << " QTE ARESTAS: " << G1.getQtdArestas() << std::endl;
+    
+    std::string fileName = std::to_string(id) + "saida.txt";
+    std::string str_tree;
+
     while( graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout)) {
         // if(vertex_v == raiz){
         //     if(idx_next_neighbor[vertex_v] == end){
@@ -125,6 +132,8 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                             //pthread_mutex_unlock (&mutex_signal);
                         }
                         G1.add_tree();
+                        str_tree = tree_to_string(tree);
+                        save_tree(str_tree, fileName);
                         if(f < index_local){
                             index_local = f;
                             tree_local = tree;
@@ -163,6 +172,8 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                                 //pthread_mutex_unlock (&mutex_signal);
                             }
                             G1.add_tree();
+                            str_tree = tree_to_string(tree);
+                            save_tree(str_tree, fileName);
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
@@ -1141,12 +1152,13 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
 {
 
     //mtx.lock();
-    pthread_mutex_lock (&mutex_signal);
+    //pthread_mutex_lock (&mutex_signal);
     //Graph G1 = graph;   // Auxiliary graph - local graph
+    
     Graph G1 = Graph();
     OpBasic::copy(G1, graph);
     //Graph G2 = graph;   // Auxiliary graph - local graph
-    pthread_mutex_unlock (&mutex_signal);
+    //pthread_mutex_unlock (&mutex_signal);
     //mtx.unlock();
 
     G1.reset_trees(0);
@@ -1878,9 +1890,11 @@ void create_threads_induced_cycle_method_3v2(Graph& g) {
 
 Graph remove_edges_cycle_M2(std::vector<int> combinations, std::vector<std::pair<int, int>> edges, Graph graph){
     for (auto i: combinations){
-        if (i != -1)
+        //if (i != -1)
             graph.remove_aresta(edges[i].first, edges[i].second);
     }
+    std::string grafo = tree_to_string(graph);
+    DEBUG std::cerr << "Este é o grafo: " << grafo << "\n";
     return graph;
 }
 

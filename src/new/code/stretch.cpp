@@ -3,6 +3,7 @@
 #include "genGraph.hpp"
 //#include "frontier.hpp"
 #include "graph.hpp"
+#include "../my_libs/library3.cpp"
 
 #include <tuple>
 #include <iostream>
@@ -73,6 +74,9 @@ void Stretch::find_index(Graph& g)
         ult_colocado[i] = -1;
     }
 
+    std::string fileName = "SEQsaida.txt";
+    std::string str_tree;
+
     while( v >= 0 and !(abort_for_timeout)){
         if( prox_vizinho[v] == g.grau(v) ){
             prox_vizinho[v] = 0;
@@ -95,6 +99,8 @@ void Stretch::find_index(Graph& g)
                         ++arv;
                         //g.sum_tree();
                         g.add_tree();
+                        str_tree = tree_to_string(tree);
+                        save_tree(str_tree, fileName);
                         if(f < index){
                             index = f;
                             this->tree = tree;
