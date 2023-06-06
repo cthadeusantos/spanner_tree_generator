@@ -21,6 +21,8 @@
 #include <chrono>	// contributor AZ
 
 #include "../Debug.h"
+#include "../code/initial_settings.hpp"
+
 #include "../code/parameters.hpp"
 #include "../my_libs/ctfunctions2.hpp"
 #include "../code/parallel.hpp"
@@ -32,7 +34,6 @@
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
 #include "../code/watchdog.hpp"
-#include "../code/initial_settings.hpp"
 
 /// @brief  The main method
 int main(int argc, char** argv){

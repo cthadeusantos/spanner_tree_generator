@@ -7,30 +7,136 @@
 #include <iostream>
 #include <tuple> // for tuple
 #include <string>
+#include <chrono>	// contributor AZ
 
+
+#include "../my_libs/library1.hpp"
+#include "../my_libs/library3.hpp"
 #include "graph.hpp"
 #include "opBasic.hpp"
 #include "stretch.hpp"
 #include "cycles.hpp"
 #include "centrality.hpp"
 
-#include "../my_libs/library1.hpp"
-#include "../my_libs/library3.hpp"
-
 #include "../Debug.h"
 
-#include <chrono>	// contributor AZ
 
-sem_t semaforo;
-int total_arv = 0;
-std::mutex mtx;
+extern sem_t semaforo;
+extern int total_arv;
+extern std::mutex mtx;
 extern int num_threads;
 extern int used_threads;
 extern bool noindex;
 extern int global_induced_cycle;
 
 extern bool abort_for_timeout;
+
 extern pthread_mutex_t mutex_signal;
+
+
+
+/**
+ * @brief ** DEPRECATED ** Calculate block size and chunk size for threads for the M4 cycle method ** DEPRECATED **
+ * @details ** DEPRECATED ** block size and chunk size for threads for the M4 cycle method ** DEPRECATED **
+ * @details REPLACED BY define_block_chuck_for_cycleM4v2
+ * @author Carlos Thadeu
+ * @param num_threads a integer that represents the numbers of threads proposed
+ * @param num_elements a integer that represents the numbers of the edges' combinations
+ * @return a tuple of integers with block size and chunk size found and the number of threads selected to be used 
+ */
+std::tuple <int, int, int> define_block_chuck_for_cycleM4(int &num_threads, int &num_elements){
+    //DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+    int block_size = 1;
+    int chunk_size = 0;
+    int used_threads1 = num_threads;
+    if (used_threads1 >= num_elements){
+        used_threads1 = num_elements;
+    } else if (used_threads1 < num_elements){
+        if (!(num_elements % used_threads1))
+            block_size = floor(num_elements / used_threads1);
+        else{
+            block_size = floor(num_elements/ used_threads1);
+            chunk_size = num_elements - block_size * (used_threads1 - 1);
+        }
+
+        // block_size = floor(num_elements / used_threads1);
+        // chunk_size = num_elements - (used_threads1 - 1) * block_size;
+    }
+    //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
+    return std::make_tuple(block_size, chunk_size, used_threads1);
+}
+
+/**
+ * @brief Calculate block size and chunk size for threads for the M4 cycle method
+ * @details block size and chunk size for threads for the M4 cycle method
+ * @author Carlos Thadeu
+ * @param num_threads a integer that represents the numbers of threads proposed
+ * @param num_elements a integer that represents the numbers of the edges' combinations
+ * @return a tuple of integers with block size and chunk size found and the number of threads selected to be used , the quantity of blocks and chunk
+ */
+std::tuple <int, int, int, int, int> define_block_chuck_for_cycleM4v2(int &num_threads, int &num_elements){
+    //DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+    int block_size = 1;
+    int chunk_size = 0;
+    int qty_block = 0;
+    int qty_chunk = 0;
+    int used_threads1 = num_threads;
+
+    if (num_threads >= num_elements){
+        qty_block = num_threads;
+        qty_chunk = 0;
+    } else {
+        int resto = num_elements % num_threads;
+        int quociente = num_threads;
+        if (resto < quociente && resto != 0){
+            qty_block = num_threads - 1;
+            qty_chunk = 1;
+            int divide = num_threads - 1;
+            if (divide == 0) {
+                divide = 1;
+                qty_chunk = 0;
+                }
+            block_size = floor(num_elements / divide);
+            chunk_size = num_elements - block_size;
+        } else {
+            if (resto != 0 and num_threads > 1){
+                qty_block = num_threads -1;
+                qty_chunk = 1;
+                int divide = num_threads - 1;
+                if (divide == 0) {
+                    divide = 1;
+                    qty_chunk = 0;
+                }
+                block_size = floor(num_elements / divide);
+                chunk_size = num_elements - block_size;
+            } else {
+                qty_block = num_threads;
+                qty_chunk = 0;
+                block_size = floor(num_elements / num_threads );
+                chunk_size = 0;
+            }
+        }
+    }
+
+    // if (used_threads1 >= num_elements){ // There are more threads than elements, threads will be same elements
+    //     used_threads1 = num_elements;
+    //     qty_block = used_threads1;
+    //     qty_chunk = num_elements - qty_block;
+    // } else if (used_threads1 < num_elements){ // There are less threads than elements
+    //     if (!(num_elements % used_threads1)){
+    //         block_size = floor(num_elements / used_threads1);
+    //         if (block_size==0) { block_size++ ; };
+    //     } else {
+    //         block_size = floor(num_elements/ used_threads1) + 1;
+    //         chunk_size = floor(num_elements/ used_threads1);
+    //     }
+    //     qty_block = num_elements % used_threads1 ;
+    //     qty_chunk = num_elements - qty_block;
+    //}
+
+    //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
+    return std::make_tuple(block_size, chunk_size, used_threads1, qty_block, qty_chunk);
+}
 
 /**
  * @brief Define immutable edges at induced cycle method M4 for a thread
@@ -126,7 +232,7 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                         int f=1;
                         if (!noindex){ // LF request - only sum tree
                             //pthread_mutex_lock (&mutex_signal);
-                            f = find_factor(graph, tree);
+                            f = Stretch::find_factor(graph, tree);
                             //pthread_mutex_unlock (&mutex_signal);
                         }
                         G1.add_tree();
@@ -166,7 +272,7 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &imm
                             int f=1;
                             if (!noindex){ // LF request - only sum tree
                                 //pthread_mutex_lock (&mutex_signal);
-                                f = find_factor(graph, tree);
+                                f = Stretch::find_factor(graph, tree);
                                 //pthread_mutex_unlock (&mutex_signal);
                             }
                             G1.add_tree();
@@ -261,7 +367,7 @@ void find_index_cycleM4_1(int id, int root, std::vector<std::pair<int,int>> &imm
 
                         if (!noindex){ // LF request - only sum tree
                             pthread_mutex_lock (&mutex_signal);
-                            f = find_factor(graph, tree);
+                            f = Stretch::find_factor(graph, tree);
                             pthread_mutex_unlock (&mutex_signal);
                         }
 
@@ -367,9 +473,9 @@ void find_index_cycleM4(int root, const std::vector<std::pair<int,int>> &edges_t
                         int f = 1;
                         if (!noindex){ // LF request
                             //pthread_mutex_lock (&mutex_signal);
-                            //f = find_factor(G2, tree);
+                            //f = Stretch::find_factor(G2, tree);
                             //std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
-                            f = find_factor(graph, tree);
+                            f = Stretch::find_factor(graph, tree);
                             //std::chrono::time_point<std::chrono::steady_clock>	end1 = std::chrono::steady_clock::now();	
 	                        //std::chrono::duration<double> execution_duration1(end1 - start1);
                             //double lastExecutionTime1 = execution_duration1.count();
@@ -629,7 +735,7 @@ void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_star
                             mtx.lock();
                             int f=1;
                             if (!noindex)
-                                f = find_factor(graph, tree);
+                                f = Stretch::find_factor(graph, tree);
                             mtx.unlock();
                             G1.add_tree();
 
@@ -734,7 +840,7 @@ void find_index_induced_cycle_method_2(const int id, std::vector<std::vector<int
                             mtx.lock();
                             int f=1;
                             if (!noindex)
-                                f = find_factor(graph, tree);
+                                f = Stretch::find_factor(graph, tree);
                             G1.add_tree();
                             if(f < index_local){
                                 index_local = f;

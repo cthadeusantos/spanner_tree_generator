@@ -2,14 +2,12 @@
 #define OP_BASIC_HPP_
 
 #include "graph.hpp"
-//#include <tuple>
 #include <vector>
 #include <limits>
 #include <stack> // pilha
 #include <queue> // fila
 #include <algorithm> // std::find
 #include <string>
-// #include <tuple>
 
 #define INF_VALUE std::numeric_limits<int>::max()
 #define INF "inf"

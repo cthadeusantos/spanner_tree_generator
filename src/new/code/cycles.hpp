@@ -1,6 +1,7 @@
 #ifndef CYCLES_HPP_
 #define CYCLES_HPP_
 
+std::vector<std::pair<int,int>> immovable(int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed);
 void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_start, const int id, std::vector<int> edges_list );
 void find_index_induced_cycle_method_2( const int i, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
@@ -33,5 +34,5 @@ std::vector<std::vector<std::pair<int,int>>> make_edges_list(std::vector<std::ve
 std::vector<std::pair<int,int>> detect_valid_edges_M4( std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 
 void find_index_cycleM4(int start, const std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &G1, Graph &graph);
-
+void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int,int>> &immovable_edges, Graph &G1, Graph &graph);
 #endif

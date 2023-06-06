@@ -8,14 +8,15 @@
 #include <tuple> // for tuple
 #include <string>
 
+#include "../my_libs/library1.hpp"
+#include "../my_libs/library3.hpp"
 #include "graph.hpp"
 #include "opBasic.hpp"
 #include "stretch.hpp"
 #include "parallel.hpp"
 #include "centrality.hpp"
 
-#include "../my_libs/library1.hpp"
-#include "../my_libs/library3.hpp"
+
 
 #include "../Debug.h"
 
@@ -23,9 +24,9 @@
 
 //#define INDUCED_CYCLE_SYZE_START 5
 
-sem_t semaforo;
-int total_arv = 0;
-std::mutex mtx;
+extern sem_t semaforo;
+extern int total_arv;
+extern std::mutex mtx;
 extern int num_threads;
 extern int used_threads;
 extern bool noindex;
@@ -34,6 +35,51 @@ extern int global_induced_cycle;
 extern bool abort_for_timeout;
 extern pthread_mutex_t mutex_signal;
 
+std::tuple <int, int, int> define_block_chuck(int &num_threads, int &num_elements){
+    //DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+    int block_size = 1;
+    int chunk_size = 0;
+    int used_threads1 = num_threads;
+    if (used_threads1 >= num_elements){
+        used_threads1 = num_elements;
+    } else if (used_threads1 < num_elements){
+        if (num_elements % used_threads1)
+            block_size = floor(num_elements / used_threads1) + 1;
+        else
+            block_size = floor(num_elements/ used_threads1);
+    }
+    chunk_size = num_elements - block_size * (used_threads1 - 1);
+
+    //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
+    return std::make_tuple(block_size, chunk_size, used_threads1);
+}
+
+/**
+ * @brief Calculate block size and chunk size for threads for the max degree method
+ * @details block size and chunk size for threads for the max degree method
+ * @author Carlos Thadeu
+ * @param num_threads a integer that represents the numbers of threads proposed
+ * @param num_elements a integer that represents the numbers of the edges' combinations
+ * @return a tuple of integers with block size and chunk size found and the number of threads selected to be used
+ */
+std::tuple <int, int, int> define_block_chuck_for_max_degree(int &num_threads, int &num_elements){
+    //DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+    int block_size = 1;
+    int chunk_size = 0;
+    int used_threads1 = num_threads;
+    if (used_threads1 >= num_elements){
+        used_threads1 = num_elements;
+    } else if (used_threads1 < num_elements){
+        // if (num_elements % used_threads1)
+        //     block_size = floor(num_elements / used_threads1) + 1;
+        // else
+            block_size = floor(num_elements/ used_threads1);
+    }
+    chunk_size = num_elements - block_size * (used_threads1 - 1);
+
+    //DEBUG std::cerr << "Threads to allocated: " << used_threads1 << std::endl;
+    return std::make_tuple(block_size, chunk_size, used_threads1);
+}
 
 /** DEPRECATED DEPRECATED - WILL BE REMOVE AT FUTURE
  * @brief Calculate stretch index using articulations
@@ -102,7 +148,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!noindex)
-                            f = find_factor(subgraph, tree);
+                            f = Stretch::find_factor(subgraph, tree);
                         ++arv;
                         subgraph.add_tree();
                         
@@ -199,7 +245,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!noindex)
-                            f = find_factor(g, tree);
+                            f =Stretch::find_factor(g, tree);
                         ++arv;
                         mtx.lock();
                         g.add_tree();
@@ -282,7 +328,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
                             if (!noindex) 
-                                f = find_factor(g, tree);
+                                f = Stretch::find_factor(g, tree);
                             ++arv;
                             mtx.lock();
                             g.add_tree();
@@ -367,7 +413,7 @@ void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, con
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
                             if (!noindex)
-                                f = find_factor(g, tree);
+                                f = Stretch::find_factor(g, tree);
                             ++arv;
                             mtx.lock();
                             g.add_tree();
@@ -411,7 +457,7 @@ void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, con
 
 void create_threads(Graph& graph)
 {
-    int raiz = highest_degree_vertex(graph);
+    int raiz = graph.highest_degree_vertex();
     int qtd = graph.grau(raiz);
     int id=0;
 
@@ -457,7 +503,7 @@ void create_threadV2_auxiliary(Graph &graph, int raiz, int start, int end, const
  */
 void create_threadsV2(Graph& graph)
 {
-    int raiz = highest_degree_vertex(graph);
+    int raiz = graph.highest_degree_vertex();
     int qty = graph.grau(raiz);
     int id=0;
 
@@ -606,7 +652,7 @@ void create_threads_articulations(Graph& g) {
 
     for (std::vector<int> sb : subgraph){
         xpto[id] = g.build_subgraph(sb);
-        int root = highest_degree_vertex(xpto[id]);
+        int root = xpto[id].highest_degree_vertex();
         int neighbor = xpto[id].adjList(root)[0];
         vetor_th[id] = std::thread(find_index_articulation, std::ref(g), std::ref(xpto[id]), root, root, neighbor, id);
         id++;

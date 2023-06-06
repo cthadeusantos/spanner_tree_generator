@@ -95,7 +95,7 @@ void Stretch::find_index(Graph& g)
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!noindex)
-                            f = find_factor(g, tree);
+                            f = Stretch::find_factor(g, tree);
                         ++arv;
                         //g.sum_tree();
                         g.add_tree();
@@ -153,7 +153,7 @@ void Stretch::find_index_edge(Graph& g)
                 if(j == n-2){ // achou uma arvore geradora
                     int f=1;
                     if (!noindex)
-                        f = find_factor(g, tree);
+                        f = Stretch::find_factor(g, tree);
                     ++arv;
                     if(f < index){
                         index = f;
@@ -372,7 +372,7 @@ int Stretch::find_index(Graph &original, Graph &change)
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!noindex)
-                            f = find_factor(G2, tree);
+                            f = Stretch::find_factor(G2, tree);
                         ++arv;
                         //g.sum_tree();
                         change.add_tree();

@@ -17,25 +17,26 @@
 
 #include <chrono>	// contributor AZ
 
-#include "Debug.h"
+#include "../Debug.h"
 
 //#include "my_libs/ctfunctions.cpp"
 
-#include "code/parameters.hpp"
-#include "my_libs/ctfunctions2.hpp"
-//#include "my_libs/externals.hpp"
-#include "code/parallel.hpp"
-/* #include "code/sequential_functions.hpp" */
+#include "../code/initial_settings.hpp"
 
-#include "code/frontier.hpp"
-#include "code/genGraph.hpp"
-#include "code/graph.hpp"
-#include "code/heuristic.hpp"
-#include "code/opBasic.hpp"
-#include "code/stretch.hpp"
-#include "code/centrality.hpp"
-#include "code/watchdog.hpp"
-#include "code/initial_settings.hpp"
+#include "../code/parameters.hpp"
+
+#include "../my_libs/library1.hpp"
+#include "../my_libs/ctfunctions2.hpp"
+//#include "../code/parallel.hpp"
+
+//#include "../code/frontier.hpp"
+//#include "../code/genGraph.hpp"
+//#include "../code/graph.hpp"
+//#include "../code/heuristic.hpp"
+//#include "../code/opBasic.hpp"
+//#include "../code/stretch.hpp"
+//#include "../code/centrality.hpp"
+//#include "../code/watchdog.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
 /* #ifdef MN_BF_SEQ_DEBUG
