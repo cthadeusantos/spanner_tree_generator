@@ -31,6 +31,7 @@
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
 #include "../code/watchdog.hpp"
+#include "../code/cycles.hpp"
 
 /// @brief  The main method
 int main(int argc, char** argv){

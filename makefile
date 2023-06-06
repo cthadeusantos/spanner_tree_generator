@@ -43,19 +43,19 @@ DEBUG_FLAGS := -g
 #ALL_APP := ${SEQ-OLD} ${PAR-OLD} ${BF-SEQ} ${TADM-CREATE}
 
 CREATE := app_CREATE
-app_CREATE_FILES := new/tools/main-create.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_CREATE_FILES := new/tools/main-create.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 //BF-ALL := app_BF-ALL
 //app_BF-ALL_FILES := new/brute-force/main-bf_all.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
 BF-SEQ := app_BF-SEQ
-app_BF-SEQ_FILES := new/brute-force/main-bf.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_BF-SEQ_FILES := new/brute-force/main-bf.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 BF-PAR := app_BF-PAR
-app_BF-PAR_FILES := new/brute-force/main-bf_par_threads.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_BF-PAR_FILES := new/brute-force/main-bf_par_threads.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 BF-DEGREE := app_BF-DEGREE
-app_BF-DEGREE_FILES := new/brute-force/main-bf_par_max_degree.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_BF-DEGREE_FILES := new/brute-force/main-bf_par_max_degree.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 #BF-CYCLES_M1 := app_BF-CYCLES_M1
 #app_BF-CYCLES_M1_FILES := new/brute-force/main-bf_par_cycles_m1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
@@ -64,46 +64,46 @@ app_BF-DEGREE_FILES := new/brute-force/main-bf_par_max_degree.cpp $(subst ${SRC_
 #app_BF-CYCLES_M2_FILES := new/brute-force/main-bf_par_cycles_m2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
 BF-CYCLES_M3 := app_BF-CYCLES_M3
-app_BF-CYCLES_M3_FILES := new/brute-force/main-bf_par_cycles_m3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_BF-CYCLES_M3_FILES := new/brute-force/main-bf_par_cycles_m3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 BF-CYCLES_M4 := app_BF-CYCLES_M4
-app_BF-CYCLES_M4_FILES := new/brute-force/main-bf_par_cycles_m4.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_BF-CYCLES_M4_FILES := new/brute-force/main-bf_par_cycles_m4.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 #BF-ARTICULATION := app_BF-ARTICULATION
 #app_BF-ARTICULATION_FILES := new/brute-force/main-bf_par_articulation.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 
 HR-ALL := app_HR-ALL
-app_HR-ALL_FILES := new/heuristic/main-hr_all.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-ALL_FILES := new/heuristic/main-hr_all.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H1v1 := app_HR-H1v1
-app_HR-H1v1_FILES := new/heuristic/main-hr_H1v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H1v1_FILES := new/heuristic/main-hr_H1v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H1v2 := app_HR-H1v2
-app_HR-H1v2_FILES := new/heuristic/main-hr_H1v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H1v2_FILES := new/heuristic/main-hr_H1v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H2v1 := app_HR-H2v1
-app_HR-H2v1_FILES := new/heuristic/main-hr_H2v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H2v1_FILES := new/heuristic/main-hr_H2v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H2v2 := app_HR-H2v2
-app_HR-H2v2_FILES := new/heuristic/main-hr_H2v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H2v2_FILES := new/heuristic/main-hr_H2v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H3v1 := app_HR-H3v1
-app_HR-H3v1_FILES := new/heuristic/main-hr_H3v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H3v1_FILES := new/heuristic/main-hr_H3v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H3v2 := app_HR-H3v2
-app_HR-H3v2_FILES := new/heuristic/main-hr_H3v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H3v2_FILES := new/heuristic/main-hr_H3v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H4v1 := app_HR-H4v1
-app_HR-H4v1_FILES := new/heuristic/main-hr_H4v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H4v1_FILES := new/heuristic/main-hr_H4v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H4v2r1 := app_HR-H4v2r1
-app_HR-H4v2r1_FILES := new/heuristic/main-hr_H4v2r1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H4v2r1_FILES := new/heuristic/main-hr_H4v2r1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H4v2r2 := app_HR-H4v2r2
-app_HR-H4v2r2_FILES := new/heuristic/main-hr_H4v2r2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H4v2r2_FILES := new/heuristic/main-hr_H4v2r2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
 HR-H4v2r3 := app_HR-H4v2r3
-app_HR-H4v2r3_FILES := new/heuristic/main-hr_H4v2r3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
+app_HR-H4v2r3_FILES := new/heuristic/main-hr_H4v2r3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 #HR-BREADTHv1 := app_HR-BREADTHv1
 #app_HR-BREADTHv1_FILES := new/heuristic/main-hr_Hbreadthv1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp))
 

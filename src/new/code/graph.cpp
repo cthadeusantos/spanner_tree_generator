@@ -6,7 +6,7 @@
 #include <iterator>
 
 #include "../Debug.h"
-#include "../my_libs/ctfunctions2.cpp"
+#include "../my_libs/ctfunctions2.hpp"
 
 //! Constructor
 /*!

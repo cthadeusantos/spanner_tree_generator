@@ -1,3 +1,6 @@
+#ifndef CTFUNCTIONS_HPP_
+#define CTFUNCTIONS_HPP_
+
 #include <iostream>
 #include<bits/stdc++.h>
 #include <set>
@@ -53,3 +56,5 @@ float logBn(float n, float b);
 bool validarEntradaArestas(std::string entrada);
 bool validarEntradaAdjacencia(std::string entrada);
 std::vector<double> extrairNumeros(std::string entrada);
+
+#endif //CTFUNCTIONS_HPP_

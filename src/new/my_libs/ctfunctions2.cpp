@@ -16,7 +16,6 @@
 #include <sys/types.h>
 
 #include <string.h>
-#include "../code/graph.hpp"
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
 #include "../code/frontier.hpp"

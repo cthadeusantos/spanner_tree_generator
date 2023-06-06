@@ -3,7 +3,7 @@
 #include "genGraph.hpp"
 //#include "frontier.hpp"
 #include "graph.hpp"
-#include "../my_libs/library3.cpp"
+#include "../my_libs/library3.hpp"
 
 #include <tuple>
 #include <iostream>
