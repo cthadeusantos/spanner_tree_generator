@@ -1,13 +1,14 @@
 #ifndef PARAMETERS_HPP
     #define PARAMETERS_HPP
 extern int num_threads;
-extern int output;
+extern int global_output;
 extern int matrix_t;
 extern bool best;
-extern bool nolb;
-extern bool noindex;
-extern float running_time;
+extern bool global_nolb;
+extern bool global_noindex;
+extern float global_running_time;
 extern int global_induced_cycle;
+extern bool global_save_tree;
 
 class Parameters
 {

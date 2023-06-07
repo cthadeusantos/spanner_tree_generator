@@ -74,7 +74,7 @@ int main(int argc, char** argv){
 	//Stretch().find_index(graph);
 
 	int lower_limit = 1;
-	if (!nolb){
+	if (!global_nolb){
 		//graph.grt = OpBasic::maxLowerCicle(graph);
 		graph.set_grt(graph);
 		lower_limit = graph.get_grt() - 1;
@@ -87,8 +87,8 @@ int main(int argc, char** argv){
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with induced cycle Method 4 - PARALLEL- induced cycle from girth wait!\n";
 	run_name = "INDUCED_CYCLE-M4";
-	if (running_time > 0){
-        wdt.kick(running_time);
+	if (global_running_time > 0){
+        wdt.kick(global_running_time);
         create_threads_induced_cycle_method_4v1(graph);
         wdt.stop();
     } else {
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
 	double lastExecutionTime = execution_duration.count();
 
 	// OUTPUT - nothing - screen - file - debug
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 	sem_destroy(&semaforo);
     return 0;
 };

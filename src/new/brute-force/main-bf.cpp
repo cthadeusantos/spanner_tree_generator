@@ -64,7 +64,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 	
 	int lower_limit = 1;
-	if (!nolb){
+	if (!global_nolb){
 		graph.grt = OpBasic::maxLowerCicle(graph);
 		lower_limit = graph.grt - 1;
 	}
@@ -80,8 +80,8 @@ int main(int argc, char** argv){
 	run_name = "BRUTE_FORCE";
 
 	//Stretch acme; // Lonney Tunes rocks!
-    if (running_time > 0){
-        wdt.kick(running_time);
+    if (global_running_time > 0){
+        wdt.kick(global_running_time);
         Stretch().sequential(graph);
         wdt.stop();
     } else {
@@ -95,7 +95,7 @@ int main(int argc, char** argv){
 	double lastExecutionTime = execution_duration.count();
 
 	// OUTPUT - nothing - screen - file - debug
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 	sem_destroy(&semaforo);
     return 0;
 };

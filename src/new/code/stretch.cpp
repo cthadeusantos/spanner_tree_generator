@@ -11,10 +11,10 @@
 
 #include "../Debug.h"
 
-extern bool noindex;
+extern bool global_noindex;
 
 
-//extern float running_time;
+//extern float global_running_time;
 extern bool abort_for_timeout;
 //bool abort_for_timeout = false;
 
@@ -35,8 +35,8 @@ void Stretch::sequential(Graph& graph){
 	// MyWatchdogTimer wdt;
 
 	// //Stretch acme; // Lonney Tunes rocks!
-    // if (running_time > 0){
-    //     wdt.kick(running_time);
+    // if (global_running_time > 0){
+    //     wdt.kick(global_running_time);
     //     find_index(graph);
     //     wdt.stop();
     // } else {
@@ -94,7 +94,7 @@ void Stretch::find_index(Graph& g)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f = Stretch::find_factor(g, tree);
                         ++arv;
                         //g.sum_tree();
@@ -152,7 +152,7 @@ void Stretch::find_index_edge(Graph& g)
             if( !OpBasic::is_cyclic(tree) ){
                 if(j == n-2){ // achou uma arvore geradora
                     int f=1;
-                    if (!noindex)
+                    if (!global_noindex)
                         f = Stretch::find_factor(g, tree);
                     ++arv;
                     if(f < index){
@@ -221,7 +221,7 @@ void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f = Stretch::find_factor(g, tree);
                         // ++arv;
                         if(f < index){
@@ -371,7 +371,7 @@ int Stretch::find_index(Graph &original, Graph &change)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f = Stretch::find_factor(G2, tree);
                         ++arv;
                         //g.sum_tree();

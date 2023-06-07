@@ -25,11 +25,11 @@
 //#define INDUCED_CYCLE_SYZE_START 5
 
 extern sem_t semaforo;
-extern int total_arv;
+extern int global_total_arv;
 extern std::mutex mtx;
 extern int num_threads;
 extern int used_threads;
-extern bool noindex;
+extern bool global_noindex;
 extern int global_induced_cycle;
 
 extern bool abort_for_timeout;
@@ -147,7 +147,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f = Stretch::find_factor(subgraph, tree);
                         ++arv;
                         subgraph.add_tree();
@@ -179,7 +179,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
         arvores = 0;
     }
     DEBUG std::cerr << "thread " << id << " criou " << arv << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, total_arv, arv, tree_local, graph);
+    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, graph);
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
@@ -244,7 +244,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f =Stretch::find_factor(g, tree);
                         ++arv;
                         mtx.lock();
@@ -281,7 +281,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
         arvores = 0;
     }
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
+    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
 
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
@@ -327,7 +327,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                     if( !OpBasic::is_cyclic(tree) ){
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
-                            if (!noindex) 
+                            if (!global_noindex) 
                                 f = Stretch::find_factor(g, tree);
                             ++arv;
                             mtx.lock();
@@ -365,7 +365,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
         arvores = 0;
     }
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
+    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
     mtx.unlock();
     sem_post(&semaforo);
 }
@@ -412,7 +412,7 @@ void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, con
                     if( !OpBasic::is_cyclic(tree) ){
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
-                            if (!noindex)
+                            if (!global_noindex)
                                 f = Stretch::find_factor(g, tree);
                             ++arv;
                             mtx.lock();
@@ -450,7 +450,7 @@ void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, con
         arvores = 0;
     }
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, total_arv, arv, tree_local, g);
+    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
     mtx.unlock();
     sem_post(&semaforo);
 }

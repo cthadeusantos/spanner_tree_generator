@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration0(end - start);
 	double lastExecutionTime = execution_duration0.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// EDGE_PARALLELISM
 	// Start time counting
@@ -95,7 +95,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration1(end - start);
 	lastExecutionTime = execution_duration1.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// INDUCED_CYCLE
 	// Start time counting
@@ -109,7 +109,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration2(end - start);
 	lastExecutionTime = execution_duration2.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// BRUTE FORCE
 	// Start time counting
@@ -123,7 +123,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration4(end - start);
 	lastExecutionTime = execution_duration4.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	sem_destroy(&semaforo);
 

@@ -103,9 +103,9 @@ int next(int a, int limite)
  * @details Auxiliary function to setting all parameters after stretch index found
  * @author Carlos Thadeu
  */
-void set_graph_final_parameters(int &index_local, int &total_arv, int &arv, Graph &tree_local, Graph &graph){
+void set_graph_final_parameters(int &index_local, int &global_total_arv, int &arv, Graph &tree_local, Graph &graph){
     if((index_local < graph.get_stretch_index() && index_local != 1) || graph.get_stretch_index()==1) {
-        total_arv += arv;
+        global_total_arv += arv;
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
         if (index_local==graph.grt - 1){
