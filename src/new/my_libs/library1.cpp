@@ -120,8 +120,10 @@ void set_graph_final_parameters(int &index_local, int &global_total_arv, int &ar
  * @details Auxiliary function to setting all parameters after stretch index found
  * @author Carlos Thadeu
  */
-void set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph){
-    if(index_local < graph.get_stretch_index() && index_local != 1) {
+void set_graph_final_parameters(int index_local, Graph &tree_local, Graph &graph){
+    //DEBUG std::cerr << "Inside1 " << index_local << " " << tree_local.get_stretch_index() << " " << graph.get_stretch_index() << std::endl;
+    
+    if((index_local < graph.get_stretch_index() && index_local != 1) || graph.get_stretch_index()==1) {
         graph.set_stretch_index(index_local);
         graph.set_best_tree(tree_local);
         if (index_local==graph.grt - 1){
@@ -129,5 +131,7 @@ void set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &grap
             //processando.store(false,std::memory_order_release);
         }
     }
+    //DEBUG std::cerr << "Inside 2" << index_local << " " << tree_local.get_stretch_index() << " " << graph.get_stretch_index() << std::endl;
+
 }
 

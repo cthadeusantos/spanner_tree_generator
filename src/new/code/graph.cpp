@@ -396,8 +396,7 @@ int Graph::get_num_edges()
 void Graph::set_best_tree(Graph graph)
 {
     this->best_tree = {};
-    for (int i = 0; i < graph.edgeList().size(); i = i + 2)
-    {
+    for (int i = 0; i < graph.edgeList().size(); i = i + 2) {
         this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i + 1]));
     }
 };

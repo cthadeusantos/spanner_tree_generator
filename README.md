@@ -1,3 +1,4 @@
+- [Disclaimer](#disclaimer)
 - [1. Usage](#1-usage)
   - [Usage example (running):](#usage-example-running)
   - [Usage example (running batteries):](#usage-example-running-batteries)
@@ -14,6 +15,9 @@
 # T-Admissibility Problem <!-- omit in toc -->
 
 This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
+
+## Disclaimer
+
 
 ## 1. Usage
 

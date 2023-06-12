@@ -3,10 +3,10 @@
 # Usage
 # python3 adjacency2edges.py < [INPUT_FILE] > [OUTPUT_FILE]
 #
-# INPUT             OUTPUT
-#   3               3
-#   0 1 0    ====>  0 1
-#   1 0 1           1 2
+# FILE INPUT             FILE OUTPUT
+#   3                       3
+#   0 1 0            ====>  0 1
+#   1 0 1                   1 2
 #   0 1 0
 
 
@@ -27,7 +27,7 @@ for line in fileinput.input():
         count_column = 0
         for value in array:
             if value == '1':
-                output += str(count_line) + ' ' + str(count_column) + '\n'
+                output += str(count_line) + ',' + str(count_column) + '\n'
             count_column += 1
         count_line += 1
 print(output)

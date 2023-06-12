@@ -580,7 +580,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "NUM_VERTICES = " << graph.get_qty_vertex() << std::endl;
 		std::cout << "NUM_EDGES = " << graph.get_num_edges() << std::endl;
 		std::cout << "LOWER_BOUND = " << lower_limit << std::endl;
-		std::cout << "STRETCH_INDEX = " << stretch_index <<  std::endl;
+		std::cout << "STRETCH_INDEX = " << graph.get_stretch_index() <<  std::endl;
 		std::cout << "SUM_TREES = " << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME = " << lastExecutionTime <<  std::endl;
         std::cout << "THREADs = " << num_threads <<  std::endl;
@@ -597,7 +597,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "[NUM_VERTICES]=" << graph.get_qty_vertex() << std::endl;
 		std::cout << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
 		std::cout << "[LOWER_BOUND]=" << lower_limit << std::endl;
-		std::cout << "[STRETCH_INDEX]=" << stretch_index <<  std::endl;
+		std::cout << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cout << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
         std::cout << "[THREADS]=" << num_threads <<  std::endl;
@@ -611,7 +611,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[NUM_VERTICES]=" << graph.get_qty_vertex() << std::endl;
 		std::cerr << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
-		std::cerr << "[STRETCH_INDEX]=" << stretch_index <<  std::endl;
+		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cerr << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
