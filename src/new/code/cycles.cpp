@@ -239,8 +239,8 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
             if (in(vertex_u, vertex_v, immovable_edges))
             { // for modify  - CHANGE 002
                 last_neighbor[vertex_v] = vertex_u;
-                int auxiliar = last_neighbor[vertex_u];
-                bool acerto = in(vertex_u, auxiliar, immovable_edges);
+                //int auxiliar = last_neighbor[vertex_u];
+                //bool acerto = in(vertex_u, auxiliar, immovable_edges);
                 //if ( vertex_v > auxiliar ) vertex_v++; // Deve considerar todos os vizinhos
                 //if ( vertex_v > auxiliar || acerto ) vertex_v++; // Deve considerar todos os vizinhos
                 vertex_v++;
