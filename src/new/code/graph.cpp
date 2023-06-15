@@ -924,7 +924,7 @@ std::vector<int> Graph::get_neighbors(int vertex){
  * @param adjacency That's a vector of vector (an adjacencies list)
  * @return min_waist That's an integer
  */
-int Graph::waist(std::vector<std::vector<int>> adjacency) {
+/*int Graph::waist(std::vector<std::vector<int>> adjacency) {
     int n = adjacency.size();
     int min_waist = n;
     for (int i = 0; i < n; i++) {
@@ -946,7 +946,7 @@ int Graph::waist(std::vector<std::vector<int>> adjacency) {
         }
     }
     return min_waist;
-}
+} */
 
 /**
  * @brief Calculate the girth of graph
@@ -956,7 +956,7 @@ int Graph::waist(std::vector<std::vector<int>> adjacency) {
  * @author cthadeusantos
  * @return min_waist That's an integer
  */
-int Graph::waist() {
+/*int Graph::waist() {
     std::vector<std::vector<int>> adjacency = this->get_neighbors();
     int n = adjacency.size();
     int min_waist = n;
@@ -979,7 +979,7 @@ int Graph::waist() {
         }
     }
     return min_waist;
-}
+} */
 
 std::vector<std::vector<int>> Graph::get_neighbors(){
     return this->graph;

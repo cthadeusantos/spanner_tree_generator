@@ -110,8 +110,8 @@ public:
     std::vector<int> get_neighbors(int vertex);
     std::vector<std::vector<int>> get_neighbors();
 
-    int waist(std::vector<std::vector<int>> graph);
-    int waist();
+    //int waist(std::vector<std::vector<int>> graph);
+    //int waist();
 
     void show_edges();
     void check_integrity();

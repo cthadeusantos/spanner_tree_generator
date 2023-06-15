@@ -1,5 +1,15 @@
 # changes
 
+## 0.1.7e (2023/06/15)
+* Fixed bug in stretch::find that was causing an issue in passing the value of the extension index in CYCLE_M4
+* Disable articulations method (will be remove at future) *comment*
+* Delete vertex method (graph.cpp) specific for articulation disable
+* Disable CYCLE_M3 (removed from makefile)
+* Add 3 new graphs at examples
+* Disabled the waist method due to failures in certain graphs, replaced with the girth method until it is fixed
+
+## 0.1.7d (2023/05/22)
+
 ## 0.1.7a (2023/05/03)
 * Fix parameters file bug that not show "warning" if unknown parameters are passed
 * Update README.md

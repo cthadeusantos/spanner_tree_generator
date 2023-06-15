@@ -2282,7 +2282,8 @@ std::vector<int> seeking_induced_cycles_edges_v3r1(Graph &graph){
  */
 std::vector<std::vector<std::pair<int, int>>> seeking_induced_cycles_edges_v4(Graph &graph){
     // BELOW - FIXED MAX SIZE OF INDUCED CYCLE TO BE SEARCH
-    int cycle_size = graph.waist();
+    //int cycle_size = graph.waist();
+    int cycle_size = OpBasic::girth(graph);
     graph.set_girth(cycle_size);
 
     DEBUG std::cerr << "Define induced cycle to size: " << cycle_size << std::endl;
