@@ -1907,7 +1907,7 @@ Graph remove_edges_cycle_M2(std::vector<int> combinations, std::vector<std::pair
  * @author Carlos Thadeu
  * @param g a graph that represents the graph
  */
-void create_threads_articulations(Graph& g) {
+/*void create_threads_articulations(Graph& g) {
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
@@ -1939,7 +1939,7 @@ void create_threads_articulations(Graph& g) {
     for(int i = 0; i < id; ++i){
         vetor_th[i].join();
     }
-}
+} */
 
 //! Get index from adjacent vertex
 /*!

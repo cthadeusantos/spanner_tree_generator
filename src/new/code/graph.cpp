@@ -97,12 +97,12 @@ void Graph::add_aresta(std::vector<int> arestas)
 }
 
 /**
- * Delete a vertex from graph
- * @details Delete a vertex from graph and your edges
+ * Delete a vertex from graph (METHOD SPECIFIC FOR ARTICULATIONS - NOT REMOVE THE VERTEX FROM THE DATA STRUCTURE)
+ * @details Delete a vertex from graph and your edges 
  * @author Carlos Thadeu
  * @param vertex an integer that represents the vertex to be deleted
  */
-void Graph::delete_vertex(int vertex)
+/*void Graph::delete_vertex(int vertex)
 {
     std::vector<int>::iterator it;
     std::vector<int> neighbors;
@@ -113,7 +113,8 @@ void Graph::delete_vertex(int vertex)
     {
         remove_aresta(vertex, neighbors[i]);
     }
-}
+    // TO DO SUBTRAIR VERTICE
+}*/
 
 //! Delete an edge
 /*!
@@ -597,7 +598,7 @@ std::vector<int> Graph::DFS(int vertex)
  * @param subgraph a vector of vectors that represents the subgraphs
  * @param g a graph that represents the original graph
  */
-void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g)
+/*void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g)
 {
     Graph graph;
     // transform set at vector
@@ -653,9 +654,9 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
         }
         count++;
     }
-}
+} */
 
-Graph Graph::build_subgraph(std::vector<int> &subgraph)
+/*Graph Graph::build_subgraph(std::vector<int> &subgraph)
 {
     Graph new_graph(subgraph.size());
 
@@ -677,7 +678,7 @@ Graph Graph::build_subgraph(std::vector<int> &subgraph)
         }
     }
     return new_graph;
-}
+}*/
 
 /**
  * @brief Return signal if lower limit was reached

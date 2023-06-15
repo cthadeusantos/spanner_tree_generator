@@ -75,7 +75,7 @@ int main(int argc, char** argv){
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with articulations - wait!\n";
+/*	DEBUG std::cerr << "Solving with articulations - wait!\n";
 	run_name = "Articulations";
 
 	if (running_time > 0){
@@ -84,7 +84,7 @@ int main(int argc, char** argv){
         wdt.stop();
     } else {
         create_threads_articulations(graph);
-    }
+    } */
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

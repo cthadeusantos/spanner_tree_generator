@@ -17,7 +17,7 @@ void create_threadsV2(Graph& graph);
 void create_threads_induced_cycle_method_3(Graph &g);
 void create_threads_induced_cycle_method_3v2(Graph &g);
 void create_threads_induced_cycle_method_4v1(Graph& graph);
-void create_threads_articulations(Graph &g);
+//void create_threads_articulations(Graph &g);
 void create_threads_edge_max_degree(Graph &g);
 void create_threads_edge_max_degreeV2(Graph &g);
 void create_threadV2_edge_max_degree_auxiliary(Graph &graph, std::vector<int> edges, int block_size, int id_th);

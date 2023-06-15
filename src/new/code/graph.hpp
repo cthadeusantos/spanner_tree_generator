@@ -34,7 +34,7 @@ public:
     void add_vertex();
     void add_aresta(int v, int u);
     void add_aresta(std::vector<int> arestas);
-    void delete_vertex(int vertex); // by thadeu
+    //void delete_vertex(int vertex); // by thadeu
     void remove_aresta(int v, int u);
     void clear_arestas();
     void clear();
@@ -95,8 +95,8 @@ public:
     std::vector<int> DFS(int s);
     std::vector<int> BFS(int s);
     
-    void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
-    Graph build_subgraph(std::vector<int> &split_in_subgraphs);
+    //void split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g);
+    //Graph build_subgraph(std::vector<int> &split_in_subgraphs);
     bool get_signal();
     void set_signal();
 

@@ -32,16 +32,6 @@ extern bool abort_for_timeout;
 Faziam parte do arquivo sequential_functions.cpp
 **************************************************************************************************/
 void Stretch::sequential(Graph& graph){
-	// MyWatchdogTimer wdt;
-
-	// //Stretch acme; // Lonney Tunes rocks!
-    // if (running_time > 0){
-    //     wdt.kick(running_time);
-    //     find_index(graph);
-    //     wdt.stop();
-    // } else {
-    //     find_index(graph);
-    // }
     find_index(graph);
 }
 
@@ -294,9 +284,6 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
-    //if (factor < 2) factor = (int)INFINITY; // by Thadeu REMOVIDA PQ STRETCH INDEX AGORA DEFAULT=1
-    g.set_stretch_index(factor);    // Insert by Thadeu
-    g.set_best_tree(tree);          // Insert by Thadeu
     return factor;
 }
 
