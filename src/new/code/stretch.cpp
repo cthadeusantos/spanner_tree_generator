@@ -12,7 +12,7 @@
 #include "../Debug.h"
 
 extern bool global_noindex;
-
+extern bool global_save_tree;
 
 //extern float global_running_time;
 extern bool abort_for_timeout;
@@ -32,16 +32,6 @@ extern bool abort_for_timeout;
 Faziam parte do arquivo sequential_functions.cpp
 **************************************************************************************************/
 void Stretch::sequential(Graph& graph){
-	// MyWatchdogTimer wdt;
-
-	// //Stretch acme; // Lonney Tunes rocks!
-    // if (global_running_time > 0){
-    //     wdt.kick(global_running_time);
-    //     find_index(graph);
-    //     wdt.stop();
-    // } else {
-    //     find_index(graph);
-    // }
     find_index(graph);
 }
 
@@ -74,8 +64,8 @@ void Stretch::find_index(Graph& g)
         ult_colocado[i] = -1;
     }
 
-    std::string fileName = "SEQsaida.txt";
-    std::string str_tree;
+    std::string fileName = "SEQsaida.txt";  // REMOVER - APENAS PARA TESTE
+    std::string str_tree;                   // REMOVER - APENAS PARA TESTE
 
     while( v >= 0 and !(abort_for_timeout)){
         if( prox_vizinho[v] == g.grau(v) ){
@@ -99,8 +89,14 @@ void Stretch::find_index(Graph& g)
                         ++arv;
                         //g.sum_tree();
                         g.add_tree();
-                        str_tree = tree_to_string(tree);
-                        save_tree(str_tree, fileName);
+
+                        if (global_save_tree)                   // REMOVER - APENAS PARA TESTE             
+                        {                                       // REMOVER - APENAS PARA TESTE
+                            str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                            str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                            save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                        }                                       // REMOVER - APENAS PARA TESTE
+
                         if(f < index){
                             index = f;
                             this->tree = tree;
@@ -294,9 +290,6 @@ int Stretch::find_factor(Graph& g, Graph& tree)
         }
         it = it + 2;
     }
-    //if (factor < 2) factor = (int)INFINITY; // by Thadeu REMOVIDA PQ STRETCH INDEX AGORA DEFAULT=1
-    //g.set_stretch_index(factor);    // Insert by Thadeu
-    //g.set_best_tree(tree);          // Insert by Thadeu
     return factor;
 }
 

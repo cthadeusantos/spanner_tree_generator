@@ -184,6 +184,23 @@ bool in(const int &u, const int &v, const std::vector<std::pair<int,int>> &edges
 }
 
 /**
+ * @details Is the value belongs the vector?
+ * @param vector a vector that contains integers
+ * @param pair a pair searched
+ * @return a boolean
+ */
+bool in(const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed) {
+    bool result = false;
+    for(auto edge : edges_to_be_processed) {
+        if ((edge.first == v ||  edge.second == v)) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
+/**
  * Split a string
  * @details Split a string
  * The delimiter is not optional because there isn't implemented default, you must select one.

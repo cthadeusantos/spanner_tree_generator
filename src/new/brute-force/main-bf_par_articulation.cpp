@@ -79,13 +79,13 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with articulations - wait!\n";
 	run_name = "Articulations";
 
-	if (global_running_time > 0){
+	/*if (global_running_time > 0){
         wdt.kick(global_running_time);
         create_threads_articulations(graph);
         wdt.stop();
     } else {
         create_threads_articulations(graph);
-    }
+    }*/
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	

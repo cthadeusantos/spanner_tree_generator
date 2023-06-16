@@ -91,7 +91,7 @@ std::tuple <int, int, int> define_block_chuck_for_max_degree(int &num_threads, i
  * @param end
  * @param id
  */
-void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id)
+/*void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start, int end, const int id)
 {
     DEBUG std::cerr << "CALCULANDO POR ARTICULACAO - Thread : " << id << std::endl;
 
@@ -182,7 +182,7 @@ void find_index_articulation(Graph &graph, Graph &subgraph, int raiz, int start,
     set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, graph);
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
-}
+} */
 
 //! Calculate stretch index - parallel
 /*!
@@ -628,7 +628,7 @@ void create_threads_edge_max_degreeV2(Graph& graph)
  * @author Carlos Thadeu
  * @param g a graph that represents the graph
  */
-void create_threads_articulations(Graph& g) {
+/*void create_threads_articulations(Graph& g) {
     // Calcula atributo grt
     // por enquanto fica aqui, no futuro retirar 
     // pois o método create_thread nao é para calcular nada do grafo
@@ -660,4 +660,4 @@ void create_threads_articulations(Graph& g) {
     for(int i = 0; i < id; ++i){
         vetor_th[i].join();
     }
-}
+}*/

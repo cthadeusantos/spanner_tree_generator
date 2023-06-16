@@ -152,9 +152,16 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
     Graph tree(G1.getQtdVertices());
     Graph tree_local(G1.getQtdVertices());
 
-    for (auto edge : immovable_edges)
+    /*
+        for (auto edge : immovable_edges)
     {
         tree.add_aresta(edge.first, edge.second);
+    }
+    */
+
+    for (auto edge : immovable_edges)
+    {
+        G1.remove_aresta(edge.first, edge.second);
     }
 
     pthread_mutex_lock(&mutex_signal);
@@ -164,6 +171,9 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
     std::string fileName = std::to_string(id) + "saida.txt";
     std::string str_tree;
 
+
+    int num_fixed_edges = immovable_edges.size();
+
     while (graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout))
     {
         if (idx_next_neighbor[vertex_v] == G1.grau(vertex_v))
@@ -172,10 +182,9 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
             vertex_v--;
             if (vertex_v < 0)
                 break;
-            if (!in(last_neighbor[vertex_v], vertex_v, immovable_edges))
-            { // for modify
+            if (tree.possui_aresta(vertex_v, last_neighbor[vertex_v])){
                 tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
-            } // for modify
+            }
             last_neighbor[vertex_v] = -1;
         }
         else
@@ -192,64 +201,59 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
 
                 if (not OpBasic::is_cyclic(tree))
                 {
-                    if (tree.getQtdArestas() == tree.getQtdVertices() - 1)
+                    if (tree.getQtdArestas() == G1.getQtdVertices() - num_fixed_edges - 1)
                     {
-                        int f = 1;
-                        if (!global_noindex)
-                        { // LF request - only sum tree
-                            // pthread_mutex_lock (&mutex_signal);
-                            f = Stretch::find_factor(graph, tree);
-                            // pthread_mutex_unlock (&mutex_signal);
-                        }
-                        G1.add_tree();
-                        if (global_save_tree)
-                        {                                    // REMOVER - APENAS PARA TESTE
-                            str_tree = tree_to_string(tree); // REMOVER - APENAS PARA TESTE
-                            str_tree = ">" + str_tree;       // REMOVER - APENAS PARA TESTE
-                            save_tree(str_tree, fileName);   // REMOVER - APENAS PARA TESTE
-                        }                                    // REMOVER - APENAS PARA TESTE
-                        if (f < index_local)
+                        for (auto edge : immovable_edges)
                         {
-                            index_local = f;
-                            tree_local = tree;
-                            if (index_local == lower_limit)
+                            tree.add_aresta(edge.first, edge.second);
+                        }
+                        if (not OpBasic::is_cyclic(tree))
+                        {
+                            int f = 1;
+                            if (!global_noindex)
+                            { // LF request - only sum tree
+                                // pthread_mutex_lock (&mutex_signal);
+                                f = Stretch::find_factor(graph, tree);
+                                // pthread_mutex_unlock (&mutex_signal);
+                            }
+                            G1.add_tree();
+                            if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+                            {                                       // REMOVER - APENAS PARA TESTE
+                                str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                                str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                                save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                            }                                       // REMOVER - APENAS PARA TESTE
+                            if (f < index_local)
                             {
-                                pthread_mutex_lock(&mutex_signal);
-                                graph.set_signal();
-                                pthread_mutex_unlock(&mutex_signal);
-                                break;
+                                index_local = f;
+                                tree_local = tree;
+                                if (index_local == lower_limit)
+                                {
+                                    pthread_mutex_lock(&mutex_signal);
+                                    graph.set_signal();
+                                    pthread_mutex_unlock(&mutex_signal);
+                                    break;
+                                }
                             }
                         }
+                        for (auto edge : immovable_edges)
+                        {
+                            tree.remove_aresta(edge.first, edge.second);
+                        }
+             
                     }
                     else
                     {
-                        if (vertex_v < G1.get_num_vertices() - 1)
-                            vertex_v++;
+                        if (vertex_v < G1.get_num_vertices() - 1) vertex_v++;
                         continue;
                     }
-                }
-                if (!in(last_neighbor[vertex_v], vertex_v, immovable_edges))
-                {
-                    tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
-                }  //else {
-                    //if (vertex_v > 0)
-                    //    vertex_v--;
-                //}
-            } // else { // ELSE OF IF HAS EDGE -- CHAVE 001
-            if (in(vertex_u, vertex_v, immovable_edges))
-            { // for modify  - CHANGE 002
-                last_neighbor[vertex_v] = vertex_u;
-                //int auxiliar = last_neighbor[vertex_u];
-                //bool acerto = in(vertex_u, auxiliar, immovable_edges);
-                //if ( vertex_v > auxiliar ) vertex_v++; // Deve considerar todos os vizinhos
-                //if ( vertex_v > auxiliar || acerto ) vertex_v++; // Deve considerar todos os vizinhos
-                vertex_v++;
-                continue ;
-            } // for modify - CHANGE 002
-            //} //END OF IF HAS EDGE -- CHAVE 001
+
+                } // end of  IF TREE(MENOR) nao possui ciclo
+                tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
+            } // end of  IF TREE(MENOR) nao possui aresta
         }
     } // END OF WHILE
-    //DEBUG std::cerr << "ID:" << id << "ACABOU" << index_local << std::endl;
+    DEBUG std::cerr << "ID:" << id << "ACABOU" << index_local << std::endl;
     G1.set_stretch_index(index_local); // *********************************
     G1.set_best_tree(tree);
     // pthread_mutex_lock (&mutex_signal);
@@ -445,6 +449,9 @@ void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &co
     sem_post(&semaforo); // a thread libera espaço para a proxima
 }
 
+// DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+// DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+// DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
 std::vector<std::pair<int, int>> detect_valid_edges(std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph)
 {
     std::vector<std::pair<int, int>> aux;
@@ -848,7 +855,8 @@ std::vector<int> seeking_induced_cycles_edges_v3r1(Graph &graph)
 std::vector<std::vector<std::pair<int, int>>> seeking_induced_cycles_edges_v4(Graph &graph)
 {
     // BELOW - FIXED MAX SIZE OF INDUCED CYCLE TO BE SEARCH
-    int cycle_size = graph.waist();
+    //int cycle_size = graph.waist();
+    int cycle_size = OpBasic::girth(graph);
     graph.set_girth(cycle_size);
 
     DEBUG std::cerr << "Define induced cycle to size: " << cycle_size << std::endl;

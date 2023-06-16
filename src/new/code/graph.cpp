@@ -97,12 +97,12 @@ void Graph::add_aresta(std::vector<int> arestas)
 }
 
 /**
- * Delete a vertex from graph
+ * Delete a vertex from graph METHOD SPECIFIC FOR ARTICULATIONS - NOT REMOVE THE VERTEX FROM THE DATA STRUCTURE)
  * @details Delete a vertex from graph and your edges
  * @author Carlos Thadeu
  * @param vertex an integer that represents the vertex to be deleted
  */
-void Graph::delete_vertex(int vertex)
+/*void Graph::delete_vertex(int vertex)
 {
     std::vector<int>::iterator it;
     std::vector<int> neighbors;
@@ -113,7 +113,7 @@ void Graph::delete_vertex(int vertex)
     {
         remove_aresta(vertex, neighbors[i]);
     }
-}
+}*/
 
 //! Delete an edge
 /*!
@@ -596,7 +596,7 @@ std::vector<int> Graph::DFS(int vertex)
  * @param subgraph a vector of vectors that represents the subgraphs
  * @param g a graph that represents the original graph
  */
-void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g)
+/*void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vector<int>> &subgraph, Graph &g)
 {
     Graph graph;
     // transform set at vector
@@ -652,9 +652,9 @@ void Graph::split_in_subgraphs(std::set<int> articulations, std::vector<std::vec
         }
         count++;
     }
-}
+}*/
 
-Graph Graph::build_subgraph(std::vector<int> &subgraph)
+/*Graph Graph::build_subgraph(std::vector<int> &subgraph)
 {
     Graph new_graph(subgraph.size());
 
@@ -676,7 +676,7 @@ Graph Graph::build_subgraph(std::vector<int> &subgraph)
         }
     }
     return new_graph;
-}
+}*/
 
 /**
  * @brief Return signal if lower limit was reached
@@ -922,7 +922,7 @@ std::vector<int> Graph::get_neighbors(int vertex){
  * @param adjacency That's a vector of vector (an adjacencies list)
  * @return min_waist That's an integer
  */
-int Graph::waist(std::vector<std::vector<int>> adjacency) {
+/*int Graph::waist(std::vector<std::vector<int>> adjacency) {
     int n = adjacency.size();
     int min_waist = n;
     for (int i = 0; i < n; i++) {
@@ -944,7 +944,7 @@ int Graph::waist(std::vector<std::vector<int>> adjacency) {
         }
     }
     return min_waist;
-}
+}*/
 
 /**
  * @brief Calculate the girth of graph
@@ -954,7 +954,7 @@ int Graph::waist(std::vector<std::vector<int>> adjacency) {
  * @author cthadeusantos
  * @return min_waist That's an integer
  */
-int Graph::waist() {
+/*int Graph::waist() {
     std::vector<std::vector<int>> adjacency = this->get_neighbors();
     int n = adjacency.size();
     int min_waist = n;
@@ -977,7 +977,7 @@ int Graph::waist() {
         }
     }
     return min_waist;
-}
+} */
 
 std::vector<std::vector<int>> Graph::get_neighbors(){
     return this->graph;
