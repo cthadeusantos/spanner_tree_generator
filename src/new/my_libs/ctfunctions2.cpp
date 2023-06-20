@@ -189,10 +189,29 @@ bool in(const int &u, const int &v, const std::vector<std::pair<int,int>> &edges
  * @param pair a pair searched
  * @return a boolean
  */
+/*
 bool in(const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed) {
     bool result = false;
     for(auto edge : edges_to_be_processed) {
         if ((edge.first == v ||  edge.second == v)) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+*/
+
+/**
+ * @details Is the value belongs the vector?
+ * @param vector a vector that contains integers
+ * @param pair a pair searched
+ * @return a boolean
+ */
+bool in(const int &value, const char position, const std::vector<std::pair<int,int>> &edges_to_be_processed) {
+    bool result = false;
+    for(auto edge : edges_to_be_processed) {
+        if (((edge.first == value ||  edge.second == value) && position == 'b') || (edge.first == value && position == 'f') || (edge.second == value && position == 's')) {
             result = true;
             break;
         }

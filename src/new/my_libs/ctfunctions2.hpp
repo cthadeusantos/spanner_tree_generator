@@ -26,7 +26,8 @@ bool in(const int &value, const std::vector <int> &vector);
 bool in(const int &value, std::set <int> &set );
 bool in( const std::pair<int, int> &edge, const std::vector<std::pair<int, int>> &vector);
 bool in(const int &u, const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed);
-bool in(const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed);
+//bool in(const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed);
+bool in(const int &value, const char position, const std::vector<std::pair<int,int>> &edges_to_be_processed);
 
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);
