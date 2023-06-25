@@ -120,7 +120,7 @@ void find_index_cycleM4_NEW_APPROACH(int id, int root, Valid_Edges_r &edges_to_t
     //while(indice[0] < start + marestas - num_fixed_edges && graph.get_signal() and !(abort_for_timeout))
     //while(indice[0] < start + marestas - (num_fixed_edges - 1) && graph.get_signal() and !(abort_for_timeout))
 
-    int limit_of_zero_index = marestas - (marestas - num_fixed_edges - 1);
+    int limit_of_zero_index = marestas - (nvertices - num_fixed_edges - 1 - 1);
     while(indice[0] < start + limit_of_zero_index && graph.get_signal() and !(abort_for_timeout))
     {
         //if( indice[j] > marestas - ( nvertices  - 1 - num_fixed_edges - j ))
@@ -235,7 +235,7 @@ void find_index_induced_cycle_method_4_NEW_APPROACH(const int id,  Valid_Edges_r
 
     // mtx.lock();
     int root = 0;
-    std::cerr << "************ID " << id << "***********" << std::endl;
+    DEBUG std::cerr << "************ID " << id << "***********" << std::endl;
     pthread_mutex_lock(&mutex_signal);
     Graph G1 = graph;   // Auxiliary graph - local graph
     //Graph G1;

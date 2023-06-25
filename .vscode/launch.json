@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos/grafo_17.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_16.txt"],
             "default": "${workspaceFolder}/instances/examples/G4_FULL_edges.in"
         }
     ],
