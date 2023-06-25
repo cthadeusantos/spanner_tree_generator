@@ -89,10 +89,12 @@ int main(int argc, char** argv){
 	run_name = "INDUCED_CYCLE-M4";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
-        create_threads_induced_cycle_method_4v1(graph);
+        //create_threads_induced_cycle_method_4v1(graph);
+		create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
         wdt.stop();
     } else {
-        create_threads_induced_cycle_method_4v1(graph);
+        //create_threads_induced_cycle_method_4v1(graph);
+		create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
     }
 	
 	// End time counting

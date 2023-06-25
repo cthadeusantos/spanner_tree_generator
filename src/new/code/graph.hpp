@@ -116,9 +116,6 @@ public:
 
     void show_edges();
     void check_integrity();
-
-
-
 };
 
 #endif //GRAPH_HPP_
