@@ -40,10 +40,12 @@
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
 
-	pthread_mutex_init(&mutex_signal, NULL);
+	unsigned int n = std::thread::hardware_concurrency();
+	DEBUG std::cerr << " ********************************************\n";
+    DEBUG std::cerr << n << " concurrent threads are supported.\n";
+	DEBUG std::cerr << " ********************************************\n";
 
-	//num_threads = 1;
-	//max_induced_cycles = 1;
+
 	if(argc < 2){
 		Parameters::usage("--help");
 		exit(0);
@@ -69,32 +71,34 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
+
+	//pthread_mutex_init(&mutex_signal, NULL);
+
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-	//Stretch().find_index(graph);
 
 	int lower_limit = 1;
 	if (!global_nolb){
-		//graph.grt = OpBasic::maxLowerCicle(graph);
 		graph.set_grt(graph);
 		lower_limit = graph.get_grt() - 1;
 		graph.set_lower_limit(lower_limit);
 	}
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 
-	sem_init(&semaforo, 0, num_threads);
+	//sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with induced cycle Method 4 - PARALLEL- induced cycle from girth wait!\n";
 	run_name = "INDUCED_CYCLE-M4";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
-        //create_threads_induced_cycle_method_4v1(graph);
+        //create_threads_inducedmtx_cycle_method_4v1(graph);
 		create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
         wdt.stop();
     } else {
         //create_threads_induced_cycle_method_4v1(graph);
-		create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
+		//create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
+		create_threads_induced_cycle_method_4_NEW_APPROACH_V2_USANDO_FILA(graph);
     }
 	
 	// End time counting
@@ -104,7 +108,8 @@ int main(int argc, char** argv){
 
 	// OUTPUT - nothing - screen - file - debug
 	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
-	sem_destroy(&semaforo);
+	//sem_destroy(&semaforo);
+	//pthread_mutex_destroy(&mutex_signal);
     return 0;
 };
 

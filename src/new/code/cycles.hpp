@@ -2,7 +2,7 @@
 #define CYCLES_HPP_
 
 struct Valid_Edges_r {
-    std::vector<std::vector<std::pair<int, int>>> edges_list;
+    //std::vector<std::vector<std::pair<int, int>>> edges_list;
     std::vector<std::vector<std::pair<int, int>>> disposable_edges_list;
     std::vector<std::vector<std::pair<int, int>>> immutable_edges_list;
 } typedef Valid_Edges_r;
@@ -15,14 +15,19 @@ struct Blocks_r {
     int num_threads;
 } typedef Blocks_r;
 
+void create_threads_induced_cycle_method_4_NEW_APPROACH_V2_USANDO_FILA(Graph &graph);
+void create_threadV4_auxiliary_NEW_APPROACHzzzzz2(int id, std::queue<Valid_Edges_r> &QUEUE_VECTOR, Graph &graph);
+
+std::vector<std::vector<int>> generator_combinations(int nelements);
 void create_threads_induced_cycle_method_4_NEW_APPROACH(Graph &graph);
 //std::vector<std::vector<std::pair<int, int>>> detect_valid_edges_M4_NEW_APPROACH(std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 Valid_Edges_r detect_valid_edges_M4_NEW_APPROACH(std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed, Graph &graph);
 std::vector<std::pair<int, int>> make_edges_list(Graph graph);
 Blocks_r define_block_chuck_for_cycleM4v2_NEW_APPROACH(int &num_threads, int &num_elements);
 void create_threadV4_auxiliary_NEW_APPROACH(const int id, int start, int end, Valid_Edges_r &edges_to_threads, Graph &graph);
-void find_index_induced_cycle_method_4_NEW_APPROACH(int id,  Valid_Edges_r &edges_to_threads , Graph &graph);
-void find_index_cycleM4_NEW_APPROACH(int id, int root, Valid_Edges_r &edges_to_threads, Graph &G1, Graph &graph);
+void create_threadV4_auxiliary_NEW_APPROACHxxxxx2(int id, int start, int end, std::vector<Valid_Edges_r> pilha, Graph &graph);
+void find_index_induced_cycle_method_4_NEW_APPROACH(int id,  Valid_Edges_r &edges_to_threads , Graph &graph, int idx);
+void find_index_cycleM4_NEW_APPROACH(int id, int root, Valid_Edges_r &edges_to_threads, Graph &G1, Graph &graph, int idx);
 
 std::vector<std::pair<int,int>> immovable(int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int,int>> &edges_to_be_processed);
 //void find_index_induced_cycle_method_1(Graph &graph, int raiz, int neighbor_start, const int id, std::vector<int> edges_list );

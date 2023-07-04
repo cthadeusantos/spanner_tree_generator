@@ -21,7 +21,7 @@ bool global_save_tree = false;
 
 float global_running_time = 0;
 
-pthread_mutex_t mutex_signal;
+//pthread_mutex_t mutex_signal;
 
 #endif
 

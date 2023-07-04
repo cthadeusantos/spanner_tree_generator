@@ -8,6 +8,7 @@
 #include <tuple> // for tuple
 #include <string>
 #include <chrono> // contributor AZ
+#include <stack>
 
 #include "../my_libs/library1.hpp"
 #include "../my_libs/library3.hpp"
@@ -19,7 +20,7 @@
 
 #include "../Debug.h"
 
-extern sem_t semaforo;
+//extern sem_t semaforo;
 extern std::mutex mtx;
 
 extern int global_total_arv;
@@ -31,259 +32,95 @@ extern bool global_noindex;
 extern bool global_save_tree;
 extern bool abort_for_timeout;
 
-extern pthread_mutex_t mutex_signal;
+extern std::queue<std::vector<Valid_Edges_r>> QUEUE_VECTOR;
 
-std::vector<std::vector<int>> generator_combinations(int nelements){
-    std::vector<std::vector<int>> combinacoes;
-    for (int i = nelements - 1; i > 0; i--)
-    {
-        std::vector<std::vector<int>> edges_to_remove = combinatorics(nelements, i);
-        for (int j = 0; j < edges_to_remove.size(); j++)
-        {
-            combinacoes.push_back(edges_to_remove[j]);
-        }
-    } // End of generate the combinations
-    return combinacoes;
-}
+extern pthread_mutex_t mutex_signal;
+extern sem_t semaforo;
 
 /**
- * @brief Calculate stretch index "method" for the M4 cycle method
- * @details Calculate stretch index "method" for the M4 cycle method
- * @details starting always at vertex 0
+ * @brief Create threads to calculate stretch index for induced cycles (method 4)
+ * @details Create threads to calculate the stretch index using induced cycles get from girth
+ * @details Create threads from combinations (n,1) until (n,n)
  * @author Carlos Thadeu
- * @param root a integer that represents the initial vertex (not are in use)
- * @param G1 a graph that represents the graph without vertices from combinations
  * @param graph a graph that represents the graph
  */
-void find_index_cycleM4_NEW_APPROACH(int id, int root, Valid_Edges_r &edges_to_threads, Graph &G1, Graph &graph)
+void create_threads_induced_cycle_method_4_NEW_APPROACH_V2_USANDO_FILA(Graph &graph)
 {
+    int qty = 0;
+    int root = -1;
 
-    int vertex_v = 0;
-    int vertex_u = 0;
-    int index_local = (int)INFINITY;
-    int lower_limit = (int)INFINITY;
+    std::vector<std::vector<std::pair<int, int>>> edges_list_cycles;
+    std::vector<std::pair<int, int>> edges_to_be_processed;
+    std::vector<std::vector<int>> combinacoes;
 
-    // Graph G1(graph.get_num_vertices());
-    //     for (auto edge : edges_to_threads.edges_list[id])
-    // {
-    //     G1.add_aresta(edge.first, edge.second);
-    // }
+    Valid_Edges_r edges_to_threads;
 
-    // G1 = graph; //For original
-    std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
-    std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
+    DEBUG std::cerr << "Searching for induced cycles using method 4!" << std::endl;
+    edges_list_cycles = seeking_induced_cycles_edges_v4(graph);
+    edges_to_be_processed = make_edges_list(edges_list_cycles);
+    combinacoes = generator_combinations(edges_to_be_processed.size());
 
-    G1.reset_trees(0);
+    DEBUG std::cerr << "Pre-processing edges' list!" << std::endl;
+    edges_to_threads = detect_valid_edges_M4_NEW_APPROACH(combinacoes, edges_to_be_processed, graph);
 
-    Graph tree(G1.getQtdVertices());
-    Graph tree_local(G1.getQtdVertices());
+    qty = edges_to_threads.immutable_edges_list.size();
 
-    pthread_mutex_lock(&mutex_signal);
-    lower_limit = graph.get_lower_limit();
-    pthread_mutex_unlock(&mutex_signal);
+    DEBUG std::cerr << "*Edges numbers to use!" << qty << std::endl;
+    DEBUG std::cerr << "*Threads proposed: " << num_threads << std::endl;
 
-    std::string fileName = std::to_string(id) + "saida.txt";
-    std::string str_tree;
+    // AGRUPA ARESTAS EM UM VETOR DE VETORES (NOMEADO PILHA , a ser mudado)
+    int tasks = edges_to_threads.immutable_edges_list.size();
+    used_threads = tasks;
+    DEBUG std::cerr << "*Tasks to allocated: " << used_threads << std::endl;
 
-    int num_fixed_edges = edges_to_threads.immutable_edges_list[id].size();
-    //int num_remains_edges = remains_edges.size();
-
-
-    for (auto edge : edges_to_threads.immutable_edges_list[id])
-    {
-        G1.remove_aresta(edge.first, edge.second);
-    }
-
-    int nvertices = G1.get_num_vertices();
-    int marestas = G1.get_num_edges();
-
-    int start = 0;
-    //std::vector<int> indice(nvertices - 1, 0);
-    std::vector<int> indice(nvertices, 0);
-    int j = 0;
-
-    // Make edge's list
-
-    std::vector<std::pair<int, int>> edges_list ;
-    //for (int a = 0; a < G1.get_num_edges(); a++){
-    for (int a = 0; a < G1.get_num_vertices(); a++){
-
-        for (auto b : G1.adjList(a))
-            if (b > a){
-            //if (b != a){
-                edges_list.push_back(std::make_pair(a, b));
-            }
-    }
-    //while(indice[0] < start + 2  && graph.get_signal() and !(abort_for_timeout))
-    //while(indice[0] < start + num_fixed_edges && graph.get_signal() and !(abort_for_timeout))
-    //while(indice[0] < start + (marestas - (nvertices - 1 - num_fixed_edges)) && graph.get_signal() and !(abort_for_timeout))
-    //while(indice[0] < start + marestas - num_fixed_edges && graph.get_signal() and !(abort_for_timeout))
-    //while(indice[0] < start + marestas - (num_fixed_edges - 1) && graph.get_signal() and !(abort_for_timeout))
-
-    int limit_of_zero_index = marestas - (nvertices - num_fixed_edges - 1 - 1);
-    while(indice[0] < start + limit_of_zero_index && graph.get_signal() and !(abort_for_timeout))
-    {
-        //if( indice[j] > marestas - ( nvertices  - 1 - num_fixed_edges - j ))
-        if ( indice[j] > limit_of_zero_index - 1 + j )
-        {
-            --j;
-            tree.remove_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
-            indice[j]++;
-        }
-        else
-        {
-            tree.add_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
-            if (!OpBasic::is_cyclic(tree))
-            {
-                //if (j == (nvertices - num_fixed_edges -1) - 1 ) // Find spanner tree
-                //if (j == (nvertices - num_fixed_edges - 1) - 1) // Find spanner tree
-                if (j == nvertices - 1 - num_fixed_edges - 1 ) // Find spanner tree
-                {
-                        for (auto edge : edges_to_threads.immutable_edges_list[id])
-                        {
-                           tree.add_aresta(edge.first, edge.second);
-                        }
-                        if ( OpBasic::is_connected(tree) && !OpBasic::is_cyclic(tree) )
-                        {
-                            int f = 1;
-
-                            if (!global_noindex)
-                            { // LF request - only sum tree
-                                pthread_mutex_lock (&mutex_signal);
-                                f = Stretch::find_factor(graph, tree);
-                                pthread_mutex_unlock (&mutex_signal);
-                            }
-                            G1.add_tree();
-                            if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
-                            {                                       // REMOVER - APENAS PARA TESTE
-                                str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
-                                str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
-                                save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                            }                                       // REMOVER - APENAS PARA TESTE
-
-                            if (f < index_local)    // Compute stretch factor & stretch index
-                            {
-                                index_local = f;
-                                tree_local = tree;
-                                if (index_local == lower_limit)
-                                {
-                                    pthread_mutex_lock(&mutex_signal);
-                                    graph.set_signal();
-                                    pthread_mutex_unlock(&mutex_signal);
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        for (auto edge : edges_to_threads.immutable_edges_list[id])
-                        {
-                           tree.remove_aresta(edge.first, edge.second);
-                        }
-                }
-                else
-                {
-                    int next = j + 1;
-                    indice[next] = indice[j] + 1;
-                    j = next;
-                    continue;
-                }
-            }
-            tree.remove_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
-            indice[j]++;
-        }
-    }
-
-    for (auto edge : edges_to_threads.immutable_edges_list[id])
-    {
-        tree.add_aresta(edge.first, edge.second);
-    }
-    DEBUG std::cerr << "ID:" << id << "ACABOU E ACHOU " << index_local << std::endl;
-    G1.set_stretch_index(index_local); // *********************************
-    G1.set_best_tree(tree);
-    // pthread_mutex_lock (&mutex_signal);
-    // pthread_mutex_unlock (&mutex_signal);
-}
-
-void create_threadV4_auxiliary_NEW_APPROACH(const int id, int start, int end, Valid_Edges_r &edges_to_threads, Graph &graph)
-{
-    int acme = end - start;
-    int limit = edges_to_threads.immutable_edges_list.size();
-    for (int i = 0; i < acme; i = i + 1)
-    {
-        //DEBUG std::cerr << "GROUP " << id << "  " << start << " " << end << "  " << acme << "  " << i << " " << i  + start << std::endl;
-        if ((i + start) >= limit){
-            //DEBUG std::cerr << "QUEBROU " << i + start << std::endl;
-            break;
-        }
-        find_index_induced_cycle_method_4_NEW_APPROACH(i + start, edges_to_threads, graph);
-        //int xpto = 0;
-    }
-}
-
-/*!
-    Calculate a stretch index using an induced cycle's edge
-    \param g a graph instance that represents the graph
-    \param raiz an integer that represents the vertex root
-    \param neighbor_start an integer that represents the vertex neighbor the root
-    \param id an integer that represents a number of thread
-    \param edges_list a vector that represents induced cycle's edge to be remove
-    \param end
-*/
-
-void find_index_induced_cycle_method_4_NEW_APPROACH(const int id,  Valid_Edges_r &edges_to_threads , Graph &graph)
-{
-
-    // mtx.lock();
-    int root = 0;
-    DEBUG std::cerr << "************ID " << id << "***********" << std::endl;
-    pthread_mutex_lock(&mutex_signal);
-    Graph G1 = graph;   // Auxiliary graph - local graph
-    //Graph G1;
-    //Graph G1 = Graph(graph.get_num_vertices());
-    //OpBasic::copy(G1, graph);
-
-    // for (auto edge: edges_to_threads.edges_list[id]){
-    //     G1.remove_aresta(edge.first, edge.second);
-    // }
-    for (auto edge: edges_to_threads.disposable_edges_list[id]){
-        G1.remove_aresta(edge.first, edge.second);
-    }
-
-    G1.reset_trees(0);
+    std::queue<Valid_Edges_r> edges_queue;
     
-    pthread_mutex_unlock(&mutex_signal);
-    // mtx.unlock();
-
-    int num_vertices = G1.get_num_vertices();
-    Graph tree(num_vertices);
-       
-    find_index_cycleM4_NEW_APPROACH(id, root, edges_to_threads, G1, graph);
-
-    int arvores;
-    arvores = G1.get_total_tree();
-    int index_local = G1.get_stretch_index();
-
-    if (index_local == (int)INFINITY)
+    for (int i =0 ; i < tasks; i++)
     {
-        index_local = 1;
-        arvores = 0;
-        G1.reset_trees(arvores);
+        Valid_Edges_r aux;
+        aux.disposable_edges_list.push_back(edges_to_threads.disposable_edges_list[i]);
+        aux.immutable_edges_list.push_back(edges_to_threads.immutable_edges_list[i]);
+        edges_queue.push(aux);
+    } // FIM DO AGRUPA ARESTAS
+    
+    std::thread vetor_th[num_threads];
+
+    for (int i = 0; i < num_threads; ++i)
+    {
+        std::vector<Valid_Edges_r> EDGES_AUX;
+        vetor_th[i] = std::thread(create_threadV4_auxiliary_NEW_APPROACHzzzzz2, i, std::ref(edges_queue), std::ref(graph));
+    
     }
-    // G1.set_best_tree(s);
-    // mtx.lock();
-    pthread_mutex_lock(&mutex_signal);
-    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
-    // graph.set_stretch_index(index_local);
-    // G1.set_best_tree(tree);
-    graph.sum_trees(arvores);
-    global_total_arv = arvores;
-    int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
-    //DEBUG std::cerr << index_local << " " << G1.get_stretch_index() << " " << graph.get_stretch_index() << std::endl;
-    set_graph_final_parameters(index_local, G1, graph);
-    pthread_mutex_unlock(&mutex_signal);
-    // mtx.unlock();
-    sem_post(&semaforo); // a thread libera espaço para a proxima
+
+    for (int i = 0; i < num_threads; ++i)
+    {
+        vetor_th[i].join(); // junção das threads
+    }
 }
+
+void create_threadV4_auxiliary_NEW_APPROACHzzzzz2(int id, std::queue<Valid_Edges_r> &QUEUE_VECTOR, Graph &graph)
+{
+    int task = 0;
+    Valid_Edges_r edges_to_thread;
+    bool gameover = false;
+    while (!gameover){
+        mtx.lock();
+        if (QUEUE_VECTOR.empty())
+        {
+            gameover = true;
+            mtx.unlock();
+        } else
+        {
+            //mtx.lock();
+            edges_to_thread = QUEUE_VECTOR.front();
+            QUEUE_VECTOR.pop();
+            mtx.unlock();
+            find_index_induced_cycle_method_4_NEW_APPROACH( id , edges_to_thread, graph, task);
+            task++;
+        }
+    }
+}
+
 
 /**
  * @brief Create threads to calculate stretch index for induced cycles (method 4)
@@ -302,7 +139,7 @@ void create_threads_induced_cycle_method_4_NEW_APPROACH(Graph &graph)
     std::vector<std::vector<std::pair<int, int>>> edges_list_cycles;
     std::vector<std::pair<int, int>> edges_to_be_processed;
     std::vector<std::vector<int>> combinacoes;
-    std::vector<std::vector<std::pair<int, int>>> edges_list_all_threads;
+    //std::vector<std::vector<std::pair<int, int>>> edges_list_all_threads;
     Valid_Edges_r edges_to_threads;
     Blocks_r blocks;
 
@@ -312,49 +149,344 @@ void create_threads_induced_cycle_method_4_NEW_APPROACH(Graph &graph)
     combinacoes = generator_combinations(edges_to_be_processed.size());
     DEBUG std::cerr << "Pre-processing edges' list!" << std::endl;
     edges_to_threads = detect_valid_edges_M4_NEW_APPROACH(combinacoes, edges_to_be_processed, graph);
-    edges_list_all_threads = edges_to_threads.edges_list;
+    //edges_list_all_threads = edges_to_threads.edges_list;
 
-    qty = edges_list_all_threads.size();
+    //qty = edges_to_threads.edges_list.size();
+    qty = edges_to_threads.immutable_edges_list.size();
 
-    DEBUG std::cerr << "Edges numbers to use!" << qty << std::endl;
-    DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
-
+    DEBUG std::cerr << "*Edges numbers to use!" << qty << std::endl;
+    DEBUG std::cerr << "*Threads proposed: " << num_threads << std::endl;
     blocks = define_block_chuck_for_cycleM4v2_NEW_APPROACH(num_threads, qty);
-
     used_threads = blocks.num_threads;
-    DEBUG std::cerr << "Threads to allocated: " << used_threads << std::endl;
-    std::thread vetor_th[used_threads];
+    DEBUG std::cerr << "*Threads to allocated: " << used_threads << std::endl;
 
-    int start, end;
+    // AGRUPA ARESTAS EM UM VETOR DE VETORES (NOMEADO PILHA , a ser mudado)
+    int tasks = edges_to_threads.immutable_edges_list.size();
+
+    int count = 0;
+    int sentido = 1;
+    std::vector<std::vector<Valid_Edges_r>> VEC_PILHA(used_threads);
+    for (int i =0 ; i < tasks; i++)
+    {
+        Valid_Edges_r aux;
+        std::vector<Valid_Edges_r> PILHA;
+        //aux.edges_list.push_back( edges_to_threads.edges_list[i]);
+        aux.disposable_edges_list.push_back(edges_to_threads.disposable_edges_list[i]);
+        aux.immutable_edges_list.push_back(edges_to_threads.immutable_edges_list[i]);
+        if (VEC_PILHA[count].empty())
+        {
+            PILHA.push_back(aux);
+            VEC_PILHA[count] = PILHA;
+        } else {
+            std::vector<Valid_Edges_r> PILHA_aux;
+            PILHA_aux = VEC_PILHA[count];
+            PILHA_aux.push_back(aux);
+            VEC_PILHA[count] = PILHA_aux;
+        }
+        count = count + sentido;
+        if (count == used_threads || count < 0) {
+            sentido = sentido * (-1);
+            count = count + sentido;
+        }
+    } // FIM DO AGRUPA ARESTAS
+    
+    std::thread vetor_th[used_threads];
+    //sem_init(&semaforo, 0, used_threads);
+    int start=0, end=0;
+
+    DEBUG std::cerr << "COMECAM AS THREADS" << std::endl;
+
     for (int i = 0; i < used_threads; ++i)
     {
 
-        if (i < blocks.qty_block)
-        {
-            start = i * blocks.block_size;
-            end = start + blocks.block_size;
-        }
-        else
-        {
-            if (i == blocks.qty_block)
-            {
-                start = i * blocks.block_size;
-            }
-            else
-            {
-                start = i * blocks.chunk_size;
-            }
-            end = start + blocks.chunk_size;
-        }
-        //DEBUG std::cerr << "THREAD " << i << "  " << start << " " << end << "  " << std::endl;
-        vetor_th[i] = std::thread(create_threadV4_auxiliary_NEW_APPROACH, i, start, end, std::ref(edges_to_threads), std::ref(graph));
-    }
 
-    sem_wait(&semaforo);
+        // if (i < blocks.qty_block)
+        // {
+        //     start = i * blocks.block_size;
+        //     end = start + blocks.block_size;
+        // }
+        // else
+        // {
+        //     if (i == blocks.qty_block)
+        //     {
+        //         start = i * blocks.block_size;
+        //     }
+        //     else
+        //     {
+        //         start = i * blocks.chunk_size;
+        //     }
+        //     end = start + blocks.chunk_size;
+        // }
+        //vetor_th[i] = std::thread(create_threadV4_auxiliary_NEW_APPROACH, i, start, end, std::ref(edges_to_threads), std::ref(graph));
+        vetor_th[i] = std::thread(create_threadV4_auxiliary_NEW_APPROACHxxxxx2, i, start, end, std::ref(VEC_PILHA[i]), std::ref(graph));
+        //vetor_th[i] = std::thread(find_index_induced_cycle_method_4_NEW_APPROACH, i , std::ref(edges_to_threads), std::ref(graph));
+    }
+    //sem_wait(&semaforo);
 
     for (int i = 0; i < used_threads; ++i)
     {
         vetor_th[i].join(); // junção das threads
+    }
+}
+
+void create_threadV4_auxiliary_NEW_APPROACHxxxxx2(int id, int start, int end, std::vector<Valid_Edges_r> pilha, Graph &graph)
+{
+    int count = pilha.size();
+
+    // Start time counting
+	std::chrono::time_point<std::chrono::steady_clock> start_counting = std::chrono::steady_clock::now();
+    //DEBUG std::cerr << "create_threadV4_auxiliary_NEW_APPROACHxxxxx2 - ID " << id << " comeca contagem" << std::endl;
+
+    int task = 0;
+    while (count > 0){
+        count--;
+        Valid_Edges_r edges_to_thread = pilha[count];
+        //pilha.pop();
+        //find_index_induced_cycle_method_4_NEW_APPROACH( 0 , edges_to_thread, graph, id);
+        find_index_induced_cycle_method_4_NEW_APPROACH( id , edges_to_thread, graph, task);
+        task++;
+    }
+
+    // End time counting
+	std::chrono::time_point<std::chrono::steady_clock>	end_counting = std::chrono::steady_clock::now();	
+	std::chrono::duration<double> execution_duration(end_counting - start_counting);
+	double lastExecutionTime = execution_duration.count();
+    DEBUG std::cerr << "<<<<<<<<<<<<<<<<<<<<< THREAD >>>>>>>>>>>>>>>>>> ID " << id << " TOTAL TASKs " << task << " ACABOU - TIME: " << lastExecutionTime << std::endl;
+
+}
+
+/*!
+    Calculate a stretch index using an induced cycle's edge
+    \param g a graph instance that represents the graph
+    \param raiz an integer that represents the vertex root
+    \param neighbor_start an integer that represents the vertex neighbor the root
+    \param id an integer that represents a number of thread
+    \param edges_list a vector that represents induced cycle's edge to be remove
+    \param end
+*/
+
+void find_index_induced_cycle_method_4_NEW_APPROACH(int id,  Valid_Edges_r &edges_to_threads , Graph &graph, int task)
+{
+
+    int root = 0;
+    Graph G1 = graph;   // Auxiliary graph - local graph
+
+    for (auto edge: edges_to_threads.disposable_edges_list[0]){
+        G1.remove_aresta(edge.first, edge.second);
+    }
+    G1.reset_trees(0);
+    
+    int num_vertices = G1.get_num_vertices();
+    Graph tree(num_vertices);
+       
+    find_index_cycleM4_NEW_APPROACH(id, root, edges_to_threads, G1, graph, task);
+
+    int arvores;
+    arvores = G1.get_total_tree();
+    int index_local = G1.get_stretch_index();
+
+    if (index_local == (int)INFINITY)
+    {
+        index_local = 1;
+        arvores = 0;
+        G1.reset_trees(arvores);
+    }
+    mtx.lock();
+    DEBUG std::cerr << "THREAD " << id << "NA  TASK " << task << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
+    graph.sum_trees(arvores);
+    global_total_arv = arvores;
+    int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
+    set_graph_final_parameters(index_local, G1, graph);
+    mtx.unlock();
+}
+
+/**
+ * @brief Calculate stretch index "method" for the M4 cycle method
+ * @details Calculate stretch index "method" for the M4 cycle method
+ * @details starting always at vertex 0
+ * @author Carlos Thadeu
+ * @param root a integer that represents the initial vertex (not are in use)
+ * @param G1 a graph that represents the graph without vertices from combinations
+ * @param graph a graph that represents the graph
+ */
+
+// ATENCAO variavel IDX é TEMPORARIA , APENAS PARA GERAR NUMERO PARA GRAVACAO DO ARQUIVO
+void find_index_cycleM4_NEW_APPROACH(int id, int root, Valid_Edges_r &edges_to_threads, Graph &G1, Graph &graph, int task)
+{
+    
+    int vertex_v = 0;
+    int vertex_u = 0;
+    int index_local = (int)INFINITY;
+    int lower_limit = (int)INFINITY;
+
+    std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
+    std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
+
+    G1.reset_trees(0);
+
+    Graph tree(G1.getQtdVertices());
+    Graph tree_local(G1.getQtdVertices());
+
+    lower_limit = graph.get_lower_limit();
+
+    //std::string fileName = std::to_string(id) + "saida.txt";
+    //std::string str_tree;
+
+    int num_fixed_edges = edges_to_threads.immutable_edges_list[0].size();
+
+    for (auto edge : edges_to_threads.immutable_edges_list[0])
+    {
+        G1.remove_aresta(edge.first, edge.second);
+    }
+
+    int nvertices = G1.get_num_vertices();
+    int marestas = G1.get_num_edges();
+
+    int start = 0;
+    std::vector<int> indice(nvertices, 0);
+    int j = 0;
+
+    // Make edge's list
+
+    std::vector<std::pair<int, int>> edges_list ;
+    for (int a = 0; a < G1.get_num_vertices(); a++)
+    {
+        for (auto b : G1.adjList(a))
+            if (b > a){
+                edges_list.push_back(std::make_pair(a, b));
+            }
+    }
+
+    double sum_TIME = 0;
+    int limit_of_zero_index = marestas - (nvertices - num_fixed_edges - 1 - 1);
+    std::set<int> CONJUNTO;
+    for (auto edge : edges_to_threads.immutable_edges_list[0])
+    {
+        CONJUNTO.insert(edge.first);
+        CONJUNTO.insert(edge.second);
+    }
+    
+    while(indice[0] < start + limit_of_zero_index && graph.get_signal() and !(abort_for_timeout))
+    {
+        if ( indice[j] > limit_of_zero_index - 1 + j )
+        {
+            --j;
+            tree.remove_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
+            indice[j]++;
+        }
+        else
+        {
+            tree.add_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
+            bool tem_cyclo = false;
+            if (OpBasic::cyclic(tree, edges_list[indice[j]].first)){
+                tem_cyclo = true;
+            }
+            if (!tem_cyclo)
+                if (OpBasic::cyclic(tree, edges_list[indice[j]].first))
+                    tem_cyclo = true;
+            if (!tem_cyclo)
+            {
+                if (j == nvertices - 1 - num_fixed_edges - 1 ) // Find spanner tree
+                {
+                        for (auto edge : edges_to_threads.immutable_edges_list[0])
+                        {
+                           tree.add_aresta(edge.first, edge.second);
+                        }
+                        bool tem_cyclo1 = false;
+                        for (auto vertex : CONJUNTO)
+                        {
+                            if (OpBasic::cyclic(tree, vertex)){
+                                tem_cyclo1 = true;
+                                break;
+                            }
+                        }
+                        if ( !tem_cyclo1)
+                        {
+                            int f = 1;
+
+                            if (!global_noindex)
+                            { // LF request - only sum tree
+                                f = Stretch::find_factor(graph, tree);
+                            }
+                            G1.add_tree();  // sum total trees
+
+                            // if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+                            // {                                       // REMOVER - APENAS PARA TESTE
+                            //     str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                            //     str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                            //     save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                            // }                                       // REMOVER - APENAS PARA TESTE
+
+                            if (f < index_local)    // Compute stretch factor & stretch index
+                            {
+                                index_local = f;
+                                tree_local = tree;
+                                if (index_local == lower_limit)
+                                {
+                                    mtx.lock();
+                                    graph.set_signal();
+                                    mtx.unlock();
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        for (auto edge : edges_to_threads.immutable_edges_list[0])
+                        {
+                           tree.remove_aresta(edge.first, edge.second);
+                        }
+                }
+                else
+                {
+                    int next = j + 1;
+                    indice[next] = indice[j] + 1;
+                    j = next;
+                    continue;
+                }
+            }
+            tree.remove_aresta(edges_list[indice[j]].first, edges_list[indice[j]].second);
+            indice[j]++;
+        }
+    }
+
+    for (auto edge : edges_to_threads.immutable_edges_list[0])
+    {
+        tree.add_aresta(edge.first, edge.second);
+    }
+
+    DEBUG std::cerr << "THREAD: " << id << " JOB " << task << "  ACHOU " << index_local << "TEMPO GASTO NO CICLO "<< sum_TIME << std::endl;
+    G1.set_stretch_index(index_local); // *********************************
+    G1.set_best_tree(tree);
+}
+
+std::vector<std::vector<int>> generator_combinations(int nelements){
+    std::vector<std::vector<int>> combinacoes;
+    for (int i = nelements - 1; i >= 0; i--)
+    {
+        std::vector<std::vector<int>> edges_to_remove = combinatorics(nelements, i);
+        for (int j = 0; j < edges_to_remove.size(); j++)
+        {
+            combinacoes.push_back(edges_to_remove[j]);
+        }
+    } // End of generate the combinations
+    return combinacoes;
+}
+
+
+
+void create_threadV4_auxiliary_NEW_APPROACH(const int id, int start, int end, Valid_Edges_r &edges_to_threads, Graph &graph)
+{
+    int acme = end - start;
+    int limit = edges_to_threads.immutable_edges_list.size();
+    for (int i = 0; i < acme; i = i + 1)
+    {
+        //DEBUG std::cerr << "GROUP " << id << "  " << start << " " << end << "  " << acme << "  " << i << " " << i  + start << std::endl;
+        if ((i + start) >= limit){
+            //DEBUG std::cerr << "QUEBROU " << i + start << std::endl;
+            break;
+        }
+        find_index_induced_cycle_method_4_NEW_APPROACH(i + start, edges_to_threads, graph, i + start);
+        //int xpto = 0;
     }
 }
 
@@ -520,117 +652,115 @@ std::vector<std::pair<int, int>> immovable(int id, std::vector<std::vector<int>>
  * @param G1 a graph that represents the graph without vertices from combinations
  * @param graph a graph that represents the graph
  */
-void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &immovable_edges, Graph &G1, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
-{
+// void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &immovable_edges, Graph &G1, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
+// {
 
-    int vertex_v = 0;
-    int vertex_u = 0;
-    int index_local = (int)INFINITY;
-    int lower_limit = (int)INFINITY;
+//     int vertex_v = 0;
+//     int vertex_u = 0;
+//     int index_local = (int)INFINITY;
+//     int lower_limit = (int)INFINITY;
 
-    // G1 = graph; //For original
-    std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
-    std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
+//     // G1 = graph; //For original
+//     std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
+//     std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
 
-    G1.reset_trees(0);
+//     G1.reset_trees(0);
 
-    Graph tree(G1.getQtdVertices());
-    Graph tree_local(G1.getQtdVertices());
+//     Graph tree(G1.getQtdVertices());
+//     Graph tree_local(G1.getQtdVertices());
 
-    for (auto edge : immovable_edges)
-    {
-       G1.remove_aresta(edge.first, edge.second);
-    }
+//     for (auto edge : immovable_edges)
+//     {
+//        G1.remove_aresta(edge.first, edge.second);
+//     }
 
 
-    pthread_mutex_lock(&mutex_signal);
-    lower_limit = graph.get_lower_limit();
-    pthread_mutex_unlock(&mutex_signal);
+//     //pthread_mutex_lock(&mutex_signal);
+//     lower_limit = graph.get_lower_limit();
+//     //pthread_mutex_unlock(&mutex_signal);
 
-    std::string fileName = std::to_string(id) + "saida.txt";
-    std::string str_tree;
+//     std::string fileName = std::to_string(id) + "saida.txt";
+//     std::string str_tree;
 
-    int num_fixed_edges = immovable_edges.size();
-    int num_remains_edges = remains_edges.size();
+//     int num_fixed_edges = immovable_edges.size();
+//     int num_remains_edges = remains_edges.size();
 
-    while (graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout))
-    {
-        if (idx_next_neighbor[vertex_v] == G1.grau(vertex_v))
-        {
-            idx_next_neighbor[vertex_v] = 0;
-            vertex_v--;
-            if (vertex_v < 0) break;
-            tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
-            last_neighbor[vertex_v] = -1;
-        }
-        else
-        {
+//     while (graph.get_signal() && vertex_v >= 0 && !(abort_for_timeout))
+//     {
+//         if (idx_next_neighbor[vertex_v] == G1.grau(vertex_v))
+//         {
+//             idx_next_neighbor[vertex_v] = 0;
+//             vertex_v--;
+//             if (vertex_v < 0) break;
+//             tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
+//             last_neighbor[vertex_v] = -1;
+//         }
+//         else
+//         {
 
-            vertex_u = G1.adjList(vertex_v)[idx_next_neighbor[vertex_v]];
-            ++idx_next_neighbor[vertex_v];
-            if (not tree.possui_aresta(vertex_v, vertex_u))
-            {
-                tree.add_aresta(vertex_v, vertex_u);
-                last_neighbor[vertex_v] = vertex_u;
-                if (not OpBasic::is_cyclic(tree))
-                {
-                    if (tree.getQtdArestas() == G1.getQtdVertices() - num_fixed_edges - 1)
-                    {
-                        for (auto edge : immovable_edges)
-                        {
-                           tree.add_aresta(edge.first, edge.second);
-                        }
-                        int f = 1;
-                        if (!global_noindex)
-                        { // LF request - only sum tree
-                            // pthread_mutex_lock (&mutex_signal);
-                            f = Stretch::find_factor(graph, tree);
-                            // pthread_mutex_unlock (&mutex_signal);
-                        }
-                        G1.add_tree();
-                        if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
-                        {                                       // REMOVER - APENAS PARA TESTE
-                            str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
-                            str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
-                            save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                        }                                       // REMOVER - APENAS PARA TESTE
-                        if (f < index_local)
-                        {
-                            index_local = f;
-                            tree_local = tree;
-                            if (index_local == lower_limit)
-                            {
-                                pthread_mutex_lock(&mutex_signal);
-                                graph.set_signal();
-                                pthread_mutex_unlock(&mutex_signal);
-                                break;
-                            }
-                        }
-                        for (auto edge : immovable_edges)
-                        {
-                           tree.remove_aresta(edge.first, edge.second);
-                        }
-                        continue;
-                    }
-                    else
-                    {
-                        if (vertex_v < G1.get_num_vertices() - 1)
-                        {
-                            vertex_v++;
-                        }
-                        continue;
-                    }
-                } // end of  IF TREE(MENOR) nao possui ciclo
-                tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
-            }
-        } 
-    } // END OF WHILE
-    DEBUG std::cerr << "ID:" << id << "ACABOU" << index_local << std::endl;
-    G1.set_stretch_index(index_local); // *********************************
-    G1.set_best_tree(tree);
-    // pthread_mutex_lock (&mutex_signal);
-    // pthread_mutex_unlock (&mutex_signal);
-}
+//             vertex_u = G1.adjList(vertex_v)[idx_next_neighbor[vertex_v]];
+//             ++idx_next_neighbor[vertex_v];
+//             if (not tree.possui_aresta(vertex_v, vertex_u))
+//             {
+//                 tree.add_aresta(vertex_v, vertex_u);
+//                 last_neighbor[vertex_v] = vertex_u;
+//                 if (not OpBasic::is_cyclic(tree))
+//                 {
+//                     if (tree.getQtdArestas() == G1.getQtdVertices() - num_fixed_edges - 1)
+//                     {
+//                         for (auto edge : immovable_edges)
+//                         {
+//                            tree.add_aresta(edge.first, edge.second);
+//                         }
+//                         int f = 1;
+//                         if (!global_noindex)
+//                         { // LF request - only sum tree
+//                             // pthread_mutex_lock (&mutex_signal);
+//                             f = Stretch::find_factor(graph, tree);
+//                             // pthread_mutex_unlock (&mutex_signal);
+//                         }
+//                         G1.add_tree();
+//                         if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+//                         {                                       // REMOVER - APENAS PARA TESTE
+//                             str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+//                             str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+//                             save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+//                         }                                       // REMOVER - APENAS PARA TESTE
+//                         if (f < index_local)
+//                         {
+//                             index_local = f;
+//                             tree_local = tree;
+//                             if (index_local == lower_limit)
+//                             {
+//                                 pthread_mutex_lock(&mutex_signal);
+//                                 graph.set_signal();
+//                                 pthread_mutex_unlock(&mutex_signal);
+//                                 break;
+//                             }
+//                         }
+//                         for (auto edge : immovable_edges)
+//                         {
+//                            tree.remove_aresta(edge.first, edge.second);
+//                         }
+//                         continue;
+//                     }
+//                     else
+//                     {
+//                         if (vertex_v < G1.get_num_vertices() - 1)
+//                         {
+//                             vertex_v++;
+//                         }
+//                         continue;
+//                     }
+//                 } // end of  IF TREE(MENOR) nao possui ciclo
+//                 tree.remove_aresta(vertex_v, last_neighbor[vertex_v]);
+//             }
+//         } 
+//     } // END OF WHILE
+//     DEBUG std::cerr << "ID:" << id << "ACABOU" << index_local << std::endl;
+//     G1.set_stretch_index(index_local); // *********************************
+//     G1.set_best_tree(tree);
+// }
 
 
 /**
@@ -642,162 +772,156 @@ void find_index_cycleM4_2(int id, int root, std::vector<std::pair<int, int>> &im
  * @param G1 a graph that represents the graph without vertices from combinations
  * @param graph a graph that represents the graph
  */
-void find_index_cycleM4_NEW(int id, int root, std::vector<std::pair<int, int>> &immovable_edges, Graph &G1, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
-{
+// void find_index_cycleM4_NEW(int id, int root, std::vector<std::pair<int, int>> &immovable_edges, Graph &G1, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
+// {
 
-    int vertex_v = 0;
-    int vertex_u = 0;
-    int index_local = (int)INFINITY;
-    int lower_limit = (int)INFINITY;
+//     int vertex_v = 0;
+//     int vertex_u = 0;
+//     int index_local = (int)INFINITY;
+//     int lower_limit = (int)INFINITY;
 
-    // G1 = graph; //For original
-    std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
-    std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
+//     // G1 = graph; //For original
+//     std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
+//     std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
 
-    G1.reset_trees(0);
+//     G1.reset_trees(0);
 
-    Graph tree(G1.getQtdVertices());
-    Graph tree_local(G1.getQtdVertices());
+//     Graph tree(G1.getQtdVertices());
+//     Graph tree_local(G1.getQtdVertices());
 
-    for (auto edge : immovable_edges)
-    {
-       G1.remove_aresta(edge.first, edge.second);
-    }
-
-
-    pthread_mutex_lock(&mutex_signal);
-    lower_limit = graph.get_lower_limit();
-    pthread_mutex_unlock(&mutex_signal);
-
-    std::string fileName = std::to_string(id) + "saida.txt";
-    std::string str_tree;
-
-    int num_fixed_edges = immovable_edges.size();
-    int num_remains_edges = remains_edges.size();
+//     for (auto edge : immovable_edges)
+//     {
+//        G1.remove_aresta(edge.first, edge.second);
+//     }
 
 
-    int nvertices = G1.get_num_vertices();
-    int marestas = G1.get_num_edges();
+//     pthread_mutex_lock(&mutex_signal);
+//     lower_limit = graph.get_lower_limit();
+//     pthread_mutex_unlock(&mutex_signal);
 
-    int start = 0;
-    std::vector<int> indice(nvertices - 1, 0);
-    int j = 0;
+//     std::string fileName = std::to_string(id) + "saida.txt";
+//     std::string str_tree;
 
-    // Make edge's list
+//     int num_fixed_edges = immovable_edges.size();
+//     int num_remains_edges = remains_edges.size();
 
-    std::vector<std::pair<int, int>> edges_list ;
-    for (int a = 0; a < G1.get_num_edges(); a++){
 
-        for (auto b : G1.adjList(a))
-            if (b > a){
-            //if (b != a){
-                edges_list.push_back(std::make_pair(a, b));
-            }
-    }
+//     int nvertices = G1.get_num_vertices();
+//     int marestas = G1.get_num_edges();
 
-    //while(indice[0] < start + 2  && graph.get_signal() and !(abort_for_timeout))
-    while(indice[0] < start + 1 && graph.get_signal() and !(abort_for_timeout))
-    //while(indice[0] < start + num_fixed_edges && graph.get_signal() and !(abort_for_timeout))
-    {
-        if( indice[j] > marestas - ( nvertices - num_fixed_edges - 1 - j) )
-        {
-            if (id==2){
-                bool pausa = true;
-            }
-            --j;
-            tree.remove_aresta(edges_list[j].first, edges_list[j].second);
-            indice[j]++;
-        }
-        else
-        {
-            tree.add_aresta(edges_list[j].first, edges_list[j].second);
-            if (!OpBasic::is_cyclic(tree))
-            {
-                if (id==2){
-                    bool pausa = true;
-                }
-                //if (j == (nvertices - num_fixed_edges -1) - 1 ) // Find spanner tree
-                if (j == G1.get_num_vertices() - num_fixed_edges - 1) // Find spanner tree
-                {
-                        for (auto edge : immovable_edges)
-                        {
-                           tree.add_aresta(edge.first, edge.second);
-                        }
-                        if ( OpBasic::is_connected(tree) && !OpBasic::is_cyclic(tree) )
-                        {
-                            int f = 1;
+//     int start = 0;
+//     std::vector<int> indice(nvertices - 1, 0);
+//     int j = 0;
 
-                            if (!global_noindex)
-                            { // LF request - only sum tree
-                                // pthread_mutex_lock (&mutex_signal);
-                                f = Stretch::find_factor(graph, tree);
-                                // pthread_mutex_unlock (&mutex_signal);
-                            }
-                            G1.add_tree();
-                            if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
-                            {                                       // REMOVER - APENAS PARA TESTE
-                                str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
-                                str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
-                                save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                            }                                       // REMOVER - APENAS PARA TESTE
-                            if (f < index_local)    // Compute stretch factor & stretch index
-                            {
-                                index_local = f;
-                                tree_local = tree;
-                                if (index_local == lower_limit)
-                                {
-                                    pthread_mutex_lock(&mutex_signal);
-                                    graph.set_signal();
-                                    pthread_mutex_unlock(&mutex_signal);
-                                    break;
-                                }
-                            }
-                        }
+//     // Make edge's list
+
+//     std::vector<std::pair<int, int>> edges_list ;
+//     for (int a = 0; a < G1.get_num_edges(); a++){
+
+//         for (auto b : G1.adjList(a))
+//             if (b > a){
+//             //if (b != a){
+//                 edges_list.push_back(std::make_pair(a, b));
+//             }
+//     }
+
+//     while(indice[0] < start + 1 && graph.get_signal() and !(abort_for_timeout))
+//     {
+//         if( indice[j] > marestas - ( nvertices - num_fixed_edges - 1 - j) )
+//         {
+//             if (id==2){
+//                 bool pausa = true;
+//             }
+//             --j;
+//             tree.remove_aresta(edges_list[j].first, edges_list[j].second);
+//             indice[j]++;
+//         }
+//         else
+//         {
+//             tree.add_aresta(edges_list[j].first, edges_list[j].second);
+//             if (!OpBasic::is_cyclic(tree))
+//             {
+//                 if (id==2){
+//                     bool pausa = true;
+//                 }
+//                 if (j == G1.get_num_vertices() - num_fixed_edges - 1) // Find spanner tree
+//                 {
+//                         for (auto edge : immovable_edges)
+//                         {
+//                            tree.add_aresta(edge.first, edge.second);
+//                         }
+//                         if ( OpBasic::is_connected(tree) && !OpBasic::is_cyclic(tree) )
+//                         {
+//                             int f = 1;
+
+//                             if (!global_noindex)
+//                             { // LF request - only sum tree
+//                                 // pthread_mutex_lock (&mutex_signal);
+//                                 f = Stretch::find_factor(graph, tree);
+//                                 // pthread_mutex_unlock (&mutex_signal);
+//                             }
+//                             G1.add_tree();
+//                             if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+//                             {                                       // REMOVER - APENAS PARA TESTE
+//                                 str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+//                                 str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+//                                 save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+//                             }                                       // REMOVER - APENAS PARA TESTE
+//                             if (f < index_local)    // Compute stretch factor & stretch index
+//                             {
+//                                 index_local = f;
+//                                 tree_local = tree;
+//                                 if (index_local == lower_limit)
+//                                 {
+//                                     pthread_mutex_lock(&mutex_signal);
+//                                     graph.set_signal();
+//                                     pthread_mutex_unlock(&mutex_signal);
+//                                     break;
+//                                 }
+//                             }
+//                         }
                         
-                        for (auto edge : immovable_edges)
-                        {
-                           tree.remove_aresta(edge.first, edge.second);
-                        }
-                }
-                else
-                {
-                    int next = j + 1;
-                    indice[next] = indice[j] + 1;
-                    j = next;
-                    continue;
-                }
-            }
-            tree.remove_aresta(edges_list[j].first, edges_list[j].second);
-            indice[j]++;
-        }
-    }
+//                         for (auto edge : immovable_edges)
+//                         {
+//                            tree.remove_aresta(edge.first, edge.second);
+//                         }
+//                 }
+//                 else
+//                 {
+//                     int next = j + 1;
+//                     indice[next] = indice[j] + 1;
+//                     j = next;
+//                     continue;
+//                 }
+//             }
+//             tree.remove_aresta(edges_list[j].first, edges_list[j].second);
+//             indice[j]++;
+//         }
+//     }
 
-    for (auto edge : immovable_edges)
-    {
-        tree.add_aresta(edge.first, edge.second);
-    }
-    //DEBUG std::cerr << "ID:" << id << "ACABOU" << index_local << std::endl;
-    G1.set_stretch_index(index_local); // *********************************
-    G1.set_best_tree(tree);
-    // pthread_mutex_lock (&mutex_signal);
-    // pthread_mutex_unlock (&mutex_signal);
-}
+//     for (auto edge : immovable_edges)
+//     {
+//         tree.add_aresta(edge.first, edge.second);
+//     }
+//     G1.set_stretch_index(index_local); // *********************************
+//     G1.set_best_tree(tree);
+// }
 
-void create_threadV4_auxiliary(int start, int end, const int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
-{
-    // int idx = (end - start) * id;
-    int acme = end - start;
-    // std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
+// void create_threadV4_auxiliary(int start, int end, const int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
+// {
+//     // int idx = (end - start) * id;
+//     int acme = end - start;
+//     // std::chrono::time_point<std::chrono::steady_clock> start1 = std::chrono::steady_clock::now();
 
-    // DEBUG std::cerr << "Start: " << start << "End " << end << std::endl;
+//     // DEBUG std::cerr << "Start: " << start << "End " << end << std::endl;
 
-    for (int i = 0; i < acme; i = i + 1)
-    {
-        if ((i + start) > combinacoes.size() - 1)
-            break;
-        find_index_induced_cycle_method_4(i + start, combinacoes, edges_to_be_processed, graph, remains_edges);
-    }
-}
+//     for (int i = 0; i < acme; i = i + 1)
+//     {
+//         if ((i + start) > combinacoes.size() - 1)
+//             break;
+//         find_index_induced_cycle_method_4(i + start, combinacoes, edges_to_be_processed, graph, remains_edges);
+//     }
+// }
 
 
 /**
@@ -807,127 +931,127 @@ void create_threadV4_auxiliary(int start, int end, const int id, std::vector<std
  * @author Carlos Thadeu
  * @param graph a graph that represents the graph
  */
-void create_threads_induced_cycle_method_4v1(Graph &graph)
-{
-    // int value = graph.get_stretch_index();
-    // std::cout << "Valor achado: " << value << std::endl;
-    int qty = 0;
-    int root = -1;
-    int neighbor = -1;
-    int n;
-    std::vector<std::vector<std::pair<int, int>>> edges_list;
+// void create_threads_induced_cycle_method_4v1(Graph &graph)
+// {
+//     // int value = graph.get_stretch_index();
+//     // std::cout << "Valor achado: " << value << std::endl;
+//     int qty = 0;
+//     int root = -1;
+//     int neighbor = -1;
+//     int n;
+//     std::vector<std::vector<std::pair<int, int>>> edges_list;
 
-    DEBUG std::cerr << "Searching for induced cycles using method 4!" << std::endl;
-    edges_list = seeking_induced_cycles_edges_v4(graph);
+//     DEBUG std::cerr << "Searching for induced cycles using method 4!" << std::endl;
+//     edges_list = seeking_induced_cycles_edges_v4(graph);
 
-    std::vector<std::pair<int, int>> edges_to_be_processed = make_edges_list(edges_list);
-    DEBUG std::cerr << "Pre-processing edges!" << std::endl;
+//     std::vector<std::pair<int, int>> edges_to_be_processed = make_edges_list(edges_list);
+//     DEBUG std::cerr << "Pre-processing edges!" << std::endl;
 
-    edges_to_be_processed = detect_valid_edges_M4(edges_to_be_processed, graph);
+//     edges_to_be_processed = detect_valid_edges_M4(edges_to_be_processed, graph);
 
-    int r; // Generate the combinations
-    std::vector<std::vector<int>> combinacoes;
-    n = edges_to_be_processed.size();
-    for (int i = n; i > 0; i--)
-    {
-        std::vector<std::vector<int>> edges_to_remove = combinatorics(n, i);
-        for (int j = 0; j < edges_to_remove.size(); j++)
-        {
-            combinacoes.push_back(edges_to_remove[j]);
-        }
-    } // End of generate the combinations
+//     int r; // Generate the combinations
+//     std::vector<std::vector<int>> combinacoes;
+//     n = edges_to_be_processed.size();
+//     for (int i = n; i > 0; i--)
+//     {
+//         std::vector<std::vector<int>> edges_to_remove = combinatorics(n, i);
+//         for (int j = 0; j < edges_to_remove.size(); j++)
+//         {
+//             combinacoes.push_back(edges_to_remove[j]);
+//         }
+//     } // End of generate the combinations
 
-    qty = combinacoes.size();
+//     qty = combinacoes.size();
 
-    DEBUG std::cerr << "Edges numbers to use!" << qty << std::endl;
-    DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
+//     DEBUG std::cerr << "Edges numbers to use!" << qty << std::endl;
+//     DEBUG std::cerr << "Threads proposed: " << num_threads << std::endl;
 
-    // auto acme = define_block_chuck_for_cycleM4(num_threads, qty);
-    auto acme = define_block_chuck_for_cycleM4v2(num_threads, qty);
-    int block_size = std::get<0>(acme);
-    int chunk_size = std::get<1>(acme);
-    used_threads = std::get<2>(acme);
+//     // auto acme = define_block_chuck_for_cycleM4(num_threads, qty);
+//     auto acme = define_block_chuck_for_cycleM4v2(num_threads, qty);
+//     int block_size = std::get<0>(acme);
+//     int chunk_size = std::get<1>(acme);
+//     used_threads = std::get<2>(acme);
 
-    int qty_block = std::get<3>(acme);
-    int qty_chunk = std::get<4>(acme);
+//     int qty_block = std::get<3>(acme);
+//     int qty_chunk = std::get<4>(acme);
 
-    DEBUG std::cerr << "Threads to allocated: " << used_threads << std::endl;
+//     DEBUG std::cerr << "Threads to allocated: " << used_threads << std::endl;
 
-    // std::cout << qty << " " << num_threads << " " << block_size << " " << chunk_size << " " << used_threads << " " << std::endl;
+//     // std::cout << qty << " " << num_threads << " " << block_size << " " << chunk_size << " " << used_threads << " " << std::endl;
 
-    // O PEDACO DE CODIGO ABAIXO ARRUMAVA AS COMBINACOES PARA QUE DUAS
-    // OU MAIS COMBINACOES COM MUITAS ARESTAS FICASSEM NA MESMA THREAD
-    // SEMPRE PROCURAVA COMBINAR MUITA ARESTA/POUCA ARESTA, MUITA ARESTA/POUCA ARESTA,...
-    // PARA NÃO DESEQUILIBRAR AS THREADS
-    // NÃO FUNCIONA MAIS PQ MUDEI A ESTRUTURA DE FUNCIONAMENTO
-    // FICA A OBSERVAÇÂO PARA NO FUTURO EVITAR ESTE PROBLEMA 
-    std::thread vetor_th[used_threads];
+//     // O PEDACO DE CODIGO ABAIXO ARRUMAVA AS COMBINACOES PARA QUE DUAS
+//     // OU MAIS COMBINACOES COM MUITAS ARESTAS FICASSEM NA MESMA THREAD
+//     // SEMPRE PROCURAVA COMBINAR MUITA ARESTA/POUCA ARESTA, MUITA ARESTA/POUCA ARESTA,...
+//     // PARA NÃO DESEQUILIBRAR AS THREADS
+//     // NÃO FUNCIONA MAIS PQ MUDEI A ESTRUTURA DE FUNCIONAMENTO
+//     // FICA A OBSERVAÇÂO PARA NO FUTURO EVITAR ESTE PROBLEMA 
+//     std::thread vetor_th[used_threads];
 
-    std::reverse(combinacoes.begin(), combinacoes.end());
-    std::vector<std::vector<int>> auxiliar = combinacoes;
-    // int num_comb = combinacoes.size();
-    // int jump = num_comb / combinacoes[idx_last].size();
+//     std::reverse(combinacoes.begin(), combinacoes.end());
+//     std::vector<std::vector<int>> auxiliar = combinacoes;
+//     // int num_comb = combinacoes.size();
+//     // int jump = num_comb / combinacoes[idx_last].size();
 
-    int idx_last = combinacoes[qty - 1].size();
+//     int idx_last = combinacoes[qty - 1].size();
 
-    int counter = 0;
-    for (int idx_size = 0; idx_size < idx_last; idx_size++)
-    {
-        for (int iyt = idx_size; iyt < qty; iyt = iyt + idx_last)
-        {
-            // int g = idx_size + iyt ;
-            if (iyt < qty)
-            {
-                auxiliar[counter] = combinacoes[iyt];
-                counter++;
-            }
-        }
-    }
-
-
-    std::vector<std::pair<int, int>> remains_edges;
-    for (auto edges : edges_list){
-        for (auto edge: edges){
-            if (not in(edge.first, edge.second, edges_to_be_processed)){
-                remains_edges.push_back(edge);
-            }
-        }
-    }
+//     int counter = 0;
+//     for (int idx_size = 0; idx_size < idx_last; idx_size++)
+//     {
+//         for (int iyt = idx_size; iyt < qty; iyt = iyt + idx_last)
+//         {
+//             // int g = idx_size + iyt ;
+//             if (iyt < qty)
+//             {
+//                 auxiliar[counter] = combinacoes[iyt];
+//                 counter++;
+//             }
+//         }
+//     }
 
 
-    combinacoes = auxiliar;
-    int start, end;
-    for (int i = 0; i < used_threads; ++i)
-    {
+//     std::vector<std::pair<int, int>> remains_edges;
+//     for (auto edges : edges_list){
+//         for (auto edge: edges){
+//             if (not in(edge.first, edge.second, edges_to_be_processed)){
+//                 remains_edges.push_back(edge);
+//             }
+//         }
+//     }
 
-        if (i < qty_block)
-        {
-            start = i * block_size;
-            end = start + block_size;
-        }
-        else
-        {
-            if (i == qty_block)
-            {
-                start = i * block_size;
-            }
-            else
-            {
-                start = i * chunk_size;
-            }
-            end = start + chunk_size;
-        }
 
-        vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph), std::ref(remains_edges));
-    }
+//     combinacoes = auxiliar;
+//     int start, end;
+//     for (int i = 0; i < used_threads; ++i)
+//     {
 
-    sem_wait(&semaforo);
+//         if (i < qty_block)
+//         {
+//             start = i * block_size;
+//             end = start + block_size;
+//         }
+//         else
+//         {
+//             if (i == qty_block)
+//             {
+//                 start = i * block_size;
+//             }
+//             else
+//             {
+//                 start = i * chunk_size;
+//             }
+//             end = start + chunk_size;
+//         }
 
-    for (int i = 0; i < used_threads; ++i)
-    {
-        vetor_th[i].join(); // junção das threads
-    }
-}
+//         vetor_th[i] = std::thread(create_threadV4_auxiliary, start, end, i, std::ref(combinacoes), std::ref(edges_to_be_processed), std::ref(graph), std::ref(remains_edges));
+//     }
+
+//     //sem_wait(&semaforo);
+
+//     for (int i = 0; i < used_threads; ++i)
+//     {
+//         vetor_th[i].join(); // junção das threads
+//     }
+// }
 
 /*!
     Calculate a stretch index using an induced cycle's edge
@@ -939,56 +1063,56 @@ void create_threads_induced_cycle_method_4v1(Graph &graph)
     \param end
 */
 
-void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
-{
+// void find_index_induced_cycle_method_4(int id, std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph, std::vector<std::pair<int, int>> &remains_edges)
+// {
 
-    // mtx.lock();
-    pthread_mutex_lock(&mutex_signal);
-    //Graph G1 = graph;   // Auxiliary graph - local graph
-    //Graph G1;
-    Graph G1 = Graph(graph.get_num_vertices());
-    OpBasic::copy(G1, graph);
+//     // mtx.lock();
+//     pthread_mutex_lock(&mutex_signal);
+//     //Graph G1 = graph;   // Auxiliary graph - local graph
+//     //Graph G1;
+//     Graph G1 = Graph(graph.get_num_vertices());
+//     OpBasic::copy(G1, graph);
 
-    G1 = remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
-    G1.reset_trees(0);
+//     G1 = remove_edges_cycle_M2(combinacoes[id], edges_to_be_processed, graph);
+//     G1.reset_trees(0);
     
-    pthread_mutex_unlock(&mutex_signal);
-    // mtx.unlock();
+//     pthread_mutex_unlock(&mutex_signal);
+//     // mtx.unlock();
 
-    std::vector<std::pair<int, int>> immovable_edges = immovable(id, combinacoes, edges_to_be_processed);
+//     std::vector<std::pair<int, int>> immovable_edges = immovable(id, combinacoes, edges_to_be_processed);
 
-    int num_vertices = G1.get_num_vertices();
-    Graph tree(num_vertices);
-    int num = combinacoes[id].size() - 1;
-    int root = edges_to_be_processed[num].second;
+//     int num_vertices = G1.get_num_vertices();
+//     Graph tree(num_vertices);
+//     int num = combinacoes[id].size() - 1;
+//     int root = edges_to_be_processed[num].second;
        
-    find_index_cycleM4_NEW(id, root, immovable_edges, G1, graph, remains_edges);
+//     find_index_cycleM4_NEW(id, root, immovable_edges, G1, graph, remains_edges);
 
-    int arvores;
-    arvores = G1.get_total_tree();
-    int index_local = G1.get_stretch_index();
+//     int arvores;
+//     arvores = G1.get_total_tree();
+//     int index_local = G1.get_stretch_index();
 
-    if (index_local == (int)INFINITY)
-    {
-        index_local = 1;
-        arvores = 0;
-        G1.reset_trees(arvores);
-    }
-    // G1.set_best_tree(s);
-    // mtx.lock();
-    pthread_mutex_lock(&mutex_signal);
-    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
-    // graph.set_stretch_index(index_local);
-    // G1.set_best_tree(tree);
-    graph.sum_trees(arvores);
-    global_total_arv = arvores;
-    int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
-    DEBUG std::cerr << index_local << " " << G1.get_stretch_index() << " " << graph.get_stretch_index() << std::endl;
-    set_graph_final_parameters(index_local, G1, graph);
-    pthread_mutex_unlock(&mutex_signal);
-    // mtx.unlock();
-    sem_post(&semaforo); // a thread libera espaço para a proxima
-}
+//     if (index_local == (int)INFINITY)
+//     {
+//         index_local = 1;
+//         arvores = 0;
+//         G1.reset_trees(arvores);
+//     }
+//     // G1.set_best_tree(s);
+//     // mtx.lock();
+//     pthread_mutex_lock(&mutex_signal);
+//     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
+//     // graph.set_stretch_index(index_local);
+//     // G1.set_best_tree(tree);
+//     graph.sum_trees(arvores);
+//     global_total_arv = arvores;
+//     int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
+//     DEBUG std::cerr << index_local << " " << G1.get_stretch_index() << " " << graph.get_stretch_index() << std::endl;
+//     set_graph_final_parameters(index_local, G1, graph);
+//     pthread_mutex_unlock(&mutex_signal);
+//     // mtx.unlock();
+//     //sem_post(&semaforo); // a thread libera espaço para a proxima
+// }
 
 
 // DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
@@ -1083,48 +1207,119 @@ std::vector<int> complement(const std::vector<int> &setA, const std::vector<int>
 Valid_Edges_r detect_valid_edges_M4_NEW_APPROACH(std::vector<std::vector<int>> &combinacoes, std::vector<std::pair<int, int>> &edges_to_be_processed, Graph &graph)
 {
     Valid_Edges_r ret;
-    std::vector<std::vector<std::pair<int, int>>> edges_list;
+    //std::vector<std::vector<std::pair<int, int>>> edges_list;
     std::vector<std::vector<std::pair<int, int>>> disposable_edges_list;
     std::vector<std::vector<std::pair<int, int>>> immutable_edges_list;
 
     Graph G1 = graph;
-    std::vector<std::pair<int, int>> disposable_edges;
-    std::vector<std::pair<int, int>> immutable_edge;
+    std::vector<std::pair<int, int>> disposable_edges_auxiliary;
+    std::vector<std::pair<int, int>> immutable_edge_auxiliary;
 
     std::vector<int> vector1(edges_to_be_processed.size(),0);
     for (int i=0; i < edges_to_be_processed.size(); i++)
         vector1[i]=i;
     std::vector<int> complementSet;
-    
+
+   for (auto combinacao : combinacoes){
+        bool not_conet = false;
+
+        complementSet = complement(vector1, combinacao);
+        disposable_edges_auxiliary.clear();
+        for (auto index: complementSet){
+            int v1 = edges_to_be_processed[index].first;
+            int v2 = edges_to_be_processed[index].second;
+            G1.remove_aresta(v1, v2);
+            disposable_edges_auxiliary.push_back(std::make_pair(v1, v2));
+            if (!OpBasic::is_connected(G1)) {
+                not_conet = true;
+                G1 = graph;
+                break;            
+            }
+        }
+        if (not_conet) continue;
+        for ( auto index : combinacao){
+            int v1 = edges_to_be_processed[index].first;
+            int v2 = edges_to_be_processed[index].second;
+            immutable_edge_auxiliary.push_back(std::make_pair(v1, v2));
+        }
+        // for ( auto index : combinacao){
+        //     int v1 = edges_to_be_processed[index].first;
+        //     int v2 = edges_to_be_processed[index].second;
+        //     G1.remove_aresta(v1, v2);
+        //     //disposable_edges_auxiliary.push_back(std::make_pair(v1, v2));
+        //     immutable_edge_auxiliary.push_back(std::make_pair(v1, v2));
+        // }
+        // if (!OpBasic::is_connected(G1)){
+        //     G1 = graph;
+        //     disposable_edges_auxiliary.clear();
+        //     immutable_edge_auxiliary.clear();
+        //     continue;
+        // }
+
+        disposable_edges_list.push_back(disposable_edges_auxiliary);
+        immutable_edges_list.push_back(immutable_edge_auxiliary);
+        // if (OpBasic::is_connected(G1)){
+        //     //edges_list.push_back(make_edges_list(graph));
+        //     //edges_list.push_back(make_edges_list(graph));
+        //     immutable_edges_list.push_back(immutable_edge_auxiliary);
+        //     complementSet = complement(vector1, combinacao);
+        //     for ( auto index : complementSet){
+        //         int v1 = edges_to_be_processed[index].first;
+        //         int v2 = edges_to_be_processed[index].second;
+        //         disposable_edges_auxiliary.push_back(std::make_pair(v1, v2));
+        //     }
+        //     if (disposable_edges_auxiliary.size()){
+        //         disposable_edges_list.push_back(disposable_edges_auxiliary);
+        //         disposable_edges_auxiliary.clear();
+        //     }
+        // }
+        disposable_edges_auxiliary.clear();
+        immutable_edge_auxiliary.clear();
+
+        G1 = graph;
+
+    /*
     for (auto combinacao : combinacoes){
         for ( auto index : combinacao){
             int v1 = edges_to_be_processed[index].first;
             int v2 = edges_to_be_processed[index].second;
             G1.remove_aresta(v1, v2);
-            immutable_edge.push_back(std::make_pair(v1, v2));
+            immutable_edge_auxiliary.push_back(std::make_pair(v1, v2));
         }
         if (OpBasic::is_connected(G1)){
             //edges_list.push_back(make_edges_list(graph));
-            edges_list.push_back(make_edges_list(graph));
-            immutable_edges_list.push_back(immutable_edge);
+            //edges_list.push_back(make_edges_list(graph));
+            immutable_edges_list.push_back(immutable_edge_auxiliary);
             complementSet = complement(vector1, combinacao);
             for ( auto index : complementSet){
                 int v1 = edges_to_be_processed[index].first;
                 int v2 = edges_to_be_processed[index].second;
-                disposable_edges.push_back(std::make_pair(v1, v2));
+                disposable_edges_auxiliary.push_back(std::make_pair(v1, v2));
             }
-            if (disposable_edges.size()){
-                disposable_edges_list.push_back(disposable_edges);
-                disposable_edges.clear();
+            if (disposable_edges_auxiliary.size()){
+                disposable_edges_list.push_back(disposable_edges_auxiliary);
+                disposable_edges_auxiliary.clear();
             }
         }
-        immutable_edge.clear();
+        immutable_edge_auxiliary.clear();
 
         G1 = graph;
+    */
     }
     ret.immutable_edges_list = immutable_edges_list;
-    ret.edges_list = edges_list;
+    //ret.edges_list = edges_list;
     ret.disposable_edges_list = disposable_edges_list;
+
+
+    // for (auto x: ret.disposable_edges_list){
+    //     G1 = graph;
+    //     for (auto edge: x){
+    //         G1.remove_aresta(edge.first, edge.second);
+    //     }
+    //     if (!OpBasic::is_connected(G1)) DEBUG std::cerr << "NAO CONECTADO";
+
+    // }
+
     return ret;
 }
 
