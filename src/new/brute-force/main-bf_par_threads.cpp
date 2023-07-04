@@ -79,7 +79,7 @@ int main(int argc, char** argv){
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving with parallel brute force parallelized using edge parallism - wait!\n";
-	run_name = "EDGE_PARALLELISM";
+	run_name = "ADJACENCY_LIST";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
         create_threads(graph);

@@ -71,7 +71,7 @@ int main(int argc, char** argv){
 
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
-	sem_init(&semaforo, 0, num_threads);
+	num_threads = 1;
 	
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
@@ -96,7 +96,6 @@ int main(int argc, char** argv){
 
 	// OUTPUT - nothing - screen - file - debug
 	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
-	sem_destroy(&semaforo);
     return 0;
 };
 

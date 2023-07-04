@@ -79,7 +79,7 @@ int main(int argc, char** argv){
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving brute force with Maximum degree - PARALLEL- wait!\n";
-	run_name = "MAX_DEGREE";
+	run_name = "EDGE_PARALELISM";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
         create_threads_edge_max_degree(graph);
