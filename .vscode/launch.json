@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos/grafo_16.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_15.txt"],
             "default": "${workspaceFolder}/instances/examples/G4_FULL_edges.in"
         }
     ],
@@ -39,11 +39,11 @@
             ]
         },
         {
-            "name": "[GDB] app_BF_PAR < debug.in",
+            "name": "[GDB] app_BF_ADJACENCY < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-PAR",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "10", "--edges", "--debug", "--file" ],
+            "program": "${workspaceFolder}/build/debug/app_BF-ADJACENCY",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -63,11 +63,11 @@
             ]
         },
         {
-            "name": "[GDB] app_BF_DEGREE < debug.in",
+            "name": "[GDB] app_BF_EDGES < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-DEGREE",
-            "args": [ "<", "${input:componentType}", ">>", "${workspaceFolder}/workspace/debug.out", "-t", "4", "--edges" , "--debug", "--file" ],
+            "program": "${workspaceFolder}/build/debug/app_BF-EDGES",
+            "args": [ "<", "${input:componentType}", ">>", "${workspaceFolder}/workspace/debug.out", "-t", "8",  "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

@@ -18,15 +18,16 @@
  * `-s` or `--seed` 					/ Setup this application seed 								/ integer
  * @param app_name The name of the application as called in the command line.
  */
-void Parameters::usage(const char* app_name){
-	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl;
+void Parameters::usage(const char *app_name){
+	std::cout << "T-Admissibility version " << Version().version() << std::endl << std::endl;
+	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl << std::endl;
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h	| --help	Show this message." << std::endl;
 	std::cout << "\t-t X	| --thread X	Define the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 	std::cout << "\t-rt X	| --running_time X	Define execution time in miliseconds until STOP! default is 0 [current " << global_running_time << "]" << std::endl  << std::endl ;
 	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << global_induced_cycle << "]" << std::endl  << std::endl ;
 	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t-v	 | --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
 	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;

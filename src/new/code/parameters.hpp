@@ -13,7 +13,7 @@ extern bool global_save_tree;
 class Parameters
 {
     public:
-        static void usage(const char* app_name);
+        static void usage(const char *app_name);
         static void parseArgs(int argc, char** argv);
 };
 

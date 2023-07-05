@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
-		Parameters::usage("--help");
+		Parameters::usage(argv[0]);
 		exit(0);
 	}
 

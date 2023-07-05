@@ -289,7 +289,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 
 void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const int id)
 {
-    sem_wait(&semaforo);
+    //sem_wait(&semaforo);
 
     int n = g.getQtdVertices();
     int m = g.getQtdArestas();
@@ -297,7 +297,6 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     int indice[n-1];
     int j = 0;
     indice[j] = start;
-    
     Graph tree(n);
     Graph tree_local;
     int arv = 0;
@@ -324,15 +323,23 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                 }
                 else {
                     tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
-                    if( !OpBasic::is_cyclic(tree) ){
+                    bool tem_cyclo = false;
+                    if (OpBasic::cyclic(tree, edges[indice[j]])){
+                        tem_cyclo = true;
+                    }
+                    if (!tem_cyclo)
+                        if (OpBasic::cyclic(tree, edges[indice[j]+1]))
+                            tem_cyclo = true;
+                    if (!tem_cyclo){
+
+
+
+                    //if( !OpBasic::is_cyclic(tree) ){
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
                             if (!global_noindex) 
                                 f = Stretch::find_factor(g, tree);
                             ++arv;
-                            mtx.lock();
-                            g.add_tree();
-                            mtx.unlock();
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
@@ -356,18 +363,18 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
         }
     }
     
-    mtx.lock();
     int arvores;
     arvores =arv;
-
     if (index_local == (int)INFINITY){
         index_local = 1;
         arvores = 0;
     }
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
+    mtx.lock();
+    g.sum_trees(arvores);
     set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
     mtx.unlock();
-    sem_post(&semaforo);
+    //sem_post(&semaforo);
 }
 
 void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, const int id)
@@ -559,7 +566,7 @@ void create_threads_edge_max_degree(Graph& g)
     DEBUG std::cerr << "Threads to be used: " << qtd_th << std::endl;
     used_threads = qtd_th;
 
-    for(int i=0; i < used_threads; ++i){
+    for(int i=0; i < qtd_th; ++i){
         vetor_th[i] = std::thread(find_index_pararell_edge, std::ref(g), edges, i*2, i); // separação dos threats
     }
 

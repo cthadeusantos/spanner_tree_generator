@@ -36,10 +36,15 @@
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
 
+	unsigned int n = std::thread::hardware_concurrency();
+	DEBUG std::cerr << " ********************************************" << std::endl;
+    DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
+	DEBUG std::cerr << " ********************************************" << std::endl ;
+
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
-		Parameters::usage("--help");
+		Parameters::usage(argv[0]);
 		exit(0);
 	}
 
@@ -59,7 +64,7 @@ int main(int argc, char** argv){
 		graph = read_graph_file_edges_list();
 	else
 		graph = read_graph_file();
-		
+
 	DEBUG std::cerr << "Quantidade de vertices => " << graph.getQtdVertices() << std::endl;
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 
@@ -76,16 +81,17 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
+	global_induced_cycle = 0;
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving brute force with Maximum degree - PARALLEL- wait!\n";
-	run_name = "EDGE_PARALELISM";
+	DEBUG std::cerr << "Solving with ADJACENCY LIST - MAX DEGREE - wait!\n";
+	run_name = "ADJACENCY_LIST";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
-        create_threads_edge_max_degree(graph);
+        create_threads(graph);
         wdt.stop();
     } else {
-        create_threads_edge_max_degree(graph);
+        create_threads(graph);
     }
 	
 

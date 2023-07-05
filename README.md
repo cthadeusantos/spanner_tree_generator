@@ -1,75 +1,42 @@
-- [Disclaimer](#disclaimer)
-- [1. Usage](#1-usage)
-  - [Usage example (running):](#usage-example-running)
-  - [Usage example (running batteries):](#usage-example-running-batteries)
-  - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
+- [1. Preliminary Notes for 0.2.x series](#1-preliminary-notes-for-02x-series)
 - [2. Important links and work performed](#2-important-links-and-work-performed)
 - [3. Project Architecture](#3-project-architecture)
   - [3.1. Pre-requisites](#31-pre-requisites)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
-  - [3.4. Directory Structure](#34-directory-structure)
-  - [3.5. Internal Tools](#35-internal-tools)
-- [4. Authorship Information](#4-authorship-information)
+  - [3.4. Usage](#34-usage)
+    - [Usage example (running):](#usage-example-running)
+    - [Usage example (running batteries):](#usage-example-running-batteries)
+    - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
+  - [3.5. Directory Structure](#35-directory-structure)
+  - [3.6. Internal Tools](#36-internal-tools)
+- [4. Input file format](#4-input-file-format)
+- [5. Known Bugs](#5-known-bugs)
+- [6. Authorship Information](#6-authorship-information)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
+The $t$-admissibility is a min-max problem that concerns to determine whether a graph $G$ contains a spanning tree $T$ in which the distance between any two adjacent vertices of $G$ is at most $t$ in $T$. The stretch index of $G$, $\sigma(G)$, is the smallest $t$ for which $G$ is $t$-admissible.
+
 This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
 
-## Disclaimer
+## 1. Preliminary Notes for 0.2.x series
 
+Please note that the C++ code from a previous version (0.1.x series) will not be compatible with the current version. It is important to be aware that any code written for the previous version will require updates and modifications to ensure compatibility and proper functioning in the current version. Failing to update the code may result in errors, unexpected behavior, or even program crashes. Therefore, we strongly advise reviewing and revising your previous C++ code to ensure it aligns with the requirements and conventions of the current version.
 
-## 1. Usage
+Furthermore, please be aware that the code from the previous version will no longer receive updates or bug fixes. The previous version's codebase will be archived and stored at a designated location for reference purposes. It is important to transition to the current version and utilize its updated features, enhancements, and ongoing support for a more efficient and stable development environment.
 
-```bash
-app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
-```
+<b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of classes throughout the project. This transition is being implemented to enhance the codebase and align with modern programming practices.
 
-	OPTIONS:
-      -h      | --help            This help
-	          | --adjacency       Define which type file will be read. (adjacency list)[default]
-	          | --edges           Define which type file will be read. (edges list)
-              | --nolb            Not calculate lower bound
-              | --noindex         Not calculate stretch index
-	    -rt X | --running_time X  Define execution time in miliseconds until STOP! default is 0
-	    -ci X | --induced_cycle X Define execution time in miliseconds until STOP! default is 0
-	    -t X  | --thread X        Define the numbers of threads. X is the number of threads 
-	    -v	  | --version         Which version is this app.
-
-
-	  Show info:
-	    -f | --file               Output at file.
-	    -s | --screen             Output at screen.
-	    -d | --debug              Output screen only debug mode.
-	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
-	    You can combine file, screen and debug
-
-    INPUT_FILENAME is mandatory
-    OUTPUT_FILENAME is optional
-
-### Usage example (running):
-	
-```bash
-./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt > results/grafo10_results.txt
-./build/release/app_BF-ALL -t 32 -f < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
-```
-### Usage example (running batteries):
-Go to tools directory and run
-
-```bash
-python3 execution-battery.py 1 < batteries/BATTERY-NAME.yaml
-```
-### Usage example (analisys batteries):
-After execute battery, go to tools directory and run
-```bash
-python3 execution-battery-analyzer.py ../workspace/BATTERY-NAME-DIRECTORY
-```
-
+Previous version can be found here. 
+https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e
+https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d
+Please check Github Webpage for others branches
 
 ## 2. Important links and work performed
 
 * Link to [this repository](https://github.com/cthadeusantos/spanner_tree_generator). 
-* Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1). (portuguese)
+* Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1). (in portuguese)
     * Every task is represented by a card (issue). Any issue tagged as `EPIC` detail the current main goal of the project.
 * Past published work:
   * [Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
@@ -143,8 +110,63 @@ The following bullets denote the pre-requisites to develop the project.
 * To debug the source code with VSCode and [GDB](https://www.sourceware.org/gdb/), select the *app* that you intend to debug in the upper part of the *Run and Debug* tab (shortcut `ctrl + shift + D`) and execute its rule with the shortcut `F5`. **The developer may need to alter input/output redirection in the `.vscode/launch.json` file**. The default configuration is set to use the `workspace/debug.in` file as input and output the stdout to `workspace/debug.out`. The stderr is printed to the console.
 * There is a source code documentation availabe at `documents/source-doc.html`.
 * To gather results to publish, each source application can be executed through the script `execution-battery.py` located in the tools folder. The script was designed to perform execution batteries while keeping the best solution found. Usage instructions are in the tool itself.
-  
-### 3.4. Directory Structure
+
+
+### 3.4. Usage
+
+After compiling, you will find the executables in the build/release/ directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
+
+The brute force executables are as follows:
+* **app_BF-SEQ**, which runs sequentially using a single thread;
+* **app_BF-EDGES**, which executes in parallel using an edge list;
+* **app_BF-ADJACENCY**, which operates in parallel using an adjacency list;
+* **app_BF-CYCLES**, which runs in parallel utilizing an edge list and the induced cycle method.
+
+```bash
+app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
+```
+
+	OPTIONS:
+      -h      | --help            This help
+	          | --adjacency       Define which type file will be read. (adjacency list)[default]
+	          | --edges           Define which type file will be read. (edges list)
+              | --nolb            Not calculate lower bound
+              | --noindex         Not calculate stretch index
+	    -rt X | --running_time X  Define execution time in miliseconds until STOP! default is 0
+	    -ci X | --induced_cycle X Define the number of induced cycles ! default is 1
+	    -t X  | --thread X        Define the numbers of threads. X is the number of threads 
+	    -v	  | --version         Which version is this app.
+
+
+	  Show info:
+	    -f | --file               Output at file.
+	    -s | --screen             Output at screen.
+	    -d | --debug              Output screen only debug mode.
+	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
+	    You can combine file, screen and debug
+
+    INPUT_FILENAME is mandatory
+    OUTPUT_FILENAME is optional
+
+#### Usage example (running):
+	
+```bash
+./build/release/app_BF-SEQ -s < instances/grafos/grafo_10.txt > results/grafo10_results.txt
+./build/release/app_BF-EDGES -t 32 -s < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
+```
+#### Usage example (running batteries):
+Go to tools directory and run
+
+```bash
+python3 execution-battery.py 1 < batteries/BATTERY-NAME.yaml
+```
+#### Usage example (analisys batteries):
+After execute battery, go to tools directory and run
+```bash
+python3 execution-battery-analyzer.py ../workspace/BATTERY-NAME-DIRECTORY
+```
+
+### 3.5. Directory Structure
 
 The project is structured as follows:
 
@@ -164,7 +186,7 @@ The project is structured as follows:
   * `results/bks/` - The best known solution (bks) for each instance that was attained across every application test through this project. 
 * `workspace/` -- A folder that isn't organized at all. Generally, these academic projects are managed by a few researchers (1 to 3). Most of the needs are unknown due to the nature the research project itself. Therefore, any data of unknown usefullness should be store here, like auxiliary files and temporary execution data. Any developer may alter what is inside, DO NOT backup stuff here.
 
-### 3.5. Internal Tools
+### 3.6. Internal Tools
 
 This project has internal tools to support development. Usage examples and detailed description should be inside the tool itself. The user is encouraged to read the entire description before using them. They are available at the `tools/` directory.
 
@@ -174,7 +196,38 @@ This project has internal tools to support development. Usage examples and detai
 * `bks_summary.py` - This script will update the summary file of the bks attained through the project summary at the results folder. It will create a file inside the `result/bks/` directory with tables that provide easy access to the bks information. 
 * `list_files.py` - A simple script that receives a directory to output a list of files inside. The output will be printed at the console. May receive a filter by file extension.
 
-## 4. Authorship Information
+## 4. Input file format
+
+**For adjacency matrix** (a square matrix)
+1st line Number of vertices (in our example 4)
+2nd line 0 1 1 0
+3rd line 1 0 1 1
+4th line 1 1 0 1
+5th line 0 1 1 0
+
+ The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
+ Please use space to separate (0,1) elements
+
+**For edges list**
+1st line Number of vertices
+2nd line vertex,vertex
+3rd line vertex,vertex
+4th line vertex,vertex
+..
+Nth line vertex,vertex
+
+An edge list is a data structure used to represent a graph as a list of its edges.
+Each line from the 2nd represents an edge (two vertices).
+Please use comma to separate the vertices.
+
+Check the instance directory to examples.
+
+## 5. Known Bugs
+
+* In the induced cycle search routine, in which searching for more than one induced cycle as a parameter (-ci 2 or more) can cause the application to enter an infinite loop or generate repeated cycles. Until the problem is fixed, use app_BF-CYCLE with the parameter '-ci 1'.
+
+
+## 6. Authorship Information
 
 We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF). If you want to inquire about this project, you may e-mail any of the authors listed below.
 

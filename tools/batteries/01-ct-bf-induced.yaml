@@ -1,9 +1,9 @@
 ---                               
 
-name: ct-bf-inducedM4              
+name: ct-bf-induced             
 problem: tadmiss                   
 description: Running brute force parallel (induced cycle)
-exec: release/app_BF-CYCLES_M4
+exec: release/app_BF-CYCLES
 default_timelimit: 10800
 default_iterations: 10
 instance_list:
