@@ -34,6 +34,39 @@ std::vector<float> Centrality::leverage(Graph &graph){
 }
 
 /**
+ * Leverage centrality list
+ * @details List of leverage centrality 
+ * @author Carlos Thadeu
+ * @param vertices a vector of vertices
+ * @param leverage A vector of float that represents leverage centrality 
+ * @return a vector of pair (int, float) that represents the vertex your leverage centrality
+ */
+std::vector<std::pair<int,float>> Centrality::leverage_centrality_list(std::vector <float> &leverage){
+    int lsize = leverage.size();
+    std::vector<std::pair<int,float>> leverage_centrality(lsize, std::make_pair(0,0.0));
+    for (int Ni=0; Ni < lsize; Ni++){
+        leverage_centrality[Ni] = std::make_pair(Ni, leverage[Ni]);
+    }
+    return leverage_centrality;
+}
+
+/**
+ * Leverage centrality list
+ * @details List of leverage centrality 
+ * @author Carlos Thadeu
+ * @param graph a graph
+ * @return a vector of pair (int, float) that represents the vertex your leverage centrality
+ */
+std::vector<std::pair<int,float>> Centrality::leverage_centrality_list(Graph &graph){
+    int lsize = graph.get_qty_vertex();
+    std::vector<std::pair<int,float>> leverage_centrality(lsize, std::make_pair(0,0.0));
+    for (int Ni=0; Ni < lsize; Ni++){
+        leverage_centrality[Ni] = std::make_pair(Ni, Centrality::vertex_leverage(Ni,  graph)); 
+    }
+    return leverage_centrality;
+}
+
+/**
  * Split vertices to threads to calculate leverage centrality
  * @details Split vertices to threads to calculate leverage centrality
  * @author Carlos Thadeu
@@ -56,7 +89,7 @@ void Centrality::thread_leverage(int start, int end, std::vector <float> &levera
 }
 
 /**
- * Leverade centrality 
+ * Leverage centrality 
  * @details Calculate a leverade centrality for all vertices at graph
  * @author Carlos Thadeu
  * @param graph a graph
@@ -601,6 +634,43 @@ void Centrality::insertionSort(int arr[], int n)
             j = j - 1;
         }
         arr[j + 1] = key;
+    }
+}
+
+/**
+ * @brief Insert sort
+ * @details https://www.geeksforgeeks.org/insertion-sort/
+ * @author Original code rathbhupendra
+ * @param arr an array
+ * @param n array items number
+ */
+void Centrality::my_insertionSort(std::vector<std::pair<int, float>> vector1, char order)
+{
+    int i, key, j;
+    int n = vector1.size();
+    for (i = 1; i < n; i++)
+    {
+        key = vector1[i].second;
+        j = i - 1;
+ 
+        // Move elements of arr[0..i-1], 
+        // that are greater than key, to one
+        // position ahead of their
+        // current position
+        if (order == 'a'){
+            while (j >= 0 && vector1[j].second > key)
+            {
+                vector1[j + 1].second = vector1[j].second;
+                j = j - 1;
+            }
+        } else if (order == 'd'){
+            while (j >= 0 && vector1[j].second < key){
+                vector1[j + 1].second = vector1[j].second;
+                j = j - 1;
+            }
+
+        }
+        vector1[j + 1].second = key;
     }
 }
 

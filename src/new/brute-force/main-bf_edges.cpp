@@ -81,7 +81,8 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	sem_init(&semaforo, 0, num_threads);
-	global_induced_cycle = 0;
+	//global_induced_cycle = 0;
+	global_induced_cycle_used = 0;
 	
 	// MAIN PROCEDURE
 	DEBUG std::cerr << "Solving brute force with EDGE PARALELLISM - MAX_DEGREE - wait!\n";

@@ -88,17 +88,14 @@ int main(int argc, char** argv){
 	//sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with induced cycle Method 4 - PARALLEL- induced cycle from girth wait!\n";
-	run_name = "INDUCED_CYCLE-M4";
+	DEBUG std::cerr << "Solving with induced cycle Method (PARALLEL) - wait!\n";
+	run_name = "INDUCED_CYCLE";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
-        //create_threads_inducedmtx_cycle_method_4v1(graph);
-		create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
+		create_threads_induced_cycle_V2(graph);
         wdt.stop();
     } else {
-        //create_threads_induced_cycle_method_4v1(graph);
-		//create_threads_induced_cycle_method_4_NEW_APPROACH(graph);
-		create_threads_induced_cycle_method_4_NEW_APPROACH_V2_USANDO_FILA(graph);
+		create_threads_induced_cycle_V2(graph);
     }
 	
 	// End time counting

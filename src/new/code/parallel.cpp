@@ -16,8 +16,6 @@
 #include "parallel.hpp"
 #include "centrality.hpp"
 
-
-
 #include "../Debug.h"
 
 #include <chrono>	// contributor AZ
@@ -205,7 +203,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int ult_colocado[n];
     int v = raiz;
     int u;
-    int arv = 0; // debug
+    int local_sum_trees = 0; 
     int index_local = (int)INFINITY;
     Graph tree_local;
     Graph tree(n);
@@ -216,10 +214,10 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     }
 
     prox_vizinho[v] = start;
-    mtx.lock();
+    //mtx.lock();
     int stretch_index = g.get_stretch_index();
     int lower_limit = g.grt-1 ;
-    mtx.unlock();
+    //mtx.unlock();
 
     //while((stretch_index > lower_limit || stretch_index == 1) && g.get_signal() && !(abort_for_timeout))
     while(g.get_signal() && !(abort_for_timeout))
@@ -241,15 +239,28 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
             if( not tree.possui_aresta(v, u) ){
                 tree.add_aresta(v, u);
                 ult_colocado[v] = u;
-                if(not OpBasic::is_cyclic(tree)){
+                // LINES ABOVE IMPROVE RUNNING TIME
+                // THEY REPLACE if(not OpBasic::is_cyclic(tree)){
+                //
+                bool has_cycle_var = false;
+                if (OpBasic::cyclic(tree, v)){
+                    has_cycle_var = true;
+                }
+                if (!has_cycle_var)
+                    if (OpBasic::cyclic(tree, u))
+                        has_cycle_var = true;
+                if(not has_cycle_var) {
+                // END OF IMPROVES
+                
+                //if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!global_noindex)
                             f =Stretch::find_factor(g, tree);
-                        ++arv;
-                        mtx.lock();
-                        g.add_tree();
-                        mtx.unlock();
+                        ++local_sum_trees;
+                        //mtx.lock();
+                        //g.add_tree();
+                        //mtx.unlock();
                         
                         if(f < index_local){
                             index_local = f;
@@ -274,14 +285,15 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
 
     mtx.lock();
     int arvores;
-    arvores = arv;
+    arvores = local_sum_trees;
 
     if (index_local == (int)INFINITY){
         index_local = 1;
         arvores = 0;
     }
+    g.sum_trees(arvores);
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
+    set_graph_final_parameters(index_local, global_total_arv, local_sum_trees, tree_local, g);
 
     mtx.unlock();
     sem_post(&semaforo); // a thread libera espaço para a proxima
@@ -299,7 +311,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     indice[j] = start;
     Graph tree(n);
     Graph tree_local;
-    int arv = 0;
+    int local_sum_trees = 0;
     //int index_local = INF_VALUE;
     int index_local = (int)INFINITY;
 
@@ -323,23 +335,20 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
                 }
                 else {
                     tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
-                    bool tem_cyclo = false;
+                    bool has_cycle_var = false;
                     if (OpBasic::cyclic(tree, edges[indice[j]])){
-                        tem_cyclo = true;
+                        has_cycle_var = true;
                     }
-                    if (!tem_cyclo)
+                    if (!has_cycle_var)
                         if (OpBasic::cyclic(tree, edges[indice[j]+1]))
-                            tem_cyclo = true;
-                    if (!tem_cyclo){
-
-
-
+                            has_cycle_var = true;
+                    if (!has_cycle_var){
                     //if( !OpBasic::is_cyclic(tree) ){
                         if(j == n-2){ // achou uma arvore geradora
                             int f=1;
                             if (!global_noindex) 
                                 f = Stretch::find_factor(g, tree);
-                            ++arv;
+                            ++local_sum_trees;
                             if(f < index_local){
                                 index_local = f;
                                 tree_local = tree;
@@ -364,7 +373,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     }
     
     int arvores;
-    arvores =arv;
+    arvores=local_sum_trees;
     if (index_local == (int)INFINITY){
         index_local = 1;
         arvores = 0;
@@ -372,95 +381,95 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
     mtx.lock();
     g.sum_trees(arvores);
-    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
+    set_graph_final_parameters(index_local, global_total_arv, local_sum_trees, tree_local, g);
     mtx.unlock();
     //sem_post(&semaforo);
 }
 
-void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, const int id)
-{
-    sem_wait(&semaforo);
+// void find_index_parallel_edgeV2(Graph& g, std::vector<int> edges, int start, const int id)
+// {
+//     sem_wait(&semaforo);
 
-    int n = g.getQtdVertices();
-    int m = g.getQtdArestas();
-    // std::vector<int> edges = OpBasic::edges(g);
-    int indice[n-1];
-    int j = 0;
-    indice[j] = start;
+//     int n = g.getQtdVertices();
+//     int m = g.getQtdArestas();
+//     // std::vector<int> edges = OpBasic::edges(g);
+//     int indice[n-1];
+//     int j = 0;
+//     indice[j] = start;
     
-    Graph tree(n);
-    Graph tree_local;
-    int arv = 0;
-    //int index_local = INF_VALUE;
-    int index_local = (int)INFINITY;
+//     Graph tree(n);
+//     Graph tree_local;
+//     int arv = 0;
+//     //int index_local = INF_VALUE;
+//     int index_local = (int)INFINITY;
 
-    Graph gTeste(n);
+//     Graph gTeste(n);
 
-    // Removido pq coloquei em cria threads
-    //OpBasic op;
-    //int grt = op.maxLowerCicle(g);
+//     // Removido pq coloquei em cria threads
+//     //OpBasic op;
+//     //int grt = op.maxLowerCicle(g);
 
-    for(int i = start; i < edges.size(); i += 2)
-    {
-        gTeste.add_aresta(edges[i], edges[i+1]);
-    }
-    if( OpBasic::is_connected(gTeste)){
-    //if( g.get_signal() && !(abort_for_timeout) ){
+//     for(int i = start; i < edges.size(); i += 2)
+//     {
+//         gTeste.add_aresta(edges[i], edges[i+1]);
+//     }
+//     if( OpBasic::is_connected(gTeste)){
+//     //if( g.get_signal() && !(abort_for_timeout) ){
 
-        if((g.get_stretch_index() > g.grt-1 || g.get_stretch_index()==1)) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
-            while(indice[0] < start+2  && g.get_signal() and !(abort_for_timeout)){ //Update by thadeu
-                if( indice[j]/2 > m-(n-1-j) ){
-                    --j;
-                    tree.remove_aresta(edges[indice[j]],edges[indice[j]+1]);
-                    indice[j] += 2;
-                }
-                else {
-                    tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
-                    if( !OpBasic::is_cyclic(tree) ){
-                        if(j == n-2){ // achou uma arvore geradora
-                            int f=1;
-                            if (!global_noindex)
-                                f = Stretch::find_factor(g, tree);
-                            ++arv;
-                            mtx.lock();
-                            g.add_tree();
-                            mtx.unlock();
-                            if(f < index_local){
-                                index_local = f;
-                                tree_local = tree;
+//         if((g.get_stretch_index() > g.grt-1 || g.get_stretch_index()==1)) { //Começa a busca pelas árvores geradoras. // Alterado by thadeu
+//             while(indice[0] < start+2  && g.get_signal() and !(abort_for_timeout)){ //Update by thadeu
+//                 if( indice[j]/2 > m-(n-1-j) ){
+//                     --j;
+//                     tree.remove_aresta(edges[indice[j]],edges[indice[j]+1]);
+//                     indice[j] += 2;
+//                 }
+//                 else {
+//                     tree.add_aresta(edges[indice[j]], edges[indice[j]+1]);
+//                     if( !OpBasic::is_cyclic(tree) ){
+//                         if(j == n-2){ // achou uma arvore geradora
+//                             int f=1;
+//                             if (!global_noindex)
+//                                 f = Stretch::find_factor(g, tree);
+//                             ++arv;
+//                             mtx.lock();
+//                             g.add_tree();
+//                             mtx.unlock();
+//                             if(f < index_local){
+//                                 index_local = f;
+//                                 tree_local = tree;
 
-                                if (index_local == g.grt-1) {
-                                    break;
-                                }
-                            }
-                        }
-                        else{
-                            int next = j+1;
-                            indice[next] = indice[j] + 2;
-                            j = next;
-                            continue; // Simula uma chamada recursiva
-                        }
-                    }
-                    tree.remove_aresta(edges[indice[j]], edges[indice[j]+1]);
-                    indice[j] += 2;
-                }
-            }
-        }
-    }
+//                                 if (index_local == g.grt-1) {
+//                                     break;
+//                                 }
+//                             }
+//                         }
+//                         else{
+//                             int next = j+1;
+//                             indice[next] = indice[j] + 2;
+//                             j = next;
+//                             continue; // Simula uma chamada recursiva
+//                         }
+//                     }
+//                     tree.remove_aresta(edges[indice[j]], edges[indice[j]+1]);
+//                     indice[j] += 2;
+//                 }
+//             }
+//         }
+//     }
     
-    mtx.lock();
-    int arvores;
-    arvores =arv;
+//     mtx.lock();
+//     int arvores;
+//     arvores =arv;
 
-    if (index_local == (int)INFINITY){
-        index_local = 1;
-        arvores = 0;
-    }
-    DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
-    set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
-    mtx.unlock();
-    sem_post(&semaforo);
-}
+//     if (index_local == (int)INFINITY){
+//         index_local = 1;
+//         arvores = 0;
+//     }
+//     DEBUG std::cerr << "thread " << id << " criou " << arvores << " arvores, e encontrou index "<< index_local << std::endl;
+//     set_graph_final_parameters(index_local, global_total_arv, arv, tree_local, g);
+//     mtx.unlock();
+//     sem_post(&semaforo);
+// }
 
 void create_threads(Graph& graph)
 {
@@ -575,56 +584,56 @@ void create_threads_edge_max_degree(Graph& g)
     }
 }
 
-void create_threadV2_edge_max_degree_auxiliary(Graph &graph, std::vector<int> edges, int block_size, int id_th){
-    for (int i = 0; i < block_size; i = i + 2 ){
-        int start = block_size * id_th + i;
-        find_index_parallel_edgeV2(graph, edges, start, id_th);
-    }
-}
+// void create_threadV2_edge_max_degree_auxiliary(Graph &graph, std::vector<int> edges, int block_size, int id_th){
+//     for (int i = 0; i < block_size; i = i + 2 ){
+//         int start = block_size * id_th + i;
+//         find_index_parallel_edgeV2(graph, edges, start, id_th);
+//     }
+// }
 
-void create_threads_edge_max_degreeV2(Graph& graph)
-{
-    int qtd_th = graph.maior_grau();
-    //int qtd_th = num_threads;
+// void create_threads_edge_max_degreeV2(Graph& graph)
+// {
+//     int qtd_th = graph.maior_grau();
+//     //int qtd_th = num_threads;
 
-    // Calcula atributo grt
-    // por enquanto fica aqui, no futuro retirar 
-    // pois o método create_thread nao é para calcular nada do grafo
-    OpBasic op; // by thadeu
-    //graph.grt = op.maxLowerCicle(graph); // by thadeu
-    // fim calcula grt
+//     // Calcula atributo grt
+//     // por enquanto fica aqui, no futuro retirar 
+//     // pois o método create_thread nao é para calcular nada do grafo
+//     OpBasic op; // by thadeu
+//     //graph.grt = op.maxLowerCicle(graph); // by thadeu
+//     // fim calcula grt
 
-    //std::vector< std::thread> vetor_th(qtd_th);
+//     //std::vector< std::thread> vetor_th(qtd_th);
 
-    graph.reset_trees(0);
+//     graph.reset_trees(0);
 
-    std::vector<int> edges = OpBasic::edges_by_bigger_degree(graph);
+//     std::vector<int> edges = OpBasic::edges_by_bigger_degree(graph);
     
-    int qty = edges.size()/2;
+//     int qty = edges.size()/2;
 
-    auto acme = define_block_chuck_for_max_degree(num_threads,qty);
-    int block_size = std::get<0>(acme);
-    int chunk_size = std::get<1>(acme);
-    used_threads = std::get<2>(acme);
+//     auto acme = define_block_chuck_for_max_degree(num_threads,qty);
+//     int block_size = std::get<0>(acme);
+//     int chunk_size = std::get<1>(acme);
+//     used_threads = std::get<2>(acme);
 
-    std::thread vetor_th[used_threads];
+//     std::thread vetor_th[used_threads];
 
-    // Adjust if block size is odd, remember, edges are pairs (u,v)
-    if ((block_size % 2)){
-        block_size++;
-        chunk_size = qty - block_size * (used_threads - 1);
-    }
+//     // Adjust if block size is odd, remember, edges are pairs (u,v)
+//     if ((block_size % 2)){
+//         block_size++;
+//         chunk_size = qty - block_size * (used_threads - 1);
+//     }
 
-    for(int i = 0; i < used_threads; ++i){
-        vetor_th[i] = std::thread(create_threadV2_edge_max_degree_auxiliary, std::ref(graph), edges, block_size, i);
-    }
+//     for(int i = 0; i < used_threads; ++i){
+//         vetor_th[i] = std::thread(create_threadV2_edge_max_degree_auxiliary, std::ref(graph), edges, block_size, i);
+//     }
 
-    sem_wait(&semaforo);
+//     sem_wait(&semaforo);
 
-    for(int i=0; i < used_threads; ++i){
-        vetor_th[i].join(); // junção das threads
-    }
-}
+//     for(int i=0; i < used_threads; ++i){
+//         vetor_th[i].join(); // junção das threads
+//     }
+// }
 
 /**
  * @brief Create threads to calculate stretch index from articulations

@@ -78,10 +78,18 @@ void Stretch::find_index(Graph& g)
         }else{
             u = g.adjList(v)[prox_vizinho[v]];
             ++prox_vizinho[v];
-            if( not tree.possui_aresta(v, u) ){
+            if( not tree.possui_aresta(v, u) ) {
                 tree.add_aresta(v, u);
                 ult_colocado[v] = u;
-                if(not OpBasic::is_cyclic(tree)){
+                bool has_cycle_var = false;
+                if (OpBasic::cyclic(tree, v)){
+                    has_cycle_var = true;
+                }
+                if (!has_cycle_var)
+                    if (OpBasic::cyclic(tree, u))
+                        has_cycle_var = true;
+                if(not has_cycle_var){
+                //if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
                         if (!global_noindex)

@@ -12,6 +12,7 @@ int matrix_t=0;
 int num_threads = 1;
 int used_threads = 1;
 int global_induced_cycle = 1;
+int global_induced_cycle_used = 1;
 
 bool global_nolb = false;
 bool global_noindex = false;

@@ -1011,11 +1011,13 @@ int Graph::get_grt(){
 }
 
 void Graph::set_lower_limit(int value){
+    if (value <=0) value = 1;
     this->lower_limit = value;
 }
 
 void Graph::set_lower_limit(Graph graph){
     this->lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+    if (this->lower_limit <=0) this->lower_limit = 1;
 }
 
 int Graph::get_lower_limit(){

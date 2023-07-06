@@ -11,8 +11,9 @@
   - [3.5. Directory Structure](#35-directory-structure)
   - [3.6. Internal Tools](#36-internal-tools)
 - [4. Input file format](#4-input-file-format)
-- [5. Known Bugs](#5-known-bugs)
-- [6. Authorship Information](#6-authorship-information)
+- [5. Changelog](#5-changelog)
+- [6. Known Bugs](#6-known-bugs)
+- [7. Authorship Information](#7-authorship-information)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
@@ -26,7 +27,7 @@ Please note that the C++ code from a previous version (0.1.x series) will not be
 
 Furthermore, please be aware that the code from the previous version will no longer receive updates or bug fixes. The previous version's codebase will be archived and stored at a designated location for reference purposes. It is important to transition to the current version and utilize its updated features, enhancements, and ongoing support for a more efficient and stable development environment.
 
-<b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of classes throughout the project. This transition is being implemented to enhance the codebase and align with modern programming practices.
+<b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
 Previous version can be found here. 
 https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e
@@ -114,13 +115,13 @@ The following bullets denote the pre-requisites to develop the project.
 
 ### 3.4. Usage
 
-After compiling, you will find the executables in the build/release/ directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
+After compiling, you will find the executables in the **build/release/** directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
 
 The brute force executables are as follows:
 * **app_BF-SEQ**, which runs sequentially using a single thread;
-* **app_BF-EDGES**, which executes in parallel using an edge list;
-* **app_BF-ADJACENCY**, which operates in parallel using an adjacency list;
-* **app_BF-CYCLES**, which runs in parallel utilizing an edge list and the induced cycle method.
+* **app_BF-EDGES**, which executes in parallel(multiple threads) using an edge list;
+* **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list;
+* **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list and the induced cycle method.
 
 ```bash
 app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
@@ -199,6 +200,7 @@ This project has internal tools to support development. Usage examples and detai
 ## 4. Input file format
 
 **For adjacency matrix** (a square matrix)
+
 1st line Number of vertices (in our example 4)
 2nd line 0 1 1 0
 3rd line 1 0 1 1
@@ -209,6 +211,7 @@ This project has internal tools to support development. Usage examples and detai
  Please use space to separate (0,1) elements
 
 **For edges list**
+
 1st line Number of vertices
 2nd line vertex,vertex
 3rd line vertex,vertex
@@ -222,12 +225,17 @@ Please use comma to separate the vertices.
 
 Check the instance directory to examples.
 
-## 5. Known Bugs
+For files with egdes list use the parameter --edges
 
-* In the induced cycle search routine, in which searching for more than one induced cycle as a parameter (-ci 2 or more) can cause the application to enter an infinite loop or generate repeated cycles. Until the problem is fixed, use app_BF-CYCLE with the parameter '-ci 1'.
+## 5. Changelog
 
+Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/CHANGELOG.md)
 
-## 6. Authorship Information
+## 6. Known Bugs
+
+Link for [known bugs webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/KNOWNBUGS.md)
+
+## 7. Authorship Information
 
 We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF). If you want to inquire about this project, you may e-mail any of the authors listed below.
 

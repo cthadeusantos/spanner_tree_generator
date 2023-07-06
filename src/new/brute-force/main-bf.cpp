@@ -72,12 +72,14 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
 	num_threads = 1;
-	
+	//global_induced_cycle = 0;
+	global_induced_cycle_used = 0;
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	DEBUG std::cerr << "Solving with sequential brute force - wait!\n";
 	run_name = "BRUTE_FORCE";
+
 
 	//Stretch acme; // Lonney Tunes rocks!
     if (global_running_time > 0){
