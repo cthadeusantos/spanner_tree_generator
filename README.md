@@ -29,9 +29,12 @@ Furthermore, please be aware that the code from the previous version will no lon
 
 <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
-Previous version can be found here. 
-https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e
-https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d
+Previous version can be found here.
+
+Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e)
+
+Link for [Release 0.1.7d](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d)
+
 Please check Github Webpage for others branches
 
 ## 2. Important links and work performed
@@ -202,9 +205,13 @@ This project has internal tools to support development. Usage examples and detai
 **For adjacency matrix** (a square matrix)
 
 1st line Number of vertices (in our example 4)
+
 2nd line 0 1 1 0
+
 3rd line 1 0 1 1
+
 4th line 1 1 0 1
+
 5th line 0 1 1 0
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
@@ -213,10 +220,15 @@ This project has internal tools to support development. Usage examples and detai
 **For edges list**
 
 1st line Number of vertices
-2nd line vertex,vertex
-3rd line vertex,vertex
-4th line vertex,vertex
+
+2nd line vertex **,** vertex
+
+3rd line vertex **,** vertex
+
+4th line vertex **,** vertex
+
 ..
+
 Nth line vertex,vertex
 
 An edge list is a data structure used to represent a graph as a list of its edges.
