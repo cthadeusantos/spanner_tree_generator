@@ -67,7 +67,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 	
 	int lower_limit = 1;
-	if (!nolb){
+	if (!global_nolb){
 		graph.grt = OpBasic::maxLowerCicle(graph);
 		lower_limit = graph.grt - 1;
 	}
@@ -80,8 +80,8 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Solving with heuristic H2v2 - wait!\n";
 	run_name = "H2v2";
 		
-	if (running_time > 0){
-        wdt.kick(running_time);
+	if (global_running_time > 0){
+        wdt.kick(global_running_time);
         Heuristic::heuristica_2v2(graph);
         wdt.stop();
     } else {
@@ -93,7 +93,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	sem_destroy(&semaforo);
     return 0;

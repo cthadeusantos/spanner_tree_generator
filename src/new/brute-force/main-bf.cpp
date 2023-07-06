@@ -18,6 +18,8 @@
 #include <chrono>	// contributor AZ
 
 #include "../Debug.h"
+#include "../code/initial_settings.hpp"
+
 #include "../code/parameters.hpp"
 #include "../my_libs/ctfunctions2.hpp"
 #include "../code/parallel.hpp"
@@ -29,7 +31,6 @@
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
 #include "../code/watchdog.hpp"
-#include "../code/initial_settings.hpp"
 
 /// @brief  The main method
 int main(int argc, char** argv){
@@ -38,7 +39,7 @@ int main(int argc, char** argv){
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
-		Parameters::usage("--help");
+		Parameters::usage(argv[0]);
 		exit(0);
 	}
 
@@ -63,24 +64,26 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Quantidade de arestas => " << graph.get_num_edges() << std::endl;
 	
 	int lower_limit = 1;
-	if (!nolb){
+	if (!global_nolb){
 		graph.grt = OpBasic::maxLowerCicle(graph);
 		lower_limit = graph.grt - 1;
 	}
 
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 	
-	sem_init(&semaforo, 0, num_threads);
-	
+	num_threads = 1;
+	//global_induced_cycle = 0;
+	global_induced_cycle_used = 0;
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	DEBUG std::cerr << "Solving with sequential brute force - wait!\n";
 	run_name = "BRUTE_FORCE";
 
+
 	//Stretch acme; // Lonney Tunes rocks!
-    if (running_time > 0){
-        wdt.kick(running_time);
+    if (global_running_time > 0){
+        wdt.kick(global_running_time);
         Stretch().sequential(graph);
         wdt.stop();
     } else {
@@ -94,8 +97,7 @@ int main(int argc, char** argv){
 	double lastExecutionTime = execution_duration.count();
 
 	// OUTPUT - nothing - screen - file - debug
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
-	sem_destroy(&semaforo);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
     return 0;
 };
 

@@ -8,42 +8,18 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/examples/G9_paper_pag4.in"],
-            "default": "${workspaceFolder}/instances/examples/G9_paper_pag4.in"
+            "options": ["${workspaceFolder}/instances/grafos/grafo_16.txt"],
+            "default": "${workspaceFolder}/instances/examples/G4_FULL_edges.in"
         }
     ],
     "configurations": [
 
         {
-            "name": "[GDB] app_BF-ALL < debug.in",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-ALL",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "64", "--debug", "--file" ],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description":  "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
             "name": "[GDB] app_BF_SEQ < debug.in",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-SEQ",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "1", "--nolb" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "--nolb", "-t", "1", "-st" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -63,11 +39,11 @@
             ]
         },
         {
-            "name": "[GDB] app_BF_PAR < debug.in",
+            "name": "[GDB] app_BF_ADJACENCY < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-PAR",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "10", "--debug", "--file" ],
+            "program": "${workspaceFolder}/build/debug/app_BF-ADJACENCY",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -87,11 +63,11 @@
             ]
         },
         {
-            "name": "[GDB] app_BF_DEGREE < debug.in",
+            "name": "[GDB] app_BF_EDGES < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-DEGREE",
-            "args": [ "<", "${input:componentType}", ">>", "${workspaceFolder}/workspace/debug.out", "-t", "4", "--debug", "--file" ],
+            "program": "${workspaceFolder}/build/debug/app_BF-EDGES",
+            "args": [ "<", "${input:componentType}", ">>", "${workspaceFolder}/workspace/debug.out", "-t", "8",  "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -111,59 +87,11 @@
             ]
         },
         {
-            "name": "[GDB] app_BF_CYCLES_M3 < debug.in",
+            "name": "[GDB] app_BF_CYCLES < debug.in",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-CYCLES_M3",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "4", "-rt", "30000", "--debug", "--file" ],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description":  "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "[GDB] app_BF_CYCLES_M4 < debug.in",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_BF-CYCLES_M4",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "16", "-ci", "1", "--debug", "--file", "--nolb"],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description":  "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "[GDB] app_HR-ALL < debug.in",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/debug/app_HR-ALL",
-            "args": [  "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--file", "-t", "64",],
+            "program": "${workspaceFolder}/build/debug/app_BF-CYCLES",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "-ci", "2", "--nolb", "--debug", "--file",],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

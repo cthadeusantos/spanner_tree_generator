@@ -83,7 +83,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration0(end - start);
 	double lastExecutionTime = execution_duration0.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Heuristic 1 V2
 	// Start time counting
@@ -97,7 +97,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration1(end - start);
 	lastExecutionTime = execution_duration1.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Heuristic 2 V1
 	// Start time counting
@@ -111,7 +111,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration2(end - start);
 	lastExecutionTime = execution_duration2.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Heuristic 2 V2
 	// Start time counting
@@ -125,7 +125,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration3(end - start);
 	lastExecutionTime = execution_duration3.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Heuristic 3v1
 	// Start time counting
@@ -139,7 +139,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration4(end - start);
 	lastExecutionTime = execution_duration4.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Heuristic 3v2
 	// Start time counting
@@ -153,7 +153,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration5(end - start);
 	lastExecutionTime = execution_duration5.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Breadth heuristic V1
 	// Start time counting
@@ -167,7 +167,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration6(end - start);
 	lastExecutionTime = execution_duration6.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	// Breadth heuristic V2
 	// Start time counting
@@ -181,7 +181,7 @@ int main(int argc, char** argv){
 	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration7(end - start);
 	lastExecutionTime = execution_duration7.count();
-	output_data(run_name, filename, output,best, lastExecutionTime, lower_limit, graph);
+	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 
 	sem_destroy(&semaforo);
 

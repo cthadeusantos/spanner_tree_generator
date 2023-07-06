@@ -18,23 +18,24 @@
  * `-s` or `--seed` 					/ Setup this application seed 								/ integer
  * @param app_name The name of the application as called in the command line.
  */
-void Parameters::usage(const char* app_name){
-	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl;
+void Parameters::usage(const char *app_name){
+	std::cout << "T-Admissibility version " << Version().version() << std::endl << std::endl;
+	std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl << std::endl;
 	std::cout << std::endl << "OPTIONS: " << std::endl;
 	std::cout << "\t-h	| --help	Show this message." << std::endl;
 	std::cout << "\t-t X	| --thread X	Define the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
-	std::cout << "\t-rt X	| --running_time X	Define execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
-	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t-rt X	| --running_time X	Define execution time in miliseconds until STOP! default is 0 [current " << global_running_time << "]" << std::endl  << std::endl ;
+	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << global_induced_cycle << "]" << std::endl  << std::endl ;
 	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t-v	 | --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
 	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
 
 	std::cout << "Options to show info:" << std::endl;
-	std::cout << "\t-f 	| --file \t\tAt file. [current " << output << "]" << std::endl;
-	std::cout << "\t-s 	| --screen \t\tAt screen. [current " << output << "]" << std::endl;
-	std::cout << "\t-d 	| --debug \t\tAt screen only debug mode. [current " << output << "]" << std::endl;
+	std::cout << "\t-f 	| --file \t\tAt file. [current " << global_output << "]" << std::endl;
+	std::cout << "\t-s 	| --screen \t\tAt screen. [current " << global_output << "]" << std::endl;
+	std::cout << "\t-d 	| --debug \t\tAt screen only debug mode. [current " << global_output << "]" << std::endl;
 	std::cout << "\t-b 	| --best \t\tShow the best tree found." << std::endl;
 	std::cout << "You can combine summary, expo, debug and show" << std::endl << std::endl;
 }
@@ -66,8 +67,8 @@ void Parameters::parseArgs(int argc, char** argv){
 			exit(0);
 		}
 		else if(arg == "-rt" || arg == "--running_time"){
-			running_time = std::atoi(argv[++i]);
-			DEBUG std::cerr << "Changed running time to: " << running_time << '\n';
+			global_running_time = std::atoi(argv[++i]);
+			DEBUG std::cerr << "Changed running time to: " << global_running_time << '\n';
 		}
 		else if(arg == "-ci" || arg == "--induced_cycle"){
 			global_induced_cycle = std::atoi(argv[++i]);
@@ -82,28 +83,33 @@ void Parameters::parseArgs(int argc, char** argv){
 			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
 		else if(arg == "-s" || arg == "--screen"){
-			output = output + 1;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
+			global_output = global_output + 1;
+			DEBUG std::cerr << "Changed global_output type to: " << global_output << '\n';
 		}
 		else if(arg == "-f" || arg == "--file"){
-			output = output + 2;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
+			global_output = global_output + 2;
+			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}
 		else if(arg == "-d" || arg == "--debug"){
-			output = output + 64;
-			DEBUG std::cerr << "Changed output type to: " << output << '\n';
+			global_output = global_output + 64;
+			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}
 		else if(arg == "-b" || arg == "--best"){
 			best = true;
 			DEBUG std::cerr << "Changed best tree visualization to: " << best << '\n';
 		}
 		else if(arg == "--nolb"){
-			nolb = true;
-			DEBUG std::cerr << "Disable lower bound compute." << nolb << '\n';
+			global_nolb = true;
+			DEBUG std::cerr << "Disable compute the lower bound" << global_nolb << '\n';
 		}
+		else if(arg == "-st"){
+			global_save_tree = true;
+			DEBUG std::cerr << "Save trees on file (alpha version - only purposes tests - will be removed at future)" << global_save_tree << '\n';
+		}
+
 		else if(arg == "--noindex"){
-			noindex = true;
-			DEBUG std::cerr << "Disable stretch index compute." << nolb << '\n';
+			global_noindex = true;
+			DEBUG std::cerr << "Disable stretch index compute." << global_noindex << '\n';
 		}
 		else {
 			std::cout << "Unknown parameter: " << arg << std::endl;

@@ -1,4 +1,29 @@
-# changes
+# Changes
+
+## 0.2.0 (2023/07/06)
+Better news! Release 0.2.0 is out!
+* Induced cycle method implemented
+* Improvements implemented in the sequential method
+* Improvements implemented in the adjacencies list method
+* Improvements implemented in the edges list method
+* Update output data function
+* New functions added at centrallity
+* Fixes at Graph class
+
+## 0.2.0-RC Release Candidate (2023/07/04)
+* **Induced cycle is working**
+* Update & fix edge paralellism that cause a huge running time  
+* Minor fixes
+* Minor updates
+
+## 0.1.7e (2023/06/15)
+* Fixed bug in stretch::find that was causing an issue in passing the value of the extension index in CYCLE_M4
+* Disable articulations method (will be remove at future) *comment*
+* Disable vertex method (graph.cpp) specific for articulation disable
+* Disable CYCLE_M3 (remove from makefile)
+* Add 3 new graphs at examples
+
+## 0.1.7d (2023/06/23)
 
 ## 0.1.7e (2023/06/15)
 * Fixed bug in stretch::find that was causing an issue in passing the value of the extension index in CYCLE_M4

@@ -11,7 +11,7 @@ https://github.com/prodeveloper0/WatchDogTimer
 #include <condition_variable>
 #include <functional>
 
-bool abort_for_timeout = false;
+#include "initial_settings.hpp"
 
 template<typename Clock>
 class BaseWatchdogTimer

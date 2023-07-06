@@ -3,7 +3,7 @@
 #include "genGraph.hpp"
 //#include "frontier.hpp"
 #include "graph.hpp"
-#include "../my_libs/library3.cpp"
+#include "../my_libs/library3.hpp"
 
 #include <tuple>
 #include <iostream>
@@ -11,10 +11,10 @@
 
 #include "../Debug.h"
 
-extern bool noindex;
+extern bool global_noindex;
+extern bool global_save_tree;
 
-
-//extern float running_time;
+//extern float global_running_time;
 extern bool abort_for_timeout;
 //bool abort_for_timeout = false;
 
@@ -64,8 +64,8 @@ void Stretch::find_index(Graph& g)
         ult_colocado[i] = -1;
     }
 
-    std::string fileName = "SEQsaida.txt";
-    std::string str_tree;
+    std::string fileName = "SEQsaida.txt";  // REMOVER - APENAS PARA TESTE
+    std::string str_tree;                   // REMOVER - APENAS PARA TESTE
 
     while( v >= 0 and !(abort_for_timeout)){
         if( prox_vizinho[v] == g.grau(v) ){
@@ -78,19 +78,33 @@ void Stretch::find_index(Graph& g)
         }else{
             u = g.adjList(v)[prox_vizinho[v]];
             ++prox_vizinho[v];
-            if( not tree.possui_aresta(v, u) ){
+            if( not tree.possui_aresta(v, u) ) {
                 tree.add_aresta(v, u);
                 ult_colocado[v] = u;
-                if(not OpBasic::is_cyclic(tree)){
+                bool has_cycle_var = false;
+                if (OpBasic::cyclic(tree, v)){
+                    has_cycle_var = true;
+                }
+                if (!has_cycle_var)
+                    if (OpBasic::cyclic(tree, u))
+                        has_cycle_var = true;
+                if(not has_cycle_var){
+                //if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
-                            f = find_factor(g, tree);
+                        if (!global_noindex)
+                            f = Stretch::find_factor(g, tree);
                         ++arv;
                         //g.sum_tree();
                         g.add_tree();
-                        str_tree = tree_to_string(tree);
-                        save_tree(str_tree, fileName);
+
+                        if (global_save_tree)                   // REMOVER - APENAS PARA TESTE             
+                        {                                       // REMOVER - APENAS PARA TESTE
+                            str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                            str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                            save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                        }                                       // REMOVER - APENAS PARA TESTE
+
                         if(f < index){
                             index = f;
                             this->tree = tree;
@@ -142,8 +156,8 @@ void Stretch::find_index_edge(Graph& g)
             if( !OpBasic::is_cyclic(tree) ){
                 if(j == n-2){ // achou uma arvore geradora
                     int f=1;
-                    if (!noindex)
-                        f = find_factor(g, tree);
+                    if (!global_noindex)
+                        f = Stretch::find_factor(g, tree);
                     ++arv;
                     if(f < index){
                         index = f;
@@ -211,7 +225,7 @@ void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
+                        if (!global_noindex)
                             f = Stretch::find_factor(g, tree);
                         // ++arv;
                         if(f < index){
@@ -358,8 +372,8 @@ int Stretch::find_index(Graph &original, Graph &change)
                 if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!noindex)
-                            f = find_factor(G2, tree);
+                        if (!global_noindex)
+                            f = Stretch::find_factor(G2, tree);
                         ++arv;
                         //g.sum_tree();
                         change.add_tree();

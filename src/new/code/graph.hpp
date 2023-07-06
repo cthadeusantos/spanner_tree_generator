@@ -1,6 +1,7 @@
-#include <limits>
 #ifndef GRAPH_HPP_
 #define GRAPH_HPP_
+
+#include <limits>
 #define INF_VALUE std::numeric_limits<int>::max()
 
 #include <vector>
@@ -115,9 +116,6 @@ public:
 
     void show_edges();
     void check_integrity();
-
-
-
 };
 
-#endif
+#endif //GRAPH_HPP_

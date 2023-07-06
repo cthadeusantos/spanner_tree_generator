@@ -283,6 +283,7 @@ workspace/zudio-bf*
 workspace/ct-*
 workspace/images
 workspace/BROKEN
+src/trash/
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*

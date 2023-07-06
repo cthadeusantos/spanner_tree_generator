@@ -6,7 +6,7 @@
 #include <iterator>
 
 #include "../Debug.h"
-#include "../my_libs/ctfunctions2.cpp"
+#include "../my_libs/ctfunctions2.hpp"
 
 //! Constructor
 /*!
@@ -97,8 +97,8 @@ void Graph::add_aresta(std::vector<int> arestas)
 }
 
 /**
- * Delete a vertex from graph (METHOD SPECIFIC FOR ARTICULATIONS - NOT REMOVE THE VERTEX FROM THE DATA STRUCTURE)
- * @details Delete a vertex from graph and your edges 
+ * Delete a vertex from graph METHOD SPECIFIC FOR ARTICULATIONS - NOT REMOVE THE VERTEX FROM THE DATA STRUCTURE)
+ * @details Delete a vertex from graph and your edges
  * @author Carlos Thadeu
  * @param vertex an integer that represents the vertex to be deleted
  */
@@ -113,7 +113,6 @@ void Graph::add_aresta(std::vector<int> arestas)
     {
         remove_aresta(vertex, neighbors[i]);
     }
-    // TO DO SUBTRAIR VERTICE
 }*/
 
 //! Delete an edge
@@ -397,8 +396,7 @@ int Graph::get_num_edges()
 void Graph::set_best_tree(Graph graph)
 {
     this->best_tree = {};
-    for (int i = 0; i < graph.edgeList().size(); i = i + 2)
-    {
+    for (int i = 0; i < graph.edgeList().size(); i = i + 2) {
         this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i + 1]));
     }
 };
@@ -654,7 +652,7 @@ std::vector<int> Graph::DFS(int vertex)
         }
         count++;
     }
-} */
+}*/
 
 /*Graph Graph::build_subgraph(std::vector<int> &subgraph)
 {
@@ -946,7 +944,7 @@ std::vector<int> Graph::get_neighbors(int vertex){
         }
     }
     return min_waist;
-} */
+}*/
 
 /**
  * @brief Calculate the girth of graph
@@ -1013,11 +1011,13 @@ int Graph::get_grt(){
 }
 
 void Graph::set_lower_limit(int value){
+    if (value <=0) value = 1;
     this->lower_limit = value;
 }
 
 void Graph::set_lower_limit(Graph graph){
     this->lower_limit = OpBasic::maxLowerCicle(graph) - 1;
+    if (this->lower_limit <=0) this->lower_limit = 1;
 }
 
 int Graph::get_lower_limit(){

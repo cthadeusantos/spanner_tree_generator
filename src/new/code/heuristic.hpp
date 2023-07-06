@@ -34,7 +34,7 @@ class Heuristic
                     const std::tuple<int, int> &b); // By thadeu    
         static bool sortby2nd_asc(const std::tuple<int, int> &a, 
                     const std::tuple<int, int> &b); // By Thadeu
-        static void set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph);
+        //static void set_graph_final_parameters(int &index_local, Graph &tree_local, Graph &graph);
 
 };
 

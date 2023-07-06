@@ -16,7 +16,6 @@
 #include <sys/types.h>
 
 #include <string.h>
-#include "../code/graph.hpp"
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
 #include "../code/frontier.hpp"
@@ -36,6 +35,8 @@ int num_graph = 0;
 float probability = 0.45;
 extern int num_threads;
 extern int used_threads;
+extern int global_induced_cycle;
+extern int global_induced_cycle_used;
 
 /// Basic debugging controller. See Debug.h for details.
 /* #ifdef MN_BF_SEQ_DEBUG
@@ -185,6 +186,42 @@ bool in(const int &u, const int &v, const std::vector<std::pair<int,int>> &edges
 }
 
 /**
+ * @details Is the value belongs the vector?
+ * @param vector a vector that contains integers
+ * @param pair a pair searched
+ * @return a boolean
+ */
+/*
+bool in(const int &v, const std::vector<std::pair<int,int>> &edges_to_be_processed) {
+    bool result = false;
+    for(auto edge : edges_to_be_processed) {
+        if ((edge.first == v ||  edge.second == v)) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+*/
+
+/**
+ * @details Is the value belongs the vector?
+ * @param vector a vector that contains integers
+ * @param pair a pair searched
+ * @return a boolean
+ */
+bool in(const int &value, const char position, const std::vector<std::pair<int,int>> &edges_to_be_processed) {
+    bool result = false;
+    for(auto edge : edges_to_be_processed) {
+        if (((edge.first == value ||  edge.second == value) && position == 'b') || (edge.first == value && position == 'f') || (edge.second == value && position == 's')) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
+/**
  * Split a string
  * @details Split a string
  * The delimiter is not optional because there isn't implemented default, you must select one.
@@ -217,7 +254,7 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
 std::string get_filename() {
 	// To get filename redirections
 	char buf[512], file[512] = {0};
-
+    
     snprintf(buf, sizeof buf, "/proc/self/fd/%d", fileno(stdin));
     readlink(buf, file, sizeof file - 1);
 
@@ -576,16 +613,18 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
     int stretch_index = graph.get_stretch_index();
 
     if ((output & 1)==1){	// TO SCREEN
-		std::cout << "INSTANCE = " << filename << std::endl;
-		std::cout << "SOLUTION_TYPE = " << run_name << std::endl;
-		std::cout << "NUM_VERTICES = " << graph.get_qty_vertex() << std::endl;
-		std::cout << "NUM_EDGES = " << graph.get_num_edges() << std::endl;
-		std::cout << "LOWER_BOUND = " << lower_limit << std::endl;
-		std::cout << "STRETCH_INDEX = " << stretch_index <<  std::endl;
-		std::cout << "SUM_TREES = " << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME = " << lastExecutionTime <<  std::endl;
-        std::cout << "THREADs = " << num_threads <<  std::endl;
-        std::cout << "USED_THREADs = " << used_threads <<  std::endl;
+		std::cout << "INSTANCE ....... = " << std::setw(10) << filename << std::endl;
+		std::cout << "SOLUTION_TYPE... = " << run_name << std::endl;
+		std::cout << "NUM_VERTICES.... = " << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES....... = " << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND..... = " << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX... = " << graph.get_stretch_index() <<  std::endl;
+		std::cout << "TOTAL_TREES..... = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME.... = " << lastExecutionTime <<  " s" << std::endl;
+        std::cout << "THREADs......... = " << num_threads <<  std::endl;
+        std::cout << "TASKs........... = " << used_threads <<  std::endl;
+        std::cout << "ICYCLES_PROPOSED = " << global_induced_cycle <<  std::endl;
+        std::cout << "ICYCLES_SELECTED = " << global_induced_cycle_used <<  std::endl;
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
@@ -593,16 +632,18 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << std::endl << std::endl;
 	}
 	if ((output & 2)==2){	// TO FILE
-        std::cout << "[INSTANCE]=" << filename << std::endl;
-		std::cout << "[SOLUTION_TYPE]=" << run_name << std::endl;
-		std::cout << "[NUM_VERTICES]=" << graph.get_qty_vertex() << std::endl;
-		std::cout << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
-		std::cout << "[LOWER_BOUND]=" << lower_limit << std::endl;
-		std::cout << "[STRETCH_INDEX]=" << stretch_index <<  std::endl;
-		std::cout << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
-		std::cout << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
-        std::cout << "[THREADS]=" << num_threads <<  std::endl;
-        std::cout << "[USED_THREADS]=" << used_threads <<  std::endl;
+        std::cout << "INSTANCE=" << filename << std::endl;
+		std::cout << "SOLUTION_TYPE=" << run_name << std::endl;
+		std::cout << "NUM_VERTICES=" << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES=" << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND=" << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
+		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
+        std::cout << "THREADS=" << num_threads <<  std::endl;
+        std::cout << "TASKS=" << used_threads <<  std::endl;
+        std::cout << "ICYCLES_PROPOSED=" << global_induced_cycle <<  std::endl;
+        std::cout << "ICYCLES_SELECTED=" << global_induced_cycle_used <<  std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -612,11 +653,13 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[NUM_VERTICES]=" << graph.get_qty_vertex() << std::endl;
 		std::cerr << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
-		std::cerr << "[STRETCH_INDEX]=" << stretch_index <<  std::endl;
-		std::cerr << "[SUM_TREES]=" << graph.get_total_tree() <<  std::endl;
-		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime <<  std::endl;
+		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
+		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
+		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << " s" << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
-        std::cerr << "[USED_THREADS]=" << used_threads <<  std::endl;
+        std::cerr << "[TASKS]=" << used_threads <<  std::endl;
+        std::cerr << "[ICYCLES_PROPOSED]=" << global_induced_cycle <<  std::endl;
+        std::cerr << "[ICYCLES_SELECTED]=" << global_induced_cycle_used <<  std::endl;
 		if (best){
             std::cerr << "[BEST TREE]" <<  std::endl;
 			int node1 = 0, node2 = 0;

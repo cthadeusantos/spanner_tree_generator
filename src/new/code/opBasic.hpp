@@ -2,14 +2,12 @@
 #define OP_BASIC_HPP_
 
 #include "graph.hpp"
-//#include <tuple>
 #include <vector>
 #include <limits>
 #include <stack> // pilha
 #include <queue> // fila
 #include <algorithm> // std::find
 #include <string>
-// #include <tuple>
 
 #define INF_VALUE std::numeric_limits<int>::max()
 #define INF "inf"
@@ -17,7 +15,6 @@
 class OpBasic
 {
 private:
-    static bool cyclic(Graph& g, int v);
     static void clear(std::queue<int>& q);
     static void clear(std::stack<int>& s);
     static bool pertence(int x, std::vector<int>& v);
@@ -34,6 +31,7 @@ public:
     OpBasic() { }
     ~OpBasic() { }
 
+    static bool cyclic(Graph& g, int v);
     static bool is_cyclic(Graph& g);
     static bool is_tree(Graph& g);
     static std::vector<int> diference_edge(Graph& g, Graph& t);
