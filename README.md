@@ -13,7 +13,8 @@
 - [4. Input file format](#4-input-file-format)
 - [5. Changelog](#5-changelog)
 - [6. Known Bugs](#6-known-bugs)
-- [7. Authorship Information](#7-authorship-information)
+- [7. To do](#7-to-do)
+- [8. Authorship Information](#8-authorship-information)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
@@ -126,6 +127,23 @@ The brute force executables are as follows:
 * **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list;
 * **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list and the induced cycle method.
 
+The heuristics executables are as follows:
+
+* **app_HR-H1v1** & **app_HR-H1v2**, Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work);
+
+* **app_HR-H2v1** & **app_HR-H2v2**, Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**);
+
+* **app_HR-H3v1**, Adaptive Global MaxDegree Heuristic is a combination of Global MaxDegree Heuristic and Local MaxDegree Heuristic. In the initial version (**v1**) of Adaptative Global MaxDegree Heuristic, the vertices are sorted based on their degree centrality;
+
+* **app_HR-H3v2**, Adaptative Global MaxDegree Heuristic **v2** is a slight modification of **v1**. In this version, when vertices has same degree, we consider additional measures such as closeness centrality and leverage centrality to determine the most appropriate vertex for selection;
+
+* **app_HR-H4v1**, That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure;
+
+* **app_HR-H4v2r1**, The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others;
+
+* **app_HR-H4v2r3**, The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality;
+
+
 ```bash
 app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
@@ -206,37 +224,31 @@ This project has internal tools to support development. Usage examples and detai
 
 1st line Number of vertices (in our example 4)
 
-2nd line 0 1 1 0
+$\begin{matrix}4\end{matrix}$
+$\begin{matrix}0~1~1~0\\1~0~~1~1\\1~1~0~1\\0~1~1~0\end{matrix}$
 
-3rd line 1 0 1 1
-
-4th line 1 1 0 1
-
-5th line 0 1 1 0
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
  Please use space to separate (0,1) elements
 
 **For edges list**
 
-1st line Number of vertices
+$\begin{matrix}N\end{matrix}$
+$\begin{matrix}vertex~,~vertex\\
+vertex~,~vertex\\
+vertex~,~vertex\\
+vertex~,~vertex\\
+...\\
+vertex~,~vertex\\
+\end{matrix}$
 
-2nd line vertex **,** vertex
+An edges' list is a data structure used to represent a graph as a list of its edges.
 
-3rd line vertex **,** vertex
-
-4th line vertex **,** vertex
-
-..
-
-Nth line vertex,vertex
-
-An edge list is a data structure used to represent a graph as a list of its edges.
+1st line are the number of vertices in the graph
 Each line from the 2nd represents an edge (two vertices).
 Please use comma to separate the vertices.
 
-Check the instance directory to examples.
-
+Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
 
 ## 5. Changelog
@@ -247,13 +259,17 @@ Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/bl
 
 Link for [known bugs webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/KNOWNBUGS.md)
 
-## 7. Authorship Information
+## 7. To do
 
-We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF). If you want to inquire about this project, you may e-mail any of the authors listed below.
+Link for [TO DO webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/TODO.md)
+
+## 8. Authorship Information
+
+We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
 
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
-* Fernanda Couto (fernandavdc@ufrrj.br)
+* Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
 * Daniel Juvetude (deljuven@ymail.com)
 * Carlos Thadeu (carlosthadeu@id.uff.br) 
 * Anderson Zudio (azudio@id.uff.br)
