@@ -4,7 +4,8 @@
   - [3.1. Pre-requisites](#31-pre-requisites)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
-  - [3.4. Usage](#34-usage)
+  - [3.4. Usage](#34-usage) 
+    - [How to run (with options):](#how-to-run)
     - [Usage example (running):](#usage-example-running)
     - [Usage example (running batteries):](#usage-example-running-batteries)
     - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
@@ -143,6 +144,7 @@ The heuristics executables are as follows:
 
 * **app_HR-H4v2r3**, The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality;
 
+#### How to run (with options):
 
 ```bash
 app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
@@ -224,23 +226,36 @@ This project has internal tools to support development. Usage examples and detai
 
 1st line Number of vertices (in our example 4)
 
-$\begin{matrix}4\end{matrix}$
-$\begin{matrix}0~1~1~0\\1~0~~1~1\\1~1~0~1\\0~1~1~0\end{matrix}$
+4
 
+0 1 1 0
+
+1 0 1 1
+
+1 1 0 1
+
+0 1 1 0
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
  Please use space to separate (0,1) elements
 
+[Other adjacencies' list example](instances/examples/G4_FULL_edges.in)
+
 **For edges list**
 
-$\begin{matrix}N\end{matrix}$
-$\begin{matrix}vertex~,~vertex\\
-vertex~,~vertex\\
-vertex~,~vertex\\
-vertex~,~vertex\\
-...\\
-vertex~,~vertex\\
-\end{matrix}$
+N
+
+vertex , vertex
+
+vertex , vertex
+
+vertex , vertex
+
+vertex , vertex
+
+...
+
+vertex , vertex
 
 An edges' list is a data structure used to represent a graph as a list of its edges.
 
@@ -251,6 +266,7 @@ Please use comma to separate the vertices.
 Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
 
+[Edges' list example](instances/examples/G9_E10_edges.in)
 ## 5. Changelog
 
 Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/CHANGELOG.md)
