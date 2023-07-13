@@ -281,6 +281,7 @@ instances/datasets/
 workspace/example-ct*
 workspace/zudio-bf*
 workspace/ct-*
+workspace/0_ct-*
 workspace/images
 workspace/BROKEN
 src/trash/

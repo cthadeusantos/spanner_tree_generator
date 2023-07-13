@@ -1,5 +1,11 @@
 # Changes
 
+## 0.2.1 (2023/07/xx)
+* FIX! Heuristic 3v2 now reads edges' list files 
+* Update README.md
+* Added TODO.md
+* Added 3 new graphs
+
 ## 0.2.0 (2023/07/06)
 Better news! Release 0.2.0 is out!
 * Induced cycle method implemented

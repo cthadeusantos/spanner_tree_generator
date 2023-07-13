@@ -37,6 +37,11 @@
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
 
+	unsigned int n = std::thread::hardware_concurrency();
+	DEBUG std::cerr << " ********************************************" << std::endl;
+    DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
+	DEBUG std::cerr << " ********************************************" << std::endl ;
+
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
@@ -72,7 +77,9 @@ int main(int argc, char** argv){
 		lower_limit = graph.grt - 1;
 	}
 	
-	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;	
+	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
+	global_induced_cycle_used = 0;
+	
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
