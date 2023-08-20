@@ -80,7 +80,7 @@ key4 = [] # classe
 #                 dictionary[k1][k2][k3][k4] = {'v': [], 'e': [], 't': [], 'lb': [],  's': []}
 
 
-root_dir = '../workspace'
+root_dir = '../../workspace'
 lista_diretorio = os.listdir(root_dir)
 lista_diretorio.sort()
 heuristic = ''
