@@ -1,0 +1,22 @@
+---                               
+
+name: 05-ct-count-tree-SEQ
+problem: tadmiss                   
+description: Running BRUTE FORCE SEQUENTIAL
+exec: release/app_BF-SEQ
+default_timelimit: 5400
+default_iterations: 1
+instance_list:
+- instance: dataset2/g30_183_45.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: dataset2/g40_418_55.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: dataset2/g50_287_25.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+- instance: dataset2/g60_429_25.txt
+  args: -t 1 -s -rt 3600000 --noindex --nolb
+
+...                               
