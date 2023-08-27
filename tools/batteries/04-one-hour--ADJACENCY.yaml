@@ -1,0 +1,20 @@
+---                               
+
+name: ct-one-hour-ADJACENCY
+problem: tadmiss                   
+description: Running BRUTE FORCE ADJACENCY PARALLELISM
+exec: release/app_BF-ADJACENCY
+default_timelimit: 7200
+default_iterations: 1
+instance_list:
+- instance: datasets/tvshow_edges.csv
+  args: -t 64 -s --noindex --nolb -rt 3600000 --edges
+
+- instance: datasets/politician_edges.csv
+  args: -t 64 -s --noindex --nolb -rt 3600000 --edges
+
+- instance: instances/datasets/company_edges.csv
+  args: -t 64 -s --noindex --nolb -rt 3600000 --edges
+
+
+...                               
