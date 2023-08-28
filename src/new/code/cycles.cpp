@@ -194,7 +194,7 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
     Graph tree(G1.getQtdVertices());
     Graph tree_local(G1.getQtdVertices());
 
-    lower_limit = graph.get_lower_limit();
+    lower_limit = graph.grt - 1;
 
     //std::string fileName = std::to_string(id) + "saida.txt";
     //std::string str_tree;

@@ -255,8 +255,9 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
                 //if(not OpBasic::is_cyclic(tree)){
                     if(tree.getQtdArestas() == tree.getQtdVertices()-1){
                         int f=1;
-                        if (!global_noindex)
+                        if (!global_noindex){
                             f =Stretch::find_factor(g, tree);
+                        }
                         ++local_sum_trees;
                         //mtx.lock();
                         //g.add_tree();

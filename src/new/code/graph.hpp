@@ -15,13 +15,14 @@ private:
     std::vector< std::vector<int> > graph;
     int qtdVertices;
     int qtdArestas;
-    int stretch_index = 1; // by Thadeu
+    
     int total_tree = 0; // by Thadeu
     bool signal = true;
     int girth = 0;
-    int lower_limit = 1;
 
 public:
+    int lower_limit = 1;
+    
     Graph(int n);
     Graph();
     ~Graph();
@@ -67,6 +68,7 @@ public:
     std::vector<std::vector<int> > getGraph(){ return graph; }
 
     // By THADEU
+    int stretch_index = 1; // by Thadeu
     int grt = 1; // by Thadeu
     std::vector<std::tuple<int, int> > best_tree;
     int get_num_edges();
