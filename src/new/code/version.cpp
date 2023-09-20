@@ -19,5 +19,5 @@ Version::~Version()
 }
 
 std::string Version::version(){
-    return this->number;
+    return this->release;
 }

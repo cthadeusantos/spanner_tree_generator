@@ -1,0 +1,28 @@
+---                               
+
+name: 09-balanced-EDGES
+problem: tadmiss                   
+description: Running BRUTE FORCE EDGE PARALLELISM
+exec: release/app_BF-EDGESb
+default_timelimit: 4500
+default_iterations: 1
+instance_list:
+- instance: dataset3/g_40_166_20.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_35_106_20.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_60_166_10.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_30_122_30.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_40_133_20.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_50_126_10.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+...                               
