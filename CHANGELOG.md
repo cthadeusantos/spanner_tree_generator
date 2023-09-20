@@ -1,5 +1,12 @@
 # Changes
 
+## 0.2.1.1 (2023/09/20)
+* FIX! Remove ' s' characters at field running time in the final report
+* Change attribute at Class Version, number -> release
+* Update README.md
+* Added TODO.md
+* Added a new dataset (dataset3)
+
 ## 0.2.1 (2023/07/xx)
 * FIX! Heuristic 3v2 now reads edges' list files 
 * Update README.md

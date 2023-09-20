@@ -283,8 +283,14 @@ workspace/zudio-bf*
 workspace/ct-*
 workspace/0_ct-*
 workspace/0*
+workspace/1*
 workspace/images
 workspace/BROKEN
+src/old/grafos
+src/old/grafos_barabasi
+src/old/grafos_bi_partido
+src/old/grafos_erdos
+src/old/grafos_watts
 src/trash/
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp

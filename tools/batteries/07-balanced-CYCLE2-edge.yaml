@@ -1,0 +1,28 @@
+---                               
+
+name: 09-balanced-CYCLE-EDGE-CI2
+problem: tadmiss                   
+description: Running BRUTE FORCE CYCLE EDGES
+exec: release/app_BF-CYCLESb
+default_timelimit: 4500
+default_iterations: 1
+instance_list:
+- instance: dataset3/g_40_166_20.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_35_106_20.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_60_166_10.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_30_122_30.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_40_133_20.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_50_126_10.txt
+  args: -t 16 -s -ci 2  --noindex --nolb -rt 3600000
+
+...                               

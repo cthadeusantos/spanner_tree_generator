@@ -20,6 +20,7 @@
 #include "../code/stretch.hpp"
 #include "../code/frontier.hpp"
 #include "../code/genGraph.hpp"
+#include "../code/version.hpp"
 
 #include "../Debug.h"
 
@@ -620,11 +621,12 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "LOWER_BOUND..... = " << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX... = " << graph.get_stretch_index() <<  std::endl;
 		std::cout << "TOTAL_TREES..... = " << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME.... = " << lastExecutionTime <<  " s" << std::endl;
+		std::cout << "RUNNING_TIME.... = " << lastExecutionTime << std::endl;
         std::cout << "THREADs......... = " << num_threads <<  std::endl;
         std::cout << "TASKs........... = " << used_threads <<  std::endl;
         std::cout << "ICYCLES_PROPOSED = " << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED = " << global_induced_cycle_used <<  std::endl;
+        std::cout << "APP_RELEASE..... = " << Version().version() <<  std::endl;
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
@@ -644,6 +646,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << "TASKS=" << used_threads <<  std::endl;
         std::cout << "ICYCLES_PROPOSED=" << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED=" << global_induced_cycle_used <<  std::endl;
+        std::cout << "APP_RELEASE=" << Version().version() <<  std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -655,11 +658,12 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
-		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << " s" << std::endl;
+		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
         std::cerr << "[TASKS]=" << used_threads <<  std::endl;
         std::cerr << "[ICYCLES_PROPOSED]=" << global_induced_cycle <<  std::endl;
         std::cerr << "[ICYCLES_SELECTED]=" << global_induced_cycle_used <<  std::endl;
+        std::cerr << "[APP_RELEASE]=" << Version().version() <<  std::endl;
 		if (best){
             std::cerr << "[BEST TREE]" <<  std::endl;
 			int node1 = 0, node2 = 0;
