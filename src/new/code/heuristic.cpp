@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <map>
 #include <algorithm>
 #include <bits/stdc++.h>
 
@@ -15,6 +16,87 @@
 #include "../my_libs/library1.hpp"
 #include "../my_libs/ctfunctions2.hpp"
 
+struct treeWFactor
+{
+    Graph tree;
+    int factor;
+};
+
+treeWFactor verifica_possibilidades(Graph& g, std::vector<int>& vertex_list, int actual_position){
+    
+    Stretch stretch;
+    int aux;
+    treeWFactor result, result2, result_aux;
+    result2.factor = INT_MAX;
+    int n = g.getQtdVertices();
+    int root = 0;
+
+    //loop que verifica se ha empate
+    for( int i = actual_position; i < n-1; ++i)
+    {
+        if(g.grau(vertex_list[i]) == g.grau(vertex_list[i+1])){
+            std::vector<int> copy_vertex_list;
+            copy_vertex_list = vertex_list;
+            aux = copy_vertex_list[i];
+            copy_vertex_list[i] = copy_vertex_list[i+1];
+            copy_vertex_list[i+1] = aux;
+            result_aux = verifica_possibilidades(g, copy_vertex_list, i+1);
+            if(result_aux.factor < result2.factor) result2 = result_aux;
+        }
+        ++i;
+    }
+
+    Graph tree(n);
+    result.tree = tree;
+    root = vertex_list[0];
+
+    for( int v : g.adjList(root) )
+    {
+        tree.add_aresta(root, v);
+    }
+
+    int j = 1;
+    while( j < n && !OpBasic::is_tree(tree))
+    {
+        for( int v : g.adjList(vertex_list[j]))
+        {
+            if( !tree.possui_aresta(vertex_list[j], v))
+            {
+                tree.add_aresta(vertex_list[j], v);
+                if(OpBasic::is_cyclic(tree))
+                {
+                    tree.remove_aresta(vertex_list[j], v);
+                }
+            }
+        }
+        ++j;
+    }
+    result.factor = stretch.find_factor(g, tree); //By thadeu
+    if(result.factor > result2.factor){
+        return result2;
+    } else {
+        return result;
+    }
+}
+
+void Heuristic::heuristica_1v3(Graph& g)
+{
+    DEBUG std::cerr << "Entrando 1V3 - wait!\n";
+    //Frontie'r' f;
+    Stretch stretch;
+    int n = g.getQtdVertices();
+    int root = 0;
+    std::vector<int> vertex_list(n);
+    for( int i = 0; i < n; ++i)
+    {
+        vertex_list[i] = i;
+    }
+    my_quicksort(vertex_list, 0, n, g);
+    treeWFactor result = verifica_possibilidades(g, vertex_list, 0);
+    g.sum_trees(1); //By thadeu
+    set_graph_final_parameters(result.factor, result.tree, g); //By thadeu
+    g.set_best_tree(result.tree);
+}
 
 /**
  * @brief T-admissibility heuristic 1.
