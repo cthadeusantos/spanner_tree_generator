@@ -10,11 +10,14 @@
 #include "heuristic.hpp"
 #include "graph.hpp"
 #include "centrality.hpp"
-
+#include <iostream>
+using namespace std;
 #include "opBasic.hpp"
 
 #include "../my_libs/library1.hpp"
 #include "../my_libs/ctfunctions2.hpp"
+
+int trees_created = 0;
 
 struct treeWFactor
 {
@@ -23,29 +26,31 @@ struct treeWFactor
 };
 
 treeWFactor verifica_possibilidades(Graph& g, std::vector<int>& vertex_list, int actual_position){
-    
     Stretch stretch;
     int aux;
     treeWFactor result, result2, result_aux;
     result2.factor = INT_MAX;
     int n = g.getQtdVertices();
     int root = 0;
+    int limit = 50;
 
+    if(trees_created > limit) return result2;
     //loop que verifica se ha empate
     for( int i = actual_position; i < n-1; ++i)
     {
+        if(trees_created > limit) break;
         if(g.grau(vertex_list[i]) == g.grau(vertex_list[i+1])){
             std::vector<int> copy_vertex_list;
             copy_vertex_list = vertex_list;
             aux = copy_vertex_list[i];
             copy_vertex_list[i] = copy_vertex_list[i+1];
             copy_vertex_list[i+1] = aux;
+            trees_created = trees_created+1;
             result_aux = verifica_possibilidades(g, copy_vertex_list, i+1);
             if(result_aux.factor < result2.factor) result2 = result_aux;
         }
         ++i;
     }
-
     Graph tree(n);
     result.tree = tree;
     root = vertex_list[0];
