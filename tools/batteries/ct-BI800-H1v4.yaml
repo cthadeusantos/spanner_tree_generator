@@ -1,0 +1,40 @@
+---                               
+
+name: ct-BI800-H1v4                  
+problem: tadmiss                   
+description: Running heuristic H1v4
+exec: release/app_HR-H1v4
+default_timelimit: 1200
+default_iterations: 1
+instance_list:
+- instance: grafos_bi_partido/gb_400_400_30__800_47924_0.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_48126_1.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_48165_2.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_47898_3.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_47991_4.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_48221_5.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_48149_6.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_47821_7.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_48024_8.txt
+  args: -t 1 -s
+
+- instance: grafos_bi_partido/gb_400_400_30__800_47518_9.txt
+  args: -t 1 -s
+
+...                               
