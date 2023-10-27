@@ -1,4 +1,7 @@
 # Changes
+## 0.2.3 (2023/10/26)
+* Heuristics H1v3 & H1v4 provided by Eriky Marciano
+
 ## 0.2.2 (2023/10/26)
 * Fixed bug that could select inappropriate vertex in the list of candidate vertices in the H2v2 & H3v2 heuristics
 * Fixed bug in heuristic 4 where the closeness list for candidate vertices was defined as a list of integers, changed to a list of floats

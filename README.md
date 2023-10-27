@@ -5,6 +5,7 @@
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
+    - [How to run (with options):](#how-to-run-with-options)
     - [Usage example (running):](#usage-example-running)
     - [Usage example (running batteries):](#usage-example-running-batteries)
     - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
@@ -129,7 +130,7 @@ The brute force executables are as follows:
 
 The heuristics executables are as follows:
 
-* **app_HR-H1v1** & **app_HR-H1v2**, Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work);
+* **app_HR-H1v1**, **app_HR-H1v2**, **app_HR-H1v3** & **app_HR-H1v4** Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon. 
 
 * **app_HR-H2v1** & **app_HR-H2v2**, Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**);
 
@@ -143,6 +144,7 @@ The heuristics executables are as follows:
 
 * **app_HR-H4v2r3**, The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality;
 
+#### How to run (with options):
 
 ```bash
 app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
@@ -235,23 +237,36 @@ This project has internal tools to support development. Usage examples and detai
 
 1st line Number of vertices (in our example 4)
 
-$\begin{matrix}4\end{matrix}$
-$\begin{matrix}0~1~1~0\\1~0~~1~1\\1~1~0~1\\0~1~1~0\end{matrix}$
+4
 
+0 1 1 0
+
+1 0 1 1
+
+1 1 0 1
+
+0 1 1 0
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
  Please use space to separate (0,1) elements
 
+[Other adjacencies' list example](instances/examples/G4_FULL_edges.in)
+
 **For edges list**
 
-$\begin{matrix}N\end{matrix}$
-$\begin{matrix}vertex~,~vertex\\
-vertex~,~vertex\\
-vertex~,~vertex\\
-vertex~,~vertex\\
-...\\
-vertex~,~vertex\\
-\end{matrix}$
+N
+
+vertex , vertex
+
+vertex , vertex
+
+vertex , vertex
+
+vertex , vertex
+
+...
+
+vertex , vertex
 
 An edges' list is a data structure used to represent a graph as a list of its edges.
 
@@ -262,6 +277,7 @@ Please use comma to separate the vertices.
 Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
 
+[Edges' list example](instances/examples/G9_E10_edges.in)
 ## 5. Changelog
 
 Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/CHANGELOG.md)
@@ -282,7 +298,8 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
 * Daniel Juventude (deljuven@ymail.com)
-* Carlos Thadeu (carlosthadeu@id.uff.br) 
+* Carlos Thadeu Santos(carlosthadeu@id.uff.br) 
 * Anderson Zudio (azudio@id.uff.br)
+* Eriky Nunes Marciano (erikymarciano@id.uff.br) 
 
 This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.

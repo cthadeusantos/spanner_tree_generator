@@ -18,10 +18,10 @@
 #include <chrono>	// contributor AZ
 
 #include "../Debug.h"
-#include "../code/initial_settings.hpp"
 
 #include "../code/parameters.hpp"
 #include "../my_libs/ctfunctions2.hpp"
+
 #include "../code/parallel.hpp"
 #include "../code/frontier.hpp"
 #include "../code/genGraph.hpp"
@@ -31,14 +31,21 @@
 #include "../code/stretch.hpp"
 #include "../code/centrality.hpp"
 #include "../code/watchdog.hpp"
+#include "../code/initial_settings.hpp"
 
 /// @brief  The main method
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
+
+	unsigned int n = std::thread::hardware_concurrency();
+	DEBUG std::cerr << " ********************************************" << std::endl;
+    DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
+	DEBUG std::cerr << " ********************************************" << std::endl ;
+
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
-		Parameters::usage(argv[0]);
+		Parameters::usage("--help");
 		exit(0);
 	}
 
@@ -64,7 +71,6 @@ int main(int argc, char** argv){
 
 	// Start time counting
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-	
 	int lower_limit = 1;
 	if (!global_nolb){
 		graph.grt = OpBasic::maxLowerCicle(graph);
@@ -72,27 +78,26 @@ int main(int argc, char** argv){
 	}
 	
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
+	global_induced_cycle_used = 0;
 	
 	sem_init(&semaforo, 0, num_threads);
 	
 	// MAIN PROCEDURE
-/*	DEBUG std::cerr << "Solving with articulations - wait!\n";
-	run_name = "Articulations";
-
-	/*if (global_running_time > 0){
+	DEBUG std::cerr << "Solving with heuristic 1V3 - wait!\n";
+	run_name = "H1v3";
+	
+	if (global_running_time > 0){
         wdt.kick(global_running_time);
-        create_threads_articulations(graph);
+        Heuristic::heuristica_1v3(graph);
         wdt.stop();
     } else {
-        create_threads_articulations(graph);
-    }*/
+        Heuristic::heuristica_1v3(graph);
+    }
 
 	// End time counting
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-
-	// OUTPUT - nothing - screen - file - debug
 	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
 	sem_destroy(&semaforo);
     return 0;
