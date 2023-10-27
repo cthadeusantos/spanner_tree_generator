@@ -149,22 +149,33 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
 
 	OPTIONS:
-      -h      | --help            This help
-	          | --adjacency       Define which type file will be read. (adjacency list)[default]
-	          | --edges           Define which type file will be read. (edges list)
-              | --nolb            Not calculate lower bound
-              | --noindex         Not calculate stretch index
-	    -rt X | --running_time X  Define execution time in miliseconds until STOP! default is 0
-	    -ci X | --induced_cycle X Define the number of induced cycles ! default is 1
-	    -t X  | --thread X        Define the numbers of threads. X is the number of threads 
-	    -v	  | --version         Which version is this app.
+      -h  | --help                Show this help
+      -v  | --version             Provide the version
 
+    Running time:
+      -rt X | --running_time X    Define the execution time in miliseconds until STOP! default is 0
+  
+    Read file:
+	    --adjacency                 Define which type file will be read. (adjacency list)[default]
+	    --edges                     Define which type file will be read. (edges list)
+
+    Calculate:
+      --nolb                      Not calculate lower bound
+      --noindex                   Not calculate stretch index
+	    -ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
+	
+    Threads:
+      -t X  | --thread X          Define the numbers of threads. X is the number of threads
+
+    Method for calculating closeness:
+      --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
+      --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
 	  Show info:
-	    -f | --file               Output at file.
-	    -s | --screen             Output at screen.
-	    -d | --debug              Output screen only debug mode.
-	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
+	    -f | --file                 Output at file.
+	    -s | --screen               Output at screen.
+	    -d | --debug                Output screen only debug mode.
+	    -b | --best                 Show the best tree found (default is not show). Try only with few vertices and edges.
 	    You can combine file, screen and debug
 
     INPUT_FILENAME is mandatory
@@ -270,7 +281,7 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
-* Daniel Juvetude (deljuven@ymail.com)
+* Daniel Juventude (deljuven@ymail.com)
 * Carlos Thadeu (carlosthadeu@id.uff.br) 
 * Anderson Zudio (azudio@id.uff.br)
 
