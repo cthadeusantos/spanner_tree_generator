@@ -1,0 +1,20 @@
+---                               
+
+name: ct-one-hour-EDGES
+problem: tadmiss                   
+description: Running BRUTE FORCE EDGE PARALLELISM
+exec: release/app_BF-EDGES
+default_timelimit: 7200
+default_iterations: 1
+instance_list:
+- instance: datasets/tvshow_edges.csv
+  args: -t 64 -s -rt 3600000 --noindex --nolb --edges
+
+- instance: datasets/politician_edges.csv
+  args: -t 64 -s -rt 3600000 --noindex --nolb --edges
+
+- instance: instances/datasets/company_edges.csv
+  args: -t 64 -s -rt 3600000 --noindex --nolb --edges
+
+
+...                               

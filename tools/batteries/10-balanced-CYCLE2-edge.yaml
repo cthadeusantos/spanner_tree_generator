@@ -1,0 +1,55 @@
+---                               
+
+name: 10-balanced-CYCLE-EDGE-CI2
+problem: tadmiss                   
+description: Running BRUTE FORCE CYCLE EDGES
+exec: release/app_BF-CYCLESb
+default_timelimit: 4500
+default_iterations: 1
+instance_list:
+- instance: dataset3/g_30_173_40.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_30_287_65.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_35_236_40.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_35_277_46.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_35_404_70.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_40_265_33.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_45_267_30.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_45_298_33.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_45_486_49.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_45_672_65.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_50_304_23.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_50_471_40.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_60_317_18.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_60_426_24.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+- instance: dataset3/g_60_554_30.txt
+  args: -t 16 -s -ci 2 --noindex --nolb -rt 3600000
+
+...                               

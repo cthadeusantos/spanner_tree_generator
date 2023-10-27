@@ -1,0 +1,37 @@
+---                               
+
+name: 09-balanced-ADJACENCY
+problem: tadmiss                   
+description: Running BRUTE FORCE ADJACENCY PARALLELISM
+exec: release/app_BF-ADJACENCYb
+default_timelimit: 4500
+default_iterations: 1
+instance_list:
+- instance: dataset2/g_30_183_45.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_40_418_55.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_50_287_25.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_60_429_25.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_30_290_65.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_40_513_65.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_50_928_75.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_35_257_45.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+- instance: dataset2/g_45_353_35.txt
+  args: -t 16 -s --noindex --nolb -rt 3600000
+
+...                               

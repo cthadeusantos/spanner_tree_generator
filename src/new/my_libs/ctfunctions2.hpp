@@ -35,6 +35,7 @@ std::vector<std::string> split(const std::string& s, char delimiter);
 //
 std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2);
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph);
+std::string current_date();
 
 std::vector<std::vector<int>> combinatorics(int n, int r);
 

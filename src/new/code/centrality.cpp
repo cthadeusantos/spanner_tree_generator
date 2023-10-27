@@ -815,6 +815,59 @@ void Centrality::my_insertionSort(std::vector <int> &vector1, std::vector <int> 
     }
 }
 
+/**
+ * @brief Modify insert sort
+ * @details Details decription
+ * That's a modify code to sort two vectors at ascendind or descending.
+ * The sorting will be controlled by the first vector (it will be mandatory)
+ * The second vector will be sort following the first vector positions
+ * Use 'a' for ascending or 'd' for descending
+ * Example: v1={4,3,6,2} v2={1,2,3,4} ascending
+ * Result: v1={2,3,4,6} v2={4,2,1,3}
+ * @date 2022/12/17
+ * @author Original code rathbhupendra
+ * @author Modify code cthadeusantos
+ * @param vector1   That's a float vector that will be sort
+ * @param vector2   That's an integer vector that will be sort following vector1 order
+ * @param order (optional) a - ascending d - descending
+ */
+void Centrality::my_insertionSort(std::vector <float> &vector1, std::vector <int> &vector2, char order)
+{
+    int n = vector1.size();
+    int i, key2, j;
+    float key1;
+
+    for (i = 1; i < n; i++)
+    {
+        key1 = vector1[i];
+        key2 = vector2[i];
+        j = i - 1;
+ 
+        // Move elements of arr[0..i-1], 
+        // that are greater than key, to one
+        // position ahead of their
+        // current position
+        if (order == 'a'){
+            while (j >= 0 && key1 < vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        } else if (order == 'd'){
+            while (j >= 0 && key1 > vector1[j])
+            {
+                vector1[j + 1] = vector1[j];
+                vector2[j + 1] = vector2[j];
+                j = j - 1;
+            }
+        }
+
+        vector1[j + 1] = key1;
+	    vector2[j + 1] = key2;
+    }
+}
+
 int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness){
     float max = 0;
     int best_vertex=vertex_list[0];
@@ -834,7 +887,7 @@ int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &cl
     float max = closeness[best_vertex];
     float min = leverage[best_vertex];
     for (auto vertex: vertex_list){
-        if (closeness[vertex]==max && leverage[vertex]==min){
+        if (closeness[vertex]>max && leverage[vertex]==min){
             best_vertex=vertex;
         }
         else if (closeness[vertex]==max && leverage[vertex] < min){
@@ -842,6 +895,29 @@ int Centrality::tiebreaker(std::vector<int> &vertex_list, std::vector<float> &cl
             best_vertex=vertex;
         } else if (closeness[vertex] > max ){
             max=closeness[vertex];
+            best_vertex=vertex;
+        }
+    }
+    return best_vertex;
+}
+
+int Centrality::tiebreaker(std::vector<int> &candidates, std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage){
+    if (candidates.size() == 1)
+        return candidates[0];
+    int best_vertex=candidates[0];
+    int index = get_index(best_vertex, vertex_list);
+    float max = closeness[index];
+    float min = leverage[index];
+    for (auto vertex: candidates){
+        int index = get_index(vertex, vertex_list);
+        if (closeness[index] > max && leverage[index] == min){
+            best_vertex=vertex;
+        }
+        else if (closeness[index]==max && leverage[index] < min){
+            min=leverage[index];
+            best_vertex=vertex;
+        } else if (closeness[index] > max ){
+            max=closeness[index];
             best_vertex=vertex;
         }
     }

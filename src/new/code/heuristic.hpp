@@ -28,6 +28,7 @@ class Heuristic
         // Heuristic 4v2-2 Create only purpose compare with H4v2
         static void Heuristica_4v2r2(Graph &graph);
         static void Heuristica_4v2r3(Graph &graph);
+        static void Heuristica_4v2(Graph &graph);
 
         static std::vector <int> breadth_criterion(Graph &graph, std::queue <int> &FILA,
                     std::vector <int> &visited, std::vector <int> &total_layer); // By thadeu

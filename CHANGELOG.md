@@ -1,4 +1,25 @@
 # Changes
+## 0.2.3 (2023/10/26)
+* Heuristics H1v3 & H1v4 provided by Eriky Marciano
+
+## 0.2.2 (2023/10/26)
+* Fixed bug that could select inappropriate vertex in the list of candidate vertices in the H2v2 & H3v2 heuristics
+* Fixed bug in heuristic 4 where the closeness list for candidate vertices was defined as a list of integers, changed to a list of floats
+* Added new parameters --alg & --tra, now you can select the closeness method to be used (ALG, uses the algebraic method to calculate the closeness of the vertices and TRA, the method traverses the vertices of the graph to define the closeness value)
+* Heurísticas H1v2, H2v2, H3v2, and all H4 now benefit from the implemented --alg and --tra parameters
+* Added a new overload to the Centrality::my_insertionSort(std::vector <float> &, std::vector <int> &, char) method
+* Added a new overload to the Centrality::tiebreaker(std::vector<int> &, std::vector<int> &, std::vector<float> &, std::vector<float> &);
+* Added new information to the output report. Date, lower bound calculation requested or not, stretch index calculation requested or not
+* Many minor bugs fixed
+* Many minor methods or functions implemented
+
+
+## 0.2.1.1 (2023/09/20)
+* FIX! Remove ' s' characters at field running time in the final report
+* Change attribute at Class Version, number -> release
+* Update README.md
+* Added TODO.md
+* Added a new dataset (dataset3)
 
 ## 0.2.1 (2023/07/xx)
 * FIX! Heuristic 3v2 now reads edges' list files 

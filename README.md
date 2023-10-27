@@ -4,8 +4,8 @@
   - [3.1. Pre-requisites](#31-pre-requisites)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
-  - [3.4. Usage](#34-usage) 
-    - [How to run (with options):](#how-to-run)
+  - [3.4. Usage](#34-usage)
+    - [How to run (with options):](#how-to-run-with-options)
     - [Usage example (running):](#usage-example-running)
     - [Usage example (running batteries):](#usage-example-running-batteries)
     - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
@@ -130,7 +130,7 @@ The brute force executables are as follows:
 
 The heuristics executables are as follows:
 
-* **app_HR-H1v1** & **app_HR-H1v2**, Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work);
+* **app_HR-H1v1**, **app_HR-H1v2**, **app_HR-H1v3** & **app_HR-H1v4** Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon. 
 
 * **app_HR-H2v1** & **app_HR-H2v2**, Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**);
 
@@ -151,22 +151,33 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
 
 	OPTIONS:
-      -h      | --help            This help
-	          | --adjacency       Define which type file will be read. (adjacency list)[default]
-	          | --edges           Define which type file will be read. (edges list)
-              | --nolb            Not calculate lower bound
-              | --noindex         Not calculate stretch index
-	    -rt X | --running_time X  Define execution time in miliseconds until STOP! default is 0
-	    -ci X | --induced_cycle X Define the number of induced cycles ! default is 1
-	    -t X  | --thread X        Define the numbers of threads. X is the number of threads 
-	    -v	  | --version         Which version is this app.
+      -h  | --help                Show this help
+      -v  | --version             Provide the version
 
+    Running time:
+      -rt X | --running_time X    Define the execution time in miliseconds until STOP! default is 0
+  
+    Read file:
+	    --adjacency                 Define which type file will be read. (adjacency list)[default]
+	    --edges                     Define which type file will be read. (edges list)
+
+    Calculate:
+      --nolb                      Not calculate lower bound
+      --noindex                   Not calculate stretch index
+	    -ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
+	
+    Threads:
+      -t X  | --thread X          Define the numbers of threads. X is the number of threads
+
+    Method for calculating closeness:
+      --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
+      --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
 	  Show info:
-	    -f | --file               Output at file.
-	    -s | --screen             Output at screen.
-	    -d | --debug              Output screen only debug mode.
-	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
+	    -f | --file                 Output at file.
+	    -s | --screen               Output at screen.
+	    -d | --debug                Output screen only debug mode.
+	    -b | --best                 Show the best tree found (default is not show). Try only with few vertices and edges.
 	    You can combine file, screen and debug
 
     INPUT_FILENAME is mandatory
@@ -286,8 +297,9 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
-* Daniel Juvetude (deljuven@ymail.com)
-* Carlos Thadeu (carlosthadeu@id.uff.br) 
+* Daniel Juventude (deljuven@ymail.com)
+* Carlos Thadeu Santos(carlosthadeu@id.uff.br) 
 * Anderson Zudio (azudio@id.uff.br)
+* Eriky Nunes Marciano (erikymarciano@id.uff.br) 
 
 This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
