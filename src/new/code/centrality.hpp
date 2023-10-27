@@ -44,6 +44,7 @@ class Centrality
         static void my_insertionSort(std::vector <int> &vertex, std::vector <float> &closeness, Graph &graph ); // By Thadeu
         static void my_insertionSort(std::vector <int> &vertex, std::vector <float> &closeness, std::vector <float> &leverage, Graph &graph); // By Thadeu
         static void my_insertionSort(std::vector <int> &vector1, std::vector <int> &vector2, char order='a'); // by Thadeu
+        static void my_insertionSort(std::vector <float> &vector1, std::vector <int> &vector2, char order='a'); // by Thadeu
         static void my_insertionSort(std::vector<std::pair<int, float>> vector1, char order='a');
         //static void my_insertionSort(std::vector <int> &vector1, std::vector <int> &vector2, std::vector <int> &vector3, char order); // by Thadeu
         
@@ -63,7 +64,8 @@ class Centrality
         static std::vector<float> closeness_centrality_vector(Graph &graph);
 
         static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness);
-        static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);    
+        static int tiebreaker(std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);
+        static int tiebreaker(std::vector<int> &candidates, std::vector<int> &vertex_list, std::vector<float> &closeness, std::vector<float> &leverage);
 
         static std::vector<std::pair<int,float>> leverage_centrality_list(Graph &graph);
         static std::vector<std::pair<int,float>> leverage_centrality_list(std::vector <float> &leverage);

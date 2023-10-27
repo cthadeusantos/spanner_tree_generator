@@ -9,6 +9,7 @@ extern bool global_noindex;
 extern float global_running_time;
 extern int global_induced_cycle;
 extern bool global_save_tree;
+extern int global_closeness;
 
 class Parameters
 {

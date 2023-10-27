@@ -26,11 +26,13 @@ void Parameters::usage(const char *app_name){
 	std::cout << "\t-t X	| --thread X	Define the numbers of threads. X is the number of threads [current " << num_threads << "]" << std::endl  << std::endl ;
 	std::cout << "\t-rt X	| --running_time X	Define execution time in miliseconds until STOP! default is 0 [current " << global_running_time << "]" << std::endl  << std::endl ;
 	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << global_induced_cycle << "]" << std::endl  << std::endl ;
-	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency list)[default]" << std::endl  << std::endl;
-	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency matrix)[DEFAULT]" << std::endl  << std::endl;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
+	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
+	std::cout << "\t     	| --alg 	Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
+	std::cout << "\t     	| --tra 	Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
 
 	std::cout << "Options to show info:" << std::endl;
 	std::cout << "\t-f 	| --file \t\tAt file. [current " << global_output << "]" << std::endl;
@@ -106,11 +108,18 @@ void Parameters::parseArgs(int argc, char** argv){
 			global_save_tree = true;
 			DEBUG std::cerr << "Save trees on file (alpha version - only purposes tests - will be removed at future)" << global_save_tree << '\n';
 		}
-
 		else if(arg == "--noindex"){
 			global_noindex = true;
 			DEBUG std::cerr << "Disable stretch index compute." << global_noindex << '\n';
 		}
+		else if (arg == "--alg"){
+			global_closeness = 1;
+			DEBUG std::cerr << "Setting closeness to algebraic." << '\n';
+		}
+		else if (arg == "--tra"){
+			global_closeness = 2;
+			DEBUG std::cerr << "Setting closeness to transversal." << '\n';
+		}	 
 		else {
 			std::cout << "Unknown parameter: " << arg << std::endl;
 			std::cout << "Type --help for more informations!" << arg << std::endl;

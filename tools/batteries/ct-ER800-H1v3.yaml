@@ -1,0 +1,40 @@
+---                               
+
+name: ct-ER800-H1v3                  
+problem: tadmiss                   
+description: Running heuristic H1v3
+exec: release/app_HR-H1v3
+default_timelimit: 1200
+default_iterations: 1
+instance_list:
+- instance: grafos_erdos/ger_800_50__800_159562_0.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159601_1.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159826_2.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159360_3.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159282_4.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159811_5.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159713_6.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159772_7.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159625_8.txt
+  args: -t 1 -s
+
+- instance: grafos_erdos/ger_800_50__800_159831_9.txt
+  args: -t 1 -s
+
+...                               

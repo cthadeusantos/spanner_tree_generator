@@ -53,6 +53,12 @@ app_HR-H1v1_FILES := new/heuristic/main-hr_H1v1.cpp $(subst ${SRC_DIR}/, , $(she
 HR-H1v2 := app_HR-H1v2
 app_HR-H1v2_FILES := new/heuristic/main-hr_H1v2.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
+HR-H1v3 := app_HR-H1v3
+app_HR-H1v3_FILES := new/heuristic/main-hr_H1v3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
+
+HR-H1v4 := app_HR-H1v4
+app_HR-H1v4_FILES := new/heuristic/main-hr_H1v4.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
+
 HR-H2v1 := app_HR-H2v1
 app_HR-H2v1_FILES := new/heuristic/main-hr_H2v1.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
@@ -77,7 +83,7 @@ app_HR-H4v2r2_FILES := new/heuristic/main-hr_H4v2r2.cpp $(subst ${SRC_DIR}/, , $
 HR-H4v2r3 := app_HR-H4v2r3
 app_HR-H4v2r3_FILES := new/heuristic/main-hr_H4v2r3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
-ALL_APP := ${CREATE} ${BF-SEQ} ${BF-ADJACENCY} ${BF-EDGES} ${BF-CYCLES} ${HR-H1v1} ${HR-H1v2} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-H3v2} ${HR-H4v1} ${HR-H4v2r1} ${HR-H4v2r2} ${HR-H4v2r3}
+ALL_APP := ${CREATE} ${BF-SEQ} ${BF-ADJACENCY} ${BF-EDGES} ${BF-CYCLES} ${HR-H1v1} ${HR-H1v2} ${HR-H1v3} ${HR-H1v4} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-H3v2} ${HR-H4v1} ${HR-H4v2r1} ${HR-H4v2r2} ${HR-H4v2r3}
 
 #--Main rule names--
 RELEASE_BUILD := build-release
