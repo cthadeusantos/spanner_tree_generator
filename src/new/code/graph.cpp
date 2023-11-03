@@ -393,11 +393,11 @@ int Graph::get_num_edges()
     After found a best tree , assing it to graph
     \param n a graph that represents a local tree from a thread
 */
-void Graph::set_best_tree(Graph graph)
+void Graph::set_best_tree(Graph tree)
 {
     this->best_tree = {};
-    for (int i = 0; i < graph.edgeList().size(); i = i + 2) {
-        this->best_tree.push_back(std::make_tuple(graph.edgeList()[i], graph.edgeList()[i + 1]));
+    for (int i = 0; i < tree.edgeList().size(); i = i + 2) {
+        this->best_tree.push_back(std::make_tuple(tree.edgeList()[i], tree.edgeList()[i + 1]));
     }
 };
 

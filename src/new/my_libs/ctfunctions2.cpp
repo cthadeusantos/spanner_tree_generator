@@ -40,6 +40,7 @@ extern int used_threads;
 extern int global_induced_cycle;
 extern int global_induced_cycle_used;
 extern int global_closeness;
+extern int global_threads_supported;
 extern bool global_nolb;
 extern bool global_noindex;
 
@@ -653,23 +654,24 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
     int stretch_index = graph.get_stretch_index();
 
     if ((output & 1)==1){	// TO SCREEN
-		std::cout << "INSTANCE .......... = " << std::setw(10) << filename << std::endl;
-		std::cout << "SOLUTION_TYPE...... = " << run_name << std::endl;
-		std::cout << "NUM_VERTICES....... = " << graph.get_qty_vertex() << std::endl;
-		std::cout << "NUM_EDGES.......... = " << graph.get_num_edges() << std::endl;
-		std::cout << "LOWER_BOUND........ = " << lower_limit << std::endl;
-		std::cout << "STRETCH_INDEX...... = " << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES........ = " << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME....... = " << lastExecutionTime << std::endl;
-        std::cout << "THREADs............ = " << num_threads <<  std::endl;
-        std::cout << "TASKs.............. = " << used_threads <<  std::endl;
-        std::cout << "DATE............... = " << current_date() <<  std::endl;
-        std::cout << "APP_RELEASE........ = " << Version().version() <<  std::endl;
-        std::cout << "CLOSENESS_(HEUR)... = " << get_closeness_type() << std::endl;
-        std::cout << "COMPUTE_INDEX...... = " << get_noindex_type() << std::endl;
-        std::cout << "COMPUTE_LOWER_BOUND = " << get_nolb_type() << std::endl;
-        std::cout << "ICYCLES_PROPOSED... = " << global_induced_cycle <<  std::endl;
-        std::cout << "ICYCLES_SELECTED... = " << global_induced_cycle_used <<  std::endl;
+		std::cout << "INSTANCE ............. = " << std::setw(10) << filename << std::endl;
+		std::cout << "SOLUTION_TYPE......... = " << run_name << std::endl;
+		std::cout << "NUM_VERTICES.......... = " << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES............. = " << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND........... = " << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX......... = " << graph.get_stretch_index() <<  std::endl;
+		std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME.......... = " << lastExecutionTime << std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
+        std::cout << "THREADs............... = " << num_threads <<  std::endl;
+        std::cout << "TASKs................. = " << used_threads <<  std::endl;
+        std::cout << "DATE.................. = " << current_date() <<  std::endl;
+        std::cout << "APP_RELEASE........... = " << Version().version() <<  std::endl;
+        std::cout << "CLOSENESS_(HEUR)...... = " << get_closeness_type() << std::endl;
+        std::cout << "COMPUTE_INDEX......... = " << get_noindex_type() << std::endl;
+        std::cout << "COMPUTE_LOWER_BOUND... = " << get_nolb_type() << std::endl;
+        std::cout << "ICYCLES_PROPOSED...... = " << global_induced_cycle <<  std::endl;
+        std::cout << "ICYCLES_SELECTED...... = " << global_induced_cycle_used <<  std::endl;
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
@@ -685,6 +687,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
 		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
         std::cout << "THREADS=" << num_threads <<  std::endl;
         std::cout << "TASKS=" << used_threads <<  std::endl;
         std::cout << "DATE=" << current_date() <<  std::endl;
@@ -706,6 +709,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
+        std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
         std::cerr << "[TASKS]=" << used_threads <<  std::endl;
         std::cerr << "[DATE]=" << current_date() <<  std::endl;

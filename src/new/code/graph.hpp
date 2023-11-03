@@ -73,7 +73,7 @@ public:
     std::vector<std::tuple<int, int> > best_tree;
     int get_num_edges();
     int get_num_vertices();
-    void set_best_tree(Graph graph);
+    void set_best_tree(Graph tree);
     std::vector<std::tuple<int, int> > get_best_tree();
     void add_vertices(int n);
     void show_best_tree();

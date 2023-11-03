@@ -1,4 +1,8 @@
 # Changes
+## 0.2.3a (2023/11/03)
+* Fixed the bug that was causing 'free(): invalid pointer' in heuristics H3v2.
+* Added the output information MAX_THREAD_SUPPORTED, which indicates the maximum number of threads supported by the processor.
+
 ## 0.2.3 (2023/10/26)
 * Heuristics H1v3 & H1v4 provided by Eriky Marciano
 

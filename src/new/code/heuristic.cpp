@@ -679,7 +679,7 @@ void Heuristic::heuristica_3v1(Graph &graph)
  */
 void Heuristic::heuristica_3v2(Graph &graph)
 {
-    Stretch stretch;
+    //Stretch stretch;
     Graph tree(graph.getQtdVertices());
     std::vector<int> lista_vertices_candidatos = graph.vertices_de_maior_grau();
 
@@ -735,19 +735,19 @@ void Heuristic::heuristica_3v2(Graph &graph)
     int index = get_index(source, lista);
     lista.erase(lista.begin()+index);
 
-        while(!lista.empty())
+    while(!lista.empty())
     {
         // Subtrai do grauos vertices dos vizinhos dos vertices que já estão na arvore
         for(int vertex : lista) 
         {
             int a=graph.grau(vertex);
             lista_relativa_vertice.push_back(vertex);
-            //if ((in(vertex, tree.my_connected_vertices()))){
+            if ((in(vertex, tree.my_connected_vertices()))){
                 int b=func_aux_h3(tree, graph, vertex);
                 lista_relativa_valor.push_back(a - b);
-            //} else {
-            //    lista_relativa_valor.push_back(a);
-            //}
+            } else {
+                lista_relativa_valor.push_back(a);
+            }
 
         }
 
@@ -803,8 +803,7 @@ void Heuristic::heuristica_3v2(Graph &graph)
         if (tree.get_num_edges() + 1 == graph.get_qty_vertex())
             lista.clear();
     }
-
-    int factor = stretch.find_factor(graph, tree);
+    int factor = Stretch::find_factor(graph, tree);
     graph.sum_trees(1);
     set_graph_final_parameters(factor, tree, graph);
 }

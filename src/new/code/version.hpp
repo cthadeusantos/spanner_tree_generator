@@ -5,7 +5,7 @@
 class Version
 {
     private:
-        std::string release = "0.2.3";
+        std::string release = "0.2.3a";
     public:
         Version();
         ~Version();
