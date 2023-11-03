@@ -1,4 +1,6 @@
 # Changes
+## 0.2.4
+
 ## 0.2.3 (2023/10/26)
 * Heuristics H1v3 & H1v4 provided by Eriky Marciano
 
