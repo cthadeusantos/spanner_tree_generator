@@ -25,5 +25,7 @@ float global_running_time = 0;
 
 //pthread_mutex_t mutex_signal;
 
+int global_threads_supported = 0;
+
 #endif
 
