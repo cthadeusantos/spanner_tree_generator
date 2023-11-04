@@ -23,7 +23,7 @@ The $t$-admissibility is a min-max problem that concerns to determine whether a 
 
 This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
 
-## 1. Preliminary Notes for 0.2.x series
+## 1. Preliminary Notes for 0.2.x series and higher
 
 Please note that the C++ code from a previous version (0.1.x series) will not be compatible with the current version. It is important to be aware that any code written for the previous version will require updates and modifications to ensure compatibility and proper functioning in the current version. Failing to update the code may result in errors, unexpected behavior, or even program crashes. Therefore, we strongly advise reviewing and revising your previous C++ code to ensure it aligns with the requirements and conventions of the current version.
 
@@ -31,11 +31,36 @@ Furthermore, please be aware that the code from the previous version will no lon
 
 <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
+
+
+<b>New versioning system</b>
+
+From version 0.2.4 onwards, we are adopting a new versioning system. We have discontinued the use of letters alongside the third digit to represent bug fixes.
+
+The new numbering system will follow the following structure:
+* The first digit (the leftmost one) represents a major or significant version.
+* The second digit in the middle represents a minor version or additional functionality.
+* The third digit (the rightmost one) represents bug fixes, minor improvements, or adjustments.
+
+Regarding digit increments:
+* Increases in the first digit (major version) indicate a major update that introduces significant changes or may not be compatible with previous versions.
+* Increases in the second digit (minor version) indicate the addition of new features or improvements while maintaining compatibility with previous versions.
+* Increases in the third digit (bug fixes) are used for releases dedicated to fixing bugs, minor improvements, or stability adjustments.
+
+In terms of compatibility:
+* An increase in the first digit may indicate that this version is not compatible with previous versions. Be aware of this.
+* An increase in the second digit typically implies the addition of features while maintaining overall compatibility with previous versions.
+* An increase in the third digit is used for maintenance releases that do not alter functionality but address issues.
+
+<b>Download the code</b>
+
+[Last stable version 0.2.4](https://github.com/cthadeusantos/spanner_tree_generator)
+
 Previous version can be found here.
 
-Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e)
+Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs)
 
-Link for [Release 0.1.7d](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d)
+Link for [Release 0.1.7d](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d) (many bugs)
 
 Please check Github Webpage for others branches
 
@@ -158,13 +183,13 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
       -rt X | --running_time X    Define the execution time in miliseconds until STOP! default is 0
   
     Read file:
-	    --adjacency                 Define which type file will be read. (adjacency list)[default]
+	    --adjacency                 Define which type file will be read. (adjacency matrix)[default]
 	    --edges                     Define which type file will be read. (edges list)
 
     Calculate:
       --nolb                      Not calculate lower bound
       --noindex                   Not calculate stretch index
-	    -ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
+	-ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
 	
     Threads:
       -t X  | --thread X          Define the numbers of threads. X is the number of threads
@@ -235,17 +260,14 @@ This project has internal tools to support development. Usage examples and detai
 
 **For adjacency matrix** (a square matrix)
 
-1st line Number of vertices (in our example 4)
-
+Put at 1st line the Number of vertices (in our example 4)
+```
 4
-
 0 1 1 0
-
 1 0 1 1
-
 1 1 0 1
-
 0 1 1 0
+```
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
  Please use space to separate (0,1) elements
@@ -254,25 +276,21 @@ This project has internal tools to support development. Usage examples and detai
 
 **For edges list**
 
+1st line are the number of vertices in the graph (in our example N).
+Each line from the 2nd line represents an edge (two vertices). Please use comma to separate the vertices.
+
+```
 N
-
 vertex , vertex
-
 vertex , vertex
-
 vertex , vertex
-
 vertex , vertex
-
 ...
-
 vertex , vertex
-
+```
 An edges' list is a data structure used to represent a graph as a list of its edges.
 
-1st line are the number of vertices in the graph
-Each line from the 2nd represents an edge (two vertices).
-Please use comma to separate the vertices.
+
 
 Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
