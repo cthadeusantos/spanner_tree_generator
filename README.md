@@ -149,9 +149,9 @@ After compiling, you will find the executables in the **build/release/** directo
 
 The brute force executables are as follows:
 * **app_BF-SEQ**, which runs sequentially using a single thread;
-* **app_BF-EDGES**, which executes in parallel(multiple threads) using an edge list;
-* **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list;
-* **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list and the induced cycle method.
+* **app_BF-EDGES**, which executes in parallel(multiple threads) using an edge list method;
+* **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list method;
+* **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method.
 
 The heuristics executables are as follows:
 
