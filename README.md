@@ -66,7 +66,7 @@ In terms of compatibility:
 
 * Past published work:
   * [2022 pre-print](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/IPL_HeuristicsADM_V3%20(2).pdf)
-  * [2022 Base paper](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/1-s2.0-S0020019022000229-main.pdf) of the problem with the first solution set(https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ).
+  * [2022 Base paper](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/1-s2.0-S0020019022000229-main.pdf) of the problem with the first solution set.
   * [The paper presented at the Brazilian Operational Research Symposium 2023](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/galoa-proceedings--sbpo-2023--174829.pdf) with a new set of heuristics and the use of centrality measures
   * If you wish to visually understand heuristics 1, 2, 3, & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Presentation-SBPO2023v5-ENG.pdf) or [PORTUGUESE](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Apresentacao-SBPO2023v5-PT_BR.pdf)
   * Coming soon, the paper submitted to Wiley featuring the induced cycle method and enhancements yielding up to a 70% improvement in the sequential method, adjacency list and edge list.
