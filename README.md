@@ -75,13 +75,13 @@ In terms of compatibility:
 
 Please note the following correction:
 
-In 2022 Base paper:
+<b>In 2022 Base paper:</b>
 
 * At page 2, Algorithm 1, line 16, where it reads 'last_neighbor[i] = -1', please read as 'last_neighbor[v] = -1'
 * At page 4, example 3, where it reads 'V=[4,7,1,3,0,2,5,6]', please read 'V=[4,7,1,3,8,0,2,5,6]'
 
 
-In 2023 paper:
+<b>In 2023 paper:</b>
 
 * At page 6, Equation 7, where it reads 'f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)', please read as 'f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)'
 
