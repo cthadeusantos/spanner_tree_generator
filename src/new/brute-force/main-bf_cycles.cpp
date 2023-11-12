@@ -44,7 +44,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << " ********************************************" << std::endl;
     DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
 	DEBUG std::cerr << " ********************************************" << std::endl ;
-
+	global_closeness = 0;	
 
 	if(argc < 2){
 		Parameters::usage(argv[0]);

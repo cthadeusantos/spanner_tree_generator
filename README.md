@@ -1,5 +1,9 @@
-- [1. Preliminary Notes for 0.2.x series](#1-preliminary-notes-for-02x-series)
+- [1. Preliminary Notes for 0.2.x series and higher](#1-preliminary-notes-for-02x-series-and-higher)
+    - [New versioning system](#new-versioning-system)
 - [2. Important links and work performed](#2-important-links-and-work-performed)
+  - [2.1. Understanding the problem of t\_admissibility](#21-understanding-the-problem-of-t_admissibility)
+  - [2.2. The Errata section](#22-the-errata-section)
+  - [2.3. Download the code](#23-download-the-code)
 - [3. Project Architecture](#3-project-architecture)
   - [3.1. Pre-requisites](#31-pre-requisites)
   - [3.2. External Dependencies](#32-external-dependencies)
@@ -33,7 +37,7 @@ Furthermore, please be aware that the code from the previous version will no lon
 
 
 
-<b>New versioning system</b>
+#### New versioning system
 
 From version 0.2.4 onwards, we are adopting a new versioning system. We have discontinued the use of letters alongside the third digit to represent bug fixes.
 
@@ -52,25 +56,46 @@ In terms of compatibility:
 * An increase in the second digit typically implies the addition of features while maintaining overall compatibility with previous versions.
 * An increase in the third digit is used for maintenance releases that do not alter functionality but address issues.
 
-<b>Download the code</b>
-
-[Last stable version 0.2.4](https://github.com/cthadeusantos/spanner_tree_generator)
-
-Previous version can be found here.
-
-Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs)
-
-Link for [Release 0.1.7d](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d) (many bugs)
-
-Please check Github Webpage for others branches
-
 ## 2. Important links and work performed
 
 * Link to [this repository](https://github.com/cthadeusantos/spanner_tree_generator). 
 * Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1). (in portuguese)
     * Every task is represented by a card (issue). Any issue tagged as `EPIC` detail the current main goal of the project.
+
+### 2.1. Understanding the problem of t_admissibility
+
 * Past published work:
-  * [Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
+  * [2022 pre-print]()
+  * [2022 Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
+  * [The paper presented at the Brazilian Operational Research Symposium 2023]() with a new set of heuristics and the use of centrality measures
+  * If you wish to visually understand heuristics 1, 2, 3, & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH]() or [PORTUGUESE]()
+  * Coming soon, the paper submitted to Wiley featuring the induced cycle method and enhancements yielding up to a 70% improvement in the sequential method, adjacency list and edge list.
+
+### 2.2. The Errata section
+
+Please note the following correction:
+
+In 2022 Base paper:
+
+* At page 2, Algorithm 1, line 16, where it reads 'last_neighbor[i] = -1', please read as 'last_neighbor[v] = -1'
+* At page 4, example 3, where it reads 'V=[4,7,1,3,0,2,5,6]', please read 'V=[4,7,1,3,8,0,2,5,6]'
+
+
+In 2023 paper:
+
+* At page 6, Equation 7, where it reads 'f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)', please read as 'f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)'
+
+We apologize for any confusion and appreciate your understanding.
+
+### 2.3. Download the code
+
+[Last stable version 0.2.5](https://github.com/cthadeusantos/spanner_tree_generator)
+
+Previous version can be found here.
+
+Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs & last version for 0.1.x series) 
+
+Please check Github Webpage for others branches
 
 ## 3. Project Architecture
 

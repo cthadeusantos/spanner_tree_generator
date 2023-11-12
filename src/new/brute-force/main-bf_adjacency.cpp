@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << " ********************************************" << std::endl;
     DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
 	DEBUG std::cerr << " ********************************************" << std::endl ;
-
+	global_closeness = 0;
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){

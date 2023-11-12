@@ -1,5 +1,12 @@
 # Changes
+## 0.2.5 (2023/11/12)
+* Added info "NO" the CLOSENESS_(HEUR) output includes the additional information 'NO' for heuristics H1v1, H1v3, H1v4, H2v1, H3v1.
+* Added new paper PDF
+* Added the PowerPoint presentation for the Brazilian Operational Research Symposium 2023. 
+
 ## 0.2.4
+* New version system implemented
+* Minor fixes
 
 ## 0.2.3a (2023/11/03)
 * Fixed the bug that was causing 'free(): invalid pointer' in heuristics H3v2.

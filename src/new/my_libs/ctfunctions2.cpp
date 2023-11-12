@@ -60,10 +60,12 @@ extern bool global_noindex;
 #endif */
 
 std::string get_closeness_type(){
-    if (global_closeness==2){
+    if (global_closeness==1) {
+        return "ALGEBRAIC";
+    } else if (global_closeness==2){
         return "TRAVERSE";
     } else {
-        return "ALGEBRAIC";
+        return "NO";
     }
 }
 

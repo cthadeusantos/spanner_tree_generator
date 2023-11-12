@@ -7,7 +7,7 @@ std::mutex mtx;
 
 int global_total_arv = 0;
 int seed = 0;
-int global_output = 0;
+int global_output = 1;
 int matrix_t=0;
 int num_threads = 1;
 int used_threads = 1;

@@ -35,7 +35,7 @@
 /// @brief  The main method
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
-
+	global_closeness = 0;	
 	//num_threads = 1;
 	//max_induced_cycles = 1;
 	if(argc < 2){
