@@ -77,13 +77,13 @@ Please note the following correction:
 
 <b>In 2022 Base paper:</b>
 
-* At page 2, Algorithm 1, line 16, where it reads 'last_neighbor[i] = -1', please read as 'last_neighbor[v] = -1'
-* At page 4, example 3, where it reads 'V=[4,7,1,3,0,2,5,6]', please read 'V=[4,7,1,3,8,0,2,5,6]'
+* At page 2, Algorithm 1, line 16, where it reads '_last_neighbor[i] = -1_', please read as '_last_neighbor[v] = -1_'
+* At page 4, example 3, where it reads '_V=[4,7,1,3,0,2,5,6]_', please read '_V=[4,7,1,3,8,0,2,5,6]_'
 
 
 <b>In 2023 paper:</b>
 
-* At page 6, Equation 7, where it reads 'f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)', please read as 'f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)'
+* At page 6, Equation 7, where it reads '_f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)_', please read as '_f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)_'
 
 We apologize for any confusion and appreciate your understanding.
 
