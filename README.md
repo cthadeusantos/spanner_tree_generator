@@ -219,7 +219,7 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
     Threads:
       -t X  | --thread X          Define the numbers of threads. X is the number of threads
 
-    Method for calculating closeness:
+    Method for calculating closeness (SOON, heuristic 4 will be only one):
       --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
       --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
