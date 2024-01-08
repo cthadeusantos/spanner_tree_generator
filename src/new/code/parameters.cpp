@@ -29,10 +29,10 @@ void Parameters::usage(const char *app_name){
 	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency matrix)[DEFAULT]" << std::endl  << std::endl;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
 	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
-	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
+	std::cout << "\t     	| --nolb	Not calculate lower bound" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
-	std::cout << "\t     	| --alg 	Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
-	std::cout << "\t     	| --tra 	Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
+	std::cout << "\t     	| --alg 	<< TOO SOON! >> Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
+	std::cout << "\t     	| --tra 	<< TOO SOON! >> Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
 
 	std::cout << "Options to show info (you MUST select file, screen or debug):" << std::endl;
 	std::cout << "\t-f 	| --file \t\tOutput at file. [not work yet]" << std::endl;
