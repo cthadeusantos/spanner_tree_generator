@@ -1,0 +1,55 @@
+---                               
+
+name: grafos15-bf-seq                  
+problem: tadmiss                   
+description: Running brute force sequential
+exec: release/app_BF-SEQ
+default_timelimit: 3600
+default_iterations: 10
+instance_list:
+- instance: grafos_15/g_15_33_30-1.txt
+  args: -t 1 -s --nolb 
+
+- instance: grafos_15/g_15_33_30-2.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-3.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-4.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-5.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-6.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-7.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-8.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-9.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-10.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-11.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-12.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-13.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-14.txt
+  args: -t 1 -s --nolb
+
+- instance: grafos_15/g_15_33_30-15.txt
+  args: -t 1 -s --nolb
+
+...                               
