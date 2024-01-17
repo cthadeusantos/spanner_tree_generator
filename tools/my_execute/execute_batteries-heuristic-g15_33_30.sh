@@ -1,0 +1,11 @@
+#python3 execution-battery.py 1 < batteries/grafo15-bf-H4v2r1.yaml
+#python3 execution-battery.py 1 < batteries/grafo15-bf-H4v2r3.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H1v1.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H1v2.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H1v3.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H1v4.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H2v1.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H2v2.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H3v1.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H3v2.yaml
+python3 execution-battery.py 1 < batteries/grafo15-bf-H4v1.yaml
