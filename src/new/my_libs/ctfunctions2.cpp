@@ -299,7 +299,7 @@ std::string get_filename() {
 	char buf[512], file[512] = {0};
     
     snprintf(buf, sizeof buf, "/proc/self/fd/%d", fileno(stdin));
-    readlink(buf, file, sizeof file - 1);
+    ssize_t var = readlink(buf, file, sizeof file - 1);
 
 	std::string text = file;
 	std::istringstream iss(text);
