@@ -77,7 +77,7 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
     #Return the header (column names) of the summary table. The info has to be properly sorted.
     @staticmethod
     def tadmissHeader():
-        return ['Avg running time (s) (MIN/MAX) [std_dev]', 'Avg stretch index (MIN/MAX) [std_dev]', '#Vertex', '#Edges', 'Lower Bound']
+        return ['Avg running time (s) (MIN/MAX) [std_dev]', 'Avg stretch index (MIN/MAX) [std_dev]', '#Vertex', '#Edges', 'Lower Bound', 'Total trees']
 
     #Receive a solution list. Should output the info for the result table. This info has to be in the same order as the header given above.
     @staticmethod
@@ -87,6 +87,7 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
         n_vertex = int(solution_list[0]["num_vertices"])
         n_edge = int(solution_list[0]["num_edges"])
         lower_bound = int(solution_list[0]["lower_bound"])
+        total_trees = int(solution_list[0]["sum_trees"])
 
         for solution in solution_list:
             running_time.append(float(solution["running_time"]))
@@ -108,7 +109,7 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
 
 
 
-        return [str(running_time_avg) + ' (' + str(running_time_min) + '/' + str(running_time_max) + ') [' + str(running_time_dev) + ']', str(stretch_index_avg) + ' (' + str(stretch_index_min) + '/' + str(stretch_index_max) + ') [' + str(stretch_index_dev) + ']', str(n_vertex), str(n_edge), str(lower_bound) ]
+        return [str(running_time_avg) + ' (' + str(running_time_min) + '/' + str(running_time_max) + ') [' + str(running_time_dev) + ']', str(stretch_index_avg) + ' (' + str(stretch_index_min) + '/' + str(stretch_index_max) + ') [' + str(stretch_index_dev) + ']', str(n_vertex), str(n_edge), str(lower_bound), str(total_trees) ]
         
 #The main function that should be called from other tools. This should setup the variables to specify the dependencies.
 def load(problem_name):
