@@ -650,10 +650,32 @@ void Heuristic::heuristica_3v1(Graph &graph)
             {
                 if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
-                tree.add_aresta(source, vertex);
-                connect = true;
+            } //else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+            //     tree.add_aresta(source, vertex);
+            //     connect = true;
+            // }
+            else {
+                if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                    tree.add_aresta(source, vertex);
+                    bool has_cycle_var = false;
+                    if (OpBasic::cyclic(tree, source)){
+                        has_cycle_var = true;
+                    }
+                    if (!has_cycle_var)
+                        if (OpBasic::cyclic(tree, vertex))
+                            has_cycle_var = true;
+                    if (has_cycle_var){
+                        tree.remove_aresta(source, vertex);
+                    }
+                    connect = true;
+                }
             }
+            if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+                break;
+            }
+        }
+        if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+            break;
         }
         if (!lista.empty()){
             int index = get_index(source, lista);
@@ -693,6 +715,9 @@ void Heuristic::heuristica_3v2(Graph &graph)
   /*   std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
 
     source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness); */
+    
+    // Select which type closeness will be computed (ALGEBRAIC or TRAVERSE) 
+    // from arguments
     std::vector<float> vertices_closeness;
     if (global_closeness == 2) {
         vertices_closeness = Centrality::closeness_centrality_thread(graph);
@@ -775,6 +800,9 @@ void Heuristic::heuristica_3v2(Graph &graph)
                 break;
             }
         }
+        if (lista_vertices_candidatos.empty()){
+            break;
+        }
         //source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness, vertices_leverage);
         source=Centrality::tiebreaker(lista_vertices_candidatos, vertex_list, vertices_closeness, vertices_leverage);
         //source = lista_relativa_vertice[lista_relativa_vertice.size()-1];
@@ -788,10 +816,32 @@ void Heuristic::heuristica_3v2(Graph &graph)
             {
                 if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
-                tree.add_aresta(source, vertex);
-                connect = true;
+            } //else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                //tree.add_aresta(source, vertex);
+                //connect = true;
+            //}
+            else {
+                if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                    tree.add_aresta(source, vertex);
+                    bool has_cycle_var = false;
+                    if (OpBasic::cyclic(tree, source)){
+                        has_cycle_var = true;
+                    }
+                    if (!has_cycle_var)
+                        if (OpBasic::cyclic(tree, vertex))
+                            has_cycle_var = true;
+                    if (has_cycle_var){
+                        tree.remove_aresta(source, vertex);
+                    }
+                    connect = true;
+                }
             }
+            if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+                break;
+            }
+        }
+        if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+            break;
         }
         if (!lista.empty()){
             int index = get_index(source, lista);

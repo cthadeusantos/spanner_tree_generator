@@ -1,4 +1,7 @@
 # Changes
+## 0.2.5 (2024/01/17)
+* Fix bug in heuristic 3 that caused incorrect stretch factor for some graphs.
+
 ## 0.2.5 (2023/11/12)
 * Added info "NO" the CLOSENESS_(HEUR) output includes the additional information 'NO' for heuristics H1v1, H1v3, H1v4, H2v1, H3v1.
 * Added new paper PDF
