@@ -1,0 +1,130 @@
+---                               
+
+name: G37-bf-edges                  
+problem: tadmiss                   
+description: Running brute force edges
+exec: release/app_BF-EDGES
+default_timelimit: 3600
+default_iterations: 10
+instance_list:
+- instance: G37/g15_37_30-1.txt
+  args: -t 10 -s --nolb 
+
+- instance: G37/g15_37_30-2.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-3.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-4.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-5.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-6.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-7.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-8.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-9.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-10.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-11.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-12.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-13.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-14.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-15.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-16.txt
+  args: -t 10 -s --nolb 
+
+- instance: G37/g15_37_30-17.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-18.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-19.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-20.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-21.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-22.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-23.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-24.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-25.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-26.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-27.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-28.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-29.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-30.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-31.txt
+  args: -t 10 -s --nolb 
+
+- instance: G37/g15_37_30-32.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-33.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-34.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-35.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-36.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-37.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-38.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-39.txt
+  args: -t 10 -s --nolb
+
+- instance: G37/g15_37_30-40.txt
+  args: -t 10 -s --nolb
+
+...                               
