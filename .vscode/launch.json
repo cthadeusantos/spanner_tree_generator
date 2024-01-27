@@ -9,7 +9,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/examples/G9_heuristic_paper_2023.in"],
+            "options": ["${workspaceFolder}/instances/dataset_wiley/g15_33_30/g_15_33_30-8.txt"],
             "default": "${workspaceFolder}/instances/examples/G9_paper_pag4.in"
         }
     ],
@@ -332,7 +332,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_HR-H3v2",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--screen", "-t", "8" , "--best", "--edges" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--screen", "-t", "4" , "--best" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -453,6 +453,30 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_CREATE",
             "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-tri", "-min", "10", "-max", "20", "-qty", "10", "-prob", "0.45"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "[GDB] app_GENERATE ",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/app_GENERATE",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "15", ".3", "10", "teste/"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

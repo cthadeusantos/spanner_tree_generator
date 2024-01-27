@@ -93,15 +93,15 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
             running_time.append(float(solution["running_time"]))
             stretch_index.append(int(solution["stretch_index"]))
 
-        running_time_avg = round(statistics.mean(running_time), 1)
-        running_time_min = round(min(running_time), 1)
-        running_time_max = round(max(running_time), 1)
+        running_time_avg = round(statistics.mean(running_time), 6)
+        running_time_min = round(min(running_time), 6)
+        running_time_max = round(max(running_time), 6)
         stretch_index_avg = round(statistics.mean(stretch_index), 1)
         stretch_index_min = min(stretch_index)
         stretch_index_max = max(stretch_index)
 
         if(len(solution_list) > 1):
-            running_time_dev = round(statistics.stdev(running_time), 1)
+            running_time_dev = round(statistics.stdev(running_time), 6)
             stretch_index_dev = round(statistics.stdev(stretch_index), 1)
         else:
             running_time_dev = 0

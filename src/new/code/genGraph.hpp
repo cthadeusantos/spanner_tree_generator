@@ -13,7 +13,9 @@ public:
 
     static int random(int a, int b);
     static double random_01();
+    static float random_02();
     static void generate_graph(Graph& g, double p);
+    static void generate_graph2(Graph &g, float p);
     static void generate_list_graph(std::vector<Graph>& list, int vMin, int vMax, int qtd, double p);
     static void generate_list_graph_without_triangle(std::vector<Graph>& list, int vMin, int vMax, int qtd, double p);
     static void sub_graph_cycle(std::vector<Graph>& list, Graph& g);
