@@ -95,7 +95,7 @@ void Parameters::parseArgs(int argc, char** argv){
 			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}
 		else if(arg == "-d" || arg == "--debug"){
-			global_output = global_output + 64;
+			//global_output = global_output + 64;
 			global_output = 64;
 			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}

@@ -5,7 +5,7 @@
   - [2.2. The Errata section](#22-the-errata-section)
   - [2.3. Download the code](#23-download-the-code)
 - [3. Project Architecture](#3-project-architecture)
-  - [3.1. Pre-requisites](#31-pre-requisites)
+  - [3.1. Pre-requisites (for Linux and WSL)](#31-pre-requisites-for-linux-and-wsl)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
@@ -16,10 +16,13 @@
   - [3.5. Directory Structure](#35-directory-structure)
   - [3.6. Internal Tools](#36-internal-tools)
 - [4. Input file format](#4-input-file-format)
-- [5. Changelog](#5-changelog)
-- [6. Known Bugs](#6-known-bugs)
-- [7. To do](#7-to-do)
-- [8. Authorship Information](#8-authorship-information)
+- [5. MacOS User Information: Key Details and Guidelines](#5-macos-user-information-key-details-and-guidelines)
+  - [5.1. MacOS Compilation Instructions](#51-macos-compilation-instructions)
+  - [5.2. Instructions for Running on MacOS](#52-instructions-for-running-on-macos)
+- [6. Changelog](#6-changelog)
+- [7. Known Bugs](#7-known-bugs)
+- [8. To do](#8-to-do)
+- [9. Authorship Information](#9-authorship-information)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
@@ -33,8 +36,11 @@ Please note that the C++ code from a previous version (0.1.x series) will not be
 
 Furthermore, please be aware that the code from the previous version will no longer receive updates or bug fixes. The previous version's codebase will be archived and stored at a designated location for reference purposes. It is important to transition to the current version and utilize its updated features, enhancements, and ongoing support for a more efficient and stable development environment.
 
-<b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
+> [!NOTE]
+> We are pleased to announce that, starting from version 0.2.7, the code is now available for compilation and alpha-stage execution on the MacOS operating system. We are committed to expanding compatibility and accessibility of our software, enabling MacOS users to also enjoy the latest features and functionalities. We encourage users interested in this platform to refer to the specific section for [MacOS](#5-macos-user-information-key-details-and-guidelines) in the README.md for detailed information on requirements, configurations, and potential considerations while running the software in this environment. We appreciate all users and look forward to providing an optimized experience for everyone.
 
+> [!WARNING]
+> <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
 
 #### New versioning system
@@ -89,7 +95,7 @@ We apologize for any confusion and appreciate your understanding.
 
 ### 2.3. Download the code
 
-[Last stable version 0.2.5](https://github.com/cthadeusantos/spanner_tree_generator)
+[Last stable version 0.2.7](https://github.com/cthadeusantos/spanner_tree_generator)
 
 Previous version can be found here.
 
@@ -103,7 +109,7 @@ This is a science project made primally to be ran in a computational environment
 
 As a science project, each main application is built so it solves an instance in a single execution in a deterministic way. The idea is that each execution should be independent and done in a controlled environment, therefore the results are precise and replicable.
 
-### 3.1. Pre-requisites 
+### 3.1. Pre-requisites (for Linux and WSL)
 
 The compiler used for every C/C++ component is [GCC](https://gcc.gnu.org/) at version 9.3.0. The build procedure is managed by [Make](https://www.gnu.org/software/make/). These are the only pre-requisites to build and execute everything. Use the following commands to install them:
   
@@ -311,6 +317,8 @@ vertex , vertex
 vertex , vertex
 vertex , vertex
 ...
+.
+.
 vertex , vertex
 ```
 An edges' list is a data structure used to represent a graph as a list of its edges.
@@ -321,19 +329,62 @@ Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
 
 [Edges' list example](instances/examples/G9_E10_edges.in)
-## 5. Changelog
+
+## 5. MacOS User Information: Key Details and Guidelines
+
+### 5.1. MacOS Compilation Instructions
+
+Please note that compiling the code for MacOS differs slightly from Linux and WSL. The compilation and execution are currently in alpha stage.
+
+To compile, run the following command in the terminal from the project's root directory:
+
+``````
+make -f Makefile_OSX [OPTION]
+``````
+
+Where OPTION can be one of the following:
+
+* `clean` - Deletes files in the ./build/release directory.
+
+* `sequential` - Creates the executable that uses the sequential brute-force method.
+
+* `adjacency` - Creates the parallel executable that uses the brute-force adjacency list method.
+
+* `adjacency` cycles - Creates the parallel executable that uses the brute-force induced cycles method.
+
+* `edges` - Creates the parallel executable that uses the brute-force edge list method.
+
+* `H1v1`, * `H1v2`, * `H2v1`, * `H2v2`, * `H3v1`, * `H3v2`, * `H4v1`, * `H4v2r1`, * `H4v2r2` - Creates executables for heuristics.
+
+* `all_bruteforce` - Creates executables for all brute-force methods.
+
+* `all_heuristics` - Creates executables for all heuristic methods.
+
+* `generate` - Creates the executable for generating random graphs.
+
+* `all` - Compiles all the above options.
+
+Be aware that the code for Linux and WSL contains lines that are only used in DEBUG mode in Visual Studio Code. Unfortunately, these lines cannot be disabled at runtime on MacOS. If your objective is to obtain the graph extension index, this is not a problem for small graphs. However, if you intend to measure runtime, it may pose a challenge. To avoid the execution of these lines, locate those starting with DEBUG and comment them out in your code.
+
+Notably, when compiling with Makefile_OSX (not makefile), DEBUG features for use in VSCODE will not be implemented for MacOS. Debugging on this platform may be limited. If you are experienced with makefiles and would like to assist in adapting the Linux makefile for MacOS and clang++, please contact us via email.
+
+### 5.2. Instructions for Running on MacOS
+
+To run the code, follow the instructions in [usage](#34-usage).
+
+## 6. Changelog
 
 Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/CHANGELOG.md)
 
-## 6. Known Bugs
+## 7. Known Bugs
 
 Link for [known bugs webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/KNOWNBUGS.md)
 
-## 7. To do
+## 8. To do
 
 Link for [TO DO webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/TODO.md)
 
-## 8. Authorship Information
+## 9. Authorship Information
 
 We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
 
@@ -341,7 +392,7 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
 * Daniel Juventude (deljuven@ymail.com)
-* Carlos Thadeu Santos(carlosthadeu@id.uff.br) 
+* Carlos Thadeu Santos(carlosthadeu@id.uff.br) (cthadeusantos@gmail.com)
 * Anderson Zudio (azudio@id.uff.br)
 * Eriky Nunes Marciano (erikymarciano@id.uff.br) 
 

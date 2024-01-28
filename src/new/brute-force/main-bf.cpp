@@ -97,7 +97,6 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock>	end = std::chrono::steady_clock::now();	
 	std::chrono::duration<double> execution_duration(end - start);
 	double lastExecutionTime = execution_duration.count();
-
 	// OUTPUT - nothing - screen - file - debug
 	output_data(run_name, filename, global_output,best, lastExecutionTime, lower_limit, graph);
     return 0;

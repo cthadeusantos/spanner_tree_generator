@@ -1,5 +1,24 @@
 # Changes
-## 0.2.5 (2024/01/17)
+## 0.2.7 (2024/01/28)
+* Now the code compile and running at MacOS
+* Added Makefile for OSX.
+* Fixed segmentation fault, trace trap when running at MacOS.
+* Update split_filename_v2() and get_filename_v2() again for compatibility reasons between Linux and MacOS.
+* Replace (int)INFINITY to std::numeric_limits<int>::max() for compatibility reasons between Linux and MacOS.
+* Added the get_filename_V2() function to fix a segmentation fault issue on MacOS when reading an input file. (ctfunction2.cpp).
+* Added the split_filename_v2(). (ctfunction2.cpp)
+* All main files for brute force and heuristics have been adjusted to use get_filename_v2().
+* Replaced the INT_MAX constant in heuristics.cpp with std::numeric_limits<int>::max(), using #include <limits>.
+* Removed the non-standard header file stdc++.h for improved compatibility between Linux and MacOS (heuristics.cpp , graph.cpp, centrality.cpp, ctfunctions2.cpp).
+* Added header file include <functional>. (cycles.cpp).
+* Replaced get_current_dir_name() with get_current_dir() in main_create_graphs.cpp, correcting an error in the function name associated with DIR_BASE.
+* Added 3 new functions to validate parameters passed through input: isDataAvailable(), isInputRedirected(), and validateInputBeforeExecution().
+* Makefile_OSX updated.
+* README.md updated.
+* Minor fixes.
+* Minor adjusts.
+
+## 0.2.6 (2024/01/17)
 * Fix bug in heuristic 3 that caused incorrect stretch factor for some graphs.
 
 ## 0.2.5 (2023/11/12)

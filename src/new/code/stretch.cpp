@@ -51,7 +51,9 @@ void Stretch::find_index(Graph& g)
     int arv = 0;
     int grt;
     //index = INF_VALUE;
-    index = (int)INFINITY;
+    //index = (int)INFINITY;
+    index = std::numeric_limits<int>::max();
+
 
     //OpBasic op; // alteracao LF
 
@@ -143,7 +145,7 @@ void Stretch::find_index_edge(Graph& g)
 
     int arv = 0;
     //index = INF_VALUE;
-    index = (int)INFINITY;
+    index = std::numeric_limits<int>::max();
 
     while(indice[0]/2 <= m-(n-1)){
         if( indice[j]/2 > m-(n-1-j) ){
@@ -191,7 +193,7 @@ void Stretch::find_index_pararell(Graph& g, int raiz, int start, int end)
     int u;
     // int arv = 0; // debug
     //index = INF_VALUE;
-    index = (int)INFINITY;
+    index = std::numeric_limits<int>::max();
 
     Graph tree(g.getQtdVertices());
 
@@ -305,7 +307,7 @@ void Stretch::find_index_cycle(Graph& g, int m)
 {
     std::vector<Graph> l;
     //int index_menor = INF_VALUE;
-    int index_menor = (int)INFINITY;
+    int index_menor = std::numeric_limits<int>::max();
     GenGraph::all_sub(g, l, m);
 
     int count = 1;
@@ -343,7 +345,7 @@ int Stretch::find_index(Graph &original, Graph &change)
     int arv = 0;
     int grt;
     //index = INF_VALUE;
-    index = (int)INFINITY;
+    index = std::numeric_limits<int>::max();
 
     OpBasic op; // alteracao LF
 

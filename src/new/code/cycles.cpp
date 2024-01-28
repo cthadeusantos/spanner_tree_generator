@@ -154,14 +154,14 @@ void find_index_induced_cycle_V2(int id,  Valid_Edges_r &edges_to_threads , Grap
     arvores = G1.get_total_tree();
     int index_local = G1.get_stretch_index();
 
-    if (index_local == (int)INFINITY)
+    if (index_local == std::numeric_limits<int>::max())
     {
         index_local = 1;
         arvores = 0;
         G1.reset_trees(arvores);
     }
     mtx.lock();
-    DEBUG std::cerr << "THREAD " << id << "NA  TASK " << task << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
+    DEBUG std::cerr << "THREAD " << id << " NA TASK " << task << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
     graph.sum_trees(arvores);
     global_total_arv = arvores;
     int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
@@ -184,8 +184,8 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
     
     int vertex_v = 0;
     int vertex_u = 0;
-    int index_local = (int)INFINITY;
-    int lower_limit = (int)INFINITY;
+    int index_local = std::numeric_limits<int>::max();
+    int lower_limit = std::numeric_limits<int>::max();
 
     std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
     std::vector<int> last_neighbor(G1.get_num_vertices(), -1);

@@ -324,6 +324,50 @@ std::string get_filename() {
 }
 
 
+// std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+//     std::vector<std::string> result;
+//     std::istringstream iss(s);
+//     std::string item;
+//     while (std::getline(iss, item, delim)) {
+//         result.push_back(item);
+//     }
+//     return result;
+// }
+
+
+// FUNCTION BELOW , works in Linux , but don't work at MacOS
+// /**
+//  * Get the filename passed in by redirection
+//  * @details Get the filename passed in by redirection
+//  * @author Carlos Thadeu
+//  * @return a string that represents the name of file
+//  */
+// std::string get_filename_v2() {
+//     // To get filename redirections
+//     char buf[512];
+    
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use readlink to get the path of the file
+//     ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fd)).c_str(), buf, sizeof(buf) - 1);
+
+//     std::cout << "-->" << len << std::endl ;
+
+//     if (len != -1) {
+//         buf[len] = '\0';
+//         std::string text = buf;
+
+//         // Use platform-independent path separator
+//         char pathSeparator = '/';
+//         std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//         return texto.back();
+//     } else {
+//         // Handle error
+//         return "Error";
+//     }
+// }
+
 std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
     std::vector<std::string> result;
     std::istringstream iss(s);
@@ -334,34 +378,27 @@ std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
     return result;
 }
 
-/**
- * Get the filename passed in by redirection
- * @details Get the filename passed in by redirection
- * @author Carlos Thadeu
- * @return a string that represents the name of file
- */
 std::string get_filename_v2() {
-    // To get filename redirections
-    char buf[512];
-    
     // Get file descriptor associated with stdin
     int fd = fileno(stdin);
 
-    // Use readlink to get the path of the file
-    ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fd)).c_str(), buf, sizeof(buf) - 1);
+    // Use fstat to get information about the file
+    struct stat file_info;
+    if (fstat(fd, &file_info) == 0) {
+        // Use fcntl to get the file path from the file descriptor
+        char path[PATH_MAX];
+        if (fcntl(fd, F_GETPATH, path) != -1) {
+            std::string text = path;
 
-    if (len != -1) {
-        buf[len] = '\0';
-        std::string text = buf;
-
-        // Use platform-independent path separator
-        char pathSeparator = '/';
-        std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
-        return texto.back();
-    } else {
-        // Handle error
-        return "Error";
+            // Use platform-independent path separator
+            char pathSeparator = '/';
+            std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+            return texto.back();
+        }
     }
+
+    // Handle error
+    return "Error";
 }
 
 bool isDataAvailable() {
@@ -771,10 +808,13 @@ int create_new_graphs(){
  * @author Carlos Thadeu
  */
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph){
-    	// OUTPUT - nothing - screen - file - debug
+    // OUTPUT - nothing - screen - file - debug
 
-    if (lower_limit == (int)INFINITY)
+    // if (lower_limit == (int)INFINITY)
+    //     lower_limit = 1;
+    if (lower_limit == std::numeric_limits<int>::infinity()) {
         lower_limit = 1;
+    }
 
     int stretch_index = graph.get_stretch_index();
 

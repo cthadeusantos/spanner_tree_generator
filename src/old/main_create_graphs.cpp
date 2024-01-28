@@ -12,7 +12,7 @@
 
 #include "Debug.h"
 
-#include "ctfunctions.cpp"
+#include "../my_libs/ctfunctions2.hpp"
 
 
 #include "code/frontier.hpp"
@@ -22,11 +22,11 @@
 #include "code/opBasic.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
-#ifdef MN_BF_SEQ_DEBUG
-	#define DEBUG
-#else
-	#define DEBUG while(false)
-#endif
+// #ifdef MN_BF_SEQ_DEBUG
+// 	#define DEBUG
+// #else
+// 	#define DEBUG while(false)
+// #endif
 
 /**
  * @addtogroup bfseqparam

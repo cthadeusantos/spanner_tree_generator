@@ -83,7 +83,7 @@ int main(int argc, char** argv){
 	global_induced_cycle_used = 0;
 	
 	// MAIN PROCEDURE
-	DEBUG std::cerr << "Solving with ADJACENCY LIST - MAX DEGREE - wait!\n";
+	DEBUG std::cerr << "Solving with ADJACENCY LIST - wait!\n";
 	run_name = "ADJACENCY_LIST";
 	if (global_running_time > 0){
         wdt.kick(global_running_time);
