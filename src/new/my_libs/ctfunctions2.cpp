@@ -9,6 +9,15 @@
 #include <iterator>
 #include <chrono>
 
+//#include <iostream>
+#include <vector>
+//#include <sstream>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+
+
 #include <iterator>
 #include <set>
 #include <regex>
@@ -22,6 +31,7 @@
 #include "../code/frontier.hpp"
 #include "../code/genGraph.hpp"
 #include "../code/version.hpp"
+#include "../code/parameters.hpp"
 
 #include "../Debug.h"
 
@@ -288,6 +298,7 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
 }
 
 /**
+ * DEPRECATED ** Replaced by get_filename_v2() for use in Linux and MacOS
  * Get the filename passed in by redirection
  * @details Get the filename passed in by redirection
  * Reference: https://stackoverflow.com/questions/62697081/get-the-name-of-an-input-file-passed-in-by-redirection
@@ -311,6 +322,118 @@ std::string get_filename() {
 	std::vector<std::string> texto = split(text, '/');
 	return texto[texto.size()-1];
 }
+
+
+std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+    std::vector<std::string> result;
+    std::istringstream iss(s);
+    std::string item;
+    while (std::getline(iss, item, delim)) {
+        result.push_back(item);
+    }
+    return result;
+}
+
+/**
+ * Get the filename passed in by redirection
+ * @details Get the filename passed in by redirection
+ * @author Carlos Thadeu
+ * @return a string that represents the name of file
+ */
+std::string get_filename_v2() {
+    // To get filename redirections
+    char buf[512];
+    
+    // Get file descriptor associated with stdin
+    int fd = fileno(stdin);
+
+    // Use readlink to get the path of the file
+    ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fd)).c_str(), buf, sizeof(buf) - 1);
+
+    if (len != -1) {
+        buf[len] = '\0';
+        std::string text = buf;
+
+        // Use platform-independent path separator
+        char pathSeparator = '/';
+        std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+        return texto.back();
+    } else {
+        // Handle error
+        return "Error";
+    }
+}
+
+bool isDataAvailable() {
+    // Verificar se há dados disponíveis no redirecionamento (stdin)
+    return std::cin.peek() != EOF;
+}
+
+// Checa se existe algum redirecionamento
+bool isInputRedirected() {
+    return !isatty(fileno(stdin));
+}
+
+bool validateInputBeforeExecution(int argc, char** argv){
+    if(argc < 1){
+		Parameters::usage(argv[0]);
+		exit(0);
+	}
+	if (!isInputRedirected()) {
+		std::cout << "No input redirection detected." << std::endl;
+		exit(1);
+	}
+	if (!isDataAvailable()) {
+		std::cout << "No data provided via redirection." << std::endl;
+		exit(1);
+	}
+    return true;
+}
+
+// AS FUNCOES ABAIXO FUNCIONAM EM C++20
+// std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+//     std::vector<std::string> result;
+//     std::istringstream iss(s);
+//     std::string item;
+//     while (std::getline(iss, item, delim)) {
+//         result.push_back(item);
+//     }
+//     return result;
+// }
+
+// /**
+//  * Get the filename passed in by redirection
+//  * @details Get the filename passed in by redirection
+//  * @author Carlos Thadeu
+//  * @return a string that represents the name of file
+//  */
+// std::string get_filename_v2() {
+//     // To get filename redirections
+//     char buf[512], file[512] = {0};
+
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Get file status using fstat
+//     struct stat st;
+//     if (fstat(fd, &st) == -1) {
+//         // Handle error
+//         return "Error";
+//     }
+
+//     // Get the path of the file using fcntl
+//     if (fcntl(fd, F_GETPATH, file) == -1) {
+//         // Handle error
+//         return "Error";
+//     }
+
+//     std::string text = file;
+
+//     // Use platform-independent path separator
+//     char pathSeparator = '/';
+//     std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//     return texto.back();
+// }
 
 /**
  * Seek for articulations and bridges at a graph
@@ -589,7 +712,7 @@ int create_new_graphs(){
 	std::string dirname;
 	std::string auxiliary;
 	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
-	std::string DIR_BASE = get_current_dir_name();
+	std::string DIR_BASE = get_current_dir();
 	//std::string DIR_BASE = argv[0];
 	std::string DIR_INSTANCES = DIR_BASE + "instances/";
 	std::string DIR_RESULTS = DIR_BASE + "results/"; 
@@ -664,8 +787,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "STRETCH_INDEX......... = " << graph.get_stretch_index() <<  std::endl;
 		std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME.......... = " << lastExecutionTime << std::endl;
-        std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
         std::cout << "THREADs............... = " << num_threads <<  std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
         std::cout << "TASKs................. = " << used_threads <<  std::endl;
         std::cout << "DATE.................. = " << current_date() <<  std::endl;
         std::cout << "APP_RELEASE........... = " << Version().version() <<  std::endl;
@@ -689,8 +812,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
 		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
-        std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
         std::cout << "THREADS=" << num_threads <<  std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
         std::cout << "TASKS=" << used_threads <<  std::endl;
         std::cout << "DATE=" << current_date() <<  std::endl;
         std::cout << "APP_RELEASE=" << Version().version() <<  std::endl;
@@ -711,8 +834,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
 		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
-        std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
+        std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
         std::cerr << "[TASKS]=" << used_threads <<  std::endl;
         std::cerr << "[DATE]=" << current_date() <<  std::endl;
         std::cerr << "[APP_RELEASE]=" << Version().version() <<  std::endl;

@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 	std::string dirname;
 	std::string auxiliary;
 	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
-	std::string DIR_BASE = get_current_dir_name();
+	std::string DIR_BASE = get_current_dir();
 	//std::string DIR_BASE = argv[0];
 	std::string DIR_INSTANCES = DIR_BASE + "instances/";
 	std::string DIR_RESULTS = DIR_BASE + "results/"; 

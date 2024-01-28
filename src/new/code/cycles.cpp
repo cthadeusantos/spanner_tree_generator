@@ -9,6 +9,7 @@
 #include <string>
 #include <chrono> // contributor AZ
 #include <stack>
+#include <functional>
 
 #include "../my_libs/library1.hpp"
 #include "../my_libs/library3.hpp"

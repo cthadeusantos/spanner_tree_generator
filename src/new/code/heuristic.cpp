@@ -3,7 +3,8 @@
 #include <tuple>
 #include <map>
 #include <algorithm>
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <limits.h>
 #include "../Debug.h"
 #include "heuristic.hpp"
 #include "graph.hpp"
@@ -164,10 +165,12 @@ treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int ac
     Stretch stretch;
     int aux;
     treeWFactor result, result2, result_aux;
-    result2.factor = INT_MAX;
+    //result2.factor = INT_MAX;
+    result2.factor = std::numeric_limits<int>::max();
     int n = g.getQtdVertices();
     int root = 0;
-    int limit = INT_MAX;
+    //int limit = INT_MAX;
+    int limit = std::numeric_limits<int>::max();
 
     if(trees_created > limit) return result2;
     //loop que verifica se ha empate

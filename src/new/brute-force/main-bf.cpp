@@ -35,15 +35,17 @@
 /// @brief  The main method
 int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
-	global_closeness = 0;	
-	//num_threads = 1;
-	//max_induced_cycles = 1;
-	if(argc < 2){
-		Parameters::usage(argv[0]);
-		exit(0);
-	}
+	unsigned int n = std::thread::hardware_concurrency();
+	DEBUG std::cerr << " ********************************************" << std::endl;
+    DEBUG std::cerr << n << " concurrent threads are supported." << std::endl;
+	DEBUG std::cerr << " ********************************************" << std::endl ;
+	global_threads_supported = n;
+	global_closeness = 0;
 
-	std::string filename = get_filename();
+	// Check argv parameters, Input Redirected and data avaliable in redirected
+	validateInputBeforeExecution(argc, argv);
+
+	std::string filename = get_filename_v2();
 	std::string run_name  = "";
 
 	DEBUG std::cerr << filename << std::endl;

@@ -2,8 +2,9 @@
 #define CTFUNCTIONS_HPP_
 
 #include <iostream>
-#include<bits/stdc++.h>
+//#include<bits/stdc++.h>
 #include <set>
+#include <iomanip>      // std::setw
 
 #include "../code/graph.hpp"
 
@@ -31,7 +32,7 @@ bool in(const int &value, const char position, const std::vector<std::pair<int,i
 
 //String functions
 std::vector<std::string> split(const std::string& s, char delimiter);
-
+std::vector<std::string> split_filename_v2(const std::string &s, char delim);
 //
 std::vector<int> join_vectors(std::vector<int> &vector1, std::vector<int> &vector2);
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph);
@@ -39,8 +40,14 @@ std::string current_date();
 
 std::vector<std::vector<int>> combinatorics(int n, int r);
 
+bool isDataAvailable();
+bool isInputRedirected();
+
+bool validateInputBeforeExecution(int argc, char** argv);
+
 // Read and create graphs
-std::string get_filename();
+std::string get_filename(); // DEPRECATED replaced by get_filename_v2()
+std::string get_filename_v2();
 std::string get_enviroment_var(const char *enviroment_var);
 std::string get_current_dir();
 void create_directory(std::string auxiliary);

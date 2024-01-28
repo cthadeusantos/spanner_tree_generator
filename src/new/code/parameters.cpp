@@ -34,7 +34,7 @@ void Parameters::usage(const char *app_name){
 	std::cout << "\t     	| --alg 	<< TOO SOON! >> Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
 	std::cout << "\t     	| --tra 	<< TOO SOON! >> Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
 
-	std::cout << "Options to show info (you MUST select file, screen or debug):" << std::endl;
+	std::cout << "Options to display information (you MUST choose file, screen, or debug):" << std::endl;
 	std::cout << "\t-f 	| --file \t\tOutput at file. [not work yet]" << std::endl;
 	std::cout << "\t-s 	| --screen \t\tOutput At screen." << std::endl;
 	std::cout << "\t-d 	| --debug \t\tOutput At screen only debug mode." << std::endl << std::endl;
@@ -48,7 +48,7 @@ void Parameters::usage(const char *app_name){
  * @details This is a simple auxiliary function that will parse the args from the command line. You may see the entire specification at the terminal using the -help argument.
  */
 void Parameters::parseArgs(int argc, char** argv){
-    if (argc <= 1){
+    if (argc < 1){
 		std::cout << "You must have parameters, type -h to help!" << std::endl;
         exit(-1);
     }
