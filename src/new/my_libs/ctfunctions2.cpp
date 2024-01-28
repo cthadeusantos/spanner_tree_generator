@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <cstdlib>
 
 
 
@@ -36,6 +37,7 @@
 #include "../Debug.h"
 
 #include "ctfunctions2.hpp"
+#include "my_limits.hpp"
 //#include "externals.hpp"
 
 
@@ -378,6 +380,7 @@ std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
     return result;
 }
 
+
 std::string get_filename_v2() {
     // Get file descriptor associated with stdin
     int fd = fileno(stdin);
@@ -385,10 +388,14 @@ std::string get_filename_v2() {
     // Use fstat to get information about the file
     struct stat file_info;
     if (fstat(fd, &file_info) == 0) {
-        // Use fcntl to get the file path from the file descriptor
-        char path[PATH_MAX];
-        if (fcntl(fd, F_GETPATH, path) != -1) {
-            std::string text = path;
+        // Use realpath to get the canonicalized absolute pathname
+        char resolved_path[PATH_MAX];
+
+        // Construa a string diretamente sem usar c_str()
+        std::string path_string = "/proc/self/fd/" + std::to_string(fd);
+        
+        if (realpath(path_string.c_str(), resolved_path) != nullptr) {
+            std::string text = resolved_path;
 
             // Use platform-independent path separator
             char pathSeparator = '/';
@@ -400,6 +407,29 @@ std::string get_filename_v2() {
     // Handle error
     return "Error";
 }
+
+// std::string get_filename_v2() {
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use fstat to get information about the file
+//     struct stat file_info;
+//     if (fstat(fd, &file_info) == 0) {
+//         // Use fcntl to get the file path from the file descriptor
+//         char path[PATH_MAX];
+//         if (fcntl(fd, F_GETPATH, path) != -1) {
+//             std::string text = path;
+
+//             // Use platform-independent path separator
+//             char pathSeparator = '/';
+//             std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//             return texto.back();
+//         }
+//     }
+
+//     // Handle error
+//     return "Error";
+// }
 
 bool isDataAvailable() {
     // Verificar se há dados disponíveis no redirecionamento (stdin)
