@@ -21,7 +21,6 @@ def plotar_grafico(x, y, labels, cores):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-
     plt.show()
 
 
@@ -66,6 +65,9 @@ def main():
 
     nome_arquivo_png = os.path.splitext(arquivo_csv)[0] + '_grafico.png'
     salvar_grafico(rotulos_x, tempos, labels_y, cores, nome_arquivo_png)
+
+
+
 
 
 if __name__ == "__main__":
