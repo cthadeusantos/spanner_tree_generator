@@ -397,7 +397,7 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Anderson Zudio (azudio@id.uff.br)
 * Eriky Nunes Marciano (erikymarciano@id.uff.br) 
 
-**FOUDERS**
+**FOUNDERS**
 * Conselho Nacional de Desenvolvimento Científico e Tecnológico
 * Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro
 
