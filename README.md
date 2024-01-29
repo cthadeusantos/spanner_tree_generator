@@ -364,7 +364,7 @@ Where OPTION can be one of the following:
 
 * `all` - Compiles all the above options.
 
-Be aware that the code for Linux and WSL contains lines that are only used in DEBUG mode in Visual Studio Code. Unfortunately, these lines cannot be disabled at runtime on MacOS. If your objective is to obtain the graph extension index, this is not a problem for small graphs. However, if you intend to measure runtime, it may pose a challenge. To avoid the execution of these lines, locate those starting with DEBUG and comment them out in your code.
+Be aware that the code for Linux and WSL contains lines that are only used in DEBUG mode in Visual Studio Code. Unfortunately, these lines cannot be disabled at runtime on MacOS. If your objective is to obtain the graph stretch index, this is not a problem for small graphs. However, if you intend to measure runtime, it may pose a challenge. To avoid the execution of these lines, locate those starting with DEBUG and comment them out in your code.
 
 Notably, when compiling with Makefile_OSX (not makefile), DEBUG features for use in VSCODE will not be implemented for MacOS. Debugging on this platform may be limited. If you are experienced with makefiles and would like to assist in adapting the Linux makefile for MacOS and clang++, please contact us via email.
 
