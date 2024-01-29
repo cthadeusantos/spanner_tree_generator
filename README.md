@@ -388,6 +388,7 @@ Link for [TO DO webpage](https://github.com/cthadeusantos/spanner_tree_generator
 
 We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
 
+**TEAM**
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
@@ -395,5 +396,9 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Carlos Thadeu Santos(carlosthadeu@id.uff.br) (cthadeusantos@gmail.com)
 * Anderson Zudio (azudio@id.uff.br)
 * Eriky Nunes Marciano (erikymarciano@id.uff.br) 
+
+**FOUDERS**
+* Conselho Nacional de Desenvolvimento Científico e Tecnológico
+* Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro
 
 This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
