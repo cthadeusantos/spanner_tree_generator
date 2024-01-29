@@ -325,7 +325,7 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
         tree.add_aresta(edge.first, edge.second);
     }
 
-    DEBUG std::cerr << "THREAD: " << id << " JOB " << task << "  ACHOU " << index_local << std::endl;
+    //DEBUG std::cerr << "THREAD: " << id << " JOB " << task << "  ACHOU " << index_local << std::endl;
     G1.set_stretch_index(index_local); // *********************************
     G1.set_best_tree(tree);
 }
