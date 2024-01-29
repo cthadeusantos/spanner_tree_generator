@@ -350,11 +350,11 @@ Where OPTION can be one of the following:
 
 * `adjacency` - Creates the parallel executable that uses the brute-force adjacency list method.
 
-* `adjacency` cycles - Creates the parallel executable that uses the brute-force induced cycles method.
+* `cycles` - Creates the parallel executable that uses the brute-force induced cycles method.
 
 * `edges` - Creates the parallel executable that uses the brute-force edge list method.
 
-* `H1v1`, * `H1v2`, * `H2v1`, * `H2v2`, * `H3v1`, * `H3v2`, * `H4v1`, * `H4v2r1`, * `H4v2r2` - Creates executables for heuristics.
+* `H1v1`, `H1v2`, `H2v1`, `H2v2`, `H3v1`, `H3v2`, `H4v1`, `H4v2r1`, `H4v2r2` - Creates executables for heuristics.
 
 * `all_bruteforce` - Creates executables for all brute-force methods.
 
