@@ -48,6 +48,7 @@ bool validateInputBeforeExecution(int argc, char** argv);
 // Read and create graphs
 std::string get_filename(); // DEPRECATED replaced by get_filename_v2()
 std::string get_filename_v2();
+//std::string get_filename_v3();
 std::string get_enviroment_var(const char *enviroment_var);
 std::string get_current_dir();
 void create_directory(std::string auxiliary);

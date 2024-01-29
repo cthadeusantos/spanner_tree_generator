@@ -380,22 +380,38 @@ std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
     return result;
 }
 
-
+#include <iostream>
+#include <unistd.h>
 std::string get_filename_v2() {
+#if defined(__linux__)
+    DEBUG std::cerr << "Running on Linux" << std::endl;
+    if (!isatty(fileno(stdin))) {
+        int fileDescriptor = fileno(stdin);
+        if (fileDescriptor != -1) {
+            char path[PATH_MAX];
+            ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+            if (len != -1) {
+                path[len] = '\0';
+                //return std::string(path);
+                // Use platform-independent path separator
+                char pathSeparator = '/';
+                std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+                return texto.back();
+            }
+        }
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    DEBUG std::cerr << "Running on macOS" << std::endl;
     // Get file descriptor associated with stdin
     int fd = fileno(stdin);
 
     // Use fstat to get information about the file
     struct stat file_info;
     if (fstat(fd, &file_info) == 0) {
-        // Use realpath to get the canonicalized absolute pathname
-        char resolved_path[PATH_MAX];
-
-        // Construa a string diretamente sem usar c_str()
-        std::string path_string = "/proc/self/fd/" + std::to_string(fd);
-        
-        if (realpath(path_string.c_str(), resolved_path) != nullptr) {
-            std::string text = resolved_path;
+        // Use fcntl to get the file path from the file descriptor
+        char path[PATH_MAX];
+        if (fcntl(fd, F_GETPATH, path) != -1) {
+            std::string text = path;
 
             // Use platform-independent path separator
             char pathSeparator = '/';
@@ -403,10 +419,91 @@ std::string get_filename_v2() {
             return texto.back();
         }
     }
+#elif defined(_WIN32) || defined(_WIN64)
+    std::cout << "Running on Windows" << std::endl;
+#elif defined(__FreeBSD__)
+    std::cout << "Running on FreeBSD" << std::endl;
+#elif defined(__unix__) || defined(__unix)
+    std::cout << "Running on a Unix-like system" << std::endl;
+#else
+    std::cout << "Running on an unknown or unsupported operating system" << std::endl;
+#endif
 
-    // Handle error
+
+    // Default implementation or unsupported platform
     return "Error";
 }
+
+
+
+// //#include <iostream>
+// //#include <unistd.h>
+// std::string get_filename_v3() {
+// #ifdef __linux__ // Linux-specific implementation
+//     if (!isatty(fileno(stdin))) {
+//         int fileDescriptor = fileno(stdin);
+//         if (fileDescriptor != -1) {
+//             char path[PATH_MAX];
+//             ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+//             if (len != -1) {
+//                 path[len] = '\0';
+//                 //return std::string(path);
+//                 // Use platform-independent path separator
+//                 char pathSeparator = '/';
+//                 std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+//                 return texto.back();
+//             }
+//         }
+//     }
+// #elif __APPLE__ // macOS-specific implementation
+//     if (!isatty(fileno(stdin))) {
+//         int fileDescriptor = fileno(stdin);
+//         if (fileDescriptor != -1) {
+//             char path[PATH_MAX];
+//             ssize_t len = readlink(("/dev/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+//             if (len != -1) {
+//                 path[len] = '\0';
+//                 //return std::string(path);
+//                 // Use platform-independent path separator
+//                 char pathSeparator = '/';
+//                 std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+//                 return texto.back();
+//             }
+//         }
+//     }
+// #endif
+
+//     // Default implementation or unsupported platform
+//     return "";
+// }
+
+
+// std::string get_filename_v2() {
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use fstat to get information about the file
+//     struct stat file_info;
+//     if (fstat(fd, &file_info) == 0) {
+//         // Use realpath to get the canonicalized absolute pathname
+//         char resolved_path[PATH_MAX];
+
+//         // Construa a string diretamente sem usar c_str()
+//         std::string path_string = "/proc/self/fd/" + std::to_string(fd);
+        
+//         if (realpath(path_string.c_str(), resolved_path) != nullptr) {
+//             std::string text = resolved_path;
+
+//             // Use platform-independent path separator
+//             char pathSeparator = '/';
+//             std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//             return texto.back();
+//         }
+//     }
+
+//     // Handle error
+//     return "Error";
+// }
 
 // std::string get_filename_v2() {
 //     // Get file descriptor associated with stdin
