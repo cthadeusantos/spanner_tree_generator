@@ -47,20 +47,11 @@ Furthermore, please be aware that the code from the previous version will no lon
 
 From version 0.2.4 onwards, we are adopting a new versioning system. We have discontinued the use of letters alongside the third digit to represent bug fixes.
 
-The new numbering system will follow the following structure:
-* The first digit (the leftmost one) represents a major or significant version.
-* The second digit in the middle represents a minor version or additional functionality.
-* The third digit (the rightmost one) represents bug fixes, minor improvements, or adjustments.
-
-Regarding digit increments:
-* Increases in the first digit (major version) indicate a major update that introduces significant changes or may not be compatible with previous versions.
-* Increases in the second digit (minor version) indicate the addition of new features or improvements while maintaining compatibility with previous versions.
-* Increases in the third digit (bug fixes) are used for releases dedicated to fixing bugs, minor improvements, or stability adjustments.
-
-In terms of compatibility:
-* An increase in the first digit may indicate that this version is not compatible with previous versions. Be aware of this.
-* An increase in the second digit typically implies the addition of features while maintaining overall compatibility with previous versions.
-* An increase in the third digit is used for maintenance releases that do not alter functionality but address issues.
+| Digit | The new numbering system | Regarding digit increments /  In terms of compatibility |
+| -------- | --- | --- | 
+| #1 | Represents a major or significant version | Indicate a major update that introduces significant changes or may not be compatible with previous versions, be aware of this |
+| #2 | Represents a minor version or additional functionality. | Indicate the addition of new features or improvements while maintaining compatibility with previous versions |
+| #3 | Represents bug fixes, minor improvements or adjustments | Represents bug fixes, minor improvements, or adjustments, used for maintenance releases that do not alter functionality but address issues. |
 
 ## 2. Important links and work performed
 
