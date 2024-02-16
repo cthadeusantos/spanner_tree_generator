@@ -384,7 +384,7 @@ std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
 #include <unistd.h>
 std::string get_filename_v2() {
 #if defined(__linux__)
-    DEBUG std::cerr << "Running on Linux" << std::endl;
+    //DEBUG std::cerr << "Running on Linux" << std::endl;
     if (!isatty(fileno(stdin))) {
         int fileDescriptor = fileno(stdin);
         if (fileDescriptor != -1) {
@@ -401,7 +401,7 @@ std::string get_filename_v2() {
         }
     }
 #elif defined(__APPLE__) || defined(__MACH__)
-    DEBUG std::cerr << "Running on macOS" << std::endl;
+    //DEBUG std::cerr << "Running on macOS" << std::endl;
     // Get file descriptor associated with stdin
     int fd = fileno(stdin);
 
@@ -420,13 +420,21 @@ std::string get_filename_v2() {
         }
     }
 #elif defined(_WIN32) || defined(_WIN64)
-    std::cerr << "Running on Windows" << std::endl;
+    std::cout << "Running on Windows" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
 #elif defined(__FreeBSD__)
-    std::cerr << "Running on FreeBSD" << std::endl;
+    std::cout << "Running on FreeBSD" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
 #elif defined(__unix__) || defined(__unix)
-    std::cerr << "Running on a Unix-like system" << std::endl;
+    std::cout << "Running on a Unix-like system" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
 #else
-    std::cerr << "Running on an unknown or unsupported operating system" << std::endl;
+    std::cout << "Running on an unknown or unsupported operating system" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
 #endif
 
 
@@ -541,14 +549,16 @@ bool isInputRedirected() {
 bool validateInputBeforeExecution(int argc, char** argv){
     if(argc < 1){
 		Parameters::usage(argv[0]);
-		exit(0);
+		exit(1);
 	}
 	if (!isInputRedirected()) {
 		std::cout << "No input redirection detected." << std::endl;
+        Parameters::usage(argv[0]);
 		exit(1);
 	}
 	if (!isDataAvailable()) {
 		std::cout << "No data provided via redirection." << std::endl;
+        Parameters::usage(argv[0]);
 		exit(1);
 	}
     return true;

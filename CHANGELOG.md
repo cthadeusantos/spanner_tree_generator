@@ -1,5 +1,11 @@
 # Changes
 
+## 0.2.9 (2024/02/16)
+* Added help message after the warning 'No input redirection detected.'.
+* Comment line DEBUG std::cerr << "Running on Linux" << std::endl; in ctfunctions2.cpp which could insert the message into the output file in debug mode.
+* Comment line DEBUG std::cerr << "Running on macOS" << std::endl; in ctfunctions2.cpp which could insert the message into the output file in debug mode.
+* Added warning "I cannot read the input file on this operating system. Please contact the developers." if unsupported operating system detected.
+
 ## 0.2.8 (2024/02/16)
 * Fixed the issue that caused the insertion of the message 'Running on Linux/Mac/Win' into the output file of the application, causing an error that halted the execution of the battery files.
 
