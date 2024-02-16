@@ -420,13 +420,13 @@ std::string get_filename_v2() {
         }
     }
 #elif defined(_WIN32) || defined(_WIN64)
-    std::cout << "Running on Windows" << std::endl;
+    std::cerr << "Running on Windows" << std::endl;
 #elif defined(__FreeBSD__)
-    std::cout << "Running on FreeBSD" << std::endl;
+    std::cerr << "Running on FreeBSD" << std::endl;
 #elif defined(__unix__) || defined(__unix)
-    std::cout << "Running on a Unix-like system" << std::endl;
+    std::cerr << "Running on a Unix-like system" << std::endl;
 #else
-    std::cout << "Running on an unknown or unsupported operating system" << std::endl;
+    std::cerr << "Running on an unknown or unsupported operating system" << std::endl;
 #endif
 
 

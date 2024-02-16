@@ -277,6 +277,9 @@ documents/doxygen/latex/
 *.png
 *.tex
 
+src/boost/
+src/series1/
+
 temporario/
 tools/my_scripts/data/
 tools/my_scripts/output/

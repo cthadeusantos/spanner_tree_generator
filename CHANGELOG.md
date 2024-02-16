@@ -1,4 +1,8 @@
 # Changes
+
+## 0.2.8 (2024/02/16)
+* Fixed the issue that caused the insertion of the message 'Running on Linux/Mac/Win' into the output file of the application, causing an error that halted the execution of the battery files.
+
 ## 0.2.7 (2024/01/28)
 * Now the code compile and running at MacOS
 * Added Makefile for OSX.

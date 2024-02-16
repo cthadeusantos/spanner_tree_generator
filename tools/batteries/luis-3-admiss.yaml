@@ -1,0 +1,311 @@
+---                               
+
+name: luis-3-admiss                  
+problem: tadmiss                   
+description: Running brute force parallel (adjacency list)
+exec: release/app_BF-ADJACENCY
+default_timelimit: 5400
+default_iterations: 1
+instance_list:
+- instance: new_grafos/graph_1.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_2.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_3.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_4.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_5.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_6.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_7.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_8.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_9.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_10.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_11.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_12.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_13.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_14.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_15.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_16.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_17.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_18.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_19.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_20.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_21.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_22.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_23.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_24.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_25.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_26.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_27.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_28.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_29.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_30.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_31.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_32.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_33.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_34.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_35.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_36.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_37.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_38.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_39.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_40.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_41.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_42.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_43.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_44.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_45.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_46.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_47.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_48.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_49.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_50.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_51.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_52.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_53.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_54.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_55.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_56.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_57.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_58.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_59.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_60.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_61.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_62.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_63.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_64.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_65.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_66.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_67.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_68.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_69.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_70.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_71.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_72.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_73.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_74.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_75.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_76.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_77.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_78.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_79.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_80.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_81.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_82.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_83.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_84.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_85.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_86.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_87.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_88.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_89.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_90.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_91.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_92.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_93.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_94.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_95.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_96.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_97.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_98.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_99.txt
+  args: -t 10 -s --edges
+
+- instance: new_grafos/graph_100.txt
+  args: -t 10 -s --edges
+
+
+...                               
