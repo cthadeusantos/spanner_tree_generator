@@ -82,6 +82,12 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
     #Receive a solution list. Should output the info for the result table. This info has to be in the same order as the header given above.
     @staticmethod
     def tadmissAddEntry(solution_list):
+        ####################
+        # Linha adicionada para evitar erro quando
+        # não existir dado no arquivo N.out.txt , aonde N é um inteiro
+        if len(solution_list) == 0:
+            return [str(0) + ' (' + str(0) + '/' + str(0) + ') [' + str(0) + ']', str(0) + ' (' + str(0) + '/' + str(0) + ') [' + str(0) + ']', str(0), str(0), str(0), str(0) ]
+        ####################
         running_time = []
         stretch_index = []
         n_vertex = int(solution_list[0]["num_vertices"])
