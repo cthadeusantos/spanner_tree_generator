@@ -278,7 +278,6 @@ documents/doxygen/latex/
 *.tex
 
 src/boost/
-src/series1/
 
 temporario/
 tools/my_scripts/data/
