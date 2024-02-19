@@ -5,7 +5,7 @@ sem_t semaforo;
 int index_global;
 std::mutex mtx;
 
-int global_total_arv = 0;
+unsigned long long int global_total_arv = 0;
 int seed = 0;
 int global_output = 1;
 int matrix_t=0;

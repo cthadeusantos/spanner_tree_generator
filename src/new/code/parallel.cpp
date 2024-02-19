@@ -23,7 +23,7 @@
 //#define INDUCED_CYCLE_SYZE_START 5
 
 extern sem_t semaforo;
-extern int global_total_arv;
+extern unsigned long long int global_total_arv;
 extern std::mutex mtx;
 extern int num_threads;
 extern int used_threads;

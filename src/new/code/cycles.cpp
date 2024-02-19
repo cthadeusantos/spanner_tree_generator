@@ -24,7 +24,7 @@
 //extern sem_t semaforo;
 extern std::mutex mtx;
 
-extern int global_total_arv;
+extern unsigned long long int global_total_arv;
 extern int num_threads;
 extern int used_threads;
 extern int global_induced_cycle;
@@ -150,7 +150,7 @@ void find_index_induced_cycle_V2(int id,  Valid_Edges_r &edges_to_threads , Grap
        
     find_index_cycle_V2(id, root, edges_to_threads, G1, graph, task);
 
-    int arvores;
+    unsigned long long int arvores;
     arvores = G1.get_total_tree();
     int index_local = G1.get_stretch_index();
 

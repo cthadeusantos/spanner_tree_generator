@@ -490,7 +490,7 @@ void Graph::sum_trees(int value)
     this->total_tree = this->total_tree + value;
 }
 
-int Graph::get_total_tree()
+unsigned long long int Graph::get_total_tree()
 {
     return this->total_tree;
 }

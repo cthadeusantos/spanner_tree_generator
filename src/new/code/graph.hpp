@@ -16,7 +16,7 @@ private:
     int qtdVertices;
     int qtdArestas;
     
-    int total_tree = 0; // by Thadeu
+    unsigned long long int total_tree = 0; // by Thadeu
     bool signal = true;
     int girth = 0;
 
@@ -86,7 +86,7 @@ public:
     void sum_trees(int value);
     void reset_trees();
     void reset_trees(int value);
-    int get_total_tree();
+    unsigned long long int get_total_tree();
 
     void set_girth(int value);
     int get_girth();
