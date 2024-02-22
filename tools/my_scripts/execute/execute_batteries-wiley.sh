@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIRECTORY="batteries"
-PATTERN="grafo15-41-bf-*.yaml"
+PATTERN="grafo15-wiley-bf-*.yaml"
 
 for file in "$DIRECTORY"/$PATTERN; do
     if [[ -f $file ]]; then
@@ -10,3 +10,4 @@ for file in "$DIRECTORY"/$PATTERN; do
         echo "O arquivo $file não existe ou não é um arquivo regular."
     fi
 done
+
