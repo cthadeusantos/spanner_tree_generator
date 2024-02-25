@@ -170,10 +170,13 @@ The following bullets denote the pre-requisites to develop the project.
 After compiling, you will find the executables in the **build/release/** directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
 
 The brute force executables are as follows:
-* **app_BF-SEQ**, which runs sequentially using a single thread;
-* **app_BF-EDGES**, which executes in parallel(multiple threads) using an edge list method;
-* **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list method;
-* **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method.
+  
+| Executable | Brute force description |
+| -------- | --- |
+| **app_BF-SEQ** | Runs sequentially using a single thread |
+| **app_BF-EDGES** | Executes in parallel(multiple threads) using an edge list method |
+| **app_BF-ADJACENCY** | Operates in parallel(multiple threads) using an adjacency list method |
+| **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method |
 
 The heuristics executables are as follows:
 
@@ -357,7 +360,9 @@ Where OPTION can be one of the following:
 
 Be aware that the code for Linux and WSL contains lines that are only used in DEBUG mode in Visual Studio Code. Unfortunately, these lines cannot be disabled at runtime on MacOS. If your objective is to obtain the graph stretch index, this is not a problem for small graphs. However, if you intend to measure runtime, it may pose a challenge. To avoid the execution of these lines, locate those starting with DEBUG and comment them out in your code.
 
-Notably, when compiling with Makefile_OSX (not makefile), DEBUG features for use in VSCODE will not be implemented for MacOS. Debugging on this platform may be limited. If you are experienced with makefiles and would like to assist in adapting the Linux makefile for MacOS and clang++, please contact us via email.
+Notably, when compiling with Makefile_OSX (not makefile), DEBUG features for use in VSCODE will not be implemented for MacOS. Debugging on this platform may be limited.
+
+If you are experienced with makefiles and would like to assist in adapting the Linux makefile for MacOS and clang++, please contact us via email.
 
 ### 5.2. Instructions for Running on MacOS
 
