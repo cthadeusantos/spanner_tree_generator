@@ -259,48 +259,59 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
             {
                 if (j == nvertices - 1 - num_fixed_edges - 1 ) // Find spanner tree
                 {
+                        int vertex;
                         for (auto edge : edges_to_threads.immutable_edges_list[0])
                         {
                            tree.add_aresta(edge.first, edge.second);
+                           vertex = edge.second;
                         }
-                        bool has_cycle_var = false;
-                        for (auto vertex : immutable_vertices_set)
-                        {
-                            if (OpBasic::cyclic(tree, vertex)){
-                                has_cycle_var = true;
-                                break;
-                            }
+                        bool disconnected = false;
+                        if (OpBasic::canReachAllVertices(tree, vertex)){
+                            disconnected = true;
+                            break;
                         }
-                        if ( !has_cycle_var)
-                        {
-                            int f = 1;
-
-                            if (!global_noindex)
-                            { // LF request - only sum tree
-                                f = Stretch::find_factor(graph, tree);
-                            }
-                            G1.add_tree();  // sum total trees
-
-                            // if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
-                            // {                                       // REMOVER - APENAS PARA TESTE
-                            //     str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
-                            //     str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
-                            //     save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                            // }                                       // REMOVER - APENAS PARA TESTE
-
-                            if (f < index_local)    // Compute stretch factor & stretch index
+                        if (!disconnected){
+                            bool has_cycle_var = false;
+                            for (auto vertex : immutable_vertices_set)
                             {
-                                index_local = f;
-                                tree_local = tree;
-                                if (index_local == lower_limit)
-                                {
-                                    mtx.lock();
-                                    graph.set_signal();
-                                    mtx.unlock();
+                                if (OpBasic::cyclic(tree, vertex)){
+                                    has_cycle_var = true;
                                     break;
+                                }
+
+                            }
+                            if ( !has_cycle_var)
+                            {
+                                int f = 1;
+
+                                if (!global_noindex)
+                                { // LF request - only sum tree
+                                    f = Stretch::find_factor(graph, tree);
+                                }
+                                G1.add_tree();  // sum total trees
+
+                                // if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+                                // {                                       // REMOVER - APENAS PARA TESTE
+                                //     str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                                //     str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                                //     save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                                // }                                       // REMOVER - APENAS PARA TESTE
+
+                                if (f < index_local)    // Compute stretch factor & stretch index
+                                {
+                                    index_local = f;
+                                    tree_local = tree;
+                                    if (index_local == lower_limit)
+                                    {
+                                        mtx.lock();
+                                        graph.set_signal();
+                                        mtx.unlock();
+                                        break;
+                                    }
                                 }
                             }
                         }
+                        
                         
                         for (auto edge : edges_to_threads.immutable_edges_list[0])
                         {

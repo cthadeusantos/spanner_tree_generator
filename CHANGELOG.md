@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.11 (2024/02/25)
+* Reintroduced the check for disconnected graph in the induced cycle algorithm, which at some point was removed for testing purposes. (a major fix)
+* Introduced a new method for closeness centrality, as the old one was returning invalid values when it was modified at some point in the past. (a major fix)
+
 ## 0.2.10 (2024/02/18)
 * The variable total_trees in Graph class has been changed from signed int 32 bits to unsigned long long int 64 bits, fixing the issue of the final sum of total trees being negative in some cases.
 

@@ -91,6 +91,10 @@ public:
     static int eccentricity(Graph &graph, int vertex);
 
     static bool has_cycle(Graph &graph, int vertex);
+
+    static void dfs(Graph &graph, int vertex, std::vector<bool>& visited);
+    static bool canReachAllVertices(Graph &graph, int startVertex);
+
 };
 
 #endif
