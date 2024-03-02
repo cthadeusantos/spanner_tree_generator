@@ -39,7 +39,10 @@ Please note that the C++ code from a previous version (0.1.x series) will not be
 Furthermore, please be aware that the code from the previous version will no longer receive updates or bug fixes. The previous version's codebase will be archived and stored at a designated location for reference purposes. It is important to transition to the current version and utilize its updated features, enhancements, and ongoing support for a more efficient and stable development environment.
 
 > [!NOTE]
-> We are pleased to announce that, starting from version 0.2.7, the code is now available for compilation and alpha-stage execution on the MacOS operating system. We are committed to expanding compatibility and accessibility of our software, enabling MacOS users to also enjoy the latest features and functionalities. We encourage users interested in this platform to refer to the specific section for [MacOS](#5-macos-user-information-key-details-and-guidelines) in the README.md for detailed information on requirements, configurations, and potential considerations while running the software in this environment. We appreciate all users and look forward to providing an optimized experience for everyone.
+> 1. We are pleased to announce that, starting from version 0.2.7, the code is now available for compilation and alpha-stage execution on the MacOS operating system. We are committed to expanding compatibility and accessibility of our software, enabling MacOS users to also enjoy the latest features and functionalities. We encourage users interested in this platform to refer to the specific section for [MacOS](#5-macos-user-information-key-details-and-guidelines) in the README.md for detailed information on requirements, configurations, and potential considerations while running the software in this environment. We appreciate all users and look forward to providing an optimized experience for everyone.
+> 2. In March 2024, we will begin the process of refactoring and migrating the current codebase to C++23. Expect many changes; you can track them in the series1 branch, and the use of the Boost library will be mandatory..
+> 3. In April 2024, we aim to test the code from series 0.2.X on the latest version of GhostBSD, expanding support to more operating systems.
+> 4. In May 2024, we plan to test the code from series 0.2.X on Windows 11.
 
 > [!WARNING]
 > <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
@@ -88,7 +91,7 @@ We apologize for any confusion and appreciate your understanding.
 
 ### 2.3. Download the code
 
-[Last stable version 0.2.7](https://github.com/cthadeusantos/spanner_tree_generator)
+[Last stable version](https://github.com/cthadeusantos/spanner_tree_generator/releases/latest)
 
 Previous version can be found here.
 
