@@ -28,7 +28,7 @@
 
 The $t$-admissibility is a min-max problem that concerns to determine whether a graph $G$ contains a spanning tree $T$ in which the distance between any two adjacent vertices of $G$ is at most $t$ in $T$. The stretch index of $G$, $\sigma(G)$, is the smallest $t$ for which $G$ is $t$-admissible.
 
-This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
+This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ). We maintain the code and the results attained by the group in this repository.
 
 ## 1. Preliminary Notes for 0.2.x series and higher
 
@@ -173,29 +173,38 @@ The following bullets denote the pre-requisites to develop the project.
 After compiling, you will find the executables in the **build/release/** directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
 
 The brute force executables are as follows:
-  
-| Executable | Brute force description |
-| -------- | --- |
-| **app_BF-SEQ** | Runs sequentially using a single thread |
-| **app_BF-EDGES** | Executes in parallel(multiple threads) using an edge list method |
-| **app_BF-ADJACENCY** | Operates in parallel(multiple threads) using an adjacency list method |
-| **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method |
+
+<sub>
+
+| Label | Executable | Brute force description |
+| ----- | -------- | --- |
+| SEQUENTIAL | **app_BF-SEQ** | Runs sequentially using a single thread |
+| EDGES | **app_BF-EDGES** | Executes in parallel(multiple threads) using an edge list method |
+| ADJACENCY | **app_BF-ADJACENCY** | Operates in parallel(multiple threads) using an adjacency list method |
+| CYCLES | **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method |
+
+</sub>
 
 The heuristics executables are as follows:
 
-* **app_HR-H1v1**, **app_HR-H1v2**, **app_HR-H1v3** & **app_HR-H1v4** Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon. 
+<sub>
 
-* **app_HR-H2v1** & **app_HR-H2v2**, Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**);
+| Label | Executable | Description |
+| ----- | -------- | --- |
+|**H1v1**<br>Global MaxDegree Heuristic v1<br>**Heuristic 1**  |   **app_HR-H1v1**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H1v2**<br>Global MaxDegree Heuristic v2<br>**Greedy Coverage Heuristic plus**   |   **app_HR-H1v2**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H1v3**<br>Tiebreaker Free Greedy Coverage Heuristic   |   **app_HR-H1v3**       |   Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon  |
+|**H1v4**<br>Greedy Edge Common Coverage Heuristic   |   **app_HR-H1v4**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H2v1**<br>Local MaxDegree Heuristic v1<br>**Heuristic 2**   |   **app_HR-H2v1**       |   Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**)  |
+|**H2v2**<br>Local MaxDegree Heuristic v2<br>**Local Centrality-Driven Growth Heuristic**   |   **app_HR-H2v2**       |  Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**)  |
+|**H3v1**<br>Adaptative Global MaxDegree Heuristic v1<br>**Degree Centrality-Driven Hybrid Coverage Heuristic**   |   **app_HR-H3v1**       |   Adaptive Global MaxDegree Heuristic is a combination of Global MaxDegree Heuristic and Local MaxDegree Heuristic. In the initial version (**v1**) of Adaptative Global MaxDegree Heuristic, the vertices are sorted based on their degree centrality  |
+|**H3v2**<br>Adaptative Global MaxDegree Heuristic v2<br>**Closeness Centrality-Driven Hybrid Coverage Heuristic**   |   **app_HR-H3v2**       |   Adaptative Global MaxDegree Heuristic **v2** is a slight modification of **v1**. In this version, when vertices has same degree, we consider additional measures such as closeness centrality and leverage centrality to determine the most appropriate vertex for selection  |
+|**H4v1**<br>Centrality Heuristic MaxDegree<br>**Higher-Degree Centrality Heuristic**   |   **app_HR-H4v1**       |  That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure   |
+|**H4v2r1**<br>Traveller Centrality Heuristic<br>**Traveler Centrality Heuristic**   |   **app_HR-H4v2r1**       |  The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others   |
+| **H4v2r3**<br>Algebraic Centrality Heuristic<br>**Speedy Algebraic Centrality Heuristic** |   **app_HR-H4v2r3**   | The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality |
 
-* **app_HR-H3v1**, Adaptive Global MaxDegree Heuristic is a combination of Global MaxDegree Heuristic and Local MaxDegree Heuristic. In the initial version (**v1**) of Adaptative Global MaxDegree Heuristic, the vertices are sorted based on their degree centrality;
+</sub>
 
-* **app_HR-H3v2**, Adaptative Global MaxDegree Heuristic **v2** is a slight modification of **v1**. In this version, when vertices has same degree, we consider additional measures such as closeness centrality and leverage centrality to determine the most appropriate vertex for selection;
-
-* **app_HR-H4v1**, That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure;
-
-* **app_HR-H4v2r1**, The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others;
-
-* **app_HR-H4v2r3**, The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality;
 
 #### How to run (with options):
 
@@ -222,7 +231,7 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
     Threads:
       -t X  | --thread X          Define the numbers of threads. X is the number of threads
 
-    Method for calculating closeness (SOON, heuristic 4 will be only one):
+    Method for calculating closeness:
       --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
       --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
@@ -262,6 +271,7 @@ The project is structured as follows:
 * `src/` -- Contain the source code of the project. Detailed usage instruction, description, and run examples for each app can be found across the makefile, source code iteself, and in the source documentation.
   * `old/` -- Is the old source code used in the first version of this project.
   * `new/` -- The current source code being implemented for this version.
+  * `series1/` -- This directory contains the source code in development for the future version 1 of the Spanner Tree Generator.
 * `build/` -- Store temporary build files and any binary application generated by the compiler during code compilation.
 * `tools/`  -- Internal tools used in this project. Usually, a script in python that helps visualizing instances or manipulation them. Their usage is documented inside the tool script itself. 
 * `instances/` -- Contain the instance data set. You may find information about the instance format inside the `doc/` folder. It is recommended to keep each instance with unique name across the project. Internal tools or a main app itself may use these names to map solutions.
