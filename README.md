@@ -184,20 +184,14 @@ After compiling, you will find the executables in the **build/release/** directo
 
 The brute force executables are as follows:
 
-<sub>
-
 | Label | Executable | Brute force description |
 | ----- | -------- | --- |
 | SEQUENTIAL | **app_BF-SEQ** | Runs sequentially using a single thread |
 | EDGES | **app_BF-EDGES** | Executes in parallel(multiple threads) using an edge list method |
 | ADJACENCY | **app_BF-ADJACENCY** | Operates in parallel(multiple threads) using an adjacency list method |
-| CYCLES | **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an edge list method and the induced cycle method |
-
-</sub>
-
+| CYCLES | **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an adapted edge list method and the new induced cycle method |
+	
 The heuristics executables are as follows:
-
-<sub>
 
 | Label | Executable | Description |
 | ----- | -------- | --- |
@@ -212,8 +206,6 @@ The heuristics executables are as follows:
 |**H4v1**<br>Centrality Heuristic MaxDegree<br>**Higher-Degree Centrality Heuristic**   |   **app_HR-H4v1**       |  That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure   |
 |**H4v2r1**<br>Traveller Centrality Heuristic<br>**Traveler Centrality Heuristic**   |   **app_HR-H4v2r1**       |  The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others   |
 | **H4v2r3**<br>Algebraic Centrality Heuristic<br>**Speedy Algebraic Centrality Heuristic** |   **app_HR-H4v2r3**   | The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality |
-
-</sub>
 
 
 #### How to run (with options):
@@ -241,7 +233,7 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
     Threads:
       -t X  | --thread X          Define the numbers of threads. X is the number of threads
 
-    Method for calculating closeness:
+    Method for calculating closeness: (NOT USED YET!)
       --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
       --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
