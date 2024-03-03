@@ -962,6 +962,11 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     int n = graph.getQtdVertices();
     Graph tree(n);
 
+    // ************ REMOVER WHEN JOIN HEURISTICS ****
+    // ***** TEMPORALLY ****
+    global_closeness = 2;
+    // ***********************
+
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline
     std::vector <float> closeness_list; // newline
