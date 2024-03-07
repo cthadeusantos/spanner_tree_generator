@@ -43,7 +43,7 @@ Furthermore, please be aware that the code from the previous version will no lon
 > 4. In May 2024, we plan to test the code from series 0.2.X on Windows 11.
 
 > [!WARNING]
-> <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
+> <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++23 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
 
 #### New versioning system
@@ -390,7 +390,7 @@ Link for [TO DO webpage](https://github.com/cthadeusantos/spanner_tree_generator
 
 ## 9. Authorship Information
 
-We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
+We're a group of researchers mainly from **Instituto de Computação/Universidade Federal Fluminense (IC/UFF)**(Institute of Computing/Federal Fluminense University) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
 
 **TEAM**
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
@@ -406,7 +406,7 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro
 
 **ACKNOWLEDGMENT TO LABIC/UFF HARDWARE SUPPORT**
-* We would like to extend our sincere gratitude to the **[LABIC/UFF](https://www.facebook.com/satoruff/)**, at the [Institute of Computing](https://www.ic.uff.br/) of the Federal Fluminense University, for generously providing their hardware resources for executing all the tests conducted for this experiment. Their hardware support has been instrumental in the success of our research. Their hardware support has been ensuring the success of our research.
+* We would like to extend our sincere gratitude to the **[LABIC/UFF](https://www.facebook.com/satoruff/)**, at the **[Institute of Computing](https://www.ic.uff.br/)** of the **Federal Fluminense University**, for generously providing their hardware resources for executing all the tests conducted for this experiment. Their hardware support has been ensuring the success of our research.
 
 **LICENSE**
 * This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
