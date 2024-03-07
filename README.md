@@ -415,4 +415,8 @@ We're a group of researchers mainly from Instituto de Computação/Universidade 
 * Conselho Nacional de Desenvolvimento Científico e Tecnológico
 * Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro
 
-This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
+**ACKNOWLEDGMENT TO LABIC/UFF HARDWARE SUPPORT**
+* We would like to extend our sincere gratitude to the **[LABIC/UFF](https://www.facebook.com/satoruff/)**, at the [Institute of Computing](https://www.ic.uff.br/) of the Federal Fluminense University, for generously providing their hardware resources for executing all the tests conducted for this experiment. Their hardware support has been instrumental in the success of our research. Their hardware support has been ensuring the success of our research.
+
+**LICENSE**
+* This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
