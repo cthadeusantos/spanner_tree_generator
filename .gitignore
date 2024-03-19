@@ -286,6 +286,8 @@ tools/my_scripts/output/
 __pycache__
 .idea
 no_commit/
+
+src/series1
 src/old/grafos
 src/old/grafos_barabasi
 src/old/grafos_bi_partido
