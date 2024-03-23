@@ -67,21 +67,22 @@ From version 0.2.4 onwards, we are adopting a new versioning system. We have dis
 * Past published work:
   * [2022 pre-print](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/IPL_HeuristicsADM_V3%20(2).pdf)
   * [2022 Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
-  * [The paper presented at the Brazilian Operational Research Symposium 2023](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/galoa-proceedings--sbpo-2023--174829.pdf) with a new set of heuristics and the use of centrality measures
-  * If you wish to visually understand heuristics 1, 2, 3, & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Presentation-SBPO2023v5-ENG.pdf) or [PORTUGUESE](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Apresentacao-SBPO2023v5-PT_BR.pdf)
+  * [The paper presented at the Brazilian Operational Research Symposium (SBPO) 2023](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/galoa-proceedings--sbpo-2023--174829.pdf) with a new set of heuristics and the use of centrality measures. If you prefer to download directly from the SBPO Website, [click here (ENGLISH)](https://proceedings.science/sbpo/sbpo-2023/trabalhos/heuristics-for-t-admissibility-with-complex-network-approach?lang=pt-br).
+  * If you wish to visually understand heuristics 1, 2, 3 & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Presentation-SBPO2023v5-ENG.pdf) or [PORTUGUESE](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Apresentacao-SBPO2023v5-PT_BR.pdf)
   * Coming soon, the paper submitted to Wiley featuring the induced cycle method and enhancements yielding up to a 70% improvement in the sequential method, adjacency list and edge list.
+  * Coming soon, link to download Carlos Thadeu's Master’s Thesis (PORTUGUESE) from IC/UFF repository.
 
 ### 2.2. The Errata section
 
 Please note the following correction:
 
-<b>In 2022 Base paper:</b>
+<b>In 2022 Base paper (SBPO):</b>
 
 * At page 2, Algorithm 1, line 16, where it reads '_last_neighbor[i] = -1_', please read as '_last_neighbor[v] = -1_'
 * At page 4, example 3, where it reads '_V=[4,7,1,3,0,2,5,6]_', please read '_V=[4,7,1,3,8,0,2,5,6]_'
 
 
-<b>In 2023 paper:</b>
+<b>In 2023 paper (SBPO):</b>
 
 * At page 6, Equation 7, where it reads '_f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)_', please read as '_f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)_'
 
