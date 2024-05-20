@@ -12,7 +12,7 @@
 
 #include "Debug.h"
 
-#include "ctfunctions.cpp"
+#include "../my_libs/ctfunctions2.hpp"
 
 
 #include "code/frontier.hpp"
@@ -22,11 +22,11 @@
 #include "code/opBasic.hpp"
 
 ///Basic debugging controller. See Debug.h for details.
-#ifdef MN_BF_SEQ_DEBUG
-	#define DEBUG
-#else
-	#define DEBUG while(false)
-#endif
+// #ifdef MN_BF_SEQ_DEBUG
+// 	#define DEBUG
+// #else
+// 	#define DEBUG while(false)
+// #endif
 
 /**
  * @addtogroup bfseqparam
@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 	std::string dirname;
 	std::string auxiliary;
 	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
-	std::string DIR_BASE = get_current_dir_name();
+	std::string DIR_BASE = get_current_dir();
 	//std::string DIR_BASE = argv[0];
 	std::string DIR_INSTANCES = DIR_BASE + "instances/";
 	std::string DIR_RESULTS = DIR_BASE + "results/"; 

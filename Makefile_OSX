@@ -1,0 +1,139 @@
+#ifdef MAC_ARM
+	-target arm64-apple-macos -march=native
+#endif
+
+#ifdef MAC_INTEL
+    -march=native
+#endif
+
+#ifdef LINUX
+    -march=native
+#endif
+
+# Detecta o nome do sistema operacional
+UNAME_S := $(shell uname -s)
+
+# Configuração de flags do compilador com base no sistema operacional
+ifeq ($(UNAME_S), Darwin)	# Configuração específica para macOS
+# Detecta a arquitetura da CPU
+	CPU_ARCH := $(shell uname -m)
+
+# Configuração de flags do compilador com base na arquitetura
+	ifeq ($(CPU_ARCH), x86_64)
+		CXXFLAGS += -DMAC_INTEL
+	endif
+
+	ifeq ($(CPU_ARCH), arm64)
+		CXXFLAGS += -DMAC_ARM
+	endif
+else
+    ifeq ($(UNAME_S), Linux)
+        # Configuração específica para Linux
+        CXXFLAGS += -DLINUX
+    endif
+endif
+
+CODE_DIR=src/new
+CODE_HEURISTICS=${CODE_DIR}/heuristic
+CODE_TOOLS=${CODE_DIR}/tools
+CODE_MYLIBS=${CODE_DIR}/my_libs
+CODE_CODE=${CODE_DIR}/code
+CODE_BRUTEFORCE=${CODE_DIR}/brute-force
+OUTPUT_OSX=build/release
+
+CXXFLAGS += -std=c++11 -pthread -g -O3 -w 
+
+clean:
+	${RM} -r ${OUTPUT_OSX}/*
+
+sequential:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf.cpp  -o ${OUTPUT_OSX}/app_BF-SEQ
+
+adjacency:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_adjacency.cpp  -o ${OUTPUT_OSX}/app_BF-ADJACENCY
+
+cycles:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_cycles.cpp  -o ${OUTPUT_OSX}/app_BF-CYCLES
+
+edges:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_edges.cpp  -o ${OUTPUT_OSX}/app_BF-EDGES
+
+H1v1:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v1.cpp  -o ${OUTPUT_OSX}/app_HR-H1v1
+
+H1v2:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v2.cpp  -o ${OUTPUT_OSX}/app_HR-H1v2
+
+H2v1:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v1.cpp  -o ${OUTPUT_OSX}/app_HR-H2v1
+
+H2v2:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v2.cpp  -o ${OUTPUT_OSX}/app_HR-H2v2
+
+H3v1:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v1.cpp  -o ${OUTPUT_OSX}/app_HR-H3v1
+
+H3v2:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v2.cpp  -o ${OUTPUT_OSX}/app_HR-H3v2
+
+H4v1:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v1.cpp  -o ${OUTPUT_OSX}/app_HR-H4v1
+
+H4v2r1:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r1.cpp  -o ${OUTPUT_OSX}/app_H4v2r1
+
+H4v2r3:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r3.cpp  -o ${OUTPUT_OSX}/app_H4v2r3
+
+all_bruteforce:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf.cpp  -o ${OUTPUT_OSX}/app_BF-SEQ
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_adjacency.cpp  -o ${OUTPUT_OSX}/app_BF-ADJACENCY
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_cycles.cpp  -o ${OUTPUT_OSX}/app_BF-CYCLES
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_edges.cpp  -o ${OUTPUT_OSX}/app_BF-EDGES
+
+all_heuristics:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v1.cpp  -o ${OUTPUT_OSX}/app_HR-H1v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v2.cpp  -o ${OUTPUT_OSX}/app_HR-H1v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v1.cpp  -o ${OUTPUT_OSX}/app_HR-H2v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v2.cpp  -o ${OUTPUT_OSX}/app_HR-H2v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v1.cpp  -o ${OUTPUT_OSX}/app_HR-H3v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v2.cpp  -o ${OUTPUT_OSX}/app_HR-H3v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v1.cpp  -o ${OUTPUT_OSX}/app_HR-H4v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r1.cpp  -o ${OUTPUT_OSX}/app_H4v2r1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r3.cpp  -o ${OUTPUT_OSX}/app_H4v2r3
+
+generate:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/main-create.cpp  -o ${OUTPUT_OSX}/app_GENERATE
+
+all:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf.cpp  -o ${OUTPUT_OSX}/app_BF-SEQ
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_adjacency.cpp  -o ${OUTPUT_OSX}/app_BF-ADJACENCY
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_cycles.cpp  -o ${OUTPUT_OSX}/app_BF-CYCLES
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf_edges.cpp  -o ${OUTPUT_OSX}/app_BF-EDGES
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v1.cpp  -o ${OUTPUT_OSX}/app_HR-H1v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H1v2.cpp  -o ${OUTPUT_OSX}/app_HR-H1v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v1.cpp  -o ${OUTPUT_OSX}/app_HR-H2v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H2v2.cpp  -o ${OUTPUT_OSX}/app_HR-H2v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v1.cpp  -o ${OUTPUT_OSX}/app_HR-H3v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H3v2.cpp  -o ${OUTPUT_OSX}/app_HR-H3v2
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v1.cpp  -o ${OUTPUT_OSX}/app_HR-H4v1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r1.cpp  -o ${OUTPUT_OSX}/app_H4v2r1
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r3.cpp  -o ${OUTPUT_OSX}/app_H4v2r3
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/main-create.cpp  -o ${OUTPUT_OSX}/app_GENERATE

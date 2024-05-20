@@ -28,18 +28,18 @@ void Parameters::usage(const char *app_name){
 	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << global_induced_cycle << "]" << std::endl  << std::endl ;
 	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency matrix)[DEFAULT]" << std::endl  << std::endl;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
-	std::cout << "\t-v	 	| --version	Which version is this app." << std::endl  << std::endl ;
-	std::cout << "\t     	| --nolb	Not calculate lower bound (only heuristics)" << std::endl  << std::endl ;
+	std::cout << "\t-v	| --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t     	| --nolb	Not calculate lower bound" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
-	std::cout << "\t     	| --alg 	Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
-	std::cout << "\t     	| --tra 	Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
+	std::cout << "\t     	| --alg 	<< TOO SOON! >> Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
+	std::cout << "\t     	| --tra 	<< TOO SOON! >> Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
 
-	std::cout << "Options to show info:" << std::endl;
-	std::cout << "\t-f 	| --file \t\tAt file. [current " << global_output << "]" << std::endl;
-	std::cout << "\t-s 	| --screen \t\tAt screen. [current " << global_output << "]" << std::endl;
-	std::cout << "\t-d 	| --debug \t\tAt screen only debug mode. [current " << global_output << "]" << std::endl;
-	std::cout << "\t-b 	| --best \t\tShow the best tree found." << std::endl;
-	std::cout << "You can combine summary, expo, debug and show" << std::endl << std::endl;
+	std::cout << "Options to display information (you MUST choose file, screen, or debug):" << std::endl;
+	std::cout << "\t-f 	| --file \t\tOutput at file. [not work yet]" << std::endl;
+	std::cout << "\t-s 	| --screen \t\tOutput At screen." << std::endl;
+	std::cout << "\t-d 	| --debug \t\tOutput At screen only debug mode." << std::endl << std::endl;
+	std::cout << "\t-b 	| --best \t\tShow the best tree found if you need. Try to use only trees with few edges!" << std::endl;
+	std::cout << "You can combine screen, file, debug and best" << std::endl << std::endl;
 }
 
 /**
@@ -48,7 +48,7 @@ void Parameters::usage(const char *app_name){
  * @details This is a simple auxiliary function that will parse the args from the command line. You may see the entire specification at the terminal using the -help argument.
  */
 void Parameters::parseArgs(int argc, char** argv){
-    if (argc <= 1){
+    if (argc < 1){
 		std::cout << "You must have parameters, type -h to help!" << std::endl;
         exit(-1);
     }
@@ -85,15 +85,18 @@ void Parameters::parseArgs(int argc, char** argv){
 			DEBUG std::cerr << "Changed read file type to: " << matrix_t << '\n';
 		}
 		else if(arg == "-s" || arg == "--screen"){
-			global_output = global_output + 1;
+			//global_output = global_output + 1;
+			global_output = 1;
 			DEBUG std::cerr << "Changed global_output type to: " << global_output << '\n';
 		}
 		else if(arg == "-f" || arg == "--file"){
-			global_output = global_output + 2;
+			//global_output = global_output + 2;
+			global_output = 2;
 			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}
 		else if(arg == "-d" || arg == "--debug"){
-			global_output = global_output + 64;
+			//global_output = global_output + 64;
+			global_output = 64;
 			DEBUG std::cerr << "Changed output type to: " << global_output << '\n';
 		}
 		else if(arg == "-b" || arg == "--best"){

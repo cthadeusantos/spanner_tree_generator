@@ -1,0 +1,36 @@
+This is a test battery for tadmiss ran at 03-10-2023
+Test description: Running heuristic H1v3
+Computational environment:  11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz with 19 GB of RAM running in Current operational system information: posix.uname_result(sysname='Linux', nodename='eriky-Aspire-A514-54', release='6.2.0-33-generic', version='#33~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  7 10:33:52 UTC 2', machine='x86_64')
+Original binary file name: app_HR-H1v3
+Default arguments given: " "
+Default number of independent runs: 1 -- Default timelimit in seconds for each run: 1200 -- Default starting seed: 0
+Amount of instances in this test battery: 10
+Details about each failed run, overriden arguments, or repeated instances should be seen in the respective log file. You may also use the original json archived here for this same purpose.
+
++--------------------------------------------+---------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+|               Instance Name                |                 Subdir                | #Successes/#TotalRuns | Avg running time (s) (MIN/MAX) [std_dev] | Avg stretch index (MIN/MAX) [std_dev] | #Vertex | #Edges | Lower Bound |
++--------------------------------------------+---------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+| !+grafos_erdos/ger_200_50__200_10037_0.txt | grafos_erdos/ger_200_50__200_10037_0/ |          1/1          |            3.1 (3.1/3.1) [0]             |              5 (5/5) [0]              |   200   | 10037  |      2      |
+| !+grafos_erdos/ger_200_50__200_9976_1.txt  |  grafos_erdos/ger_200_50__200_9976_1/ |          1/1          |            3.1 (3.1/3.1) [0]             |              5 (5/5) [0]              |   200   |  9976  |      2      |
+| !+grafos_erdos/ger_200_50__200_9833_2.txt  |  grafos_erdos/ger_200_50__200_9833_2/ |          1/1          |            3.0 (3.0/3.0) [0]             |              4 (4/4) [0]              |   200   |  9833  |      2      |
+| !+grafos_erdos/ger_200_50__200_9840_3.txt  |  grafos_erdos/ger_200_50__200_9840_3/ |          1/1          |            3.2 (3.2/3.2) [0]             |              4 (4/4) [0]              |   200   |  9840  |      2      |
+| !+grafos_erdos/ger_200_50__200_9962_4.txt  |  grafos_erdos/ger_200_50__200_9962_4/ |          1/1          |            3.2 (3.2/3.2) [0]             |              5 (5/5) [0]              |   200   |  9962  |      2      |
+| !+grafos_erdos/ger_200_50__200_9959_5.txt  |  grafos_erdos/ger_200_50__200_9959_5/ |          1/1          |            3.2 (3.2/3.2) [0]             |              6 (6/6) [0]              |   200   |  9959  |      2      |
+| !+grafos_erdos/ger_200_50__200_10057_6.txt | grafos_erdos/ger_200_50__200_10057_6/ |          1/1          |            3.4 (3.4/3.4) [0]             |              6 (6/6) [0]              |   200   | 10057  |      2      |
+| !+grafos_erdos/ger_200_50__200_9898_7.txt  |  grafos_erdos/ger_200_50__200_9898_7/ |          1/1          |            3.2 (3.2/3.2) [0]             |              6 (6/6) [0]              |   200   |  9898  |      2      |
+| !+grafos_erdos/ger_200_50__200_10047_8.txt | grafos_erdos/ger_200_50__200_10047_8/ |          1/1          |            3.2 (3.2/3.2) [0]             |              5 (5/5) [0]              |   200   | 10047  |      2      |
+| !+grafos_erdos/ger_200_50__200_9848_9.txt  |  grafos_erdos/ger_200_50__200_9848_9/ |          1/1          |            3.2 (3.2/3.2) [0]             |              5 (5/5) [0]              |   200   |  9848  |      2      |
++--------------------------------------------+---------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+Legend:
+* -- signals that at least one run has an error.
++ -- signals that at least one solution was saved as new bks.
+! -- signals that the test battery used custom parameters to override defaults.
+# -- signals that the test battery was done with a instance that has appeared before in this summary.
+----------------
+
+Number of instances processed by this script: 10
+
+Number of instances reported as not found: 0
+
+Number of instances that has at least one run with error: 0
+

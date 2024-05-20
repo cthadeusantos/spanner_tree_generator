@@ -16,7 +16,7 @@ private:
     int qtdVertices;
     int qtdArestas;
     
-    int total_tree = 0; // by Thadeu
+    unsigned long long int total_tree = 0; // by Thadeu
     bool signal = true;
     int girth = 0;
 
@@ -73,7 +73,7 @@ public:
     std::vector<std::tuple<int, int> > best_tree;
     int get_num_edges();
     int get_num_vertices();
-    void set_best_tree(Graph graph);
+    void set_best_tree(Graph tree);
     std::vector<std::tuple<int, int> > get_best_tree();
     void add_vertices(int n);
     void show_best_tree();
@@ -86,7 +86,7 @@ public:
     void sum_trees(int value);
     void reset_trees();
     void reset_trees(int value);
-    int get_total_tree();
+    unsigned long long int get_total_tree();
 
     void set_girth(int value);
     int get_girth();

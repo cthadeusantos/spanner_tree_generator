@@ -36,12 +36,12 @@
 int main(int argc, char** argv){
 	//num_threads = 1;
 	//max_induced_cycles = 10;
-	if(argc < 2){
+	if(argc < 1){
 		Parameters::usage("--help");
 		exit(0);
 	}
 
-	std::string filename = get_filename();
+	std::string filename = get_filename_v2();
 	std::string run_name  = "";
 
 	DEBUG std::cerr << filename << std::endl;

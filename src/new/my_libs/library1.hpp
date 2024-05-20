@@ -10,6 +10,6 @@ std::vector<int> slicing(std::vector<int>& arr,int X, int Y);
 int adj_id(Graph& g, int v, int adj);
 int next(int a, int limite);
 //int find_factor(Graph& g, Graph& tree);
-void set_graph_final_parameters(int &index_local, int &global_total_arv, int &arv, Graph &tree_local, Graph &graph);
+void set_graph_final_parameters(int &index_local, unsigned long long int &global_total_arv, int &arv, Graph &tree_local, Graph &graph);
 void set_graph_final_parameters(int index_local, Graph &tree_local, Graph &graph);
 //int highest_degree_vertex(Graph& g);

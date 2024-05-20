@@ -3,7 +3,8 @@
 #include <tuple>
 #include <map>
 #include <algorithm>
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <limits.h>
 #include "../Debug.h"
 #include "heuristic.hpp"
 #include "graph.hpp"
@@ -622,10 +623,32 @@ void Heuristic::heuristica_3v1(Graph &graph)
             {
                 if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
-                tree.add_aresta(source, vertex);
-                connect = true;
+            } //else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+            //     tree.add_aresta(source, vertex);
+            //     connect = true;
+            // }
+            else {
+                if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                    tree.add_aresta(source, vertex);
+                    bool has_cycle_var = false;
+                    if (OpBasic::cyclic(tree, source)){
+                        has_cycle_var = true;
+                    }
+                    if (!has_cycle_var)
+                        if (OpBasic::cyclic(tree, vertex))
+                            has_cycle_var = true;
+                    if (has_cycle_var){
+                        tree.remove_aresta(source, vertex);
+                    }
+                    connect = true;
+                }
             }
+            if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+                break;
+            }
+        }
+        if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+            break;
         }
         if (!lista.empty()){
             int index = get_index(source, lista);
@@ -651,7 +674,7 @@ void Heuristic::heuristica_3v1(Graph &graph)
  */
 void Heuristic::heuristica_3v2(Graph &graph)
 {
-    Stretch stretch;
+    //Stretch stretch;
     Graph tree(graph.getQtdVertices());
     std::vector<int> lista_vertices_candidatos = graph.vertices_de_maior_grau();
 
@@ -665,6 +688,9 @@ void Heuristic::heuristica_3v2(Graph &graph)
   /*   std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
 
     source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness); */
+    
+    // Select which type closeness will be computed (ALGEBRAIC or TRAVERSE) 
+    // from arguments
     std::vector<float> vertices_closeness;
     if (global_closeness == 2) {
         vertices_closeness = Centrality::closeness_centrality_thread(graph);
@@ -707,19 +733,19 @@ void Heuristic::heuristica_3v2(Graph &graph)
     int index = get_index(source, lista);
     lista.erase(lista.begin()+index);
 
-        while(!lista.empty())
+    while(!lista.empty())
     {
         // Subtrai do grauos vertices dos vizinhos dos vertices que já estão na arvore
         for(int vertex : lista) 
         {
             int a=graph.grau(vertex);
             lista_relativa_vertice.push_back(vertex);
-            //if ((in(vertex, tree.my_connected_vertices()))){
+            if ((in(vertex, tree.my_connected_vertices()))){
                 int b=func_aux_h3(tree, graph, vertex);
                 lista_relativa_valor.push_back(a - b);
-            //} else {
-            //    lista_relativa_valor.push_back(a);
-            //}
+            } else {
+                lista_relativa_valor.push_back(a);
+            }
 
         }
 
@@ -747,6 +773,9 @@ void Heuristic::heuristica_3v2(Graph &graph)
                 break;
             }
         }
+        if (lista_vertices_candidatos.empty()){
+            break;
+        }
         //source = Centrality::tiebreaker(lista_vertices_candidatos, vertices_closeness, vertices_leverage);
         source=Centrality::tiebreaker(lista_vertices_candidatos, vertex_list, vertices_closeness, vertices_leverage);
         //source = lista_relativa_vertice[lista_relativa_vertice.size()-1];
@@ -760,10 +789,32 @@ void Heuristic::heuristica_3v2(Graph &graph)
             {
                 if (tree.possui_aresta(source, vertex)==false)
                     tree.add_aresta(source, vertex);
-            } else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
-                tree.add_aresta(source, vertex);
-                connect = true;
+            } //else if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                //tree.add_aresta(source, vertex);
+                //connect = true;
+            //}
+            else {
+                if (tree.grau(vertex) > 0 && connect == false && tree.possui_aresta(source, vertex)==false){
+                    tree.add_aresta(source, vertex);
+                    bool has_cycle_var = false;
+                    if (OpBasic::cyclic(tree, source)){
+                        has_cycle_var = true;
+                    }
+                    if (!has_cycle_var)
+                        if (OpBasic::cyclic(tree, vertex))
+                            has_cycle_var = true;
+                    if (has_cycle_var){
+                        tree.remove_aresta(source, vertex);
+                    }
+                    connect = true;
+                }
             }
+            if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+                break;
+            }
+        }
+        if (tree.get_num_edges() == tree.get_num_vertices() - 1){
+            break;
         }
         if (!lista.empty()){
             int index = get_index(source, lista);
@@ -775,8 +826,7 @@ void Heuristic::heuristica_3v2(Graph &graph)
         if (tree.get_num_edges() + 1 == graph.get_qty_vertex())
             lista.clear();
     }
-
-    int factor = stretch.find_factor(graph, tree);
+    int factor = Stretch::find_factor(graph, tree);
     graph.sum_trees(1);
     set_graph_final_parameters(factor, tree, graph);
 }
@@ -881,6 +931,11 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     int root = 0;
     int n = graph.getQtdVertices();
     Graph tree(n);
+
+    // ************ REMOVER WHEN JOIN HEURISTICS ****
+    // ***** TEMPORALLY ****
+    global_closeness = 2;
+    // ***********************
 
     std::queue <int> QUEUE1;
     std::vector <int> neighbor_list; // newline

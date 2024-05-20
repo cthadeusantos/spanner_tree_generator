@@ -1,4 +1,60 @@
 # Changes
+
+## 0.2.12 (2024/03/03)
+* Update README.md
+* Fixed in H4v2r1, in the final report, the incorrect information regarding CLOSENESS_(HEUR) used, where the correct one is **TRAVERSE**, it was reported as ALGEBRAIC.
+
+## 0.2.11 (2024/02/25)
+* Reintroduced the check for disconnected graph in the induced cycle algorithm, which at some point was removed for testing purposes. (a major fix)
+* Introduced a new method for closeness centrality, as the old one was returning invalid values when it was modified at some point in the past. (a major fix)
+
+## 0.2.10 (2024/02/18)
+* The variable total_trees in Graph class has been changed from signed int 32 bits to unsigned long long int 64 bits, fixing the issue of the final sum of total trees being negative in some cases.
+
+## 0.2.9 (2024/02/16)
+* Added help message after the warning 'No input redirection detected.'.
+* Comment line DEBUG std::cerr << "Running on Linux" << std::endl; in ctfunctions2.cpp which could insert the message into the output file in debug mode.
+* Comment line DEBUG std::cerr << "Running on macOS" << std::endl; in ctfunctions2.cpp which could insert the message into the output file in debug mode.
+* Added warning "I cannot read the input file on this operating system. Please contact the developers." if unsupported operating system detected.
+
+## 0.2.8 (2024/02/16)
+* Fixed the issue that caused the insertion of the message 'Running on Linux/Mac/Win' into the output file of the application, causing an error that halted the execution of the battery files.
+
+## 0.2.7 (2024/01/28)
+* Now the code compile and running at MacOS
+* Added Makefile for OSX.
+* Fixed segmentation fault, trace trap when running at MacOS.
+* Update split_filename_v2() and get_filename_v2() again for compatibility reasons between Linux and MacOS.
+* Replace (int)INFINITY to std::numeric_limits<int>::max() for compatibility reasons between Linux and MacOS.
+* Added the get_filename_V2() function to fix a segmentation fault issue on MacOS when reading an input file. (ctfunction2.cpp).
+* Added the split_filename_v2(). (ctfunction2.cpp)
+* All main files for brute force and heuristics have been adjusted to use get_filename_v2().
+* Replaced the INT_MAX constant in heuristics.cpp with std::numeric_limits<int>::max(), using #include <limits>.
+* Removed the non-standard header file stdc++.h for improved compatibility between Linux and MacOS (heuristics.cpp , graph.cpp, centrality.cpp, ctfunctions2.cpp).
+* Added header file include <functional>. (cycles.cpp).
+* Replaced get_current_dir_name() with get_current_dir() in main_create_graphs.cpp, correcting an error in the function name associated with DIR_BASE.
+* Added 3 new functions to validate parameters passed through input: isDataAvailable(), isInputRedirected(), and validateInputBeforeExecution().
+* Makefile_OSX updated.
+* README.md updated.
+* Minor fixes.
+* Minor adjusts.
+
+## 0.2.6 (2024/01/17)
+* Fix bug in heuristic 3 that caused incorrect stretch factor for some graphs.
+
+## 0.2.5 (2023/11/12)
+* Added info "NO" the CLOSENESS_(HEUR) output includes the additional information 'NO' for heuristics H1v1, H1v3, H1v4, H2v1, H3v1.
+* Added new paper PDF
+* Added the PowerPoint presentation for the Brazilian Operational Research Symposium 2023. 
+
+## 0.2.4
+* New version system implemented
+* Minor fixes
+
+## 0.2.3a (2023/11/03)
+* Fixed the bug that was causing 'free(): invalid pointer' in heuristics H3v2.
+* Added the output information MAX_THREAD_SUPPORTED, which indicates the maximum number of threads supported by the processor.
+
 ## 0.2.3 (2023/10/26)
 * Heuristics H1v3 & H1v4 provided by Eriky Marciano
 

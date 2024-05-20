@@ -9,6 +9,7 @@
 #include <string>
 #include <chrono> // contributor AZ
 #include <stack>
+#include <functional>
 
 #include "../my_libs/library1.hpp"
 #include "../my_libs/library3.hpp"
@@ -23,7 +24,7 @@
 //extern sem_t semaforo;
 extern std::mutex mtx;
 
-extern int global_total_arv;
+extern unsigned long long int global_total_arv;
 extern int num_threads;
 extern int used_threads;
 extern int global_induced_cycle;
@@ -149,18 +150,18 @@ void find_index_induced_cycle_V2(int id,  Valid_Edges_r &edges_to_threads , Grap
        
     find_index_cycle_V2(id, root, edges_to_threads, G1, graph, task);
 
-    int arvores;
+    unsigned long long int arvores;
     arvores = G1.get_total_tree();
     int index_local = G1.get_stretch_index();
 
-    if (index_local == (int)INFINITY)
+    if (index_local == std::numeric_limits<int>::max())
     {
         index_local = 1;
         arvores = 0;
         G1.reset_trees(arvores);
     }
     mtx.lock();
-    DEBUG std::cerr << "THREAD " << id << "NA  TASK " << task << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
+    DEBUG std::cerr << "THREAD " << id << " NA TASK " << task << " criou " << arvores << " arvores, e encontrou index " << index_local << std::endl;
     graph.sum_trees(arvores);
     global_total_arv = arvores;
     int arv = 0; // Insert to mantain compatibility with set_graph_final_parameters -- will be modified when refactoring
@@ -183,8 +184,8 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
     
     int vertex_v = 0;
     int vertex_u = 0;
-    int index_local = (int)INFINITY;
-    int lower_limit = (int)INFINITY;
+    int index_local = std::numeric_limits<int>::max();
+    int lower_limit = std::numeric_limits<int>::max();
 
     std::vector<int> idx_next_neighbor(G1.get_num_vertices(), 0);
     std::vector<int> last_neighbor(G1.get_num_vertices(), -1);
@@ -258,48 +259,59 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
             {
                 if (j == nvertices - 1 - num_fixed_edges - 1 ) // Find spanner tree
                 {
+                        int vertex;
                         for (auto edge : edges_to_threads.immutable_edges_list[0])
                         {
                            tree.add_aresta(edge.first, edge.second);
+                           vertex = edge.second;
                         }
-                        bool has_cycle_var = false;
-                        for (auto vertex : immutable_vertices_set)
-                        {
-                            if (OpBasic::cyclic(tree, vertex)){
-                                has_cycle_var = true;
-                                break;
-                            }
+                        bool disconnected = false;
+                        if (OpBasic::canReachAllVertices(tree, vertex)){
+                            disconnected = true;
+                            break;
                         }
-                        if ( !has_cycle_var)
-                        {
-                            int f = 1;
-
-                            if (!global_noindex)
-                            { // LF request - only sum tree
-                                f = Stretch::find_factor(graph, tree);
-                            }
-                            G1.add_tree();  // sum total trees
-
-                            // if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
-                            // {                                       // REMOVER - APENAS PARA TESTE
-                            //     str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
-                            //     str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
-                            //     save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                            // }                                       // REMOVER - APENAS PARA TESTE
-
-                            if (f < index_local)    // Compute stretch factor & stretch index
+                        if (!disconnected){
+                            bool has_cycle_var = false;
+                            for (auto vertex : immutable_vertices_set)
                             {
-                                index_local = f;
-                                tree_local = tree;
-                                if (index_local == lower_limit)
-                                {
-                                    mtx.lock();
-                                    graph.set_signal();
-                                    mtx.unlock();
+                                if (OpBasic::cyclic(tree, vertex)){
+                                    has_cycle_var = true;
                                     break;
+                                }
+
+                            }
+                            if ( !has_cycle_var)
+                            {
+                                int f = 1;
+
+                                if (!global_noindex)
+                                { // LF request - only sum tree
+                                    f = Stretch::find_factor(graph, tree);
+                                }
+                                G1.add_tree();  // sum total trees
+
+                                // if (global_save_tree)                   // REMOVER - APENAS PARA TESTE
+                                // {                                       // REMOVER - APENAS PARA TESTE
+                                //     str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
+                                //     str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
+                                //     save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
+                                // }                                       // REMOVER - APENAS PARA TESTE
+
+                                if (f < index_local)    // Compute stretch factor & stretch index
+                                {
+                                    index_local = f;
+                                    tree_local = tree;
+                                    if (index_local == lower_limit)
+                                    {
+                                        mtx.lock();
+                                        graph.set_signal();
+                                        mtx.unlock();
+                                        break;
+                                    }
                                 }
                             }
                         }
+                        
                         
                         for (auto edge : edges_to_threads.immutable_edges_list[0])
                         {
@@ -324,7 +336,7 @@ void find_index_cycle_V2(int id, int root, Valid_Edges_r &edges_to_threads, Grap
         tree.add_aresta(edge.first, edge.second);
     }
 
-    DEBUG std::cerr << "THREAD: " << id << " JOB " << task << "  ACHOU " << index_local << std::endl;
+    //DEBUG std::cerr << "THREAD: " << id << " JOB " << task << "  ACHOU " << index_local << std::endl;
     G1.set_stretch_index(index_local); // *********************************
     G1.set_best_tree(tree);
 }

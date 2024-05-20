@@ -37,12 +37,22 @@ int main(int argc, char** argv){
 	MyWatchdogTimer wdt;
 	//num_threads = 1;
 	//max_induced_cycles = 1;
-	if(argc < 2){
-		Parameters::usage(argv[0]);
-		exit(0);
-	}
+	// Check argv parameters, Input Redirected and data avaliable in redirected
+	validateInputBeforeExecution(argc, argv);
+	// if(argc < 1){
+	// 	Parameters::usage(argv[0]);
+	// 	exit(0);
+	// }
+	// if (!isInputRedirected()) {
+	// 	std::cout << "No input redirection detected." << std::endl;
+	// 	exit(1);
+	// }
+	// if (!isDataAvailable()) {
+	// 	std::cout << "No data provided via redirection." << std::endl;
+	// 	exit(1);
+	// }
 
-	std::string filename = get_filename();
+	std::string filename = get_filename_v2();
 	std::string run_name  = "";
 
 	DEBUG std::cerr << filename << std::endl;

@@ -1111,3 +1111,24 @@ int OpBasic::eccentricity(Graph &graph, int vertex){
 bool OpBasic::has_cycle(Graph &graph, int vertex){
     return cyclic(graph, vertex);
 }
+
+void OpBasic::dfs(Graph &graph, int vertex, std::vector<bool>& visited) {
+    visited[vertex] = true;
+    for (auto i: graph.adjList(vertex)) {
+        if (visited[i]) {
+            dfs(graph, i, visited);
+        }
+    }
+}
+
+bool OpBasic::canReachAllVertices(Graph &graph, int startVertex) {
+    int numVertices = graph.getQtdVertices();
+    std::vector<bool> visited(numVertices, false);
+    dfs(graph, startVertex, visited);
+    for (bool v : visited) {
+        if (!v) {
+            return false;
+        }
+    }
+    return true;
+}

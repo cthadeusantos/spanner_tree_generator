@@ -1,0 +1,27 @@
+default_iterations: 1
+default_timelimit: 1200
+description: Running heuristic H1v4
+exec: release/app_HR-H1v4
+instance_list:
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_0.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_1.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_2.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_3.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_4.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_5.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_6.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_7.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_8.txt
+- args: -t 1 -s
+  instance: grafos_barabasi/gba_200_80__200_9600_9.txt
+name: ct-BA200-H1v4
+problem: tadmiss

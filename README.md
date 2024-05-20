@@ -1,7 +1,11 @@
-- [1. Preliminary Notes for 0.2.x series](#1-preliminary-notes-for-02x-series)
+- [1. Preliminary Notes for 0.2.x series and higher](#1-preliminary-notes-for-02x-series-and-higher)
+    - [New versioning system](#new-versioning-system)
 - [2. Important links and work performed](#2-important-links-and-work-performed)
+  - [2.1. Understanding the problem of t\_admissibility](#21-understanding-the-problem-of-t_admissibility)
+  - [2.2. The Errata section](#22-the-errata-section)
+  - [2.3. Download the code](#23-download-the-code)
 - [3. Project Architecture](#3-project-architecture)
-  - [3.1. Pre-requisites](#31-pre-requisites)
+  - [3.1. Pre-requisites (for Linux and WSL)](#31-pre-requisites-for-linux-and-wsl)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
@@ -12,40 +16,87 @@
   - [3.5. Directory Structure](#35-directory-structure)
   - [3.6. Internal Tools](#36-internal-tools)
 - [4. Input file format](#4-input-file-format)
-- [5. Changelog](#5-changelog)
-- [6. Known Bugs](#6-known-bugs)
-- [7. To do](#7-to-do)
-- [8. Authorship Information](#8-authorship-information)
+- [5. MacOS User Information: Key Details and Guidelines](#5-macos-user-information-key-details-and-guidelines)
+  - [5.1. MacOS Compilation Instructions](#51-macos-compilation-instructions)
+  - [5.2. Instructions for Running on MacOS](#52-instructions-for-running-on-macos)
+- [6. Changelog](#6-changelog)
+- [7. Known Bugs](#7-known-bugs)
+- [8. To do](#8-to-do)
+- [9. Authorship Information](#9-authorship-information)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
 The $t$-admissibility is a min-max problem that concerns to determine whether a graph $G$ contains a spanning tree $T$ in which the distance between any two adjacent vertices of $G$ is at most $t$ in $T$. The stretch index of $G$, $\sigma(G)$, is the smallest $t$ for which $G$ is $t$-admissible.
 
-This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ)). We maintain the code and the results attained by the group in this repository.
+This project is a collection of solutions for the T-admissibility problem. The base paper published by us is available [here](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ). We maintain the code and the results attained by the group in this repository.
 
-## 1. Preliminary Notes for 0.2.x series
+## 1. Preliminary Notes for 0.2.x series and higher
 
 Please note that the C++ code from a previous version (0.1.x series) will not be compatible with the current version. It is important to be aware that any code written for the previous version will require updates and modifications to ensure compatibility and proper functioning in the current version. Failing to update the code may result in errors, unexpected behavior, or even program crashes. Therefore, we strongly advise reviewing and revising your previous C++ code to ensure it aligns with the requirements and conventions of the current version.
 
 Furthermore, please be aware that the code from the previous version will no longer receive updates or bug fixes. The previous version's codebase will be archived and stored at a designated location for reference purposes. It is important to transition to the current version and utilize its updated features, enhancements, and ongoing support for a more efficient and stable development environment.
 
-<b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++20 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
+> [!NOTE]
+> 1. We are pleased to announce that, starting from version 0.2.7, the code is now available for compilation and alpha-stage execution on the MacOS operating system. We are committed to expanding compatibility and accessibility of our software, enabling MacOS users to also enjoy the latest features and functionalities. We encourage users interested in this platform to refer to the specific section for [MacOS](#5-macos-user-information-key-details-and-guidelines) in the README.md for detailed information on requirements, configurations, and potential considerations while running the software in this environment. We appreciate all users and look forward to providing an optimized experience for everyone.
+> 2. In March 2024, we will begin the process of refactoring and migrating the current codebase to C++23. Expect many changes; you can track them in the series1 branch, and the use of the Boost library will be mandatory..
+> 3. In April 2024, we aim to test the code from series 0.2.X on the latest version of GhostBSD, expanding support to more operating systems.
+> 4. In May 2024, we plan to test the code from series 0.2.X on Windows 11.
 
-Previous version can be found here.
+> [!WARNING]
+> <b>Important Notice:</b> Please be advised that in the future, the current version will become incompatible due to updates to the C++23 standard and the complete adoption of object-oriented programming throughout the project. This transition will be implemented to enhance the codebase and align with modern programming practices.
 
-Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e)
 
-Link for [Release 0.1.7d](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7d)
+#### New versioning system
 
-Please check Github Webpage for others branches
+From version 0.2.4 onwards, we are adopting a new versioning system. We have discontinued the use of letters alongside the third digit to represent bug fixes.
+
+| Digit | The new numbering system | Regarding digit increments /  In terms of compatibility |
+| -------- | --- | --- | 
+| #1 | Represents a major or significant version | Indicate a major update that introduces significant changes or may not be compatible with previous versions, be aware of this |
+| #2 | Represents a minor version or additional functionality. | Indicate the addition of new features or improvements while maintaining compatibility with previous versions |
+| #3 | Represents bug fixes, minor improvements or adjustments | Represents bug fixes, minor improvements, or adjustments, used for maintenance releases that do not alter functionality but address issues. |
 
 ## 2. Important links and work performed
 
 * Link to [this repository](https://github.com/cthadeusantos/spanner_tree_generator). 
 * Related task [Kanban board](https://github.com/users/cthadeusantos/projects/1/views/1). (in portuguese)
     * Every task is represented by a card (issue). Any issue tagged as `EPIC` detail the current main goal of the project.
+
+### 2.1. Understanding the problem of t_admissibility
+
 * Past published work:
-  * [Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
+  * [2022 pre-print](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/IPL_HeuristicsADM_V3%20(2).pdf)
+  * [2022 Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
+  * [The paper presented at the Brazilian Operational Research Symposium (SBPO) 2023](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/galoa-proceedings--sbpo-2023--174829.pdf) with a new set of heuristics and the use of centrality measures. If you prefer to download directly from the SBPO Website, [click here (ENGLISH)](https://proceedings.science/sbpo/sbpo-2023/trabalhos/heuristics-for-t-admissibility-with-complex-network-approach?lang=pt-br).
+  * If you wish to visually understand heuristics 1, 2, 3 & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Presentation-SBPO2023v5-ENG.pdf) or [PORTUGUESE](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Apresentacao-SBPO2023v5-PT_BR.pdf)
+  * Coming soon, the paper submitted to Wiley featuring the induced cycle method and enhancements yielding up to a 70% improvement in the sequential method, adjacency list and edge list.
+  * Coming soon, link to download Carlos Thadeu's Master’s Thesis (PORTUGUESE) from IC/UFF repository.
+
+### 2.2. The Errata section
+
+Please note the following correction:
+
+<b>In 2022 Base paper (SBPO):</b>
+
+* At page 2, Algorithm 1, line 16, where it reads '_last_neighbor[i] = -1_', please read as '_last_neighbor[v] = -1_'
+* At page 4, example 3, where it reads '_V=[4,7,1,3,0,2,5,6]_', please read '_V=[4,7,1,3,8,0,2,5,6]_'
+
+
+<b>In 2023 paper (SBPO):</b>
+
+* At page 6, Equation 7, where it reads '_f(v) = d<sub>G</sub>(v)-d<sub>T</sub>(v)_', please read as '_f(v) = d<sub>G</sub>(v)-A<sub>tree</sub>(v)_'
+
+We apologize for any confusion and appreciate your understanding.
+
+### 2.3. Download the code
+
+[Last stable version](https://github.com/cthadeusantos/spanner_tree_generator/releases/latest)
+
+Previous version can be found here.
+
+Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs & last version for 0.1.x series) 
+
+Please check Github Webpage for others branches
 
 ## 3. Project Architecture
 
@@ -53,7 +104,7 @@ This is a science project made primally to be ran in a computational environment
 
 As a science project, each main application is built so it solves an instance in a single execution in a deterministic way. The idea is that each execution should be independent and done in a controlled environment, therefore the results are precise and replicable.
 
-### 3.1. Pre-requisites 
+### 3.1. Pre-requisites (for Linux and WSL)
 
 The compiler used for every C/C++ component is [GCC](https://gcc.gnu.org/) at version 9.3.0. The build procedure is managed by [Make](https://www.gnu.org/software/make/). These are the only pre-requisites to build and execute everything. Use the following commands to install them:
   
@@ -123,26 +174,30 @@ The following bullets denote the pre-requisites to develop the project.
 After compiling, you will find the executables in the **build/release/** directory. The brute force and heuristics applications can be identified as app_BF and app_HR, respectively.
 
 The brute force executables are as follows:
-* **app_BF-SEQ**, which runs sequentially using a single thread;
-* **app_BF-EDGES**, which executes in parallel(multiple threads) using an edge list;
-* **app_BF-ADJACENCY**, which operates in parallel(multiple threads) using an adjacency list;
-* **app_BF-CYCLES**, which runs in parallel(multiple threads) utilizing an edge list and the induced cycle method.
 
+| Label | Executable | Brute force description |
+| ----- | -------- | --- |
+| SEQUENTIAL | **app_BF-SEQ** | Runs sequentially using a single thread |
+| EDGES | **app_BF-EDGES** | Executes in parallel(multiple threads) using an edge list method |
+| ADJACENCY | **app_BF-ADJACENCY** | Operates in parallel(multiple threads) using an adjacency list method |
+| CYCLES | **app_BF-CYCLES** | Runs in parallel(multiple threads) utilizing an adapted edge list method and the new induced cycle method |
+	
 The heuristics executables are as follows:
 
-* **app_HR-H1v1**, **app_HR-H1v2**, **app_HR-H1v3** & **app_HR-H1v4** Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon. 
+| Label | Executable | Description |
+| ----- | -------- | --- |
+|**H1v1**<br>Global MaxDegree Heuristic v1<br>**Heuristic 1**  |   **app_HR-H1v1**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H1v2**<br>Global MaxDegree Heuristic v2<br>**Greedy Coverage Heuristic plus**   |   **app_HR-H1v2**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H1v3**<br>Tiebreaker Free Greedy Coverage Heuristic   |   **app_HR-H1v3**       |   Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon  |
+|**H1v4**<br>Greedy Edge Common Coverage Heuristic   |   **app_HR-H1v4**       |  Global MaxDegree Heuristic comes in two versions, namely **v1** (sorted by degree centrality, which was proposed by~\cite{COUTO2022106265}) and **v2** (sorted by degree and closeness centrality, proposed in this work); **v3** and **v4**, description coming soon   |
+|**H2v1**<br>Local MaxDegree Heuristic v1<br>**Heuristic 2**   |   **app_HR-H2v1**       |   Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**)  |
+|**H2v2**<br>Local MaxDegree Heuristic v2<br>**Local Centrality-Driven Growth Heuristic**   |   **app_HR-H2v2**       |  Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**)  |
+|**H3v1**<br>Adaptative Global MaxDegree Heuristic v1<br>**Degree Centrality-Driven Hybrid Coverage Heuristic**   |   **app_HR-H3v1**       |   Adaptive Global MaxDegree Heuristic is a combination of Global MaxDegree Heuristic and Local MaxDegree Heuristic. In the initial version (**v1**) of Adaptative Global MaxDegree Heuristic, the vertices are sorted based on their degree centrality  |
+|**H3v2**<br>Adaptative Global MaxDegree Heuristic v2<br>**Closeness Centrality-Driven Hybrid Coverage Heuristic**   |   **app_HR-H3v2**       |   Adaptative Global MaxDegree Heuristic **v2** is a slight modification of **v1**. In this version, when vertices has same degree, we consider additional measures such as closeness centrality and leverage centrality to determine the most appropriate vertex for selection  |
+|**H4v1**<br>Centrality Heuristic MaxDegree<br>**Higher-Degree Centrality Heuristic**   |   **app_HR-H4v1**       |  That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure   |
+|**H4v2r1**<br>Traveller Centrality Heuristic<br>**Traveler Centrality Heuristic**   |   **app_HR-H4v2r1**       |  The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others   |
+| **H4v2r3**<br>Algebraic Centrality Heuristic<br>**Speedy Algebraic Centrality Heuristic** |   **app_HR-H4v2r3**   | The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality |
 
-* **app_HR-H2v1** & **app_HR-H2v2**, Local MaxDegree Heuristic, the vertices of the graph $G$ are sorted in descending order based on their degree centrality (**v1**) or closeness centrality (**v2**);
-
-* **app_HR-H3v1**, Adaptive Global MaxDegree Heuristic is a combination of Global MaxDegree Heuristic and Local MaxDegree Heuristic. In the initial version (**v1**) of Adaptative Global MaxDegree Heuristic, the vertices are sorted based on their degree centrality;
-
-* **app_HR-H3v2**, Adaptative Global MaxDegree Heuristic **v2** is a slight modification of **v1**. In this version, when vertices has same degree, we consider additional measures such as closeness centrality and leverage centrality to determine the most appropriate vertex for selection;
-
-* **app_HR-H4v1**, That is the Centrality Heuristic MaxDegree than utilizes the concept of degree centrality to select the vertex root. The vertex with the highest degree is chosen as the root, but in cases where multiple vertices have the same degree, ties are broken using a combination of closeness centrality and leverage centrality. Subsequently, the neighbors are sorted based on their degree centrality, enabling a systematic analysis of the network structure;
-
-* **app_HR-H4v2r1**, The Traveller Centrality Heuristic demonstrates higher accuracy compared to Centrality Heuristic MaxDegree and Algebraic Centrality Heuristic, but at the cost of slower performance. This can be attributed to the calculation of closeness centrality, which necessitates traversing all vertices to determine the shortest path between a given vertex and all others;
-
-* **app_HR-H4v2r3**, The algorithm for Algebraic Centrality Heuristic is essentially the same as Traveller Centrality Heuristic. While the accuracy of Algebraic Centrality Heuristic is slightly lower than that of Traveller Centrality Heuristic, it exhibits higher speed due to the adoption of an approximation method proposed by Evans_2022. Instead of traversing all vertices, we employ equations to estimate closeness centrality;
 
 #### How to run (with options):
 
@@ -158,18 +213,18 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
       -rt X | --running_time X    Define the execution time in miliseconds until STOP! default is 0
   
     Read file:
-	    --adjacency                 Define which type file will be read. (adjacency list)[default]
+	    --adjacency                 Define which type file will be read. (adjacency matrix)[default]
 	    --edges                     Define which type file will be read. (edges list)
 
     Calculate:
       --nolb                      Not calculate lower bound
       --noindex                   Not calculate stretch index
-	    -ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
+	-ci X | --induced_cycle X   Define the number of induced cycles ! default is 1
 	
     Threads:
       -t X  | --thread X          Define the numbers of threads. X is the number of threads
 
-    Method for calculating closeness:
+    Method for calculating closeness: (NOT USED YET!)
       --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
       --tra 	                    Calculate closeness using traverse method, used only in heuristics.
 
@@ -209,8 +264,12 @@ The project is structured as follows:
 * `src/` -- Contain the source code of the project. Detailed usage instruction, description, and run examples for each app can be found across the makefile, source code iteself, and in the source documentation.
   * `old/` -- Is the old source code used in the first version of this project.
   * `new/` -- The current source code being implemented for this version.
+  * `series1/` -- This directory contains the source code in development for the future version 1 of the Spanner Tree Generator.
 * `build/` -- Store temporary build files and any binary application generated by the compiler during code compilation.
-* `tools/`  -- Internal tools used in this project. Usually, a script in python that helps visualizing instances or manipulation them. Their usage is documented inside the tool script itself. 
+* `tools/`  -- Internal tools used in this project. Usually, a script in python that helps visualizing instances or manipulation them. Their usage is documented inside the tool script itself.
+* `tools/analisys/`  -- Don't worry, you don't need this directory; it's only used to store the developer's personal tools.
+* `tools/my_execute_bash/`  -- Don't worry, you don't need this directory; it's only used to store the developer's personal tools.
+* `tools/my_scripts/`  -- Don't worry, you don't need this directory; it's only used to store the developer's personal tools.
 * `instances/` -- Contain the instance data set. You may find information about the instance format inside the `doc/` folder. It is recommended to keep each instance with unique name across the project. Internal tools or a main app itself may use these names to map solutions.
 * `documents/` -- Contain some documentation about the project. You can find the instance specification format here for example. It is important to note that the documentation of each internal tool is located at the `/tools/` directory with the tool itself. Examples and intructions of any application or component usage should be in the main source code itself alongside the respective makefile.
   * `documents/doxygen/` - Constain documentation about the source code. 
@@ -235,17 +294,14 @@ This project has internal tools to support development. Usage examples and detai
 
 **For adjacency matrix** (a square matrix)
 
-1st line Number of vertices (in our example 4)
-
+Put at 1st line the Number of vertices (in our example 4)
+```
 4
-
 0 1 1 0
-
 1 0 1 1
-
 1 1 0 1
-
 0 1 1 0
+```
 
  The adjacency matrix is a (0,1)-matrix with zeros on its diagonal.
  Please use space to separate (0,1) elements
@@ -254,52 +310,104 @@ This project has internal tools to support development. Usage examples and detai
 
 **For edges list**
 
+1st line are the number of vertices in the graph (in our example N).
+Each line from the 2nd line represents an edge (two vertices). Please use comma to separate the vertices.
+
+```
 N
-
 vertex , vertex
-
 vertex , vertex
-
 vertex , vertex
-
 vertex , vertex
-
 ...
-
+.
+.
 vertex , vertex
-
+```
 An edges' list is a data structure used to represent a graph as a list of its edges.
 
-1st line are the number of vertices in the graph
-Each line from the 2nd represents an edge (two vertices).
-Please use comma to separate the vertices.
+
 
 Please, check the instances directory to references and examples.
 For files with egdes list use the parameter --edges
 
 [Edges' list example](instances/examples/G9_E10_edges.in)
-## 5. Changelog
+
+## 5. MacOS User Information: Key Details and Guidelines
+
+### 5.1. MacOS Compilation Instructions
+
+Please note that compiling the code for MacOS differs slightly from Linux and WSL. The compilation and execution are currently in alpha stage.
+
+To compile, run the following command in the terminal from the project's root directory:
+
+``````
+make -f Makefile_OSX [OPTION]
+``````
+
+Where OPTION can be one of the following:
+
+* `clean` - Deletes files in the ./build/release directory.
+
+* `sequential` - Creates the executable that uses the sequential brute-force method.
+
+* `adjacency` - Creates the parallel executable that uses the brute-force adjacency list method.
+
+* `cycles` - Creates the parallel executable that uses the brute-force induced cycles method.
+
+* `edges` - Creates the parallel executable that uses the brute-force edge list method.
+
+* `H1v1`, `H1v2`, `H2v1`, `H2v2`, `H3v1`, `H3v2`, `H4v1`, `H4v2r1`, `H4v2r2` - Creates executables for heuristics.
+
+* `all_bruteforce` - Creates executables for all brute-force methods.
+
+* `all_heuristics` - Creates executables for all heuristic methods.
+
+* `generate` - Creates the executable for generating random graphs.
+
+* `all` - Compiles all the above options.
+
+Be aware that the code for Linux and WSL contains lines that are only used in DEBUG mode in Visual Studio Code. Unfortunately, these lines cannot be disabled at runtime on MacOS. If your objective is to obtain the graph stretch index, this is not a problem for small graphs. However, if you intend to measure runtime, it may pose a challenge. To avoid the execution of these lines, locate those starting with DEBUG and comment them out in your code.
+
+Notably, when compiling with Makefile_OSX (not makefile), DEBUG features for use in VSCODE will not be implemented for MacOS. Debugging on this platform may be limited.
+
+If you are experienced with makefiles and would like to assist in adapting the Linux makefile for MacOS and clang++, please contact us via email.
+
+### 5.2. Instructions for Running on MacOS
+
+To run the code, follow the instructions in [usage](#34-usage).
+
+## 6. Changelog
 
 Link for [changelogs](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/CHANGELOG.md)
 
-## 6. Known Bugs
+## 7. Known Bugs
 
 Link for [known bugs webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/KNOWNBUGS.md)
 
-## 7. To do
+## 8. To do
 
 Link for [TO DO webpage](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/TODO.md)
 
-## 8. Authorship Information
+## 9. Authorship Information
 
-We're a group of researchers mainly from Instituto de Computação/Universidade Federal Fluminense (IC/UFF) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
+We're a group of researchers mainly from **Instituto de Computação/Universidade Federal Fluminense (IC/UFF)**(Institute of Computing/Federal Fluminense University) and Universidade Federal Rural do Rio de Janeiro. If you want to inquire about this project, you may e-mail any of the authors listed below.
 
+**TEAM**
 * Luís Felipe Ignácio Cunha (lfignacio@ic.uff.br) **[Advisor]**
 * Leandro Santiago de Araújo (leandro@ic.uff.br) **[Advisor]**
 * Fernanda Couto (fernandavdc@ufrrj.br) **[Advisor]**
 * Daniel Juventude (deljuven@ymail.com)
-* Carlos Thadeu Santos(carlosthadeu@id.uff.br) 
+* Carlos Thadeu Santos(carlosthadeu@id.uff.br) (cthadeusantos@gmail.com)
 * Anderson Zudio (azudio@id.uff.br)
 * Eriky Nunes Marciano (erikymarciano@id.uff.br) 
 
-This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
+**FOUNDERS**
+* Conselho Nacional de Desenvolvimento Científico e Tecnológico
+* Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro
+
+**ACKNOWLEDGMENT TO LABIC/UFF HARDWARE SUPPORT**
+* We would like to extend our sincere gratitude to the **[LABIC/UFF](https://www.facebook.com/satoruff/)**, at the **[Institute of Computing](https://www.ic.uff.br/)** of the **Federal Fluminense University**, for generously providing their hardware resources for executing all the tests conducted for this experiment. Their hardware support has been ensuring the success of our research.
+
+**LICENSE**
+* This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.

@@ -1,0 +1,27 @@
+default_iterations: 1
+default_timelimit: 1200
+description: Running heuristic H1v3
+exec: release/app_HR-H1v3
+instance_list:
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62194_0.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62540_1.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_63011_2.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62559_3.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62342_4.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62358_5.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62528_6.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_61890_7.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62360_8.txt
+- args: -t 1 -s
+  instance: grafos_erdos/ger_500_50__500_62330_9.txt
+name: ct-ER500-H1v3
+problem: tadmiss

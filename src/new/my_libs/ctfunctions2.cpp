@@ -9,6 +9,16 @@
 #include <iterator>
 #include <chrono>
 
+//#include <iostream>
+#include <vector>
+//#include <sstream>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <cstdlib>
+
+
+
 #include <iterator>
 #include <set>
 #include <regex>
@@ -22,10 +32,12 @@
 #include "../code/frontier.hpp"
 #include "../code/genGraph.hpp"
 #include "../code/version.hpp"
+#include "../code/parameters.hpp"
 
 #include "../Debug.h"
 
 #include "ctfunctions2.hpp"
+#include "my_limits.hpp"
 //#include "externals.hpp"
 
 
@@ -40,6 +52,7 @@ extern int used_threads;
 extern int global_induced_cycle;
 extern int global_induced_cycle_used;
 extern int global_closeness;
+extern int global_threads_supported;
 extern bool global_nolb;
 extern bool global_noindex;
 
@@ -59,10 +72,12 @@ extern bool global_noindex;
 #endif */
 
 std::string get_closeness_type(){
-    if (global_closeness==2){
+    if (global_closeness==1) {
+        return "ALGEBRAIC";
+    } else if (global_closeness==2){
         return "TRAVERSE";
     } else {
-        return "ALGEBRAIC";
+        return "NO";
     }
 }
 
@@ -285,6 +300,7 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
 }
 
 /**
+ * DEPRECATED ** Replaced by get_filename_v2() for use in Linux and MacOS
  * Get the filename passed in by redirection
  * @details Get the filename passed in by redirection
  * Reference: https://stackoverflow.com/questions/62697081/get-the-name-of-an-input-file-passed-in-by-redirection
@@ -296,7 +312,7 @@ std::string get_filename() {
 	char buf[512], file[512] = {0};
     
     snprintf(buf, sizeof buf, "/proc/self/fd/%d", fileno(stdin));
-    readlink(buf, file, sizeof file - 1);
+    ssize_t var = readlink(buf, file, sizeof file - 1);
 
 	std::string text = file;
 	std::istringstream iss(text);
@@ -308,6 +324,290 @@ std::string get_filename() {
 	std::vector<std::string> texto = split(text, '/');
 	return texto[texto.size()-1];
 }
+
+
+// std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+//     std::vector<std::string> result;
+//     std::istringstream iss(s);
+//     std::string item;
+//     while (std::getline(iss, item, delim)) {
+//         result.push_back(item);
+//     }
+//     return result;
+// }
+
+
+// FUNCTION BELOW , works in Linux , but don't work at MacOS
+// /**
+//  * Get the filename passed in by redirection
+//  * @details Get the filename passed in by redirection
+//  * @author Carlos Thadeu
+//  * @return a string that represents the name of file
+//  */
+// std::string get_filename_v2() {
+//     // To get filename redirections
+//     char buf[512];
+    
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use readlink to get the path of the file
+//     ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fd)).c_str(), buf, sizeof(buf) - 1);
+
+//     std::cout << "-->" << len << std::endl ;
+
+//     if (len != -1) {
+//         buf[len] = '\0';
+//         std::string text = buf;
+
+//         // Use platform-independent path separator
+//         char pathSeparator = '/';
+//         std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//         return texto.back();
+//     } else {
+//         // Handle error
+//         return "Error";
+//     }
+// }
+
+std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+    std::vector<std::string> result;
+    std::istringstream iss(s);
+    std::string item;
+    while (std::getline(iss, item, delim)) {
+        result.push_back(item);
+    }
+    return result;
+}
+
+#include <iostream>
+#include <unistd.h>
+std::string get_filename_v2() {
+#if defined(__linux__)
+    //DEBUG std::cerr << "Running on Linux" << std::endl;
+    if (!isatty(fileno(stdin))) {
+        int fileDescriptor = fileno(stdin);
+        if (fileDescriptor != -1) {
+            char path[PATH_MAX];
+            ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+            if (len != -1) {
+                path[len] = '\0';
+                //return std::string(path);
+                // Use platform-independent path separator
+                char pathSeparator = '/';
+                std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+                return texto.back();
+            }
+        }
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    //DEBUG std::cerr << "Running on macOS" << std::endl;
+    // Get file descriptor associated with stdin
+    int fd = fileno(stdin);
+
+    // Use fstat to get information about the file
+    struct stat file_info;
+    if (fstat(fd, &file_info) == 0) {
+        // Use fcntl to get the file path from the file descriptor
+        char path[PATH_MAX];
+        if (fcntl(fd, F_GETPATH, path) != -1) {
+            std::string text = path;
+
+            // Use platform-independent path separator
+            char pathSeparator = '/';
+            std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+            return texto.back();
+        }
+    }
+#elif defined(_WIN32) || defined(_WIN64)
+    std::cout << "Running on Windows" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
+#elif defined(__FreeBSD__)
+    std::cout << "Running on FreeBSD" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
+#elif defined(__unix__) || defined(__unix)
+    std::cout << "Running on a Unix-like system" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
+#else
+    std::cout << "Running on an unknown or unsupported operating system" << std::endl;
+    std::cout << "I cannot read the input file on this operating system. Please contact the developers." << std::endl;
+    exit(1);
+#endif
+
+
+    // Default implementation or unsupported platform
+    return "Error";
+}
+
+
+
+// //#include <iostream>
+// //#include <unistd.h>
+// std::string get_filename_v3() {
+// #ifdef __linux__ // Linux-specific implementation
+//     if (!isatty(fileno(stdin))) {
+//         int fileDescriptor = fileno(stdin);
+//         if (fileDescriptor != -1) {
+//             char path[PATH_MAX];
+//             ssize_t len = readlink(("/proc/self/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+//             if (len != -1) {
+//                 path[len] = '\0';
+//                 //return std::string(path);
+//                 // Use platform-independent path separator
+//                 char pathSeparator = '/';
+//                 std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+//                 return texto.back();
+//             }
+//         }
+//     }
+// #elif __APPLE__ // macOS-specific implementation
+//     if (!isatty(fileno(stdin))) {
+//         int fileDescriptor = fileno(stdin);
+//         if (fileDescriptor != -1) {
+//             char path[PATH_MAX];
+//             ssize_t len = readlink(("/dev/fd/" + std::to_string(fileDescriptor)).c_str(), path, sizeof(path) - 1);
+//             if (len != -1) {
+//                 path[len] = '\0';
+//                 //return std::string(path);
+//                 // Use platform-independent path separator
+//                 char pathSeparator = '/';
+//                 std::vector<std::string> texto = split_filename_v2(std::string(path), pathSeparator);
+//                 return texto.back();
+//             }
+//         }
+//     }
+// #endif
+
+//     // Default implementation or unsupported platform
+//     return "";
+// }
+
+
+// std::string get_filename_v2() {
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use fstat to get information about the file
+//     struct stat file_info;
+//     if (fstat(fd, &file_info) == 0) {
+//         // Use realpath to get the canonicalized absolute pathname
+//         char resolved_path[PATH_MAX];
+
+//         // Construa a string diretamente sem usar c_str()
+//         std::string path_string = "/proc/self/fd/" + std::to_string(fd);
+        
+//         if (realpath(path_string.c_str(), resolved_path) != nullptr) {
+//             std::string text = resolved_path;
+
+//             // Use platform-independent path separator
+//             char pathSeparator = '/';
+//             std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//             return texto.back();
+//         }
+//     }
+
+//     // Handle error
+//     return "Error";
+// }
+
+// std::string get_filename_v2() {
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Use fstat to get information about the file
+//     struct stat file_info;
+//     if (fstat(fd, &file_info) == 0) {
+//         // Use fcntl to get the file path from the file descriptor
+//         char path[PATH_MAX];
+//         if (fcntl(fd, F_GETPATH, path) != -1) {
+//             std::string text = path;
+
+//             // Use platform-independent path separator
+//             char pathSeparator = '/';
+//             std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//             return texto.back();
+//         }
+//     }
+
+//     // Handle error
+//     return "Error";
+// }
+
+bool isDataAvailable() {
+    // Verificar se há dados disponíveis no redirecionamento (stdin)
+    return std::cin.peek() != EOF;
+}
+
+// Checa se existe algum redirecionamento
+bool isInputRedirected() {
+    return !isatty(fileno(stdin));
+}
+
+bool validateInputBeforeExecution(int argc, char** argv){
+    if(argc < 1){
+		Parameters::usage(argv[0]);
+		exit(1);
+	}
+	if (!isInputRedirected()) {
+		std::cout << "No input redirection detected." << std::endl;
+        Parameters::usage(argv[0]);
+		exit(1);
+	}
+	if (!isDataAvailable()) {
+		std::cout << "No data provided via redirection." << std::endl;
+        Parameters::usage(argv[0]);
+		exit(1);
+	}
+    return true;
+}
+
+// AS FUNCOES ABAIXO FUNCIONAM EM C++20
+// std::vector<std::string> split_filename_v2(const std::string &s, char delim) {
+//     std::vector<std::string> result;
+//     std::istringstream iss(s);
+//     std::string item;
+//     while (std::getline(iss, item, delim)) {
+//         result.push_back(item);
+//     }
+//     return result;
+// }
+
+// /**
+//  * Get the filename passed in by redirection
+//  * @details Get the filename passed in by redirection
+//  * @author Carlos Thadeu
+//  * @return a string that represents the name of file
+//  */
+// std::string get_filename_v2() {
+//     // To get filename redirections
+//     char buf[512], file[512] = {0};
+
+//     // Get file descriptor associated with stdin
+//     int fd = fileno(stdin);
+
+//     // Get file status using fstat
+//     struct stat st;
+//     if (fstat(fd, &st) == -1) {
+//         // Handle error
+//         return "Error";
+//     }
+
+//     // Get the path of the file using fcntl
+//     if (fcntl(fd, F_GETPATH, file) == -1) {
+//         // Handle error
+//         return "Error";
+//     }
+
+//     std::string text = file;
+
+//     // Use platform-independent path separator
+//     char pathSeparator = '/';
+//     std::vector<std::string> texto = split_filename_v2(text, pathSeparator);
+//     return texto.back();
+// }
 
 /**
  * Seek for articulations and bridges at a graph
@@ -586,7 +886,7 @@ int create_new_graphs(){
 	std::string dirname;
 	std::string auxiliary;
 	//std::string DIR_BASE = get_enviroment_var("DIR_TADM");
-	std::string DIR_BASE = get_current_dir_name();
+	std::string DIR_BASE = get_current_dir();
 	//std::string DIR_BASE = argv[0];
 	std::string DIR_INSTANCES = DIR_BASE + "instances/";
 	std::string DIR_RESULTS = DIR_BASE + "results/"; 
@@ -645,31 +945,35 @@ int create_new_graphs(){
  * @author Carlos Thadeu
  */
 void output_data(std::string &run_name, std::string &filename, int &output, bool &best, double &lastExecutionTime, int &lower_limit, Graph &graph){
-    	// OUTPUT - nothing - screen - file - debug
+    // OUTPUT - nothing - screen - file - debug
 
-    if (lower_limit == (int)INFINITY)
+    // if (lower_limit == (int)INFINITY)
+    //     lower_limit = 1;
+    if (lower_limit == std::numeric_limits<int>::infinity()) {
         lower_limit = 1;
+    }
 
     int stretch_index = graph.get_stretch_index();
 
     if ((output & 1)==1){	// TO SCREEN
-		std::cout << "INSTANCE .......... = " << std::setw(10) << filename << std::endl;
-		std::cout << "SOLUTION_TYPE...... = " << run_name << std::endl;
-		std::cout << "NUM_VERTICES....... = " << graph.get_qty_vertex() << std::endl;
-		std::cout << "NUM_EDGES.......... = " << graph.get_num_edges() << std::endl;
-		std::cout << "LOWER_BOUND........ = " << lower_limit << std::endl;
-		std::cout << "STRETCH_INDEX...... = " << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES........ = " << graph.get_total_tree() <<  std::endl;
-		std::cout << "RUNNING_TIME....... = " << lastExecutionTime << std::endl;
-        std::cout << "THREADs............ = " << num_threads <<  std::endl;
-        std::cout << "TASKs.............. = " << used_threads <<  std::endl;
-        std::cout << "DATE............... = " << current_date() <<  std::endl;
-        std::cout << "APP_RELEASE........ = " << Version().version() <<  std::endl;
-        std::cout << "CLOSENESS_(HEUR)... = " << get_closeness_type() << std::endl;
-        std::cout << "COMPUTE_INDEX...... = " << get_noindex_type() << std::endl;
-        std::cout << "COMPUTE_LOWER_BOUND = " << get_nolb_type() << std::endl;
-        std::cout << "ICYCLES_PROPOSED... = " << global_induced_cycle <<  std::endl;
-        std::cout << "ICYCLES_SELECTED... = " << global_induced_cycle_used <<  std::endl;
+		std::cout << "INSTANCE ............. = " << std::setw(10) << filename << std::endl;
+		std::cout << "SOLUTION_TYPE......... = " << run_name << std::endl;
+		std::cout << "NUM_VERTICES.......... = " << graph.get_qty_vertex() << std::endl;
+		std::cout << "NUM_EDGES............. = " << graph.get_num_edges() << std::endl;
+		std::cout << "LOWER_BOUND........... = " << lower_limit << std::endl;
+		std::cout << "STRETCH_INDEX......... = " << graph.get_stretch_index() <<  std::endl;
+		std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "RUNNING_TIME.......... = " << lastExecutionTime << std::endl;
+        std::cout << "THREADs............... = " << num_threads <<  std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
+        std::cout << "TASKs................. = " << used_threads <<  std::endl;
+        std::cout << "DATE.................. = " << current_date() <<  std::endl;
+        std::cout << "APP_RELEASE........... = " << Version().version() <<  std::endl;
+        std::cout << "CLOSENESS_(HEUR)...... = " << get_closeness_type() << std::endl;
+        std::cout << "COMPUTE_INDEX......... = " << get_noindex_type() << std::endl;
+        std::cout << "COMPUTE_LOWER_BOUND... = " << get_nolb_type() << std::endl;
+        std::cout << "ICYCLES_PROPOSED...... = " << global_induced_cycle <<  std::endl;
+        std::cout << "ICYCLES_SELECTED...... = " << global_induced_cycle_used <<  std::endl;
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
@@ -686,6 +990,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
         std::cout << "THREADS=" << num_threads <<  std::endl;
+        std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
         std::cout << "TASKS=" << used_threads <<  std::endl;
         std::cout << "DATE=" << current_date() <<  std::endl;
         std::cout << "APP_RELEASE=" << Version().version() <<  std::endl;
@@ -707,6 +1012,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
+        std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
         std::cerr << "[TASKS]=" << used_threads <<  std::endl;
         std::cerr << "[DATE]=" << current_date() <<  std::endl;
         std::cerr << "[APP_RELEASE]=" << Version().version() <<  std::endl;

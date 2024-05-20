@@ -77,30 +77,37 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
     #Return the header (column names) of the summary table. The info has to be properly sorted.
     @staticmethod
     def tadmissHeader():
-        return ['Avg running time (s) (MIN/MAX) [std_dev]', 'Avg stretch index (MIN/MAX) [std_dev]', '#Vertex', '#Edges', 'Lower Bound']
+        return ['Avg running time (s) (MIN/MAX) [std_dev]', 'Avg stretch index (MIN/MAX) [std_dev]', '#Vertex', '#Edges', 'Lower Bound', 'Total trees']
 
     #Receive a solution list. Should output the info for the result table. This info has to be in the same order as the header given above.
     @staticmethod
     def tadmissAddEntry(solution_list):
+        ####################
+        # Linha adicionada para evitar erro quando
+        # não existir dado no arquivo N.out.txt , aonde N é um inteiro
+        if len(solution_list) == 0:
+            return [str(0) + ' (' + str(0) + '/' + str(0) + ') [' + str(0) + ']', str(0) + ' (' + str(0) + '/' + str(0) + ') [' + str(0) + ']', str(0), str(0), str(0), str(0) ]
+        ####################
         running_time = []
         stretch_index = []
         n_vertex = int(solution_list[0]["num_vertices"])
         n_edge = int(solution_list[0]["num_edges"])
         lower_bound = int(solution_list[0]["lower_bound"])
+        total_trees = int(solution_list[0]["sum_trees"])
 
         for solution in solution_list:
             running_time.append(float(solution["running_time"]))
             stretch_index.append(int(solution["stretch_index"]))
 
-        running_time_avg = round(statistics.mean(running_time), 1)
-        running_time_min = round(min(running_time), 1)
-        running_time_max = round(max(running_time), 1)
+        running_time_avg = round(statistics.mean(running_time), 6)
+        running_time_min = round(min(running_time), 6)
+        running_time_max = round(max(running_time), 6)
         stretch_index_avg = round(statistics.mean(stretch_index), 1)
         stretch_index_min = min(stretch_index)
         stretch_index_max = max(stretch_index)
 
         if(len(solution_list) > 1):
-            running_time_dev = round(statistics.stdev(running_time), 1)
+            running_time_dev = round(statistics.stdev(running_time), 6)
             stretch_index_dev = round(statistics.stdev(stretch_index), 1)
         else:
             running_time_dev = 0
@@ -108,7 +115,7 @@ class TadmissLoader: #Contains the definition of every dependency of the T-admis
 
 
 
-        return [str(running_time_avg) + ' (' + str(running_time_min) + '/' + str(running_time_max) + ') [' + str(running_time_dev) + ']', str(stretch_index_avg) + ' (' + str(stretch_index_min) + '/' + str(stretch_index_max) + ') [' + str(stretch_index_dev) + ']', str(n_vertex), str(n_edge), str(lower_bound) ]
+        return [str(running_time_avg) + ' (' + str(running_time_min) + '/' + str(running_time_max) + ') [' + str(running_time_dev) + ']', str(stretch_index_avg) + ' (' + str(stretch_index_min) + '/' + str(stretch_index_max) + ') [' + str(stretch_index_dev) + ']', str(n_vertex), str(n_edge), str(lower_bound), str(total_trees) ]
         
 #The main function that should be called from other tools. This should setup the variables to specify the dependencies.
 def load(problem_name):

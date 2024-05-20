@@ -23,7 +23,7 @@
 //#define INDUCED_CYCLE_SYZE_START 5
 
 extern sem_t semaforo;
-extern int global_total_arv;
+extern unsigned long long int global_total_arv;
 extern std::mutex mtx;
 extern int num_threads;
 extern int used_threads;
@@ -204,7 +204,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int v = raiz;
     int u;
     int local_sum_trees = 0; 
-    int index_local = (int)INFINITY;
+    int index_local = std::numeric_limits<int>::max();
     Graph tree_local;
     Graph tree(n);
 
@@ -288,7 +288,7 @@ void find_index_parallel(Graph &g, int raiz, int start, int end, const int id)
     int arvores;
     arvores = local_sum_trees;
 
-    if (index_local == (int)INFINITY){
+    if (index_local == std::numeric_limits<int>::max()){
         index_local = 1;
         arvores = 0;
     }
@@ -314,7 +314,7 @@ void find_index_pararell_edge(Graph& g, std::vector<int> edges, int start, const
     Graph tree_local;
     int local_sum_trees = 0;
     //int index_local = INF_VALUE;
-    int index_local = (int)INFINITY;
+    int index_local = std::numeric_limits<int>::max();
 
     Graph gTeste(n);
 

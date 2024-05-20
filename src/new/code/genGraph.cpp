@@ -3,6 +3,7 @@
 //#include "frontier.hpp"
 
 #include<iostream>
+#include <random>
 
 //! Build a line graph
 /*!
@@ -76,6 +77,16 @@ double GenGraph::random_01()
     return ((double) rand() / (RAND_MAX));
 }
 
+float GenGraph::random_02() {
+    // Cria um gerador de números aleatórios
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dis(0.01f, 1.0f);
+
+    // Gera um número aleatório entre 0 e 1
+    return dis(gen);
+}
+
 //! Generate a graph
 /*!
     Generate a graph randomically, the number of vertices was defined previously and 
@@ -96,6 +107,36 @@ void GenGraph::generate_graph(Graph& g, double p)
             for( int j = i+1; j < g.getQtdVertices(); ++j)
             {
                 double flag = random_01();
+                if(p > flag)
+                {
+                    g.add_aresta(i, j);
+                }
+            }
+        }
+    }
+    //f.printAdjList(g, "teste");
+}
+
+//! Generate a graph
+/*!
+    Generate a graph randomically, the number of vertices was defined previously and 
+    the user define a probalility index 
+    \param g a graph instance
+    \param p a double
+*/
+void GenGraph::generate_graph2(Graph &g, float p)
+{
+    //Frontier f;
+    while( !OpBasic::is_valid(g) )
+    {
+        
+        g.clear_arestas();
+        
+        for( int i=0; i < g.getQtdVertices(); ++i)
+        {
+            for( int j = i+1; j < g.getQtdVertices(); ++j)
+            {
+                float flag = random_02();
                 if(p > flag)
                 {
                     g.add_aresta(i, j);

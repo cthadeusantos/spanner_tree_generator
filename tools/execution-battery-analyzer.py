@@ -247,6 +247,12 @@ def loadEntry(name, path, n_run): #Receives the instance file path to output a n
     for i in range(n_run):
         line = log_file.readline()
         line_list = line.split(' ')
+        #############################
+        # Adicionada para evitar erro se não houver dados nos
+        # arquivos N.out.txt , where N is a integer
+        if line_list[0] == '':
+            continue
+        #############################
         seed = int(line_list[7].rstrip('.'))
         if line_list[9] == "success.":
             sys.stderr.write("Success... ")
