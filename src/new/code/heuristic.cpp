@@ -13,6 +13,7 @@ using namespace std;
 #include "opBasic.hpp"
 #include "../my_libs/library1.hpp"
 #include "../my_libs/ctfunctions2.hpp"
+#include <numeric>
 
 extern int global_closeness;
 /*
@@ -160,63 +161,64 @@ void Heuristic::heuristica_1v2(Graph& graph)
  * @details This function return the tree with the lower factor
  * @author Eriky Marciano
  */
-treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int actual_position){
+treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int actual_position) {
     Stretch stretch;
-    int aux;
-    treeWFactor result, result2, result_aux;
-    result2.factor = INT_MAX;
+    treeWFactor result, best_result;
+    best_result.factor = INT_MAX; // Inicializa o melhor fator como o máximo inteiro possível
     int n = g.getQtdVertices();
-    int root = 0;
-    int limit = INT_MAX;
+    int limit = INT_MAX; // Limite para o número de árvores geradas
 
-    if(trees_created > limit) return result2;
-    //loop que verifica se ha empate
-    for( int i = actual_position; i < n-1; ++i)
-    {
-        if(trees_created > limit) break;
-        if(g.grau(vertex_list[i]) == g.grau(vertex_list[i+1])){
-            std::vector<int> copy_vertex_list;
-            copy_vertex_list = vertex_list;
-            aux = copy_vertex_list[i];
-            copy_vertex_list[i] = copy_vertex_list[i+1];
-            copy_vertex_list[i+1] = aux;
-            trees_created = trees_created+1;
-            result_aux = verify_possibilities(g, copy_vertex_list, i+1);
-            if(result_aux.factor < result2.factor) result2 = result_aux;
+    // Verifica se o limite de árvores criadas foi atingido
+    if (trees_created > limit) return best_result;
+
+    // Loop para verificar empates e gerar novas possibilidades de árvores
+    for (int i = actual_position; i < n - 1; ++i) {
+        if (trees_created > limit) break; // Interrompe se o limite for atingido
+        if (g.grau(vertex_list[i]) == g.grau(vertex_list[i + 1])) { // Verifica empate de grau
+            // Cria uma cópia da lista de vértices e troca os vértices empatados
+            std::vector<int> copy_vertex_list = vertex_list;
+            std::swap(copy_vertex_list[i], copy_vertex_list[i + 1]);
+            trees_created++;
+
+            // Chama recursivamente para verificar novas possibilidades
+            treeWFactor temp_result = verify_possibilities(g, copy_vertex_list, i + 1);
+            // Atualiza o melhor resultado se encontrar um fator menor
+            if (temp_result.factor < best_result.factor) {
+                best_result = temp_result;
+            }
         }
-        ++i;
     }
+
+    // Cria uma nova árvore a partir da lista de vértices
     Graph tree(n);
     result.tree = tree;
-    root = vertex_list[0];
+    int root = vertex_list[0]; // Define a raiz como o primeiro vértice da lista
 
-    for( int v : g.adjList(root) )
-    {
+    // Adiciona arestas do vértice raiz aos seus vizinhos
+    for (int v : g.adjList(root)) {
         tree.add_aresta(root, v);
     }
 
     int j = 1;
-    while( j < n && !OpBasic::is_tree(tree))
-    {
-        for( int v : g.adjList(vertex_list[j]))
-        {
-            if( !tree.possui_aresta(vertex_list[j], v))
-            {
+    // Constrói a árvore adicionando arestas dos vértices subsequentes
+    while (j < n && !OpBasic::is_tree(tree)) {
+        for (int v : g.adjList(vertex_list[j])) {
+            if (!tree.possui_aresta(vertex_list[j], v)) {
                 tree.add_aresta(vertex_list[j], v);
-                if(OpBasic::is_cyclic(tree))
-                {
+                // Remove a aresta se formar um ciclo
+                if (OpBasic::is_cyclic(tree)) {
                     tree.remove_aresta(vertex_list[j], v);
                 }
             }
         }
         ++j;
     }
-    result.factor = stretch.find_factor(g, tree); //By thadeu
-    if(result.factor > result2.factor){
-        return result2;
-    } else {
-        return result;
-    }
+
+    // Calcula o fator da árvore gerada
+    result.factor = stretch.find_factor(g, tree); // By Thadeu
+
+    // Retorna o melhor resultado entre a árvore atual e a melhor encontrada recursivamente
+    return (result.factor > best_result.factor) ? best_result : result;
 }
 
 /**
@@ -233,135 +235,94 @@ void Heuristic::heuristica_1v3(Graph& g)
     Stretch stretch;
     int n = g.getQtdVertices();
     int root = 0;
+    
+    // Inicializa a lista de vértices de maneira eficiente
     std::vector<int> vertex_list(n);
-    for( int i = 0; i < n; ++i)
-    {
-        vertex_list[i] = i;
-    }
+    std::iota(vertex_list.begin(), vertex_list.end(), 0);
+
+    // Ordena a lista de vértices
     my_quicksort(vertex_list, 0, n, g);
+
+     // Verifica as possibilidades e obtém o melhor resultado
     treeWFactor result = verify_possibilities(g, vertex_list, 0);
+
+    // Atualiza os parâmetros do grafo
     g.sum_trees(1); //By thadeu
     set_graph_final_parameters(result.factor, result.tree, g); //By thadeu
     g.set_best_tree(result.tree);
 }
 
-void sort_edges(std::map<string,int> edges_occurrence, vector<pair<int,int>> &edge_list, int num_edges, int atual){
-    int i, j, pivo;
-    pair<int,int> aux;
-	i = atual;
-	j = num_edges-1;
-    if(edge_list[(atual + num_edges) / 2].first > edge_list[(atual + num_edges) / 2].second){
-        pivo = edges_occurrence[to_string(edge_list[(atual + num_edges) / 2].first)+"_"+to_string(edge_list[(atual + num_edges) / 2].second)];
-    } else {
-        pivo = edges_occurrence[to_string(edge_list[(atual + num_edges) / 2].second)+"_"+to_string(edge_list[(atual + num_edges) / 2].first)];
-    }
-	while(i <= j)
-	{
-        if(edge_list[i].first > edge_list[i].second){
-            while(edges_occurrence[to_string(edge_list[i].first)+"_"+to_string(edge_list[i].second)] > pivo && i < num_edges)
-            {
-                ++i;
-            }
-            while(edges_occurrence[to_string(edge_list[j].first)+"_"+to_string(edge_list[j].second)] < pivo && j > atual)
-            {
-                --j;
-            }
-            if(i <= j)
-            {
-                aux = edge_list[i];
-                edge_list[i] = edge_list[j];
-                edge_list[j] = aux;
-                ++i;
-                --j;
-            }
-        }
-		
-	}
-	if(j > atual)
-		sort_edges(edges_occurrence, edge_list, j+1, atual);
-	if(i < num_edges)
-		sort_edges(edges_occurrence, edge_list, num_edges, i);
-
+string get_key(int a, int b) {
+    return (a > b) ? to_string(a) + "_" + to_string(b) : to_string(b) + "_" + to_string(a);
 }
 
-std::map<string,int> count_edges(Graph& g, std::vector<int>& vertex_list, int actual_position){
-    Stretch stretch;
-    int aux;
-    treeWFactor result;
-    int n = g.getQtdVertices();
-    int root = 0;
-    int limit = 2;
-    std::map<string, int> edges_occurrence;
+void sort_edges(map<string, int>& edges_occurrence, vector<pair<int, int>>& edge_list, int num_edges, int atual) {
+    // Comparator customizado para ordenar usando edges_occurrence
+    auto comparator = [&](const pair<int, int>& a, const pair<int, int>& b) {
+        return edges_occurrence[get_key(a.first, a.second)] > edges_occurrence[get_key(b.first, b.second)];
+    };
     
-    //loop que verifica se ha empate
-    for( int i = actual_position; i < n-1; ++i)
-    {
-        if(trees_created > limit) break;
-        if(g.grau(vertex_list[i]) == g.grau(vertex_list[i+1])){
-            std::vector<int> copy_vertex_list;
-            copy_vertex_list = vertex_list;
-            aux = copy_vertex_list[i];
-            copy_vertex_list[i] = copy_vertex_list[i+1];
-            copy_vertex_list[i+1] = aux;
-            trees_created = trees_created+1;            
-            edges_occurrence = count_edges(g, copy_vertex_list, i+1);
-            if(trees_created > limit) return edges_occurrence;
+    // Ordenar usando std::sort com o comparator customizado
+    std::sort(edge_list.begin() + atual, edge_list.begin() + num_edges, comparator);
+}
+
+map<string, int> count_edges(Graph &g, vector<int> &vertex_list, int actual_position) {
+    int n = g.getQtdVertices();
+    int limit = INT_MAX;
+    map<string, int> edges_occurrence;
+    int trees_created = 0;
+    treeWFactor result;
+
+    // Loop que verifica se há empate de grau e troca as posições dos vértices para criar árvores alternativas
+    for (int i = actual_position; i < n - 1; ++i) {
+        if (trees_created > limit) break;
+        if (g.grau(vertex_list[i]) == g.grau(vertex_list[i + 1])) {
+            vector<int> copy_vertex_list = vertex_list;
+            swap(copy_vertex_list[i], copy_vertex_list[i + 1]);
+            trees_created++;
+            auto temp_edges_occurrence = count_edges(g, copy_vertex_list, i + 1);
+            
+            // Atualizar edges_occurrence com os resultados de temp_edges_occurrence
+            for (const auto& entry : temp_edges_occurrence) {
+                edges_occurrence[entry.first] += entry.second;
+            }
+
+            if (trees_created > limit) return edges_occurrence;
         }
-        ++i;
     }
 
     Graph tree(n);
-    result.tree = tree;
-    root = vertex_list[0];
+    int root = vertex_list[0];
     string edge_key;
 
-    for( int v : g.adjList(root) )
-    {
+    // Adiciona arestas ao tree e atualiza edges_occurrence
+    for (int v : g.adjList(root)) {
         tree.add_aresta(root, v);
-        
-        if(root>v){
-            edge_key = to_string(root)+"_"+to_string(v);
-        } else edge_key = to_string(v)+"_"+to_string(root);
-        
-        if (edges_occurrence.find(edge_key) == edges_occurrence.end()) {
-        // not found
-            edges_occurrence.insert({edge_key, 1});
-        } else {
-        // found
-            edges_occurrence[edge_key] = edges_occurrence[edge_key]+1;
-        }
+        edge_key = get_key(root, v);
+        edges_occurrence[edge_key]++;
     }
 
     int j = 1;
-    while( j < n && !OpBasic::is_tree(tree))
-    {
-        for( int v : g.adjList(vertex_list[j]))
-        {
-            if( !tree.possui_aresta(vertex_list[j], v))
-            {
+    while (j < n && !OpBasic::is_tree(tree)) {
+        for (int v : g.adjList(vertex_list[j])) {
+            if (!tree.possui_aresta(vertex_list[j], v)) {
                 tree.add_aresta(vertex_list[j], v);
-                if(OpBasic::is_cyclic(tree))
-                {
+                if (OpBasic::is_cyclic(tree)) {
                     tree.remove_aresta(vertex_list[j], v);
                 } else {
-                    if(root>v){
-                        edge_key = to_string(root)+"_"+to_string(v);
-                    } else edge_key = to_string(v)+"_"+to_string(root);
-                    
-                    if (edges_occurrence.find(edge_key) == edges_occurrence.end()) {
-                    // not found
-                        edges_occurrence.insert({edge_key, 1});
-                    } else {
-                    // found
-                        edges_occurrence[edge_key] = edges_occurrence[edge_key]+1;
-                    }
+                    edge_key = get_key(vertex_list[j], v);
+                    edges_occurrence[edge_key]++;
                 }
             }
         }
         ++j;
     }
+    
+    result.tree = tree;
+
     return edges_occurrence;
 }
+
 
 void Heuristic::heuristica_1v4(Graph& g)
 {    
@@ -370,27 +331,38 @@ void Heuristic::heuristica_1v4(Graph& g)
     int root = 0;
     std::vector<int> vertex_list(n);
     Graph result_tree(n);
-    for( int i = 0; i < n; ++i){
+
+
+    // Preencher a lista de vértices
+    for (int i = 0; i < n; ++i) {
         vertex_list[i] = i;
     }
+
+    // Ordenar a lista de vértices
     my_quicksort(vertex_list, 0, n, g);
+
+    // Obter a lista de arestas e o número de arestas
     int number_edges = g.getQtdArestas();
     std::vector<std::pair<int, int>> sorted_edge_list = g.get_edges_set();
-    sort_edges(count_edges(g, vertex_list, 0), sorted_edge_list, number_edges, 0);
-    int k = 0;
-    while( k < number_edges && !OpBasic::is_tree(result_tree))
-    {
-        if( !result_tree.possui_aresta(sorted_edge_list[k].first, sorted_edge_list[k].second))
-        {
+    
+    // Contar a ocorrência das arestas e ordenar por frequência
+    map<string, int> edges_occurrence = count_edges(g, vertex_list, 0);
+    sort_edges(edges_occurrence, sorted_edge_list, number_edges, 0);
+
+    // Construir a árvore resultado inserindo arestas mais frequentes
+    for (int k = 0; k < number_edges && !OpBasic::is_tree(result_tree); ++k) {
+        if (!result_tree.possui_aresta(sorted_edge_list[k].first, sorted_edge_list[k].second)) {
             result_tree.add_aresta(sorted_edge_list[k].first, sorted_edge_list[k].second);
-            if(OpBasic::is_cyclic(result_tree))
-            {
+            if (OpBasic::is_cyclic(result_tree)) {
                 result_tree.remove_aresta(sorted_edge_list[k].first, sorted_edge_list[k].second);
             }
         }
-        ++k;
     }
+
+    // Calcular o fator da árvore gerada
     int factor = stretch.find_factor(g, result_tree); //By thadeu
+
+    // Atualizar os parâmetros finais do grafo
     g.sum_trees(1); //By thadeu
     set_graph_final_parameters(factor, result_tree, g); //By thadeu
 }
