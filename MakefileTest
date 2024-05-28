@@ -1,0 +1,97 @@
+# 
+# Makefile for some Boost testing
+#
+
+#MY_NAME := hello
+#MY_SRCS := $(wildcard *.cpp)
+#MY_OBJS := ${MY_SRCS:.cpp=.o}
+#MY_INCLUDE_DIRS :=
+#MY_LIBRARY_DIRS :=
+#MY_LIBRARIES := boost_thread-mt
+
+#CXXFLAGS += $(foreach includedir,$(MY_INCLUDE_DIRS),-I$(includedir))
+#CXXFLAGS += -Wall -g
+#LDFLAGS += $(foreach librarydir,$(MY_LIBRARY_DIRS),-L$(librarydir))
+#LDLIBS += $(foreach library,$(MY_LIBRARIES),-l$(library))
+
+#.PHONY: all clean
+
+#all: ${MY_NAME}
+
+#$(MY_NAME): $(MY_OBJS)
+#    $(LINK.cc) $(MY_OBJS) -o $(MY_NAME) $(LDLIBS)
+
+#clean:
+#    @- rm -rf $(MY_OBJS) $(MY_NAME)
+
+# Define header boost directories
+#BOOST_HEADER = -I/Users/cthadeu/repositorios/spanner_tree_generator/src/series1/boost/
+
+# Name of the project
+PROJ_NAME=test
+ 
+# # .c files
+# CPP_SOURCE=$(wildcard *.cpp)
+
+
+# .h files
+HPP_SOURCE=$(wildcard *.hpp)
+ 
+# Object files
+OBJ=$(CPP_SOURCE:.cpp=.o)
+ 
+# Compiler
+CXX = g++
+
+# Define library boost directories
+LDFLAGS = -L/usr/local/boost_1_84_0/libs/
+
+# Define libraries
+TEST_LIBS = -lboost_unit_test_framework -lboost_test 
+
+
+# CXXFLAGS = -Wall -Wextra -Wl -std=c++17 $(BOOST_HEADER) $(LDFLAGS)
+CXXFLAGS = -Wall -Wextra -Wl -std=c++2a $(LDFLAGS) $(TEST_LIBS)
+OUTPUT_DIR = build
+BASE_DIR = src/series1
+TEST_DIR = src/series1/test
+OBJ_DIR = $(OUTPUT_DIR)/test/obj
+BIN_DIR = $(OUTPUT_DIR)/test/bin
+
+# Lista de arquivos de origem .cpp em todos os subdiretórios
+CPP_SOURCES := $(call rwildcard,$(BASE_DIR),*.cpp)
+
+# Lista de arquivos de objeto correspondentes
+OBJ_FILES := $(CPP_SOURCES:.cpp=.o)
+
+# Nome do executável
+EXEC = build/test/bin/test
+
+# Lista de arquivos de objeto
+OBJS = $(SRCS:src/series1/%.cpp=build/%.o)
+
+all: $(BIN_DIR)/test
+
+# $(BIN_DIR)/test: $(OBJ_DIR)/test.o | $(BIN_DIR)
+# 	@ echo 'Building binary using G++ linker: $@'
+# 	$(CXX) $(CXXFLAGS) $(OBJS) $^ -o  $(LDFLAGS) $@ $(TEST_LIBS)
+
+# Regra para construir o executável
+$(EXEC): $(OBJS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXEC) $(LDFLAGS) $@ $(TEST_LIBS)
+
+#$(OBJ_DIR)/test.o: $(TEST_DIR)/test.cpp | $(OBJ_DIR)
+#	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+#$(OBJ_DIR):
+#	mkdir -p $(OBJ_DIR)
+
+#$(BIN_DIR):
+#	mkdir -p $(BIN_DIR)
+
+#clean:
+#	rm -r $(addprefix ${OBJ_DIR}/, *.o *.d app_* ./*/)
+#	rm -r $(addprefix ${BIN_DIR}/, *.o *.d app_* ./*/)
+
+#.PHONY: all clean
