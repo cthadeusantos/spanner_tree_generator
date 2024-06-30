@@ -1,5 +1,5 @@
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |       Instance Name       |        Subdir        | #Successes/#TotalRuns | Avg running time (s) (MIN/MAX) [std_dev] | Avg stretch index (MIN/MAX) [std_dev] | #Vertex | #Edges | Lower Bound | Total trees |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | !4000_12v/graph_1.txt    | 4000_12v/graph_1/    |          1/1          |      1061.22 (1061.22/1061.22) [0]       |              3 (3/3) [0]              |    12   |   44   |      2      |  318457152  |
 | !4000_12v/graph_3.txt    | 4000_12v/graph_3/    |          1/1          |     0.000465 (0.000465/0.000465) [0]     |              3 (3/3) [0]              |    12   |   35   |      3      |      1      |
 | !4000_12v/graph_10.txt   | 4000_12v/graph_10/   |          1/1          |      63.1945 (63.1945/63.1945) [0]       |              3 (3/3) [0]              |    12   |   36   |      2      |   27119980  |

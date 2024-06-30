@@ -1,5 +1,5 @@
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |       Instance Name        |         Subdir        | #Successes/#TotalRuns | Avg running time (s) (MIN/MAX) [std_dev] | Avg stretch index (MIN/MAX) [std_dev] | #Vertex | #Edges | Lower Bound | Total trees |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |  !new_grafos/graph_1.txt  |  new_grafos/graph_1/  |          1/1          |      508.942 (508.942/508.942) [0]       |              3 (3/3) [0]              |    12   |   42   |      2      |  167233140  |
 |  !new_grafos/graph_2.txt  |  new_grafos/graph_2/  |          1/1          |      0.51791 (0.51791/0.51791) [0]       |              3 (3/3) [0]              |    12   |   34   |      3      |    291168   |
 |  !new_grafos/graph_3.txt  |  new_grafos/graph_3/  |          1/1          |      263.856 (263.856/263.856) [0]       |              3 (3/3) [0]              |    12   |   40   |      2      |   63045214  |
