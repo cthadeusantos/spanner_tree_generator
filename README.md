@@ -103,7 +103,7 @@ Please check our Github Webpage for others branches.
 
 ### 2.4. Download binaries
 
-[Binaries for Linux](https://github.com/cthadeusantos/spanner_tree_generator/binaries/linux)
+[Binaries for Linux](https://github.com/cthadeusantos/spanner_tree_generator/tree/main/binaries/linux)
 
 ## 3. Project Architecture
 
