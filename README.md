@@ -25,6 +25,8 @@
 - [7. Known Bugs](#7-known-bugs)
 - [8. To do](#8-to-do)
 - [9. Authorship Information](#9-authorship-information)
+- [Appendix](#appendix)
+  - [SOME STRETCH INDEX VALUES](#some-stretch-index-values)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
@@ -68,10 +70,10 @@ From version 0.2.4 onwards, we are adopting a new versioning system. We have dis
 
 * Past published work:
   * [2022 pre-print](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/IPL_HeuristicsADM_V3%20(2).pdf)
-  * [2022 Base paper](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) of the problem with the first solution set.
+  * [Strategies for generating tree spanners: Algorithms, heuristics and optimal graph classes / 2022](https://www.sciencedirect.com/science/article/pii/S0020019022000229?casa_token=pEzlk6qUuaMAAAAA:WvxZab2gsZnuOGo0nrXI_NUQXVHIke4LjcLzuJi0FOC0JFMYhsY8Jx0_6FsnXNWUq4ATu0kGSPXQ) Paper published in Information Processing Letters.
   * [The paper presented at the Brazilian Operational Research Symposium (SBPO) 2023](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/galoa-proceedings--sbpo-2023--174829.pdf) with a new set of heuristics and the use of centrality measures. If you prefer to download directly from the SBPO Website, [click here (ENGLISH)](https://proceedings.science/sbpo/sbpo-2023/trabalhos/heuristics-for-t-admissibility-with-complex-network-approach?lang=pt-br).
   * If you wish to visually understand heuristics 1, 2, 3 & 4, please refer to the PowerPoint presented at the Brazilian Operational Research Symposium 2023. [ENGLISH](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Presentation-SBPO2023v5-ENG.pdf) or [PORTUGUESE](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/documents/devised/Apresentacao-SBPO2023v5-PT_BR.pdf)
-  * Coming soon, the paper submitted to Wiley featuring the induced cycle method and enhancements yielding up to a 70% improvement in the sequential method, adjacency list and edge list.
+  * [New parallelism and heuristic approaches for generating tree t-spanners in graphs / 2024](http://dx.doi.org/10.1002/cpe.8106) - Paper published in Concurrency and Computation: Practice and Experience Journal
   * Coming soon, link to download Carlos Thadeu's Master’s Thesis (PORTUGUESE) from IC/UFF repository.
 
 ### 2.2. The Errata section
@@ -98,7 +100,7 @@ Previous version can be found here.
 
 Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs & last version for 0.1.x series) 
 
-Please check Github Webpage for others branches
+Please check our Github Webpage for others branches.
 
 ## 3. Project Architecture
 
@@ -421,3 +423,9 @@ We're a group of researchers mainly from **Instituto de Computação/Universidad
 
 **LICENSE**
 * This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
+
+## Appendix
+
+### SOME STRETCH INDEX VALUES
+* [Results for new_grafos instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_new_grafos.md)
+* [1746 Results for Jupiter instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_new_grafos.md)
