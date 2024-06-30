@@ -4,6 +4,7 @@
   - [2.1. Understanding the problem of t\_admissibility](#21-understanding-the-problem-of-t_admissibility)
   - [2.2. The Errata section](#22-the-errata-section)
   - [2.3. Download the code](#23-download-the-code)
+  - [2.4. Download binaries](#24-download-binaries)
 - [3. Project Architecture](#3-project-architecture)
   - [3.1. Pre-requisites (for Linux and WSL)](#31-pre-requisites-for-linux-and-wsl)
   - [3.2. External Dependencies](#32-external-dependencies)
@@ -23,8 +24,9 @@
 - [7. Known Bugs](#7-known-bugs)
 - [8. To do](#8-to-do)
 - [9. Authorship Information](#9-authorship-information)
-- [Appendix](#appendix)
-  - [SOME STRETCH INDEX VALUES](#some-stretch-index-values)
+- [APPENDIX](#appendix)
+  - [Some stretch index values - tables](#some-stretch-index-values---tables)
+  - [Some stretch index values - result\_summary.txt](#some-stretch-index-values---result_summarytxt)
 
 # T-Admissibility Problem <!-- omit in toc -->
 
@@ -95,10 +97,13 @@ We apologize for any confusion and appreciate your understanding.
 [Last stable version](https://github.com/cthadeusantos/spanner_tree_generator/releases/latest)
 
 Previous version can be found here.
-
 Link for [Release 0.1.7e](https://github.com/cthadeusantos/spanner_tree_generator/tree/0.1.7e) (many bugs & last version for 0.1.x series) 
 
 Please check our Github Webpage for others branches.
+
+### 2.4. Download binaries
+
+[Binaries for Linux](https://github.com/cthadeusantos/spanner_tree_generator/binaries/linux)
 
 ## 3. Project Architecture
 
@@ -414,8 +419,12 @@ We're a group of researchers mainly from **Instituto de Computação/Universidad
 **LICENSE**
 * This project is distributed with MIT license in the hope that it is usefull to anyone (see `LICENSE` at root). Although this project is distributed as free software, this fact do not isent it from being a scientific property. If this project aided your research, please do cite any referenced work from the authors above related in the first section of this file.
 
-## Appendix
+## APPENDIX
 
-### SOME STRETCH INDEX VALUES
+### Some stretch index values - tables
 * [Results for new_grafos instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_new_grafos.md)
 * [1746 Results for Jupiter instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_new_grafos.md)
+
+### Some stretch index values - result_summary.txt
+* [result_summary.txt for new_grafos instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/new_grafos/result_summary.txt)
+* [result_summary.txt with 1746 Results for Jupiter instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/jupiter/result_summary.txt)
