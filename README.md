@@ -330,7 +330,7 @@ Please note that compiling the code for MacOS differs slightly from Linux and WS
 To compile, run the following command in the terminal from the project's root directory:
 
 ``````
-make -f Makefile_OSX [OPTION]
+make -f makefile_OSX [OPTION]
 ``````
 
 Where OPTION can be one of the following:
