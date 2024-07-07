@@ -13,7 +13,9 @@
                 "${workspaceFolder}/src/boost/boost/hof",
                 "${workspaceFolder}/**",
                 "/usr/include/**",
-                "/usr/local/include/**"            
+                "/usr/local/include/**",
+                "/usr/include/c++/11", // or the your compiler version
+                "/usr/include/x86_64-linux-gnu" // for 64-bits linux system           
             ],
             "cStandard": "c17",
             "cppStandard": "c++20",

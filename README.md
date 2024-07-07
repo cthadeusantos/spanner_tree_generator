@@ -5,7 +5,9 @@
   - [2.2. The Errata section](#22-the-errata-section)
   - [2.3. Download the code](#23-download-the-code)
 - [3. Project Architecture](#3-project-architecture)
-  - [3.1. Pre-requisites (for Linux and WSL)](#31-pre-requisites-for-linux-and-wsl)
+  - [3.1. Pre-requisites](#31-pre-requisites)
+    - [3.1.1. Instructions for Linux and WSL](#311-instructions-for-linux-and-wsl)
+    - [3.1.2. Additional instructions for Series 1](#312-additional-instructions-for-series-1)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
@@ -100,7 +102,9 @@ This is a science project made primally to be ran in a computational environment
 
 As a science project, each main application is built so it solves an instance in a single execution in a deterministic way. The idea is that each execution should be independent and done in a controlled environment, therefore the results are precise and replicable.
 
-### 3.1. Pre-requisites (for Linux and WSL)
+### 3.1. Pre-requisites 
+
+#### 3.1.1. Instructions for Linux and WSL
 
 The compiler used for every C/C++ component is [GCC](https://gcc.gnu.org/) at version 9.3.0. The build procedure is managed by [Make](https://www.gnu.org/software/make/). These are the only pre-requisites to build and execute everything. Use the following commands to install them:
   
@@ -133,6 +137,13 @@ The following bullets denote the pre-requisites to develop the project.
 * To ease the development of the project, the architecture comes with a bundled with a `launch.json` under VSCode to launch each application using [GDB](https://www.sourceware.org/gdb/). To use the debugger, you will need to install it:
   * `sudo apt-get install gdb`
 
+#### 3.1.2. Additional instructions for Series 1
+
+* [Download Boost Library](https://www.boost.org/)
+* Unpack the Boost Library file (we used the 1.85.0 version)
+* Rename unpacked directory to boost
+* Move boost directory to src directory in Spanner Tree Generator Project
+
 ### 3.2. External Dependencies
 
 * LaTeX is the main tool to devise any scientific material to be published using this project. The primary platform to host such material is [Overleaf](https://www.overleaf.com/project). 
@@ -163,7 +174,6 @@ The following bullets denote the pre-requisites to develop the project.
 * To debug the source code with VSCode and [GDB](https://www.sourceware.org/gdb/), select the *app* that you intend to debug in the upper part of the *Run and Debug* tab (shortcut `ctrl + shift + D`) and execute its rule with the shortcut `F5`. **The developer may need to alter input/output redirection in the `.vscode/launch.json` file**. The default configuration is set to use the `workspace/debug.in` file as input and output the stdout to `workspace/debug.out`. The stderr is printed to the console.
 * There is a source code documentation availabe at `documents/source-doc.html`.
 * To gather results to publish, each source application can be executed through the script `execution-battery.py` located in the tools folder. The script was designed to perform execution batteries while keeping the best solution found. Usage instructions are in the tool itself.
-
 
 ### 3.4. Usage
 
