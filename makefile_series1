@@ -23,7 +23,7 @@ BUILD_DIR := ./build
 RELEASE_BUILD_DIR := ${BUILD_DIR}/release
 DEBUG_BUILD_DIR := ${BUILD_DIR}/debug
 
-CXXFLAGS := --std=c++11 -pthread -MMD -MP
+CXXFLAGS := --std=c++20 -pthread -MMD -MP
 RELEASE_FLAGS := -O3 -DNDEBUG -fno-exceptions -fno-rtti 
 DEBUG_FLAGS := -g
 
