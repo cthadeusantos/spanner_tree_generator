@@ -290,7 +290,6 @@ __pycache__
 .idea
 no_commit/
 
-src/series1
 src/js
 src/old/grafos
 src/old/grafos_barabasi

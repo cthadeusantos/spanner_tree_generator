@@ -9,16 +9,10 @@
             "name": "Linux Default",
             "intelliSenseMode": "linux-gcc-x64",
             "includePath": [
-                "${myDefaultIncludePath}",
-                "${workspaceFolder}/src/boost/boost/hof",
-                "${workspaceFolder}/**",
-                "/usr/include/**",
-                "/usr/local/include/**",
-                "/usr/include/c++/11", // ou a versão do seu compilador
-                "/usr/include/x86_64-linux-gnu" // para sistemas 64-bit       
+                "${myDefaultIncludePath}"
             ],
-            "cStandard": "c17",
-            "cppStandard": "c++20",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
             "browse": {
                 "path": [
                     "${workspaceFolder}/src"
