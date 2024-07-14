@@ -1,20 +1,21 @@
-#include <iostream>
-#include <optional>
-#include <variant>
-#include <string>
 #include "parameters.hpp"
-#include "version.hpp"
 
 Parameters::Parameters()
-    : global_num_threads(0),
+    : global_num_threads(1),
+      global_threads_supported(0),
+      global_used_threads(0),
       global_output(0),
       global_matrix_t(0),
       global_best(false),
       global_nolb(false),
       global_noindex(false),
-      global_running_time(0.0f),
       global_induced_cycle(0),
+      global_induced_cycle_used(0),
       global_save_tree(false),
+      global_seed(0),
+      global_total_arv(0), // Probably deprecated
+      global_running_time(0.0f),
+      global_abort_for_timeout(false),
       global_closeness(0) {}
 
 void Parameters::usage(const std::string &app_name) const {
@@ -22,9 +23,9 @@ void Parameters::usage(const std::string &app_name) const {
     std::cout << "Usage: " << app_name << " [OPTIONS] " << "< INPUT_FILENAME >> OUTPUT_FILENAME" << std::endl << std::endl;
     std::cout << std::endl << "OPTIONS: " << std::endl;
     std::cout << "\t-h\t| --help\tShow this message." << std::endl;
-    std::cout << "\t-t X\t| --thread X\tDefine the numbers of threads. X is the number of threads [current " << global_num_threads.value() << "]" << std::endl << std::endl;
-    std::cout << "\t-rt X\t| --running_time X\tDefine execution time in milliseconds until STOP! default is 0 [current " << global_running_time.value() << "]" << std::endl << std::endl;
-    std::cout << "\t-ci X\t| --induced_cycle X\tDefine execution time in milliseconds until STOP! default is 0 [current " << global_induced_cycle.value() << "]" << std::endl << std::endl;
+    std::cout << "\t-t X\t| --thread X\tDefine the numbers of threads. X is the number of threads [current " << this->global_num_threads << "]" << std::endl << std::endl;
+    std::cout << "\t-rt X\t| --running_time X\tDefine execution time in milliseconds until STOP! default is 0 [current " << this->global_running_time << "]" << std::endl << std::endl;
+    std::cout << "\t-ci X\t| --induced_cycle X\tDefine execution time in milliseconds until STOP! default is 0 [current " << this->global_induced_cycle << "]" << std::endl << std::endl;
     std::cout << "\t\t| --adjacency\tDefine which type file will be read. (adjacency matrix)[DEFAULT]" << std::endl << std::endl;
     std::cout << "\t\t| --edges\tDefine which type file will be read. (edges list)" << std::endl << std::endl;
     std::cout << "\t-v\t| --version\tWhich version is this app." << std::endl << std::endl;
@@ -106,3 +107,8 @@ void Parameters::parseArgs(int argc, char** argv) {
         }
     }
 }
+
+// int Parameters::get_threads_supported() {
+//     // Retorna um valor padrão se o optional estiver vazio
+//     return global_threads_supported.value_or(std::thread::hardware_concurrency());
+// }

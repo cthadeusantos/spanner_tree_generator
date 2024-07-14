@@ -11,7 +11,10 @@ https://github.com/prodeveloper0/WatchDogTimer
 #include <condition_variable>
 #include <functional>
 
-#include "initial_settings.hpp"
+//#include "initial_settings.hpp"
+#include "../code/parameters.hpp"
+// Parameters global_parameters;
+
 
 template<typename Clock>
 class BaseWatchdogTimer
@@ -35,27 +38,48 @@ private:
 	BaseWatchdogTimer<Clock>& operator=(BaseWatchdogTimer<Clock>&&) = delete;
 
 private:
-	void forever(Milliseconds timeout, bool loop)
-	{
-		std::unique_lock<std::mutex> lock(this->mutex);
+	// void forever(Milliseconds timeout, bool loop)
+	// {
+	// 	std::unique_lock<std::mutex> lock(this->mutex);
 
-		do
-		{
-			do
-			{
-				// 'std::condition_variable::wait_for' may return no_timeout although time exceeds timeout
-				// So, must use another variable like 'loop_flag'
-				if (this->loop_condition.wait_for(lock, timeout, [=]() {return !this->loop_flag.load(); }))
-				{
-					if (!this->loop_flag)
-						goto out;
-				}
-			} while (std::chrono::duration_cast<Milliseconds>((Clock::now() - this->clock_counter)) < timeout);
-			this->on_timeout();
+	// 	do
+	// 	{
+	// 		do
+	// 		{
+	// 			// 'std::condition_variable::wait_for' may return no_timeout although time exceeds timeout
+	// 			// So, must use another variable like 'loop_flag'
+	// 			if (this->loop_condition.wait_for(lock, timeout, [=]() {return !this->loop_flag.load(); }))
+	// 			{
+	// 				if (!this->loop_flag)
+	// 					goto out;
+	// 			}
+	// 		} while (std::chrono::duration_cast<Milliseconds>((Clock::now() - this->clock_counter)) < timeout);
+	// 		this->on_timeout();
+	// 	} while (loop);
+
+	// out:
+	// 	return;
+	// }
+	void forever(std::chrono::milliseconds timeout, bool loop) {
+		std::unique_lock<std::mutex> lock(mutex);
+
+		// Use structured binding for clarity and potential performance gain
+		auto const now = Clock::now();
+		auto const wait_duration = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(now - clock_counter);
+
+		do {
+			if (loop_condition.wait_for(lock, wait_duration, [=]() -> bool {
+				// Lambda capture by copy for loop_flag
+				return !loop_flag.load();
+			})) {
+			if (!loop_flag) {
+				return; // Exit the loop directly
+			}
+			} else {
+			// Handle timeout explicitly if wait_for doesn't return no_timeout
+			on_timeout();
+			}
 		} while (loop);
-
-	out:
-		return;
 	}
 
 public:
@@ -123,7 +147,7 @@ public:
   virtual void on_timeout()
   {
     // To do when your dog is bark.
-    abort_for_timeout = true;
+    global_parameters.global_abort_for_timeout = true;
   }
 };
 #endif

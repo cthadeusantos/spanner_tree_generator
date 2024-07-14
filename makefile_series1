@@ -34,7 +34,7 @@ INCLUDE := -I${SRC_DIR}/boost -I${SRC_DIR}/series1
 
 
 MAIN := app_MAIN
-app_MAIN_FILES := series1/main.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/my_libs/ -name *.cpp))
+app_MAIN_FILES := series1/brute-force/main-bf.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/libs/ -name *.cpp))
 
 # CREATE := app_CREATE
 # app_CREATE_FILES := series1/tools/main-create.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/series1/my_libs/ -name *.cpp))

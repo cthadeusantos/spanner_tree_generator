@@ -1,3 +1,4 @@
+#pragma once
 #ifndef INITIALS_HPP_
 #define INITIALS_HPP_
 
