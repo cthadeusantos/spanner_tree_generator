@@ -13,6 +13,7 @@ private:
     unsigned int stretch_index = 0;
 public:
     int girth = 0;
+    std::vector<std::tuple<int, int> > best_tree;
 
     // Define types using base types
     using Base = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;

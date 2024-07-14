@@ -24,7 +24,7 @@ int OpBasic::lowestCicleWithEdge(Graph &g, int u, int v)
     int num_vertex = g.numVertices();
     while (ciclo.empty() && n <= num_vertex)
     {
-        ciclo = cycle(g, n, u, v);
+        ciclo = cycle2(g, n, u, v);
         ++n;
     }
     return ciclo.size();
@@ -62,15 +62,14 @@ std::vector<int> OpBasic::cycle(Graph &g, int n)
 /*!
     Seek if vertex belongs a cycle from a specific vertex
     \param g a graph instance that represents the graph
-    \param n an integer that represents the numbers of vertices
+    \param n an integer that represents the numbers of vertices of cycle
     \param u an integer that represents a seek vertex
     \param v an integer that represents a start vertex
     \return a vector with vertices list that belongs a cycle
 */
 std::vector<int> OpBasic::cycle(Graph &g, int n, int u, int v)
 {
-    // o vértice v já se encontra no ciclo.
-    std::vector<int> ciclo(1, v);
+    std::vector<int> ciclo(1, v); // o vértice v já se encontra no ciclo
     int num_vertex = g.numVertices();
     bool visitado[num_vertex];
     bool achou = false;
@@ -92,6 +91,55 @@ std::vector<int> OpBasic::cycle(Graph &g, int n, int u, int v)
 
 //! Detect a cycle
 /*!
+    Seek if vertex belongs a cycle from a specific vertex
+    \param g a graph instance that represents the graph
+    \param n an integer that represents the numbers of vertices of cycle
+    \param u an integer that represents a seek vertex
+    \param v an integer that represents a start vertex
+    \return a vector with vertices list that belongs a cycle
+*/
+// std::vector<int> OpBasic::cycle2(Graph &g, int n, Vertex u, Vertex v)
+// {
+//     std::vector<int> ciclo(1, v); // o vértice v já se encontra no ciclo
+//     int num_vertex = g.numVertices();
+//     bool visited[num_vertex];
+//     bool found = false;
+
+//     for(int i=0; i < num_vertex; ++i){
+//         visited[i] = false;
+//     }
+//     visited[v] = true; // o vértice 'v' já se encontra no ciclo
+
+//     // começa a busca pelo vértice 'u', tendo como "incio" o vértice 'v'
+//     find_cycle2(g,  n-2, u, v, ciclo, visited, &found);
+
+//     if (!found) {
+//         ciclo.pop_back(); // remove o vertice 'v'
+//     }
+
+//     return ciclo;
+// }
+std::vector<int> OpBasic::cycle2(Graph &g, int n, Vertex u, Vertex v)
+{
+    std::vector<int> ciclo{(int)v}; // v já se encontra no ciclo
+    int num_vertex = g.numVertices();
+    std::vector<bool> visited(num_vertex, false);
+
+    visited[v] = true; // o vértice 'v' já se encontra no ciclo
+    bool found = false;
+
+    // começa a busca pelo vértice 'u', tendo como "início" o vértice 'v'
+    find_cycle2(g, n - 2, u, v, ciclo, visited, found);
+
+    if (!found) {
+        ciclo.pop_back(); // remove o vértice 'v'
+    }
+
+    return ciclo;
+}
+
+//! Detect a cycle
+/*!
     PARECE SER UM DFS FAZENDO BACKTRAKING PARA DETECTAR UM CICLO
     \param g a graph instance that represents the graph
     \param i a integer that represents node
@@ -102,33 +150,119 @@ std::vector<int> OpBasic::cycle(Graph &g, int n, int u, int v)
     \param achou a boolean ??????????????????????
     \return a vector with edges' list
 */
+// void OpBasic::find_cycle(Graph &g, int i, int n, const int start, std::vector<int>& v, bool* visitado, bool* achou)
+// {
+     
+//     v.push_back(i);
+//     visitado[i] = true;
+//     if( n == 0 ){
+//         if( g.has_edge(i, start) ){
+//             if ( !has_chord(g, v) ){
+//                 *achou = true; // ciclo encontrado
+//                 return;
+//             } 
+//         }
+//         //v.pop_back();
+//         //visitado[i] = false;
+//     }
+//     else {
+//         for(int u : g.getAdjacentVertices(i) ){
+//             if(!visitado[u]){
+//                 find_cycle(g, u, n-1, start, v, visitado, achou); // chamada recursiva
+//             }
+//             if( *achou ) return; // ciclo encontrado;
+//         }
+//         //v.pop_back();
+//         //visitado[i] = false;
+//     }
+//     v.pop_back();
+//     visitado[i] = false;
+// }
+
+
+// RECFACTORING WORK
 void OpBasic::find_cycle(Graph &g, int i, int n, const int start, std::vector<int>& v, bool* visitado, bool* achou)
 {
-     
     v.push_back(i);
     visitado[i] = true;
-    if( n == 0 ){
-        if( g.has_edge(i, start) ){
-            if ( !has_chord(g, v) ){
+
+    if (n == 0) {
+        if (g.has_edge(i, start)) {
+            if (!has_chord(g, v)) {
                 *achou = true; // ciclo encontrado
                 return;
-            } 
-        }
-        //v.pop_back();
-        //visitado[i] = false;
-    }
-    else {
-        for(int u : g.getAdjacentVertices(i) ){
-            if(!visitado[u]){
-                find_cycle(g, u, n-1, start, v, visitado, achou); // chamada recursiva
             }
-            if( *achou ) return; // ciclo encontrado;
         }
-        //v.pop_back();
-        //visitado[i] = false;
+    } else {
+        for (int u : g.getAdjacentVertices(i)) {
+            if (!visitado[u]) {
+                find_cycle(g, u, n - 1, start, v, visitado, achou); // chamada recursiva
+            }
+            if (*achou) return; // ciclo encontrado
+        }
     }
+
     v.pop_back();
     visitado[i] = false;
+}
+
+//! Detect a cycle
+/*!
+    PARECE SER UM DFS FAZENDO BACKTRAKING PARA DETECTAR UM CICLO
+    \param g a graph instance that represents the graph
+    \param n a integer that represents the cycle size
+    \param i a Vertex that represents node
+    \param u a Vertex to start seek ?????????????????
+    \param v a vector that represents the cycle vertices 
+    \param visited a vector of boolean that represents the visited vertices
+    \param found a boolean that represents that the method found a cycle without 
+    \return a vector with edges' list
+*/
+// void OpBasic::find_cycle2(Graph &g, int size_cycle, Vertex i,  const Vertex start, std::vector<int>& verticesOFcycle, bool *visited, bool *found) {
+//     verticesOFcycle.push_back(i);
+//     visited[i] = true;
+
+//     if (size_cycle == 0) {
+//         if (g.has_edge(i, start)) {
+//             if (!has_chord(g, verticesOFcycle)) {
+//                 *found = true; // ciclo encontrado
+//                 return;
+//             }
+//         }
+//     } else {
+//         for (int u : g.getAdjacentVertices(i)) {
+//             if (!visited[u]) {
+//                 find_cycle2(g, size_cycle - 1, u, start, verticesOFcycle, visited, found); // chamada recursiva
+//             }
+//             if (*found) return; // ciclo encontrado
+//         }
+//     }
+//     verticesOFcycle.pop_back();
+//     visited[i] = false;
+// }
+void OpBasic::find_cycle2(Graph &g, int size_cycle, Vertex i, const Vertex start, std::vector<int>& verticesOFcycle, std::vector<bool>& visited, bool& found)
+{
+    verticesOFcycle.push_back(i);
+    visited[i] = true;
+
+    if (size_cycle == 0) {
+        if (g.has_edge(i, start)) {
+            if (!has_chord(g, verticesOFcycle)) {
+                found = true; // ciclo encontrado
+                return;
+            }
+        }
+    } else {
+        for (int u : g.getAdjacentVertices(i)) {
+            if (!visited[u]) {
+                find_cycle2(g, size_cycle - 1, u, start, verticesOFcycle, visited, found); // chamada recursiva
+            }
+            if (found) return; // ciclo encontrado
+        }
+    }
+
+    verticesOFcycle.pop_back();
+    visited[i] = false;
 }
 
 int OpBasic::shortest_cycle(const boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>& g) {
@@ -172,51 +306,51 @@ int OpBasic::shortest_cycle(const boost::adjacency_list<boost::vecS, boost::vecS
     \param ciclo a vector of integers that represents a list of vertices of a cycle 
     \return a boolean (true, has a chord , false, not has a chord)
 */
-// bool OpBasic::has_chord(Graph& g, std::vector<int> ciclo)
-// {
+bool OpBasic::has_chord(Graph& g, std::vector<int> ciclo)
+{
 
-//     std::vector<int>::iterator it;
-//     std::vector<int>::iterator that;
+    std::vector<int>::iterator it;
+    std::vector<int>::iterator that;
 
-//     it = ciclo.begin();
+    it = ciclo.begin();
 
-//     // primeira iteracao
-//     that = it+2;
-//     while(that != ciclo.end()-1){
-//         //std::cout << "it, that = " << *it << ", " << *that << std::endl;
-//         if ( g.has_edge(*it, *that)){
-//             return true;
-//         }
-//         ++that;
-//     }
-//     ++it;
+    // primeira iteracao
+    that = it+2;
+    while(that != ciclo.end()-1){
+        //std::cout << "it, that = " << *it << ", " << *that << std::endl;
+        if ( g.has_edge(*it, *that)){
+            return true;
+        }
+        ++that;
+    }
+    ++it;
 
-//     // proximas iteracoes
-//     while( it != ciclo.end()-2){
-//         that = it + 2;
-//         while(that != ciclo.end()){
-//             //std::cout << "it, that = " << *it << ", " << *that << std::endl;
-//             if ( g.has_edge(*it, *that)){
-//                 return true;
-//             }
-//             ++that;
-//         }
-//         ++it;
-//     }
-//     return false;
-// }
-
-// REFATORADO PARA C++20
-bool OpBasic::has_chord(Graph& g, const std::vector<int>& ciclo) {
-    for (auto it = ciclo.begin(); it != ciclo.end() - 2; ++it) {
-        for (auto that = it + 2; that != ciclo.end(); ++that) {
-            if (g.has_edge(*it, *that)) {
+    // proximas iteracoes
+    while( it != ciclo.end()-2){
+        that = it + 2;
+        while(that != ciclo.end()){
+            //std::cout << "it, that = " << *it << ", " << *that << std::endl;
+            if ( g.has_edge(*it, *that)){
                 return true;
             }
+            ++that;
         }
+        ++it;
     }
     return false;
 }
+
+// REFATORADO PARA C++20
+// bool OpBasic::has_chord(Graph& g, const std::vector<int>& ciclo) {
+//     for (auto it = ciclo.begin(); it != ciclo.end() - 2; ++it) {
+//         for (auto that = it + 2; that != ciclo.end(); ++that) {
+//             if (g.has_edge(*it, *that)) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
 
 
 /**

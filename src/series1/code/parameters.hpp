@@ -13,7 +13,7 @@
 
 class Parameters {
 public:
-    unsigned short int global_threads_supported;
+    unsigned short int global_max_threads_supported;
     unsigned short int global_num_threads;
     unsigned short int global_used_threads;
     int global_output;

@@ -34,6 +34,11 @@ private:
     // static int traco(int* m, int ordem);
     // static void initMatrix(int* m, int ordem, int val=0);
 public:
+    // Define types using base types
+    using Base = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
+    using Vertex = boost::graph_traits<Base>::vertex_descriptor;
+    using Edge = boost::graph_traits<Base>::edge_descriptor;
+
     OpBasic() { }
     ~OpBasic() { }
 
@@ -46,14 +51,16 @@ public:
     // Retorna uma lista de vertices que formam um ciclo sem corda de tamanho 'n'
     static std::vector<int> cycle(Graph &g, int n);
     static std::vector<int> cycle(Graph &g, int n, int u, int v);
-
+    static std::vector<int> cycle2(Graph &g, int n, Vertex u, Vertex v);
+    
     static void find_cycle(Graph &g, int i, int n, const int start,std::vector<int>& v, bool* visitado, bool* achou);
-
+    static void find_cycle2(Graph &g, int size_cycle, Vertex i,  const Vertex start, std::vector<int> &cycle_vertices, bool *visited, bool *found);
+    static void find_cycle2(Graph &g, int size_cycle, Vertex i, const Vertex start, std::vector<int>& verticesOFcycle, std::vector<bool>& visited, bool& found);
     static int shortest_cycle(const boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>& g);
 
     // Grafo possui corda ?
-    //static bool has_chord(Graph& g, std::vector<int> ciclo);
-    static bool has_chord(Graph& g, const std::vector<int>& ciclo);// ESSE AQUI FOI GERADO QUANDO FOI REFATORADO, TESTAR
+    static bool has_chord(Graph& g, std::vector<int> ciclo);
+    //static bool has_chord(Graph& g, const std::vector<int>& ciclo);// ESSE AQUI FOI GERADO QUANDO FOI REFATORADO, TESTAR
 
     //static bool cyclic(Graph& g, int v);
     static bool cyclic(Graph& g, int v);

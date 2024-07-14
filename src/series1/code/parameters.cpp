@@ -2,9 +2,9 @@
 
 Parameters::Parameters()
     : global_num_threads(1),
-      global_threads_supported(0),
+      global_max_threads_supported(std::thread::hardware_concurrency()),
       global_used_threads(0),
-      global_output(0),
+      global_output(1),
       global_matrix_t(0),
       global_best(false),
       global_nolb(false),
