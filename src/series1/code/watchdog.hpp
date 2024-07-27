@@ -38,28 +38,6 @@ private:
 	BaseWatchdogTimer<Clock>& operator=(BaseWatchdogTimer<Clock>&&) = delete;
 
 private:
-	// void forever(Milliseconds timeout, bool loop)
-	// {
-	// 	std::unique_lock<std::mutex> lock(this->mutex);
-
-	// 	do
-	// 	{
-	// 		do
-	// 		{
-	// 			// 'std::condition_variable::wait_for' may return no_timeout although time exceeds timeout
-	// 			// So, must use another variable like 'loop_flag'
-	// 			if (this->loop_condition.wait_for(lock, timeout, [=]() {return !this->loop_flag.load(); }))
-	// 			{
-	// 				if (!this->loop_flag)
-	// 					goto out;
-	// 			}
-	// 		} while (std::chrono::duration_cast<Milliseconds>((Clock::now() - this->clock_counter)) < timeout);
-	// 		this->on_timeout();
-	// 	} while (loop);
-
-	// out:
-	// 	return;
-	// }
 	void forever(std::chrono::milliseconds timeout, bool loop) {
 		std::unique_lock<std::mutex> lock(mutex);
 

@@ -35,8 +35,8 @@ std::string get_filename_v2();
 Graph read_graph_file();
 Graph read_graph_file_edges_list();
 
-bool validarEntradaArestas(std::string entrada);
-bool validarEntradaAdjacencia(std::string entrada);
+bool validateEdgeInput(std::string entrada);
+bool validateAdjacencyInput(std::string entrada);
 bool validateInputBeforeExecution(int argc, char** argv);
 
 #endif //CTFUNCTIONS_HPP_

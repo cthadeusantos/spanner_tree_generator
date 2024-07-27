@@ -20,15 +20,13 @@
 
 //#include "../my_libs/library3.hpp"
 
-
-
-
-
 class Stretch
 {
     private:
-        int index;
-        Graph tree;
+        int index {-1};
+        Graph tree {Graph()};
+        int lowerBound(Graph& g); // calculo do limite inferior para o index
+
         //std::mutex mtx;
         //int total_arv;
         
@@ -36,13 +34,11 @@ class Stretch
 
     // static tambem não funcionou... // static void find_index_pararell(Graph& g, int raiz, int start, int end);
 
-        // calculo do limite inferior para o index
-        int lowerBound(Graph& g);
 
     public:
         Stretch() { 
-            index = -1;
-            tree = Graph();
+            //index = -1;
+            //tree = Graph();
             //total_arv=0;
         }
 
@@ -70,7 +66,6 @@ class Stretch
         // Mantidos até ter certeza que não são necessários CT
         void setIndex(int val) { index = val; } // Precisei criar por força maior... DJ
         void setTree(Graph t) { tree = t; } // Precisei criar por força maior... DJ
-
 
         int find_index(Graph &original, Graph &change); //
 };

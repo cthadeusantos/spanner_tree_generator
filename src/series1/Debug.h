@@ -18,9 +18,11 @@
 #endif //DEBUG_H
 
 #ifdef MN_BF_SEQ_DEBUG
-    #define DEBUG
+    #define DEBUG(x) x
+    #define DEBUG_STREAM std::cerr
 #else
-    #define DEBUG while (false)
+    #define DEBUG(x) do {} while (0)
+    #define DEBUG_STREAM std::cout
 #endif
 
 #ifdef WINDOWS

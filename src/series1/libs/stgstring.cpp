@@ -7,7 +7,7 @@
  * 
  * Reference:
  * https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
- * Solution 1.3
+ * Solution 1.3 (Adapted to spanner tree generator)
  * @author Carlos Thadeu
  * @param s a string
  * @param delimiter a char that represents a delimiter of a string

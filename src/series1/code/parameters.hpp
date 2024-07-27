@@ -2,6 +2,7 @@
 #ifndef PARAMETERS_HPP
 #define PARAMETERS_HPP
 
+#include <atomic>
 #include <optional>
 #include <variant>
 #include <string>
@@ -16,6 +17,7 @@ public:
     unsigned short int global_max_threads_supported;
     unsigned short int global_num_threads;
     unsigned short int global_used_threads;
+    
     int global_output;
     int global_matrix_t;
     int global_induced_cycle;
@@ -29,9 +31,10 @@ public:
     bool global_nolb;
     bool global_noindex;
     bool global_save_tree;
-    bool global_abort_for_timeout;
+
+    std::atomic_bool global_abort_for_timeout;
     
-    float global_running_time;
+    unsigned int global_running_time;
 
     void usage(const std::string &app_name) const;
     void parseArgs(int argc, char** argv);

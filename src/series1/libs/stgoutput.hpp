@@ -11,6 +11,7 @@
 #include "../code/parameters.hpp"
 #include "../Debug.h"
 
-void output_data(std::string &run_name, std::string &filename, double &lastExecutionTime, int &lower_limit, Graph &graph);
+//void output_data(std::string &run_name, std::string &filename, double &lastExecutionTime, int &lower_limit, Graph &graph);
+void output_data(std::string &run_name, std::string &filename, double &lastExecutionTime, Graph &graph);
 
 #endif //STGOUTPUT_HPP_

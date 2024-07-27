@@ -9,14 +9,6 @@ Graph::Graph() = default;
     \param n a integer that represents the vertex number to add
 */
 Graph::Graph(int n) {
-    // graph = new std::vector<std::vector<int> >(n, std::vector<int>());
-    //qtdVertices = n;
-    //qtdArestas = 0;
-    // for (int i = 0; i < n; ++i)
-    // {
-    //     //graph.push_back(std::vector<int>());
-    //     graph.addVertex();
-    // }
     this->addVertices(n);
 }
 
@@ -31,15 +23,6 @@ void Graph::addVertices(int n) {
         this->addVertex();
     }
 }
-
-// Function to add n vertices
-// Graph::Vertex Graph::add_vertices(int n) {
-//     Vertex lastVertex;
-//     for (int i = 0; i < n; ++i) {
-//         lastVertex = boost::add_vertex(*this);
-//     }
-//     return lastVertex; // Retorna o último vértice adicionado
-// }
 
 // Function to add an edge
 std::pair<Graph::Edge, bool> Graph::addEdge(Vertex u, Vertex v) {
@@ -61,7 +44,6 @@ std::size_t Graph::getDegree(Vertex v) const {
     return boost::degree(v, *this);
 }
 
-//! Function to get the list of adjacency to a vertex
 /*!
     Function to get the list of adjacency to a vertex
     \param v a integer that represents the vertex number
@@ -81,7 +63,6 @@ bool Graph::has_edge(int v, int u){
     return boost::edge(u, v, *this).second;
 }
 
-//! Gets the list of edges
 /*!
     Gets the list of edges
     \return a vector of integer
@@ -133,3 +114,11 @@ unsigned int Graph::stretchIndex(){
 unsigned long long int Graph::totalTrees(){
     return this->total_trees;
 }
+
+void Graph::set_lowerBound(unsigned int value){
+    this->lower_bound = value;
+};
+
+unsigned int Graph::get_lowerBound(){
+    return this->lower_bound;
+};

@@ -9,18 +9,19 @@
 class Graph : public boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>
 {
 private:
-    unsigned long long int total_trees = 0;
-    unsigned int stretch_index = 0;
+    unsigned long long int total_trees {0};
+    unsigned int stretch_index {0};
+    unsigned int lower_bound {1};
 public:
-    int girth = 0;
-    std::vector<std::tuple<int, int> > best_tree;
+    int girth {0};
+    std::vector<std::tuple<int, int>> best_tree;
 
     // Define types using base types
     using Base = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
     using Vertex = boost::graph_traits<Base>::vertex_descriptor;
     using Edge = boost::graph_traits<Base>::edge_descriptor;
 
-    // Constructor
+    // Constructors
     Graph();
     Graph(int n);
 
@@ -30,9 +31,8 @@ public:
         // For example, free dynamically allocated resources.
     }
 
-
     // Function to add a vertex
-    Vertex addVertex();
+    Graph::Vertex addVertex();
 
     // Function to add n vertices
     Vertex add_vertices(int n);
@@ -44,8 +44,7 @@ public:
     std::size_t numEdges() const;
 
     // Function to get the degree of a vertex
-    std::size_t getDegree(Vertex v) const;
-
+    std::size_t getDegree(Vertex v) const; 
     // Função para obter vértices adjacentes
     //std::vector<int> adjList(Vertex v) const;
 
@@ -58,26 +57,39 @@ public:
     // Gets the list of edges
     std::vector<int> edgeList() const;
 
-    // Gets the girth of a graph
+    // Gets the girth of a graph 
     unsigned int get_girth();
 
     // Adds n vertices to a graph
-    void addVertices(int n);
+    void addVertices(int n); 
     // Graph::Vertex add_vertices(int n);
 
     // Function to remove an edge
-    void removeEdge(Vertex u, Vertex v);
-
+    void removeEdge(Vertex u, Vertex v); 
+    
     // Function to add an edge
     std::pair<Graph::Edge, bool> addEdge(Vertex u, Vertex v);
 
+    // Sum a new tree to the trees counter
     void sum_trees();
+
+    // Sum 'n' trees to the trees counter
     void sum_trees(unsigned long long int value);
 
+    // Return the total trees
+    unsigned long long int totalTrees();
+
+    // Set the graph stretch index
     void set_stretch_index(unsigned int value);
+
+    // Return the graph stretch index 
     unsigned int stretchIndex();
     
-    unsigned long long int totalTrees();
+    // Set the graph lower bound
+    void set_lowerBound(unsigned int value);
+
+    //return the graph lower bound
+    unsigned int get_lowerBound();
 };
 
 #endif // GRAPH_HPP_

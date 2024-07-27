@@ -60,7 +60,7 @@ void Stretch::find_index(Graph& g)
     // std::string fileName = "SEQsaida.txt";  // REMOVER - APENAS PARA TESTE
     // std::string str_tree;                   // REMOVER - APENAS PARA TESTE
 
-    while( v >= 0 and !(global_parameters.global_abort_for_timeout)){
+    while(v >= 0 and !(global_parameters.global_abort_for_timeout)){
         if( prox_vizinho[v] == g.getDegree(v) ){
             prox_vizinho[v] = 0;
             --v;
@@ -103,7 +103,7 @@ void Stretch::find_index(Graph& g)
                         if(f < index){
                             index = f;
                             this->tree = tree;
-                            if(index == grt-1){// alteracao LF
+                            if(index == grt - 1){// alteracao LF
                               break;// alteracao LF
                             }// alteracao LF
                         }

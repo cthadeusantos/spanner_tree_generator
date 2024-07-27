@@ -14,7 +14,7 @@ Parameters::Parameters()
       global_save_tree(false),
       global_seed(0),
       global_total_arv(0), // Probably deprecated
-      global_running_time(0.0f),
+      global_running_time(0),
       global_abort_for_timeout(false),
       global_closeness(0) {}
 
