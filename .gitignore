@@ -302,4 +302,6 @@ trash/
 results/bks/tadmiss/*
 !results/bks/tadmiss/.temp
 !tools/batteries/00-example*
+workspace/*
+!workspace/workspace.tar.gz
 # End of https://www.toptal.com/developers/gitignore/api/c,c++,python,visualstudiocode,notepadpp
