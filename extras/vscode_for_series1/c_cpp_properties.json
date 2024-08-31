@@ -1,0 +1,33 @@
+{
+    "env": {
+        "myDefaultIncludePath": [
+            "${workspaceFolder}/src/**"
+        ]
+    },
+    "configurations": [
+        {
+            "name": "Linux Default",
+            "intelliSenseMode": "linux-gcc-x64",
+            "includePath": [
+                "${myDefaultIncludePath}",
+                "${workspaceFolder}/src/boost/boost/hof",
+                "${workspaceFolder}/**",
+                "/usr/include/**",
+                "/usr/local/include/**",
+                "/usr/include/c++/11", // ou a versão do seu compilador
+                "/usr/include/x86_64-linux-gnu" // para sistemas 64-bit       
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/src"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

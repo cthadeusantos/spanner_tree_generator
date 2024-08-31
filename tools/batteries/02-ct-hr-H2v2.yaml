@@ -1,0 +1,131 @@
+---                               
+
+name: ct-hr-H2v2
+problem: tadmiss                   
+description: Running heuristic H2v2
+exec: release/app_HR-H2v2
+default_timelimit: 1200
+default_iterations: 10
+instance_list:
+- instance: grafos/grafo_10.txt
+  args: -t 4 -s
+- instance: grafos/grafo_10.txt
+  args: -t 8 -s
+- instance: grafos/grafo_10.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_10.txt
+  args: -t 32 -s
+- instance: grafos/grafo_10.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_11.txt
+  args: -t 4 -s
+- instance: grafos/grafo_11.txt
+  args: -t 8 -s
+- instance: grafos/grafo_11.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_11.txt
+  args: -t 32 -s
+- instance: grafos/grafo_11.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_12.txt
+  args: -t 4 -s
+- instance: grafos/grafo_12.txt
+  args: -t 8 -s
+- instance: grafos/grafo_12.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_12.txt
+  args: -t 32 -s
+- instance: grafos/grafo_12.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_13.txt
+  args: -t 4 -s
+- instance: grafos/grafo_13.txt
+  args: -t 8 -s
+- instance: grafos/grafo_13.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_13.txt
+  args: -t 32 -s
+- instance: grafos/grafo_13.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_14.txt
+  args: -t 4 -s
+- instance: grafos/grafo_14.txt
+  args: -t 8 -s
+- instance: grafos/grafo_14.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_14.txt
+  args: -t 32 -s
+- instance: grafos/grafo_14.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_15.txt
+  args: -t 4 -s
+- instance: grafos/grafo_15.txt
+  args: -t 8 -s
+- instance: grafos/grafo_15.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_15.txt
+  args: -t 32 -s
+- instance: grafos/grafo_15.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_16.txt
+  args: -t 4 -s
+- instance: grafos/grafo_16.txt
+  args: -t 8 -s
+- instance: grafos/grafo_16.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_16.txt
+  args: -t 32 -s
+- instance: grafos/grafo_16.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_17.txt
+  args: -t 4 -s
+- instance: grafos/grafo_17.txt
+  args: -t 8 -s
+- instance: grafos/grafo_17.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_17.txt
+  args: -t 32 -s
+- instance: grafos/grafo_17.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_18.txt
+  args: -t 4 -s
+- instance: grafos/grafo_18.txt
+  args: -t 8 -s
+- instance: grafos/grafo_18.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_18.txt
+  args: -t 32 -s
+- instance: grafos/grafo_18.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_19.txt
+  args: -t 4 -s
+- instance: grafos/grafo_19.txt
+  args: -t 8 -s
+- instance: grafos/grafo_19.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_19.txt
+  args: -t 32 -s
+- instance: grafos/grafo_19.txt
+  args: -t 64 -s
+
+- instance: grafos/grafo_20.txt
+  args: -t 4 -s
+- instance: grafos/grafo_20.txt
+  args: -t 8 -s
+- instance: grafos/grafo_20.txt
+  args: -t 16 -s                    
+- instance: grafos/grafo_20.txt
+  args: -t 32 -s
+- instance: grafos/grafo_20.txt
+  args: -t 64 -s
+
+...                               
