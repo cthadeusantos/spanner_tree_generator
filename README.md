@@ -8,7 +8,6 @@
 - [3. Project Architecture](#3-project-architecture)
   - [3.1. Pre-requisites](#31-pre-requisites)
     - [3.1.1. Instructions for Linux and WSL](#311-instructions-for-linux-and-wsl)
-    - [3.1.2. Additional instructions for Series 1](#312-additional-instructions-for-series-1)
   - [3.2. External Dependencies](#32-external-dependencies)
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
@@ -149,13 +148,6 @@ The following bullets denote the pre-requisites to develop the project.
     * Quick install: `sudo apt-get install graphviz texlive-full ghostscript-x`
 * To ease the development of the project, the architecture comes with a bundled with a `launch.json` under VSCode to launch each application using [GDB](https://www.sourceware.org/gdb/). To use the debugger, you will need to install it:
   * `sudo apt-get install gdb`
-
-#### 3.1.2. Additional instructions for Series 1
-
-* [Download Boost Library](https://www.boost.org/)
-* Unpack the Boost Library file (we used the 1.85.0 version)
-* Rename unpacked directory to boost
-* Move boost directory to src directory in Spanner Tree Generator Project
 
 ### 3.2. External Dependencies
 
