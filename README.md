@@ -311,6 +311,12 @@ This project has internal tools to support development. Usage examples and detai
 
 ### 3.7. For EXPERIMENTAL Series 1 (Linux and MacOS)
 
+
+> [!NOTE]
+> Disclaimer:
+> 1. During Series 1 development, please go to the series1 branch
+> 2. series1 will not be available in the main branch during development.
+
 For the upcoming version 1, we will be incorporating libraries from the Boost.org project into our project. If you want to learn more about the [Boost.org project, click here](https://www.boost.org).
 
 #### Setting up BOOST:
