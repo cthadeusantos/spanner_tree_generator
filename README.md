@@ -466,9 +466,11 @@ We're a group of researchers mainly from **Instituto de Computação/Universidad
 ## APPENDIX
 
 ### Some stretch index values - tables
+* [Results for grafos instances (first and original instances 10 to 20 vertices)](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_grafos_10_20.md)
 * [Results for new_grafos instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_new_grafos.md)
 * [1746 Results for Jupiter instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/table_jupiter.md)
 
 ### Some stretch index values - result_summary.txt
+* [result_summary.txt for grafos instances (first and original instances 10 to 20 vertices)](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/grafos/result_summary.txt)
 * [result_summary.txt for new_grafos instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/new_grafos/result_summary.txt)
 * [result_summary.txt with 1746 Results for Jupiter instances](https://github.com/cthadeusantos/spanner_tree_generator/blob/main/results/jupiter/result_summary.txt)
