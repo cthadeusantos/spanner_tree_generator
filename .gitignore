@@ -266,7 +266,10 @@ cython_debug/
 
 # Ignore code-workspaces
 *.code-workspace
-
+workspace
+instances
+tools/batteries
+results
 # Ignore doxygen buildigs
 documents/doxygen/html/
 documents/doxugen/html/*.map

@@ -167,7 +167,7 @@ treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int ac
     treeWFactor result, best_result;
     best_result.factor = INT_MAX; // Inicializa o melhor fator como o máximo inteiro possível
     int n = g.getQtdVertices();
-    int limit = INT_MAX; // Limite para o número de árvores geradas
+    int limit = 5; // Limite para o número de árvores geradas
 
     // Verifica se o limite de árvores criadas foi atingido
     if (trees_created > limit) return best_result;
@@ -269,7 +269,7 @@ void sort_edges(map<string, int>& edges_occurrence, vector<pair<int, int>>& edge
 
 map<string, int> count_edges(Graph &g, vector<int> &vertex_list, int actual_position) {
     int n = g.getQtdVertices();
-    int limit = INT_MAX;
+    int limit = 1;
     map<string, int> edges_occurrence;
     int trees_created = 0;
     treeWFactor result;
