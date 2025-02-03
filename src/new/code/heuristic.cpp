@@ -167,7 +167,7 @@ treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int ac
     treeWFactor result, best_result;
     best_result.factor = INT_MAX; // Inicializa o melhor fator como o máximo inteiro possível
     int n = g.getQtdVertices();
-    int limit = 5; // Limite para o número de árvores geradas
+    int limit = INT_MAX; // Limite para o número de árvores geradas
 
     // Verifica se o limite de árvores criadas foi atingido
     if (trees_created > limit) return best_result;
@@ -175,13 +175,11 @@ treeWFactor verify_possibilities(Graph& g, std::vector<int>& vertex_list, int ac
     // Loop para verificar empates e gerar novas possibilidades de árvores
     for (int i = actual_position; i < n - 1; ++i) {
         if (trees_created > limit) break; // Interrompe se o limite for atingido
-        if (g.grau(vertex_list[i]) == g.grau(vertex_list[i + 1])) { // Verifica empate de grau
-            // Cria uma cópia da lista de vértices e troca os vértices empatados
+        if (g.grau(vertex_list[i]) == g.grau(vertex_list[i + 1])) { 
             std::vector<int> copy_vertex_list = vertex_list;
             std::swap(copy_vertex_list[i], copy_vertex_list[i + 1]);
             trees_created++;
 
-            // Chama recursivamente para verificar novas possibilidades
             treeWFactor temp_result = verify_possibilities(g, copy_vertex_list, i + 1);
             // Atualiza o melhor resultado se encontrar um fator menor
             if (temp_result.factor < best_result.factor) {
