@@ -3,6 +3,11 @@
 #include <mutex>   // std::mutex
 #include <semaphore.h> // sem_t, sem_init, sem_wait, sem_post, sem_destroy
 
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
+
 #include "centrality.hpp"
 #include "heuristic.hpp"
 ///Basic debugging controller. See Debug.h for details.
@@ -925,66 +930,125 @@ int Centrality::tiebreaker(std::vector<int> &candidates, std::vector<int> &verte
     return best_vertex;
 }
 
-    float Centrality::closenessCentrality_2024_02(Graph &graph, int vertex)
+float Centrality::closenessCentrality_2024_02(Graph &graph, int vertex)
+{
+    int n = graph.get_num_vertices();
+
+    // Vetor para marcar os vértices visitados durante a busca em largura
+    std::vector<bool> visited(n, false);
+    visited[vertex] = true;
+
+    // Fila para a busca em largura
+    std::queue<int> queue;
+    queue.push(vertex);
+
+    // Distância acumulada do vértice dado aos outros vértices
+    float totalDistance = 0.0f;
+
+    // Número de vértices alcançáveis a partir do vértice dado
+    int reachableVertices = 0;
+
+    // Nível atual na busca em largura
+    int level = 0;
+
+    // Enquanto houver vértices na fila
+    while (!queue.empty())
     {
-        int n = graph.get_num_vertices();
+        int size = queue.size();
 
-        // Vetor para marcar os vértices visitados durante a busca em largura
-        std::vector<bool> visited(n, false);
-        visited[vertex] = true;
+        // Incrementa o nível a cada iteração
+        ++level;
 
-        // Fila para a busca em largura
-        std::queue<int> queue;
-        queue.push(vertex);
-
-        // Distância acumulada do vértice dado aos outros vértices
-        float totalDistance = 0.0f;
-
-        // Número de vértices alcançáveis a partir do vértice dado
-        int reachableVertices = 0;
-
-        // Nível atual na busca em largura
-        int level = 0;
-
-        // Enquanto houver vértices na fila
-        while (!queue.empty())
+        // Para cada vértice no mesmo nível da árvore BFS
+        for (int i = 0; i < size; ++i)
         {
-            int size = queue.size();
+            int node = queue.front();
+            queue.pop();
 
-            // Incrementa o nível a cada iteração
-            ++level;
-
-            // Para cada vértice no mesmo nível da árvore BFS
-            for (int i = 0; i < size; ++i)
+            // Para cada vizinho do vértice atual
+            for (int neighbor : graph.adjList(node))
             {
-                int node = queue.front();
-                queue.pop();
-
-                // Para cada vizinho do vértice atual
-                for (int neighbor : graph.adjList(node))
+                // Se o vizinho não foi visitado
+                if (!visited[neighbor])
                 {
-                    // Se o vizinho não foi visitado
-                    if (!visited[neighbor])
-                    {
-                        visited[neighbor] = true;
-                        queue.push(neighbor);
+                    visited[neighbor] = true;
+                    queue.push(neighbor);
 
-                        // Incrementa a distância total
-                        totalDistance += level;
+                    // Incrementa a distância total
+                    totalDistance += level;
 
-                        // Incrementa o número de vértices alcançáveis
-                        ++reachableVertices;
-                    }
+                    // Incrementa o número de vértices alcançáveis
+                    ++reachableVertices;
                 }
             }
         }
-
-        // Se o vértice for isolado, retornar 0
-        if (reachableVertices == 0)
-            return 0.0f;
-
-        // Calcular a closeness centrality para o vértice dado
-        //float closeness = static_cast<float>(reachableVertices) / totalDistance;
-        float closeness = 1.0f / totalDistance;
-        return closeness;
     }
+
+    // Se o vértice for isolado, retornar 0
+    if (reachableVertices == 0)
+        return 0.0f;
+
+    // Calcular a closeness centrality para o vértice dado
+    //float closeness = static_cast<float>(reachableVertices) / totalDistance;
+    float closeness = 1.0f / totalDistance;
+    return closeness;
+}
+
+
+// New features 2025
+std::vector<int> Centrality::bfs2025(Graph& graph, int start) {
+    int n = graph.get_num_vertices();
+    std::vector<int> distance(n, std::numeric_limits<int>::max());
+    std::queue<int> q;
+
+    distance[start] = 0;
+    q.push(start);
+
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int v : graph.adjList(u)) {
+            if (distance[v] == std::numeric_limits<int>::max()) {
+                distance[v] = distance[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+    return distance;
+}
+
+// New features 2025
+std::vector<double> Centrality::closeness_centrality_normalized(Graph& graph) {
+    int n = graph.get_num_vertices();
+    std::vector<double> centrality(n, 0.0);
+
+    for (int i = 0; i < n; ++i) {
+        std::vector<int> dist = bfs2025(graph, i);
+        int reachable = 0;
+        double sum = 0.0;
+
+        for (int d : dist) {
+            if (d < std::numeric_limits<int>::max() && d > 0) {
+                sum += d;
+                ++reachable;
+            }
+        }
+
+        if (sum > 0.0) {
+            centrality[i] = (reachable > 0) ? (reachable / sum) : 0.0;
+        }
+    }
+    return centrality;
+}
+
+// New features 2025
+std::vector<std::pair<int,double>> Centrality::closeness_centrality_normalized_2025_07(Graph& graph){
+    std::vector<std::pair<int, double>> result;
+    std::vector<double> centrality = closeness_centrality_normalized(graph);
+
+    for (size_t i = 0; i < centrality.size(); ++i) {
+        result.emplace_back(i, centrality[i]);
+    }
+
+    return result;
+
+}

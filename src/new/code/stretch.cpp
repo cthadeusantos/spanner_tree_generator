@@ -100,12 +100,12 @@ void Stretch::find_index(Graph& g)
                         //g.sum_tree();
                         g.add_tree();
 
-                        if (global_save_tree)                   // REMOVER - APENAS PARA TESTE             
+                        /*if (global_save_tree)                   // REMOVER - APENAS PARA TESTE             
                         {                                       // REMOVER - APENAS PARA TESTE
                             str_tree = tree_to_string(tree);    // REMOVER - APENAS PARA TESTE
                             str_tree = ">" + str_tree;          // REMOVER - APENAS PARA TESTE
                             save_tree(str_tree, fileName);      // REMOVER - APENAS PARA TESTE
-                        }                                       // REMOVER - APENAS PARA TESTE
+                        } */                                      // REMOVER - APENAS PARA TESTE
 
                         if(f < index){
                             index = f;
@@ -125,7 +125,7 @@ void Stretch::find_index(Graph& g)
     }
     this->total_arv = arv;
     g.set_stretch_index(index);
-    g.set_best_tree(tree);
+    g.set_best_tree(this->tree);
     //return index;
 }
 

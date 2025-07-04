@@ -95,6 +95,20 @@
         "strstream": "cpp",
         "expected": "cpp",
         "spanstream": "cpp",
-        "stacktrace": "cpp"
-    }
+        "stacktrace": "cpp",
+        "format": "cpp",
+        "stdfloat": "cpp"
+    },
+    
+    "python.analysis.exclude": [
+    "**/build",
+    "**/documents",
+    "**/workspace",
+    "**/trash",
+    "**/instances",
+    "**/no_commit",
+    "**/results",
+    "**/*.pyc",
+    "**/__pycache__/*"
+  ]
 }

@@ -1023,3 +1023,12 @@ void Graph::set_lower_limit(Graph graph){
 int Graph::get_lower_limit(){
     return this->lower_limit;
 }
+
+void Graph::set_factor(int value){
+    if (value <=0) value = 1;
+    this->factor = value;
+}
+
+int Graph::get_factor(){
+    return this->factor;
+}

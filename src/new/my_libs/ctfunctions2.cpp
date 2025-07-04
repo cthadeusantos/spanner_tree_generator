@@ -17,7 +17,12 @@
 #include <sys/stat.h>
 #include <cstdlib>
 
-
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <cstring>
+#include <cerrno>
 
 #include <iterator>
 #include <set>
@@ -26,7 +31,12 @@
 #include <cstdlib>
 #include <sys/types.h>
 
-#include <string.h>
+#include <iostream>
+#include <string>
+#include <random>
+#include <sstream>
+
+//#include <string.h>
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
 #include "../code/frontier.hpp"
@@ -955,14 +965,20 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 
     int stretch_index = graph.get_stretch_index();
 
+    std::string notes;
+    notes = "[NOTE 1]: IF lower bound, stretch factor or stretch factor are equal to 1, it means that they were not evaluated;\n"
+    "[NOTE 2]: IF total trees, icycles proposed or icycles selected are equal to 0, it means that they were not evaluated;\n"
+    "[NOTE 3]: Running time measured in seconds;";
+
     if ((output & 1)==1){	// TO SCREEN
-		std::cout << "INSTANCE ............. = " << std::setw(10) << filename << std::endl;
+		std::cout << "INSTANCE ............. = " << filename << std::endl;
 		std::cout << "SOLUTION_TYPE......... = " << run_name << std::endl;
 		std::cout << "NUM_VERTICES.......... = " << graph.get_qty_vertex() << std::endl;
 		std::cout << "NUM_EDGES............. = " << graph.get_num_edges() << std::endl;
 		std::cout << "LOWER_BOUND........... = " << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX......... = " << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "STRETCH_FACTOR........ = " << graph.get_factor() <<  std::endl;
+        std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME.......... = " << lastExecutionTime << std::endl;
         std::cout << "THREADs............... = " << num_threads <<  std::endl;
         std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
@@ -974,11 +990,13 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << "COMPUTE_LOWER_BOUND... = " << get_nolb_type() << std::endl;
         std::cout << "ICYCLES_PROPOSED...... = " << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED...... = " << global_induced_cycle_used <<  std::endl;
+        std::cout << notes << std::endl;
+
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
         }
-        std::cout << std::endl << std::endl;
+        std::cout << std::endl;
 	}
 	if ((output & 2)==2){	// TO FILE
         std::cout << "INSTANCE=" << filename << std::endl;
@@ -987,7 +1005,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "NUM_EDGES=" << graph.get_num_edges() << std::endl;
 		std::cout << "LOWER_BOUND=" << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
+        std::cout << "STRETCH_FACTOR=" << graph.get_factor() <<  std::endl;
+        std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
         std::cout << "THREADS=" << num_threads <<  std::endl;
         std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
@@ -999,6 +1018,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << "COMPUTE_LOWER_BOUND=" << get_nolb_type() << std::endl;
         std::cout << "ICYCLES_PROPOSED=" << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED=" << global_induced_cycle_used <<  std::endl;
+        std::cout << notes << std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -1009,7 +1029,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
-		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
+        std::cerr << "[STRETCH_FACTOR]=" << graph.get_factor() <<  std::endl;
+        std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
         std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
@@ -1021,6 +1042,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cerr << "[COMPUTE_LOWER_BOUND]=" << get_nolb_type() << std::endl;
         std::cerr << "[ICYCLES_PROPOSED]=" << global_induced_cycle <<  std::endl;
         std::cerr << "[ICYCLES_SELECTED]=" << global_induced_cycle_used <<  std::endl;
+        std::cerr << notes << std::endl;
+
 
 		if (best){
             std::cerr << "[BEST TREE]" <<  std::endl;
@@ -1030,8 +1053,16 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 				DEBUG std::cerr << "(" << node1 << " , " << node2 << ") ";
 			}
 		}
-        std::cerr << std::endl << std::endl;
+        //std::cerr << std::endl;
 	}
+    if (global_yed){
+        if (!save_yed_file(graph, filename)){
+            std::string yed_filename = ensure_graphml_extension(filename);
+            std::cout << "Arquivo salvo com sucesso como " << yed_filename << std::endl;
+        } else {        
+            std::cout << "Erro ao abrir o arquivo para escrita!" << std::endl;        
+        };
+    }
 }
 
 /*
@@ -1152,4 +1183,295 @@ std::vector<double> extrairNumeros(std::string entrada) {
     }
 
     return numeros;
+}
+
+Graph readTreeFromFile(const std::string& caminhoArquivo) {
+    std::ifstream arquivo(caminhoArquivo);
+    Graph tree_of_graph;
+    
+    if (!arquivo.is_open()) {
+        std::cerr << "Erro ao abrir o arquivo: " << caminhoArquivo << std::endl;
+        return tree_of_graph;
+    }
+    
+    std::string linha;
+    int numVertices = 0;
+    
+    // Lê o número de vértices (primeira linha)
+    // if (getline(arquivo, linha)) {
+    //     try {
+    //         numVertices = stoi(linha);
+    //         tree_of_graph.add_vertices(numVertices);
+    //     } catch (...) {
+    //         std::cerr << "Formato inválido. A primeira linha deve conter o número de vértices." << std::endl;
+    //         return tree_of_graph;
+    //     }
+    // } else {
+    //     std::cerr << "Arquivo vazio." << std::endl;
+    //     return tree_of_graph;
+    // }
+
+    // Lê o número de vértices (primeira linha) evitando o try/catch
+    // para não ter que remover -fno-exceptions do makefile
+    // já que não sei o impacto no tempo de execução
+    if (getline(arquivo, linha)) {
+        char* endptr;
+        errno = 0; // Resetar errno antes da conversão
+        long numVerticesLong = std::strtol(linha.c_str(), &endptr, 10);
+
+        // Verifica se a conversão foi bem-sucedida
+        if (errno != 0 || *endptr != '\0' || numVerticesLong <= 0 || numVerticesLong > INT_MAX) {
+            std::cerr << "Formato inválido. A primeira linha deve conter um número inteiro válido de vértices." << std::endl;
+            exit(1);
+            //return tree_of_graph;
+        }
+
+        numVertices = static_cast<int>(numVerticesLong);
+        tree_of_graph.add_vertices(numVertices);
+    } else {
+        std::cerr << "Arquivo vazio." << std::endl;
+        exit(1);
+        //return tree_of_graph;
+    }
+
+    
+    // Verifica o formato do arquivo
+    bool formatoMatriz = false;
+    bool formatoListaArestas = false;
+    
+    if (getline(arquivo, linha)) {
+        // Verifica se a linha contém vírgulas (formato lista de arestas)
+        if (linha.find(',') != std::string::npos) {
+            formatoListaArestas = true;
+        } 
+        // Verifica se a linha contém apenas números e espaços (formato matriz)
+        else {
+            bool apenasNumerosEspacos = all_of(linha.begin(), linha.end(), [](char c) {
+                return isdigit(c) || isspace(c);
+            });
+            
+            if (apenasNumerosEspacos) {
+                formatoMatriz = true;
+            }
+        }
+        
+        // Volta para a linha anterior para processar novamente
+        arquivo.seekg(0);
+        getline(arquivo, linha); // Pula a primeira linha novamente
+    }
+    
+    if (!formatoMatriz && !formatoListaArestas) {
+        std::cerr << "Formato de arquivo não reconhecido." << std::endl;
+        exit(1);
+        //return tree_of_graph;
+    }
+    
+    // Processa o arquivo de acordo com o formato identificado
+    if (formatoListaArestas) {
+        // Processa formato lista de arestas (x,x)
+        while (getline(arquivo, linha)) {
+            if (linha.empty()) continue;
+            
+            replace(linha.begin(), linha.end(), ',', ' ');
+            std::istringstream iss(linha);
+            int u, v;
+            
+            if (iss >> u >> v) {
+                if (u >= 0 && u < numVertices && v >= 0 && v < numVertices) {
+                    tree_of_graph.add_aresta(u, v);
+                } else {
+                    std::cerr << "Vértice inválido na aresta: " << u << "," << v << std::endl;
+                }
+            }
+        }
+    } else if (formatoMatriz) {
+        // Processa formato matriz de adjacência
+        int linhaAtual = 0;
+        while (getline(arquivo, linha) && linhaAtual < numVertices) {
+            if (linha.empty()) continue;
+            
+            std::istringstream iss(linha);
+            int valor;
+            int colunaAtual = 0;
+            
+            while (iss >> valor && colunaAtual < numVertices) {
+                if (valor == 1) {
+                    tree_of_graph.add_aresta(linhaAtual, colunaAtual);
+                }
+                colunaAtual++;
+            }
+            
+            if (colunaAtual != numVertices) {
+                std::cerr << "Número incorreto de colunas na matriz." << std::endl;
+            }
+            
+            linhaAtual++;
+        }
+        
+        if (linhaAtual != numVertices) {
+            std::cerr << "Número incorreto de linhas na matriz." << std::endl;
+        }
+    }
+    
+    arquivo.close();
+    return tree_of_graph;
+}
+
+std::string generate_string_nodes(int i) {
+    // Gerador de números aleatórios
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<> x_dist(0.0, 1000.0);
+    static std::uniform_real_distribution<> y_dist(0.0, 1000.0);
+
+    // Gerar valores aleatórios para x e y
+    double x = x_dist(gen);
+    double y = y_dist(gen);
+
+    // Criar a string do nó
+    std::ostringstream oss;
+    oss << R"(    <node id="n)" << i << R"(">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0" x=")" << x << R"(" y=")" << y << R"("/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.0703125" x="-8.03515625" xml:space="preserve" y="5.93359375">)" << i << R"(<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>)";
+
+    return oss.str();
+          //<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.0703125" x="-8.03515625" xml:space="preserve" y="5.93359375">LABEL1<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+
+
+}
+
+std::string generate_string_edges(int nedge, int u, int v, bool red_edge) {
+
+    // Criar a string do nó
+    std::ostringstream oss;
+    if (red_edge){
+        oss << R"( <edge id="e)" << nedge << R"(" source="n)" << u << R"(" target="n)" << v << R"(">  
+        <data key="d10">
+            <y:PolyLineEdge>
+            <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+            <y:LineStyle color="#FF0000" type="line" width="6.0"/>
+            <y:Arrows source="none" target="none"/>
+            <y:BendStyle smoothed="false"/>
+            </y:PolyLineEdge>
+        </data>
+        </edge> )";
+    } else {
+        oss << R"( <edge id="e)" << nedge << R"(" source="n)" << u << R"(" target="n)" << v << R"(">  
+        <data key="d10">
+            <y:PolyLineEdge>
+            <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+            <y:LineStyle color="#000000" type="line" width="1.0"/>
+            <y:Arrows source="none" target="none"/>
+            <y:BendStyle smoothed="false"/>
+            </y:PolyLineEdge>
+        </data>
+        </edge> )";
+    }
+
+
+    return oss.str();
+}
+
+std::string yed_file(Graph &graph){
+    std::string str0 =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+        "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:java=\"http://www.yworks.com/xml/yfiles-common/1.0/java\" xmlns:sys=\"http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0\" xmlns:x=\"http://www.yworks.com/xml/yfiles-common/markup/2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">"
+        "<!--Created by yEd 3.25.1-->"
+        "<key attr.name=\"Description\" attr.type=\"string\" for=\"graph\" id=\"d0\"/>"
+        "<key for=\"port\" id=\"d1\" yfiles.type=\"portgraphics\"/>"
+        "<key for=\"port\" id=\"d2\" yfiles.type=\"portgeometry\"/>"
+        "<key for=\"port\" id=\"d3\" yfiles.type=\"portuserdata\"/>"
+        "<key attr.name=\"url\" attr.type=\"string\" for=\"node\" id=\"d4\"/>"
+        "<key attr.name=\"description\" attr.type=\"string\" for=\"node\" id=\"d5\"/>"
+        "<key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>"
+        "<key for=\"graphml\" id=\"d7\" yfiles.type=\"resources\"/>"
+        "<key attr.name=\"url\" attr.type=\"string\" for=\"edge\" id=\"d8\"/>"
+        "<key attr.name=\"description\" attr.type=\"string\" for=\"edge\" id=\"d9\"/>"
+        "<key for=\"edge\" id=\"d10\" yfiles.type=\"edgegraphics\"/>"
+        "<graph edgedefault=\"directed\" id=\"G\">"
+        "<data key=\"d0\" xml:space=\"preserve\"/>";
+    
+    std::string strN =
+        "  </graph>"
+        "  <data key=\"d7\">"
+        "    <y:Resources/>"
+        "  </data>"
+        "</graphml>";
+    
+    std::string allNodes;
+    std::string allEdges;
+    int nedges = 0;
+    int nodes = graph.get_num_vertices();
+
+    for (int i = 0; i < nodes; ++i) {
+        std::string node = generate_string_nodes(i);
+        allNodes += node + "\n";
+    }
+
+    for (int u=0; u < nodes; u++){
+        for (int v: graph.adjList(u)){
+            
+            // Check if edge is in the best tree
+            int node1 = 0, node2 = 0;
+            bool red_edge =false;
+            for (auto&& tuple: graph.best_tree){
+               std::tie(node1, node2) = tuple;
+               if ((node1==u && node2==v) || (node2==u && node1==v)){
+                   red_edge = true;
+                   break;
+               }
+            }
+
+            if (v > u){
+                std::string edge = generate_string_edges(nedges, u, v, red_edge);
+                allEdges += edge + "\n";
+                nedges++;
+            }
+        }
+    }
+
+    return str0 + allNodes + allEdges + strN ;
+}
+
+int save_yed_file(Graph &graph, const std::string &filename){
+        // Gerar o conteúdo XML
+    std::string xmlContent = yed_file(graph);
+    
+    std::string yed_filename = ensure_graphml_extension(filename);
+
+    // Gravar em um arquivo
+    std::ofstream outFile(yed_filename);
+    if (outFile.is_open()) {
+        outFile << xmlContent;
+        outFile.close();
+        //std::cout << "Arquivo salvo com sucesso como " << filename << std::endl;
+        return 0;
+    } //else {
+        //std::cerr << "Erro ao abrir o arquivo para escrita!" << std::endl;
+        return 1;
+    //}
+    //return 0;
+}
+
+std::string ensure_graphml_extension(const std::string& filename) {
+    // Regex para verificar se tem extensão (captura nome e extensão separadamente)
+    std::regex ext_regex(R"((.*?)(\.[^.]*|)$)");
+    std::smatch matches;
+    
+    if (std::regex_match(filename, matches, ext_regex)) {
+        // matches[1] = nome base (sem extensão)
+        // matches[2] = extensão existente (ou vazio)
+        return matches[1].str() + ".graphml";
+    }
+    
+    // Fallback (caso raro onde regex falha)
+    return filename + ".graphml";
 }
