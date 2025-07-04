@@ -1,3 +1,5 @@
+#include <string>
+
 #ifndef INITIALS_HPP_
 #define INITIALS_HPP_
 
@@ -26,6 +28,8 @@ float global_running_time = 0;
 //pthread_mutex_t mutex_signal;
 
 unsigned int global_threads_supported = 0;
+
+std::string global_path_filetree = "";
 
 #endif
 

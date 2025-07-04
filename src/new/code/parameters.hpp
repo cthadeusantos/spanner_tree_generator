@@ -1,3 +1,5 @@
+#include <string>
+
 #ifndef PARAMETERS_HPP
     #define PARAMETERS_HPP
 extern int num_threads;
@@ -10,6 +12,7 @@ extern float global_running_time;
 extern int global_induced_cycle;
 extern bool global_save_tree;
 extern int global_closeness;
+extern std::string global_path_filetree;
 
 class Parameters
 {

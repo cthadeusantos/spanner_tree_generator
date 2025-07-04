@@ -68,4 +68,6 @@ bool validarEntradaArestas(std::string entrada);
 bool validarEntradaAdjacencia(std::string entrada);
 std::vector<double> extrairNumeros(std::string entrada);
 
+Graph readTreeFromFile(const std::string& caminhoArquivo);
+
 #endif //CTFUNCTIONS_HPP_

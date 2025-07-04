@@ -1,4 +1,3 @@
-
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
@@ -9,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/dataset_wiley/g15_33_30/g_15_33_30-8.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_13.txt"],
             "default": "${workspaceFolder}/instances/examples/G9_paper_pag4.in"
         }
     ],
@@ -20,7 +19,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_BF-SEQ",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--nolb", "--file", "--edges","-t", "1", "-st" ],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-d", "-t", "1", "--best" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -47,6 +46,54 @@
             "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "8", "--debug", "--file" ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "[GDB] app_BF_SCENTRALITY < debug.in",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/app_BF-SCENTRALITY",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--nolb", "--debug", "-s" ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "[GDB] app_BF_PCENTRALITY < debug.in",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/app_BF-PCENTRALITY",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "-t", "4", "--nolb", "--debug", "--file" ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}/",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -380,7 +427,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_HR-H4v2r1",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "8", "--best","--edges"],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "8", "--best"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -428,7 +475,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_HR-H4v2r3",
-            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "4", "--best","--edges"],
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--debug", "--file", "-t", "4", "--best"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
@@ -477,6 +524,30 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/app_GENERATE",
             "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "15", ".3", "10", "teste/"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "[GDB] app_FACTOR-CALCULATOR",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/debug/app_FACTOR-CALCULATOR",
+            "args": [ "<", "${input:componentType}", ">", "${workspaceFolder}/workspace/debug.out", "--ftree", "teste.txt", ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

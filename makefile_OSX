@@ -121,6 +121,10 @@ generate:
 	clear
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/main-create.cpp  -o ${OUTPUT_OSX}/app_GENERATE
 
+calculatorfactor:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/stretchFactorCalculator.cpp  -o ${OUTPUT_OSX}/app_FACTOR-CALCULATOR
+
 all:
 	clear
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf.cpp  -o ${OUTPUT_OSX}/app_BF-SEQ
@@ -137,3 +141,4 @@ all:
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r1.cpp  -o ${OUTPUT_OSX}/app_H4v2r1
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_HEURISTICS}/main-hr_H4v2r3.cpp  -o ${OUTPUT_OSX}/app_H4v2r3
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/main-create.cpp  -o ${OUTPUT_OSX}/app_GENERATE
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/stretchFactorCalculator.cpp  -o ${OUTPUT_OSX}/app_FACTOR-CALCULATOR

@@ -17,7 +17,12 @@
 #include <sys/stat.h>
 #include <cstdlib>
 
-
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <cstring>
+#include <cerrno>
 
 #include <iterator>
 #include <set>
@@ -26,7 +31,7 @@
 #include <cstdlib>
 #include <sys/types.h>
 
-#include <string.h>
+//#include <string.h>
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
 #include "../code/frontier.hpp"
@@ -955,14 +960,20 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 
     int stretch_index = graph.get_stretch_index();
 
+    std::string notes;
+    notes = "[NOTE 1]: IF lower bound, stretch factor or stretch factor are equal to 1, it means that they were not evaluated;\n"
+    "[NOTE 2]: IF total trees, icycles proposed or icycles selected are equal to 0, it means that they were not evaluated;\n"
+    "[NOTE 3]: Running time measured in seconds;";
+
     if ((output & 1)==1){	// TO SCREEN
-		std::cout << "INSTANCE ............. = " << std::setw(10) << filename << std::endl;
+		std::cout << "INSTANCE ............. = " << filename << std::endl;
 		std::cout << "SOLUTION_TYPE......... = " << run_name << std::endl;
 		std::cout << "NUM_VERTICES.......... = " << graph.get_qty_vertex() << std::endl;
 		std::cout << "NUM_EDGES............. = " << graph.get_num_edges() << std::endl;
 		std::cout << "LOWER_BOUND........... = " << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX......... = " << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
+		std::cout << "STRETCH_FACTOR........ = " << graph.get_factor() <<  std::endl;
+        std::cout << "TOTAL_TREES........... = " << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME.......... = " << lastExecutionTime << std::endl;
         std::cout << "THREADs............... = " << num_threads <<  std::endl;
         std::cout << "MAX_THREADS_SUPPORTED. = " << global_threads_supported << std::endl;
@@ -974,11 +985,13 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << "COMPUTE_LOWER_BOUND... = " << get_nolb_type() << std::endl;
         std::cout << "ICYCLES_PROPOSED...... = " << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED...... = " << global_induced_cycle_used <<  std::endl;
+        std::cout << notes << std::endl;
+
 		if (best) {
             std::cout << "[BEST TREE]" <<  std::endl;
             graph.show_best_tree();
         }
-        std::cout << std::endl << std::endl;
+        std::cout << std::endl;
 	}
 	if ((output & 2)==2){	// TO FILE
         std::cout << "INSTANCE=" << filename << std::endl;
@@ -987,7 +1000,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cout << "NUM_EDGES=" << graph.get_num_edges() << std::endl;
 		std::cout << "LOWER_BOUND=" << lower_limit << std::endl;
 		std::cout << "STRETCH_INDEX=" << graph.get_stretch_index() <<  std::endl;
-		std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
+        std::cout << "STRETCH_FACTOR=" << graph.get_factor() <<  std::endl;
+        std::cout << "TOTAL_TREES=" << graph.get_total_tree() <<  std::endl;
 		std::cout << "RUNNING_TIME=" << lastExecutionTime << std::endl;
         std::cout << "THREADS=" << num_threads <<  std::endl;
         std::cout << "MAX_THREADS_SUPPORTED=" << global_threads_supported << std::endl;
@@ -999,6 +1013,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cout << "COMPUTE_LOWER_BOUND=" << get_nolb_type() << std::endl;
         std::cout << "ICYCLES_PROPOSED=" << global_induced_cycle <<  std::endl;
         std::cout << "ICYCLES_SELECTED=" << global_induced_cycle_used <<  std::endl;
+        std::cout << notes << std::endl;
 		if (best) graph.show_best_tree();
         std::cout << std::endl;
 	}
@@ -1009,7 +1024,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 		std::cerr << "[NUM_EDGES]=" << graph.get_num_edges() << std::endl;
 		std::cerr << "[LOWER_BOUND]=" << lower_limit << std::endl;
 		std::cerr << "[STRETCH_INDEX]=" << graph.get_stretch_index() <<  std::endl;
-		std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
+        std::cerr << "[STRETCH_FACTOR]=" << graph.get_factor() <<  std::endl;
+        std::cerr << "[TOTAL_TREES]=" << graph.get_total_tree() <<  std::endl;
 		std::cerr << "[RUNNING_TIME]=" << lastExecutionTime << std::endl;
         std::cerr << "[THREADS]=" << num_threads <<  std::endl;
         std::cerr << "[MAX_THREADS_SUPPORTED]=" << global_threads_supported << std::endl;
@@ -1021,6 +1037,8 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
         std::cerr << "[COMPUTE_LOWER_BOUND]=" << get_nolb_type() << std::endl;
         std::cerr << "[ICYCLES_PROPOSED]=" << global_induced_cycle <<  std::endl;
         std::cerr << "[ICYCLES_SELECTED]=" << global_induced_cycle_used <<  std::endl;
+        std::cerr << notes << std::endl;
+
 
 		if (best){
             std::cerr << "[BEST TREE]" <<  std::endl;
@@ -1030,7 +1048,7 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 				DEBUG std::cerr << "(" << node1 << " , " << node2 << ") ";
 			}
 		}
-        std::cerr << std::endl << std::endl;
+        std::cerr << std::endl;
 	}
 }
 
@@ -1152,4 +1170,136 @@ std::vector<double> extrairNumeros(std::string entrada) {
     }
 
     return numeros;
+}
+
+Graph readTreeFromFile(const std::string& caminhoArquivo) {
+    std::ifstream arquivo(caminhoArquivo);
+    Graph tree_of_graph;
+    
+    if (!arquivo.is_open()) {
+        std::cerr << "Erro ao abrir o arquivo: " << caminhoArquivo << std::endl;
+        return tree_of_graph;
+    }
+    
+    std::string linha;
+    int numVertices = 0;
+    
+    // Lê o número de vértices (primeira linha)
+    // if (getline(arquivo, linha)) {
+    //     try {
+    //         numVertices = stoi(linha);
+    //         tree_of_graph.add_vertices(numVertices);
+    //     } catch (...) {
+    //         std::cerr << "Formato inválido. A primeira linha deve conter o número de vértices." << std::endl;
+    //         return tree_of_graph;
+    //     }
+    // } else {
+    //     std::cerr << "Arquivo vazio." << std::endl;
+    //     return tree_of_graph;
+    // }
+
+    // Lê o número de vértices (primeira linha) evitando o try/catch
+    // para não ter que remover -fno-exceptions do makefile
+    // já que não sei o impacto no tempo de execução
+    if (getline(arquivo, linha)) {
+        char* endptr;
+        errno = 0; // Resetar errno antes da conversão
+        long numVerticesLong = std::strtol(linha.c_str(), &endptr, 10);
+
+        // Verifica se a conversão foi bem-sucedida
+        if (errno != 0 || *endptr != '\0' || numVerticesLong <= 0 || numVerticesLong > INT_MAX) {
+            std::cerr << "Formato inválido. A primeira linha deve conter um número inteiro válido de vértices." << std::endl;
+            exit(1);
+            //return tree_of_graph;
+        }
+
+        numVertices = static_cast<int>(numVerticesLong);
+        tree_of_graph.add_vertices(numVertices);
+    } else {
+        std::cerr << "Arquivo vazio." << std::endl;
+        exit(1);
+        //return tree_of_graph;
+    }
+
+    
+    // Verifica o formato do arquivo
+    bool formatoMatriz = false;
+    bool formatoListaArestas = false;
+    
+    if (getline(arquivo, linha)) {
+        // Verifica se a linha contém vírgulas (formato lista de arestas)
+        if (linha.find(',') != std::string::npos) {
+            formatoListaArestas = true;
+        } 
+        // Verifica se a linha contém apenas números e espaços (formato matriz)
+        else {
+            bool apenasNumerosEspacos = all_of(linha.begin(), linha.end(), [](char c) {
+                return isdigit(c) || isspace(c);
+            });
+            
+            if (apenasNumerosEspacos) {
+                formatoMatriz = true;
+            }
+        }
+        
+        // Volta para a linha anterior para processar novamente
+        arquivo.seekg(0);
+        getline(arquivo, linha); // Pula a primeira linha novamente
+    }
+    
+    if (!formatoMatriz && !formatoListaArestas) {
+        std::cerr << "Formato de arquivo não reconhecido." << std::endl;
+        exit(1);
+        //return tree_of_graph;
+    }
+    
+    // Processa o arquivo de acordo com o formato identificado
+    if (formatoListaArestas) {
+        // Processa formato lista de arestas (x,x)
+        while (getline(arquivo, linha)) {
+            if (linha.empty()) continue;
+            
+            replace(linha.begin(), linha.end(), ',', ' ');
+            std::istringstream iss(linha);
+            int u, v;
+            
+            if (iss >> u >> v) {
+                if (u >= 0 && u < numVertices && v >= 0 && v < numVertices) {
+                    tree_of_graph.add_aresta(u, v);
+                } else {
+                    std::cerr << "Vértice inválido na aresta: " << u << "," << v << std::endl;
+                }
+            }
+        }
+    } else if (formatoMatriz) {
+        // Processa formato matriz de adjacência
+        int linhaAtual = 0;
+        while (getline(arquivo, linha) && linhaAtual < numVertices) {
+            if (linha.empty()) continue;
+            
+            std::istringstream iss(linha);
+            int valor;
+            int colunaAtual = 0;
+            
+            while (iss >> valor && colunaAtual < numVertices) {
+                if (valor == 1) {
+                    tree_of_graph.add_aresta(linhaAtual, colunaAtual);
+                }
+                colunaAtual++;
+            }
+            
+            if (colunaAtual != numVertices) {
+                std::cerr << "Número incorreto de colunas na matriz." << std::endl;
+            }
+            
+            linhaAtual++;
+        }
+        
+        if (linhaAtual != numVertices) {
+            std::cerr << "Número incorreto de linhas na matriz." << std::endl;
+        }
+    }
+    
+    arquivo.close();
+    return tree_of_graph;
 }

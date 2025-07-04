@@ -19,6 +19,7 @@ private:
     unsigned long long int total_tree = 0; // by Thadeu
     bool signal = true;
     int girth = 0;
+    int factor = 1;
 
 public:
     int lower_limit = 1;
@@ -32,6 +33,8 @@ public:
     void set_lower_limit(int value);
     void set_lower_limit(Graph graph);
     int get_lower_limit();
+    void set_factor(int value);
+    int get_factor();
     //void create(int dimension);
     void add_vertex();
     void add_aresta(int v, int u);
@@ -40,7 +43,7 @@ public:
     void remove_aresta(int v, int u);
     void clear_arestas();
     void clear();
-    void add_all_vertice(int n); // add de 0 até n-1
+    void add_all_vertice(int n); // add vertices from  0 until n-1
     bool possui_aresta(int v, int u);
     bool has_edge(int v, int u);
     int grau(int v);

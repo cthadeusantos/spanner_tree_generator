@@ -123,6 +123,10 @@ void Parameters::parseArgs(int argc, char** argv){
 			global_closeness = 2;
 			DEBUG std::cerr << "Setting closeness to transversal." << '\n';
 		}	 
+		else if(arg == "--ftree"){
+			global_path_filetree = argv[++i]; // Captura como string
+			DEBUG std::cerr << "File tree to be read: " << global_path_filetree << '\n';
+		}	
 		else {
 			std::cout << "Unknown parameter: " << arg << std::endl;
 			std::cout << "Type --help for more informations!" << arg << std::endl;

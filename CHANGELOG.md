@@ -1,5 +1,9 @@
 # Changes
 
+## 0.3.0 (2025/07/04)
+* Added app_FACTOR-CALCULATOR. Given a tree T of a graph G calculate the stretch factor of this tree T of the graph G. Be aware that we are using the sequential algorithm.
+* Fixed BUG at app_BF-SEQ that some times the best tree at output report was not printed.
+
 ## 0.2.12 (2024/03/03)
 * Update README.md
 * Fixed in H4v2r1, in the final report, the incorrect information regarding CLOSENESS_(HEUR) used, where the correct one is **TRAVERSE**, it was reported as ALGEBRAIC.
