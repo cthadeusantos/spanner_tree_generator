@@ -12,7 +12,6 @@
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
     - [The tools:](#the-tools)
-    - [The tools:](#the-tools-1)
     - [How to run (with options):](#how-to-run-with-options)
     - [USAGE EXAMPLES (running):](#usage-examples-running)
     - [Usage example (Calculate the stretch factor using the sequential app with output at screen):](#usage-example-calculate-the-stretch-factor-using-the-sequential-app-with-output-at-screen)
@@ -247,26 +246,6 @@ Description too soon
 Since version 0.3.0, you can input a tree and a graph and then calculate the stretch factor of this tree (see app_FACTOR-CALCULATOR).
 
 Also, since version 0.3.0, it is possible to generate an XML file representing the graph and the tree with the best stretch index (or the stretch factor if using app_FACTOR_CALCULATOR), which can be read with the yED software, avaliable [here](https://www.yworks.com/products/yed).
-
-#### The tools:
-
-The tools executables are as follows:
-
-| Label | Executable | Brute force description |
-| ----- | -------- | --- |
-| FACTOR-CALCULATOR | **app_FACTOR-CALCULATOR** | Calculates the stretch factor of a spanning tree T in a graph G |
-| CREATE            | **app_CREATE**            | Without description yet                                         |
-| GENERATE          | **app_GENERATE**          | Without description yet                                         |
-
-<ins>app_FACTOR-CALCULATOR</ins>
-
-Sometimes, we need to compute the stretch factor of a spanning tree T in a graph G. To address this, we developed a new tool called app_FACTOR-CALCULATOR to compute the stretch factor for a single tree.
-
-The tree file can be of the adjacency matrix or edge list type as described in section 4. The software will automatically detect the tree data structure type. (valid only for the tree file)
-
-<ins>app_CREATE</ins>
-
-<ins>app_GENERATE</ins>
 
 #### How to run (with options):
 

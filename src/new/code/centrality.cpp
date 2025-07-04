@@ -997,7 +997,6 @@ float Centrality::closenessCentrality_2024_02(Graph &graph, int vertex)
     return closeness;
 }
 
-
 // New features 2025
 std::vector<int> Centrality::bfs2025(Graph& graph, int start) {
     int n = graph.get_num_vertices();

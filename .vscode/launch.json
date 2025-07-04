@@ -566,7 +566,6 @@
                 }
             ]
         },
-<<<<<<< HEAD
         {
             "name": "[GDB] app_TREE-SPANNER-CALCULATOR",
             "type": "cppdbg",
@@ -591,7 +590,5 @@
                 }
             ]
         },
-=======
->>>>>>> main
     ]
 }
