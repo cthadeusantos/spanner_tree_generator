@@ -9,6 +9,13 @@
 #include <algorithm> // std::find
 #include <string>
 
+#include <iostream>
+#include <limits>
+#include <utility>
+#include <unordered_set>
+
+const double INFINITE = std::numeric_limits<double>::infinity();
+
 #define INF_VALUE std::numeric_limits<int>::max()
 #define INF "inf"
 
@@ -94,6 +101,11 @@ public:
 
     static void dfs(Graph &graph, int vertex, std::vector<bool>& visited);
     static bool canReachAllVertices(Graph &graph, int startVertex);
+
+    static bool contains_edge(const std::vector<std::pair<std::pair<int, int>, double>> &vec, int u, int v);
+    static std::pair<bool, double> find_edge_value(const std::vector<std::pair<std::pair<int, int>, double>> &vec, int u, int v); 
+
+    static Graph shortest_path_tree(Graph &graph, std::vector<std::pair<int, double>> &closeness_sorted, const std::vector<std::pair<std::pair<int, int>, double>> &energy_centrality);
 
 };
 
