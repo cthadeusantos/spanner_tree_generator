@@ -28,12 +28,13 @@ void Parameters::usage(const char *app_name){
 	std::cout << "\t-ci X	| --induced_cycle X	Define execution time in miliseconds until STOP! default is 0 [current " << global_induced_cycle << "]" << std::endl  << std::endl ;
 	std::cout << "\t     	| --adjacency	Define which type file will be read. (adjacency matrix)[DEFAULT]" << std::endl  << std::endl;
 	std::cout << "\t     	| --edges	Define which type file will be read. (edges list)" << std::endl  << std::endl ;
-	std::cout << "\t-v	| --version	Which version is this app." << std::endl  << std::endl ;
+	std::cout << "\t-v\t| --version	Which version is this app." << std::endl  << std::endl ;
 	std::cout << "\t     	| --nolb	Not calculate lower bound" << std::endl  << std::endl ;
 	std::cout << "\t     	| --noindex	Not calculate stretch index" << std::endl  << std::endl ;
 	std::cout << "\t     	| --alg 	<< TOO SOON! >> Calculate closeness using algebraic method, only heuristics. [DEFAULT]" << std::endl  << std::endl ;
-	std::cout << "\t     	| --tra 	<< TOO SOON! >> Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
-
+	std::cout << "\t     	| --tra\t\t<< TOO SOON! >> Calculate closeness using traverse method, only heuristics." << std::endl  << std::endl ;
+	std::cout << "\t\t| --yed\t\t\tSave the graph and your tree at XML file to be read from yEd software (https://www.yworks.com/products/yed)" << std::endl << std::endl;
+	std::cout << "\t\t| --ftree PATH/FILE\tRead file (app_FACTOR-CALCULATOR) Defines the path and file name of the tree to be calculated." << std::endl << std::endl;
 	std::cout << "Options to display information (you MUST choose file, screen, or debug):" << std::endl;
 	std::cout << "\t-f 	| --file \t\tOutput at file. [not work yet]" << std::endl;
 	std::cout << "\t-s 	| --screen \t\tOutput At screen." << std::endl;
@@ -123,6 +124,14 @@ void Parameters::parseArgs(int argc, char** argv){
 			global_closeness = 2;
 			DEBUG std::cerr << "Setting closeness to transversal." << '\n';
 		}	 
+		else if(arg == "--ftree"){
+			global_path_filetree = argv[++i]; // Captura como string
+			DEBUG std::cerr << "File tree to be read: " << global_path_filetree << '\n';
+		}
+		else if(arg == "--yed"){
+			global_yed = true; 
+			DEBUG std::cerr << "The yed file will be generated: " << global_yed << '\n';
+		}
 		else {
 			std::cout << "Unknown parameter: " << arg << std::endl;
 			std::cout << "Type --help for more informations!" << arg << std::endl;
