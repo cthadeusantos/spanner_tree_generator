@@ -12,8 +12,13 @@
   - [3.3. Instructions to build and execute this project](#33-instructions-to-build-and-execute-this-project)
   - [3.4. Usage](#34-usage)
     - [The tools:](#the-tools)
+    - [The tools:](#the-tools-1)
     - [How to run (with options):](#how-to-run-with-options)
-    - [Usage example (running):](#usage-example-running)
+    - [USAGE EXAMPLES (running):](#usage-examples-running)
+    - [Usage example (Calculate the stretch factor using the sequential app with output at screen):](#usage-example-calculate-the-stretch-factor-using-the-sequential-app-with-output-at-screen)
+    - [Usage example (running sequential app with output at screen and save the graph and best tree solution to yEd file):](#usage-example-running-sequential-app-with-output-at-screen-and-save-the-graph-and-best-tree-solution-to-yed-file)
+    - [Usage example (Calculate the stretch factor using the edges app using 32 threads and with output at screen):](#usage-example-calculate-the-stretch-factor-using-the-edges-app-using-32-threads-and-with-output-at-screen)
+    - [Usage example (Given a tree, calculate the stretch factor from its graph):](#usage-example-given-a-tree-calculate-the-stretch-factor-from-its-graph)
     - [Usage example (running batteries):](#usage-example-running-batteries)
     - [Usage example (analisys batteries):](#usage-example-analisys-batteries)
   - [3.5. Directory Structure](#35-directory-structure)
@@ -107,6 +112,8 @@ Please check our Github Webpage for others branches.
 
 ### 2.4. Download binaries
 
+[Binaries for Linux](https://github.com/cthadeusantos/spanner_tree_generator/tree/main/binaries/linux) (v0.2.12 not work in WSL - W11, you need compile)
+[Binaries for MacOS](https://github.com/cthadeusantos/spanner_tree_generator/tree/main/binaries/mac)
 [Binaries for Linux](https://github.com/cthadeusantos/spanner_tree_generator/tree/main/binaries/linux) (v0.2.12 not work in WSL - W11, you need compile)
 [Binaries for MacOS](https://github.com/cthadeusantos/spanner_tree_generator/tree/main/binaries/mac)
 
@@ -229,6 +236,36 @@ The tree file can be of the adjacency matrix or edge list type as described in s
 
 <ins>app_CREATE</ins>
 
+Description too soon
+
+<ins>app_GENERATE</ins>
+
+Description too soon
+
+<ins>Others notes</ins>
+
+Since version 0.3.0, you can input a tree and a graph and then calculate the stretch factor of this tree (see app_FACTOR-CALCULATOR).
+
+Also, since version 0.3.0, it is possible to generate an XML file representing the graph and the tree with the best stretch index (or the stretch factor if using app_FACTOR_CALCULATOR), which can be read with the yED software, avaliable [here](https://www.yworks.com/products/yed).
+
+#### The tools:
+
+The tools executables are as follows:
+
+| Label | Executable | Brute force description |
+| ----- | -------- | --- |
+| FACTOR-CALCULATOR | **app_FACTOR-CALCULATOR** | Calculates the stretch factor of a spanning tree T in a graph G |
+| CREATE            | **app_CREATE**            | Without description yet                                         |
+| GENERATE          | **app_GENERATE**          | Without description yet                                         |
+
+<ins>app_FACTOR-CALCULATOR</ins>
+
+Sometimes, we need to compute the stretch factor of a spanning tree T in a graph G. To address this, we developed a new tool called app_FACTOR-CALCULATOR to compute the stretch factor for a single tree.
+
+The tree file can be of the adjacency matrix or edge list type as described in section 4. The software will automatically detect the tree data structure type. (valid only for the tree file)
+
+<ins>app_CREATE</ins>
+
 <ins>app_GENERATE</ins>
 
 #### How to run (with options):
@@ -238,48 +275,63 @@ app_name [OPTIONS] < INPUT_FILENAME [>> OUTPUT_FILENAME]
 ```
 
 	OPTIONS:
-      -h  | --help                Show this help
-      -v  | --version             Provides the version
+      -h  | --help              Show this help
+      -v  | --version           Provides the version
 
     Running time:
-      -rt X | --running_time X    Defines the execution time in miliseconds until STOP! default is 0
+      -rt X | --running_time X  Defines the execution time in miliseconds until STOP! default is 0
   
     Read file (brute force and heuristics):
-	    --adjacency                 Defines which type file will be read. (adjacency matrix)[default]
-	    --edges                     Defines which type file will be read. (edges list)
+	    --adjacency               Defines which type file will be read. (adjacency matrix)[default]
+	    --edges                   Defines which type file will be read. (edges list)
     
-    Read file (app_FACTOR-CALCULATOR):
-    --ftree PATH/FILE             Defines the path and file name of the tree to be calculated.
+    Read file (ONLY app_FACTOR-CALCULATOR):
+      --ftree [PATH/FILE]       Defines the path and file name of the tree to be calculated.
+
+    Save graph to XML file
+      --yed                     Save the graph and your tree at XML file to be read from yEd software (https://www.yworks.com/products/yed)
 
     Calculate:
-      --nolb                      Not calculate lower bound
-      --noindex                   Not calculate stretch index
-	-ci X | --induced_cycle X       Defines the number of induced cycles ! default is 1
+      --nolb                    Not calculate lower bound
+      --noindex                 Not calculate stretch index
+	    -ci X | --induced_cycle X Defines the number of induced cycles ! default is 1
 	
     Threads:
-      -t X  | --thread X          Defines the numbers of threads. X is the number of threads
+      -t X  | --thread X        Defines the numbers of threads. X is the number of threads
 
     Method for calculating closeness: (NOT USED YET!)
-      --alg 	                    Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
-      --tra 	                    Calculate closeness using traverse method, used only in heuristics.
+      --alg                     Calculate closeness using algebraic method, used only in heuristics. [DEFAULT]
+      --tra                     Calculate closeness using traverse method, used only in heuristics.
 
 	  Show info:
-	    -f | --file                 Output at file.
-	    -s | --screen               Output at screen.
-	    -d | --debug                Output screen only debug mode.
-	    -b | --best                 Show the best tree found (default is not show). Try only with few vertices and edges.
+	    -f | --file               Output at file.
+	    -s | --screen             Output at screen.
+	    -d | --debug              Output screen only debug mode.
+	    -b | --best               Show the best tree found (default is not show). Try only with few vertices and edges.
 	    You can combine file, screen and debug
 
     INPUT_FILENAME is mandatory
     OUTPUT_FILENAME is optional
 
-#### Usage example (running):
-	
+#### USAGE EXAMPLES (running):
+
+#### Usage example (Calculate the stretch factor using the sequential app with output at screen):	
 ```bash
 ./build/release/app_BF-SEQ -s < instances/grafos/grafo_10.txt > results/grafo10_results.txt
 ```
+#### Usage example (running sequential app with output at screen and save the graph and best tree solution to yEd file):
+```bash
+./build/release/app_BF-SEQ -s --yed < instances/grafos/grafo_10.txt > results/grafo10_results.txt
+```
+#### Usage example (Calculate the stretch factor using the edges app using 32 threads and with output at screen):
+```bash
+```
 ```bash
 ./build/release/app_BF-EDGES -t 32 -s < instances/grafos/grafo_10.txt >> results/grafo10_results.txt
+```
+#### Usage example (Given a tree, calculate the stretch factor from its graph):
+```bash
+./build/release/app_FACTOR-CALCULATOR --ftree "mypath/mytree.txt" < mygraph.txt
 ```
 ```bash
 ./build/release/app_FACTOR-CALCULATOR --ftree "mypath/mytree.txt" < mygraph.txt

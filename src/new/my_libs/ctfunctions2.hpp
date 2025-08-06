@@ -14,6 +14,7 @@ extern int min_vertices;
 extern int max_vertices;
 extern int num_graph;
 extern float probability;
+extern bool global_yed;
 
 void swap0(int *a, int *b);
 void bubbleSort(int **array, int n);
@@ -69,5 +70,12 @@ bool validarEntradaAdjacencia(std::string entrada);
 std::vector<double> extrairNumeros(std::string entrada);
 
 Graph readTreeFromFile(const std::string& caminhoArquivo);
+
+int save_yed_file(Graph &graph, const std::string &filename);
+std::string yed_file(Graph &graph);
+std::string generate_string_edges(int nedge, int u, int v, bool red_edge);
+std::string generate_string_nodes(int i);
+std::string ensure_graphml_extension(const std::string& filename);
+
 
 #endif //CTFUNCTIONS_HPP_

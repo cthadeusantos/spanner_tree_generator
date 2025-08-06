@@ -8,7 +8,7 @@
             "type": "pickString",
             "id": "componentType",
             "description": "Command line arguments",
-            "options": ["${workspaceFolder}/instances/grafos/grafo_17.txt"],
+            "options": ["${workspaceFolder}/instances/grafos/grafo_13.txt"],
             "default": "${workspaceFolder}/instances/examples/G9_paper_pag4.in"
         }
     ],
@@ -566,6 +566,7 @@
                 }
             ]
         },
+<<<<<<< HEAD
         {
             "name": "[GDB] app_TREE-SPANNER-CALCULATOR",
             "type": "cppdbg",
@@ -590,5 +591,7 @@
                 }
             ]
         },
+=======
+>>>>>>> main
     ]
 }

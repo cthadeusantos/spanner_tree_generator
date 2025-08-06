@@ -31,6 +31,11 @@
 #include <cstdlib>
 #include <sys/types.h>
 
+#include <iostream>
+#include <string>
+#include <random>
+#include <sstream>
+
 //#include <string.h>
 #include "../code/opBasic.hpp"
 #include "../code/stretch.hpp"
@@ -1048,8 +1053,16 @@ void output_data(std::string &run_name, std::string &filename, int &output, bool
 				DEBUG std::cerr << "(" << node1 << " , " << node2 << ") ";
 			}
 		}
-        std::cerr << std::endl;
+        //std::cerr << std::endl;
 	}
+    if (global_yed){
+        if (!save_yed_file(graph, filename)){
+            std::string yed_filename = ensure_graphml_extension(filename);
+            std::cout << "Arquivo salvo com sucesso como " << yed_filename << std::endl;
+        } else {        
+            std::cout << "Erro ao abrir o arquivo para escrita!" << std::endl;        
+        };
+    }
 }
 
 /*
@@ -1302,4 +1315,163 @@ Graph readTreeFromFile(const std::string& caminhoArquivo) {
     
     arquivo.close();
     return tree_of_graph;
+}
+
+std::string generate_string_nodes(int i) {
+    // Gerador de números aleatórios
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<> x_dist(0.0, 1000.0);
+    static std::uniform_real_distribution<> y_dist(0.0, 1000.0);
+
+    // Gerar valores aleatórios para x e y
+    double x = x_dist(gen);
+    double y = y_dist(gen);
+
+    // Criar a string do nó
+    std::ostringstream oss;
+    oss << R"(    <node id="n)" << i << R"(">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0" x=")" << x << R"(" y=")" << y << R"("/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.0703125" x="-8.03515625" xml:space="preserve" y="5.93359375">)" << i << R"(<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>)";
+
+    return oss.str();
+          //<y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.0703125" x="-8.03515625" xml:space="preserve" y="5.93359375">LABEL1<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+
+
+}
+
+std::string generate_string_edges(int nedge, int u, int v, bool red_edge) {
+
+    // Criar a string do nó
+    std::ostringstream oss;
+    if (red_edge){
+        oss << R"( <edge id="e)" << nedge << R"(" source="n)" << u << R"(" target="n)" << v << R"(">  
+        <data key="d10">
+            <y:PolyLineEdge>
+            <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+            <y:LineStyle color="#FF0000" type="line" width="6.0"/>
+            <y:Arrows source="none" target="none"/>
+            <y:BendStyle smoothed="false"/>
+            </y:PolyLineEdge>
+        </data>
+        </edge> )";
+    } else {
+        oss << R"( <edge id="e)" << nedge << R"(" source="n)" << u << R"(" target="n)" << v << R"(">  
+        <data key="d10">
+            <y:PolyLineEdge>
+            <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+            <y:LineStyle color="#000000" type="line" width="1.0"/>
+            <y:Arrows source="none" target="none"/>
+            <y:BendStyle smoothed="false"/>
+            </y:PolyLineEdge>
+        </data>
+        </edge> )";
+    }
+
+
+    return oss.str();
+}
+
+std::string yed_file(Graph &graph){
+    std::string str0 =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+        "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:java=\"http://www.yworks.com/xml/yfiles-common/1.0/java\" xmlns:sys=\"http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0\" xmlns:x=\"http://www.yworks.com/xml/yfiles-common/markup/2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">"
+        "<!--Created by yEd 3.25.1-->"
+        "<key attr.name=\"Description\" attr.type=\"string\" for=\"graph\" id=\"d0\"/>"
+        "<key for=\"port\" id=\"d1\" yfiles.type=\"portgraphics\"/>"
+        "<key for=\"port\" id=\"d2\" yfiles.type=\"portgeometry\"/>"
+        "<key for=\"port\" id=\"d3\" yfiles.type=\"portuserdata\"/>"
+        "<key attr.name=\"url\" attr.type=\"string\" for=\"node\" id=\"d4\"/>"
+        "<key attr.name=\"description\" attr.type=\"string\" for=\"node\" id=\"d5\"/>"
+        "<key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>"
+        "<key for=\"graphml\" id=\"d7\" yfiles.type=\"resources\"/>"
+        "<key attr.name=\"url\" attr.type=\"string\" for=\"edge\" id=\"d8\"/>"
+        "<key attr.name=\"description\" attr.type=\"string\" for=\"edge\" id=\"d9\"/>"
+        "<key for=\"edge\" id=\"d10\" yfiles.type=\"edgegraphics\"/>"
+        "<graph edgedefault=\"directed\" id=\"G\">"
+        "<data key=\"d0\" xml:space=\"preserve\"/>";
+    
+    std::string strN =
+        "  </graph>"
+        "  <data key=\"d7\">"
+        "    <y:Resources/>"
+        "  </data>"
+        "</graphml>";
+    
+    std::string allNodes;
+    std::string allEdges;
+    int nedges = 0;
+    int nodes = graph.get_num_vertices();
+
+    for (int i = 0; i < nodes; ++i) {
+        std::string node = generate_string_nodes(i);
+        allNodes += node + "\n";
+    }
+
+    for (int u=0; u < nodes; u++){
+        for (int v: graph.adjList(u)){
+            
+            // Check if edge is in the best tree
+            int node1 = 0, node2 = 0;
+            bool red_edge =false;
+            for (auto&& tuple: graph.best_tree){
+               std::tie(node1, node2) = tuple;
+               if ((node1==u && node2==v) || (node2==u && node1==v)){
+                   red_edge = true;
+                   break;
+               }
+            }
+
+            if (v > u){
+                std::string edge = generate_string_edges(nedges, u, v, red_edge);
+                allEdges += edge + "\n";
+                nedges++;
+            }
+        }
+    }
+
+    return str0 + allNodes + allEdges + strN ;
+}
+
+int save_yed_file(Graph &graph, const std::string &filename){
+        // Gerar o conteúdo XML
+    std::string xmlContent = yed_file(graph);
+    
+    std::string yed_filename = ensure_graphml_extension(filename);
+
+    // Gravar em um arquivo
+    std::ofstream outFile(yed_filename);
+    if (outFile.is_open()) {
+        outFile << xmlContent;
+        outFile.close();
+        //std::cout << "Arquivo salvo com sucesso como " << filename << std::endl;
+        return 0;
+    } //else {
+        //std::cerr << "Erro ao abrir o arquivo para escrita!" << std::endl;
+        return 1;
+    //}
+    //return 0;
+}
+
+std::string ensure_graphml_extension(const std::string& filename) {
+    // Regex para verificar se tem extensão (captura nome e extensão separadamente)
+    std::regex ext_regex(R"((.*?)(\.[^.]*|)$)");
+    std::smatch matches;
+    
+    if (std::regex_match(filename, matches, ext_regex)) {
+        // matches[1] = nome base (sem extensão)
+        // matches[2] = extensão existente (ou vazio)
+        return matches[1].str() + ".graphml";
+    }
+    
+    // Fallback (caso raro onde regex falha)
+    return filename + ".graphml";
 }
