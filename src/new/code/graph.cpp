@@ -5,6 +5,9 @@
 //#include <bits/stdc++.h>
 #include <iterator>
 
+#include <stdexcept> // Para exceções padrão como std::runtime_error
+
+
 #include "../Debug.h"
 #include "../my_libs/ctfunctions2.hpp"
 
@@ -1031,4 +1034,43 @@ void Graph::set_factor(int value){
 
 int Graph::get_factor(){
     return this->factor;
+}
+
+// Auxiliary function
+// If there is a edge, return weight = 1
+int Graph::get_edge_weight(int v, int u) {
+    if (this->has_edge(v, u)) {
+        // Assuming the weight is 1 for each edge in this simple graph implementation
+        return 1; // or any other logic to get the weight
+    }
+    return 0;
+}
+
+// Give as edges list, try build a spanning tree
+Graph Graph::spanningtree(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist) {
+    //Stretch stretch;
+    int numvertices = this->get_qty_vertex();
+    Graph tree(numvertices);
+
+    for (const auto& edge : edgeslist) {
+        int u = edge.first.first;
+        int v = edge.first.second;
+        double energia = edge.second;
+
+        tree.add_aresta(u, v);
+        bool has_cycle_var = false;
+        if (OpBasic::cyclic(tree, u)){
+            has_cycle_var = true;
+        }
+        if (!has_cycle_var)
+            if (OpBasic::cyclic(tree, u))
+                has_cycle_var = true;
+        if (has_cycle_var){
+            tree.remove_aresta(u, v);
+        }
+        if (tree.get_num_edges() == numvertices - 1) return tree;
+    }
+    //throw std::invalid_argument("I couldn't find a tree.");
+    std::cerr << "I couldn't find a tree." << std::endl;
+    return tree;
 }

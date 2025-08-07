@@ -8,7 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-#include <algorithm>
+#include <algorithm> // para std::max_element
+
 //#include <bits/stdc++.h>
 
 #include "../Debug.h"
@@ -75,4 +76,10 @@ class Centrality
         static std::vector<int> bfs2025(Graph& graph, int start);
         static std::vector<double> closeness_centrality_normalized(Graph& graph);
         static std::vector<std::pair<int,double>> closeness_centrality_normalized_2025_07(Graph& graph);
-};
+        static std::vector<std::pair<int, double>> closeness_sorted(Graph &graph);
+        static std::vector<std::pair<std::pair<int, int>, double>> energy_closeness(Graph &graph);
+        static std::vector<std::pair<std::pair<int, int>, double>> energy_closeness_sorted(Graph &graph);
+        static double max_centrality(const std::vector<std::pair<int, double>> &closeness_sorted);
+        static std::vector<std::pair<int, double>> vertices_sorted_by_closeness_neighbors(Graph &graph);
+        static double get_closeness(const std::vector<std::pair<int, double>> &vector, int key);
+    };

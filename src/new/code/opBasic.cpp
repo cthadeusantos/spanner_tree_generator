@@ -1,8 +1,3 @@
-#include <stack>
-#include <queue>
-
-#include <iostream>
-
 //#include "frontier.hpp"
 #include "opBasic.hpp"
 
@@ -1131,4 +1126,100 @@ bool OpBasic::canReachAllVertices(Graph &graph, int startVertex) {
         }
     }
     return true;
+}
+
+
+// Features 2025
+
+
+
+bool OpBasic::contains_edge(const std::vector<std::pair<std::pair<int, int>, double>> &vec, int u, int v) {
+    for (const auto &entry : vec) {
+        if ((entry.first.first == u && entry.first.second == v) ||
+            (entry.first.first == v && entry.first.second == u)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+std::pair<bool, double> OpBasic::find_edge_value(
+    const std::vector<std::pair<std::pair<int, int>, double>> &vec,
+    int u, int v
+) {
+    for (const auto &entry : vec) {
+        int a = entry.first.first;
+        int b = entry.first.second;
+
+        if ((a == u && b == v) || (a == v && b == u)) { // para grafo não-direcionado
+            return {true, entry.second};
+        }
+    }
+    return {false, 0.0}; // ou algum valor sentinela como -1.0
+}
+
+// Gera árvore de caminhos mínimos usando Dijkstra
+Graph OpBasic::shortest_path_tree(Graph &graph, std::vector<std::pair<int, double>> &closeness_sorted, const std::vector<std::pair<std::pair<int, int>, double>> &energy_centrality) {
+    int n = graph.get_num_vertices();
+
+    // Etapa 1: definir raiz como o vértice com maior energia de centralidade
+    int root = closeness_sorted.front().first;
+    
+    // Etapa 2: estruturas de Dijkstra
+    //std::vector<double> dist(n, INF);
+    std::vector<double> dist(n, INFINITE);
+    std::vector<int> parent(n, -1);
+    std::vector<bool> visited(n, false);
+
+    dist[root] = 0;
+
+    // min-heap: (distância, vértice)
+    std::priority_queue<std::pair<double, int>,
+                        std::vector<std::pair<double, int>>,
+                        std::greater<std::pair<double, int>>> pq;
+
+    pq.push({0.0, root});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        if (visited[u])
+            continue;
+        visited[u] = true;
+
+        //for (const auto &neighbor : adj[u]) {
+        for (const auto &neighbor : graph.adjList(u)) {
+            int v;
+            double weight;
+            std::pair<bool, double> valor = OpBasic::find_edge_value(energy_centrality, u, neighbor);
+            if (valor.first){
+                v = neighbor;
+                weight = valor.second;
+                //int v = neighbor.first;
+                //double weight = neighbor.second;
+
+                if (!visited[v] && dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    parent[v] = u;
+                    pq.push({dist[v], v});
+                }
+
+            }
+
+        }
+    }
+
+    // Etapa 3: construir resultado
+    Graph tree(n);
+    for (int i = 0; i < n; ++i) {
+        if (parent[i] != -1){
+            tree.add_aresta(i, parent[i]);
+        }
+        //tree[i].parent = parent[i];
+        //tree[i].distance = dist[i];
+    }
+
+    return tree;
 }

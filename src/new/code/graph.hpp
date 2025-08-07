@@ -121,6 +121,12 @@ public:
 
     void show_edges();
     void check_integrity();
+
+    int get_edge_weight(int v, int u);
+
+    Graph spanningtree(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist);
+
+
 };
 
 #endif //GRAPH_HPP_

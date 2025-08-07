@@ -41,6 +41,9 @@ app_GENERATE_FILES := new/tools/generate_random_graph.cpp $(subst ${SRC_DIR}/, ,
 FACTOR-CALCULATOR := app_FACTOR-CALCULATOR
 app_FACTOR-CALCULATOR_FILES := new/tools/stretchFactorCalculator.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
+TREE-SPANNER-CALCULATOR := app_TREE-SPANNER-CALCULATOR
+app_TREE-SPANNER-CALCULATOR_FILES := new/tools/tree-t-SpannerCalculator.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
+
 BF-SEQ := app_BF-SEQ
 app_BF-SEQ_FILES := new/brute-force/main-bf.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
@@ -89,7 +92,7 @@ app_HR-H4v2r2_FILES := new/heuristic/main-hr_H4v2r2.cpp $(subst ${SRC_DIR}/, , $
 HR-H4v2r3 := app_HR-H4v2r3
 app_HR-H4v2r3_FILES := new/heuristic/main-hr_H4v2r3.cpp $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/code/ -name *.cpp)) $(subst ${SRC_DIR}/, , $(shell find ${SRC_DIR}/new/my_libs/ -name *.cpp))
 
-ALL_APP := ${FACTOR-CALCULATOR} ${CREATE} ${GENERATE} ${BF-SEQ} ${BF-ADJACENCY} ${BF-EDGES} ${BF-CYCLES} ${HR-H1v1} ${HR-H1v2} ${HR-H1v3} ${HR-H1v4} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-H3v2} ${HR-H4v1} ${HR-H4v2r1} ${HR-H4v2r2} ${HR-H4v2r3}
+ALL_APP := ${TREE-SPANNER-CALCULATOR} ${FACTOR-CALCULATOR} ${CREATE} ${GENERATE} ${BF-SEQ} ${BF-ADJACENCY} ${BF-EDGES} ${BF-CYCLES} ${HR-H1v1} ${HR-H1v2} ${HR-H1v3} ${HR-H1v4} ${HR-H2v1} ${HR-H2v2} ${HR-H3v1} ${HR-H3v2} ${HR-H4v1} ${HR-H4v2r1} ${HR-H4v2r2} ${HR-H4v2r3}
 
 #--Main rule names--
 RELEASE_BUILD := build-release

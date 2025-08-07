@@ -8,6 +8,9 @@
 #include <queue>
 #include <limits>
 
+#include <algorithm>
+#include <utility>
+
 #include "centrality.hpp"
 #include "heuristic.hpp"
 ///Basic debugging controller. See Debug.h for details.
@@ -994,7 +997,6 @@ float Centrality::closenessCentrality_2024_02(Graph &graph, int vertex)
     return closeness;
 }
 
-
 // New features 2025
 std::vector<int> Centrality::bfs2025(Graph& graph, int start) {
     int n = graph.get_num_vertices();
@@ -1052,3 +1054,132 @@ std::vector<std::pair<int,double>> Centrality::closeness_centrality_normalized_2
     return result;
 
 }
+
+std::vector<std::pair<int, double>> Centrality::closeness_sorted(Graph &graph) {
+        // Chama o método original
+        std::vector<std::pair<int, double>> result = closeness_centrality_normalized_2025_07(graph);
+
+        // Ordena em ordem não crescente (do maior para o menor)
+        std::sort(result.begin(), result.end(),
+                  [](const std::pair<int, double>& a,
+                     const std::pair<int, double>& b) {
+                      return a.second > b.second; // maior primeiro
+                  });
+
+        return result;
+}
+
+/*
+QUANDO MIGRAR O CODIGO PARA >= C++17
+*/
+// double Centrality::max_centrality(const std::vector<std::pair<int, double>> &closeness_sorted) {
+//     if (closeness_sorted.empty()) {
+//         return 0.0;
+//     }
+
+//     auto max_it = std::max_element(
+//         closeness_sorted.begin(), closeness_sorted.end(),
+//          {
+//             return a.second < b.second;
+//         });
+
+//     return max_it->second;
+// }
+
+double Centrality::max_centrality(const std::vector<std::pair<int, double>> &closeness_sorted) {
+    if (closeness_sorted.empty()) {
+        return 0.0; // ou algum outro valor padrão que faça sentido no seu contexto
+    }
+
+    double max_value = closeness_sorted[0].second;
+    for (size_t i = 1; i < closeness_sorted.size(); ++i) {
+        if (closeness_sorted[i].second > max_value) {
+            max_value = closeness_sorted[i].second;
+        }
+    }
+
+    return max_value;
+}
+
+double Centrality::get_closeness(const std::vector<std::pair<int, double>> &vector, int key) {
+    for (const auto& par : vector) {
+        if (par.first == key) {
+            return par.second;
+        }
+    }
+    // Retorna um valor especial se não encontrar (pode lançar exceção se preferir)
+    return -1.0;
+}
+
+
+
+std::vector<std::pair<std::pair<int, int>, double>> Centrality::energy_closeness(Graph &graph){
+    std::vector<double> closeness;
+    closeness = closeness_centrality_normalized(graph);
+    std::vector<std::pair<std::pair<int, int>, double>> result;
+
+    for(int i = 0; i < graph.get_num_vertices(); i++){
+        for(int j = i + 1; j < graph.get_num_vertices(); j++){
+            if (graph.get_edge_weight(i, j)) {
+                result.push_back({{i, j}, closeness[i] * closeness[j]});
+            }
+        }
+    }
+    return result;
+}
+
+std::vector<std::pair<std::pair<int, int>, double>> Centrality::energy_closeness_sorted(Graph &graph) {
+        // Chama o método original
+        std::vector<std::pair<std::pair<int, int>, double>> result = energy_closeness(graph);
+
+        // Ordena em ordem não crescente (do maior para o menor)
+        std::sort(result.begin(), result.end(),
+                  [](const std::pair<std::pair<int, int>, double>& a,
+                     const std::pair<std::pair<int, int>, double>& b) {
+                      return a.second > b.second; // maior primeiro
+                  });
+
+        return result;
+}
+
+std::vector<std::pair<int, double>> Centrality::vertices_sorted_by_closeness_neighbors(Graph &graph){
+        // Chama o método original
+        std::vector<std::pair<int, double>> closeness = closeness_centrality_normalized_2025_07(graph);
+
+        std::vector<std::pair<int, std::pair<double, double>>> closeness_neighbors;
+
+        for (std::vector<std::pair<int, double>>::iterator it = closeness.begin(); it != closeness.end(); ++it) {
+                // Access elements using '->' operator
+                double value = 0.0;
+                for (auto i: graph.adjList(it->first)){
+                    value = value + get_closeness(closeness, i);
+                }
+                value = value / graph.get_num_vertices();
+                closeness_neighbors.push_back(std::make_pair(it->first, std::make_pair(it->second, value)));
+                //std::cout << "First: " << it->first << ", Second: " << it->second << std::endl;
+                // Modify elements
+                //it->first = 0; 
+            }
+
+        // Ordena em ordem não crescente (do maior para o menor)
+        std::sort(closeness_neighbors.begin(), closeness_neighbors.end(),
+                  [](const std::pair<int, const std::pair<double, double>>& a,
+                     const std::pair<int, const std::pair<double, double>>& b) {
+                      
+                        if (a.second.first != b.second.first)
+                            return a.second.first > b.second.first; // maior primeiro
+                        return a.second.second > b.second.second;   // desempate: maior primeiro
+                  });
+        
+        closeness.clear();
+        for (std::vector<std::pair<int, std::pair<double,double>>>::iterator it = closeness_neighbors.begin(); it != closeness_neighbors.end(); ++it){
+            closeness.push_back(std::make_pair(it->first, it->second.first));
+        }
+        return closeness;  
+}
+//void ordenar_resultado(std::vector<std::pair<std::pair<int, int>, double>>& result) {
+//    std::sort(result.begin(), result.end(),
+//         -> bool {
+//            return a.second > b.second; // Ordena do maior para o menor
+//        });
+//}
