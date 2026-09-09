@@ -977,9 +977,9 @@ void Heuristic::Heuristica_4v2r1(Graph &graph)
     std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread(graph);
     std::vector<float> vertices_leverage = Centrality::leverage_centrality_thread(graph);
     
-    for (auto close:vertices_closeness){
-        cout << close << "\n";
-    }
+    // for (auto close:vertices_closeness){
+    //     cout << close << "\n";
+    // }
     
     DEBUG std::cerr << "Selecting root" << std::endl;
     root = Centrality::root_selection3(vertices_closeness, vertices_leverage);
@@ -1073,7 +1073,7 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
     int i=0,j=0;
     for (auto closenessi: vertices_closeness){
         for (auto closenessj: vertices_closeness){
-            if (graph.get_edge_weight(i, j)){
+            if (graph.get_edge_weight(i, j) and i < j){
                 std::cout << i << " - " << j << " : " << closenessi * closenessj << std::endl;
             }
             j++;
