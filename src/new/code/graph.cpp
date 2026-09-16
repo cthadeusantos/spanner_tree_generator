@@ -1074,3 +1074,134 @@ Graph Graph::spanningtree(std::vector<std::pair<std::pair<int, int>, double>> &e
     std::cerr << "I couldn't find a tree." << std::endl;
     return tree;
 }
+
+// Give as edges list, try build a spanning tree
+Graph Graph::buildenergytree(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist) {
+    //Stretch stretch;
+    int numvertices = this->get_qty_vertex();
+    Graph tree(numvertices);
+
+    for (const auto& edge : edgeslist) {
+        int u = edge.first.first;
+        int v = edge.first.second;
+        double energia = edge.second;
+
+        tree.add_aresta(u, v);
+        bool has_cycle_var = false;
+        if (OpBasic::cyclic(tree, u)){
+            has_cycle_var = true;
+        }
+        if (!has_cycle_var)
+            if (OpBasic::cyclic(tree, u))
+                has_cycle_var = true;
+        if (has_cycle_var){
+            tree.remove_aresta(u, v);
+        }
+        if (tree.get_num_edges() == numvertices - 1) return tree;
+    }
+    //throw std::invalid_argument("I couldn't find a tree.");
+    std::cerr << "I couldn't find a tree." << std::endl;
+    return tree;
+}
+
+// Give as edges list, try build a spanning tree
+Graph Graph::buildenergytree2(
+    std::vector<std::pair<std::pair<int,int>, double>>& edgeslist, std::vector<std::pair<int, double>> &closeness)
+{
+    int numvertices = get_qty_vertex();
+    Graph tree(numvertices);
+
+    if (edgeslist.empty())
+        return tree;
+
+    std::vector<bool> vertex_list(numvertices, false);
+    std::vector<int> vertex_level(numvertices, 0);
+    int max_level = 0;
+
+    // Passos 2 e 3
+    int u = edgeslist[0].first.first;
+    int v = edgeslist[0].first.second;
+
+    if (closeness[u].second > closeness[v].second)
+    {
+        vertex_level[u] = 0;
+        vertex_level[v] = 1;
+        max_level = 1;
+    }
+
+    tree.add_aresta(u, v);
+
+    vertex_list[u] = true;
+    vertex_list[v] = true;
+
+    // Passo 4
+    edgeslist.erase(edgeslist.begin());
+
+    while (!edgeslist.empty())
+    {
+        bool alguma_aresta_processada = false;
+
+        for (auto it = edgeslist.begin(); it != edgeslist.end(); ++it)
+        {
+            u = it->first.first;
+            v = it->first.second;
+
+            // possui pelo menos um vértice já na árvore?
+            if (vertex_list[u] || vertex_list[v])
+            {
+                alguma_aresta_processada = true;
+
+                if (
+                    ((vertex_level[u]+1 > max_level) || (vertex_level[v]+1 > max_level))
+                ){
+                    continue;
+                }
+                tree.add_aresta(u, v);
+
+                bool has_cycle_var = false;
+
+                if (OpBasic::cyclic(tree, u))
+                    has_cycle_var = true;
+
+                if (!has_cycle_var)
+                    if (OpBasic::cyclic(tree, v))
+                        has_cycle_var = true;
+
+                if (has_cycle_var)
+                {
+                    tree.remove_aresta(u, v);
+                }
+                else
+                {
+                    if (vertex_list[u]==true)
+                        vertex_level[v] = vertex_level[u] + 1;
+                    if (vertex_list[v]==true)
+                        vertex_level[u] = vertex_level[v] + 1;
+                    vertex_list[u] = true;
+                    vertex_list[v] = true;
+
+                    if (tree.get_num_edges() == numvertices - 1)
+                        return tree;
+                }
+
+                // remove a aresta processada
+                edgeslist.erase(it);
+
+                // volta para o topo da lista
+                break;
+            }
+
+            // se não possui vértice na árvore,
+            // simplesmente continua procurando
+        }
+        max_level = max_level + 1;
+
+        // não existe mais nenhuma aresta conectando
+        // a árvore atual aos vértices restantes
+        if (!alguma_aresta_processada)
+            break;
+    }
+
+    std::cerr << "I couldn't find a spanning tree." << std::endl;
+    return tree;
+}

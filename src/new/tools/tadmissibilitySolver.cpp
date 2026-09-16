@@ -91,13 +91,22 @@ int main(int argc, char** argv){
 	DEBUG std::cerr << "Lower bound: " << lower_limit << std::endl;
 
 	DEBUG std::cerr << "Calculate energy closeness.\n";
-	//std::vector<std::pair<int, double>>  energy_closeness1 = Centrality::closeness_sorted(graph);
-	std::vector<std::pair<int, double>>  energy_closeness1 = Centrality::vertices_sorted_by_closeness_neighbors(graph);
-	std::vector<std::pair<std::pair<int, int>, double>> energy_closeness = Centrality::energy_closeness_sorted(graph);
-	
-	TreeT = OpBasic::shortest_path_tree(graph, energy_closeness1, energy_closeness);
 
-	//TreeT = graph.spanningtree(energy_closeness);
+	std::vector<std::pair<int, double>> closeness = Centrality::closeness_centrality_202609(graph);
+
+	std::vector<std::pair<std::pair<int, int>, double>> energy_closeness = Centrality::closeness_energy_sorted_202609(graph, Centrality::SortOrder::Descending);
+	
+	for (const auto& pair : closeness) {
+		DEBUG std::cerr << "Vertex: " << pair.first << ", Closeness: " << pair.second << std::endl;
+	}
+
+	for (const auto& pair : energy_closeness) {
+		DEBUG std::cerr << "Edge: (" << pair.first.first << ", " << pair.first.second << "), Closeness energy: " << pair.second << std::endl;
+	}
+
+	//TreeT = OpBasic::shortest_path_tree(graph, closeness, energy_closeness);
+
+	TreeT = graph.buildenergytree2(energy_closeness, closeness);
 
 	//DEBUG std::cerr << "Normalized closeness centrality: " << global_closeness << std::endl;
 
@@ -108,7 +117,7 @@ int main(int argc, char** argv){
 	std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
 
 	DEBUG std::cerr << "Calculating stretch factor - wait!\n";
-	run_name = "TREE_T_SPANNER_CALCULATOR";
+	run_name = "tadmissibilitySolver";
 
 	//Stretch acme; // Lonney Tunes rocks!
     if (global_running_time > 0){

@@ -27,6 +27,8 @@ class Centrality
         Centrality(){}; // motivo de força maior
         ~Centrality(){};
 
+        enum class SortOrder { Ascending, Descending };
+
         static std::vector<float> leverage(Graph &graph);
         
         static std::vector <float> leverage_centrality_thread(Graph &graph);
@@ -82,4 +84,8 @@ class Centrality
         static double max_centrality(const std::vector<std::pair<int, double>> &closeness_sorted);
         static std::vector<std::pair<int, double>> vertices_sorted_by_closeness_neighbors(Graph &graph);
         static double get_closeness(const std::vector<std::pair<int, double>> &vector, int key);
+
+        static std::vector<std::pair<int, double>> closeness_centrality_202609(Graph &graph);
+        static std::vector<std::pair<std::pair<int, int>, double>> closeness_energy_202609(Graph &graph);
+        static std::vector<std::pair<std::pair<int, int>, double>> closeness_energy_sorted_202609(Graph &graph, SortOrder order = SortOrder::Descending);
     };

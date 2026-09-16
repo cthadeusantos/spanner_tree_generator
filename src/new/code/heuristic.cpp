@@ -1059,28 +1059,10 @@ void Heuristic::Heuristica_4v2r2(Graph &graph)
     std::vector <bool> visited(n, false); // processed vertices that was enqueued anytime
     //std::vector<std::pair<int,float>> vertices_closeness = Centrality::closeness_centrality_list(graph);
     DEBUG std::cerr << "Calculating vertex importance!" << std::endl;
-    std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    //std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
 
-    //std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread_V2(graph);
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_thread_V2(graph);
     //std::vector<float> vertices_leverage = Centrality::leverage_centrality_thread(graph);
-
-    int index=0;    
-    for (auto closeness: vertices_closeness){
-        std::cout << "Vertice: "<< index << "\tcloseness: " << closeness << std::endl;
-        index++;
-    }
-
-    int i=0,j=0;
-    for (auto closenessi: vertices_closeness){
-        for (auto closenessj: vertices_closeness){
-            if (graph.get_edge_weight(i, j) and i < j){
-                std::cout << i << " - " << j << " : " << closenessi * closenessj << std::endl;
-            }
-            j++;
-        }
-        j=0;
-        i++;
-    }
 
     DEBUG std::cerr << "Selecting root" << std::endl;
     root = Centrality::root_selection2(vertices_closeness);

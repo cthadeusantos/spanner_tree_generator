@@ -1183,3 +1183,44 @@ std::vector<std::pair<int, double>> Centrality::vertices_sorted_by_closeness_nei
 //            return a.second > b.second; // Ordena do maior para o menor
 //        });
 //}
+
+// Minha ideia para teste em 2026
+
+std::vector<std::pair<int, double>> Centrality::closeness_centrality_202609(Graph &graph){
+    std::vector<float> vertices_closeness = Centrality::closeness_centrality_vector(graph);
+    std::vector<std::pair<int, double>> result;
+    for (size_t i = 0; i < vertices_closeness.size(); ++i) {
+        result.push_back(std::make_pair(i, vertices_closeness[i]));
+    }
+    return result;
+}
+
+std::vector<std::pair<std::pair<int, int>, double>> Centrality::closeness_energy_202609(Graph &graph){
+    //std::vector<std::pair<int, double>> closeness =Centrality::closeness_centrality_202609(graph);
+    
+    std::vector<std::pair<std::pair<int, int>, double>> result;
+
+    std::vector<float> closeness = Centrality::closeness_centrality_vector(graph);
+
+    for(int i = 0; i < graph.get_num_vertices(); i++){
+        for(int j = i + 1; j < graph.get_num_vertices(); j++){
+            if (graph.get_edge_weight(i, j)) {
+                result.push_back({{i, j}, closeness[i] * closeness[j]});
+            }
+        }
+    }
+    return result;
+}
+
+using Entry = std::pair<std::pair<int, int>, double>;
+
+std::vector<Entry> 
+Centrality::closeness_energy_sorted_202609(Graph &graph, SortOrder order) {
+    auto result = Centrality::closeness_energy_202609(graph);
+    std::sort(result.begin(), result.end(),
+        [order](const Entry& a, const Entry& b) {
+            return order == SortOrder::Descending ? a.second > b.second
+                                                  : a.second < b.second;
+        });
+    return result;
+}

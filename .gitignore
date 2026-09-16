@@ -280,6 +280,7 @@ documents/doxygen/latex/
 .DS_store
 .swp
 
+*.graphml
 src/boost/
 
 temporario/

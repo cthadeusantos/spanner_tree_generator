@@ -125,6 +125,10 @@ calculatorfactor:
 	clear
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/stretchFactorCalculator.cpp  -o ${OUTPUT_OSX}/app_FACTOR-CALCULATOR
 
+solver:
+	clear
+	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_TOOLS}/tadmissibilitySolver.cpp  -o ${OUTPUT_OSX}/app_SOLVER
+
 all:
 	clear
 	clang++ ${CXXFLAGS} ${CODE_MYLIBS}/*.cpp ${CODE_CODE}/*.cpp ${CODE_BRUTEFORCE}/main-bf.cpp  -o ${OUTPUT_OSX}/app_BF-SEQ
