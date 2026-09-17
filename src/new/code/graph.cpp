@@ -1106,7 +1106,7 @@ Graph Graph::buildenergytree(std::vector<std::pair<std::pair<int, int>, double>>
 
 // Give as edges list, try build a spanning tree
 Graph Graph::buildenergytree2(
-    std::vector<std::pair<std::pair<int,int>, double>>& edgeslist, std::vector<std::pair<int, double>> &closeness)
+    std::vector<std::pair<std::pair<int,int>, double>>& edgeslist, std::vector<std::pair<int, double>> &closeness, Graph &graph)
 {
     int numvertices = get_qty_vertex();
     Graph tree(numvertices);
@@ -1116,18 +1116,30 @@ Graph Graph::buildenergytree2(
 
     std::vector<bool> vertex_list(numvertices, false);
     std::vector<int> vertex_level(numvertices, 0);
-    int max_level = 0;
+    // int max_level = 0;
+
+
+
+    //auto vertex_product = vertex_edge_product(edgeslist);
+
+    //edgeslist = recalculate_edge_weights(
+    //                edgeslist,
+    //                vertex_product);
+
+    // if (closeness[u].second > closeness[v].second)
+    // {
+    //     vertex_level[u] = 0;
+    //     vertex_level[v] = 1;
+    //     max_level = 1;
+    // }
+
+    for(auto valor:edgeslist){
+        std::cout << "(" << valor.first.first << " , " << valor.first.second << ") : " << valor.second <<std::endl;
+    }
 
     // Passos 2 e 3
     int u = edgeslist[0].first.first;
     int v = edgeslist[0].first.second;
-
-    if (closeness[u].second > closeness[v].second)
-    {
-        vertex_level[u] = 0;
-        vertex_level[v] = 1;
-        max_level = 1;
-    }
 
     tree.add_aresta(u, v);
 
@@ -1147,15 +1159,10 @@ Graph Graph::buildenergytree2(
             v = it->first.second;
 
             // possui pelo menos um vértice já na árvore?
-            if (vertex_list[u] || vertex_list[v])
+            if ((vertex_list[u] || vertex_list[v]) && !(vertex_list[u] && vertex_list[v]))
             {
                 alguma_aresta_processada = true;
 
-                if (
-                    ((vertex_level[u]+1 > max_level) || (vertex_level[v]+1 > max_level))
-                ){
-                    continue;
-                }
                 tree.add_aresta(u, v);
 
                 bool has_cycle_var = false;
@@ -1173,13 +1180,9 @@ Graph Graph::buildenergytree2(
                 }
                 else
                 {
-                    if (vertex_list[u]==true)
-                        vertex_level[v] = vertex_level[u] + 1;
-                    if (vertex_list[v]==true)
-                        vertex_level[u] = vertex_level[v] + 1;
+                    std::cout << u << ","<<v << " adicionado!"<<std::endl;
                     vertex_list[u] = true;
                     vertex_list[v] = true;
-
                     if (tree.get_num_edges() == numvertices - 1)
                         return tree;
                 }
@@ -1194,7 +1197,6 @@ Graph Graph::buildenergytree2(
             // se não possui vértice na árvore,
             // simplesmente continua procurando
         }
-        max_level = max_level + 1;
 
         // não existe mais nenhuma aresta conectando
         // a árvore atual aos vértices restantes
@@ -1204,4 +1206,57 @@ Graph Graph::buildenergytree2(
 
     std::cerr << "I couldn't find a spanning tree." << std::endl;
     return tree;
+}
+
+std::vector<std::pair<int, double>>
+Graph::vertex_edge_product(
+    const std::vector<std::pair<std::pair<int,int>, double>>& edgeslist)
+{
+    int numvertices = get_qty_vertex();
+
+    std::vector<double> product(numvertices, 1.0);
+
+    for (const auto& edge : edgeslist)
+    {
+        int u = edge.first.first;
+        int v = edge.first.second;
+        double w = edge.second;
+
+        product[u] *= w;
+        product[v] *= w;
+    }
+
+    std::vector<std::pair<int, double>> result;
+
+    for (int v = 0; v < numvertices; ++v)
+    {
+        result.push_back({v, product[v]});
+    }
+
+    for (auto saida: result){
+        std::cout << saida.first << ":" << saida.second << std::endl;
+    }
+
+    return result;
+}
+
+std::vector<std::pair<std::pair<int,int>, double>>
+Graph::recalculate_edge_weights(
+    const std::vector<std::pair<std::pair<int,int>, double>>& edgeslist,
+    const std::vector<std::pair<int,double>>& vertex_product)
+{
+    auto new_edges = edgeslist;
+
+    for (auto& edge : new_edges)
+    {
+        int u = edge.first.first;
+        int v = edge.first.second;
+
+        double pu = vertex_product[u].second;
+        double pv = vertex_product[v].second;
+
+        edge.second = edge.second * pu * pv;
+    }
+
+    return new_edges;
 }

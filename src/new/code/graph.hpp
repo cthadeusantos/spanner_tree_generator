@@ -127,8 +127,15 @@ public:
     Graph spanningtree(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist);
 
     Graph buildenergytree(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist);
-    Graph buildenergytree2(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist, std::vector<std::pair<int, double>> &closeness);
+    Graph buildenergytree2(std::vector<std::pair<std::pair<int, int>, double>> &edgeslist, std::vector<std::pair<int, double>> &closeness, Graph &graph);
 
-};
+    std::vector<std::pair<int, double>> vertex_edge_product(
+    const std::vector<std::pair<std::pair<int,int>, double>>& edgeslist);
+
+    std::vector<std::pair<std::pair<int,int>, double>> recalculate_edge_weights(
+        const std::vector<std::pair<std::pair<int,int>, double>>& edgeslist,
+        const std::vector<std::pair<int,double>>& vertex_product);
+
+    };
 
 #endif //GRAPH_HPP_
