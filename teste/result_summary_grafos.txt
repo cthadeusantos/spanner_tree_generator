@@ -1,0 +1,37 @@
+This is a test battery for tadmiss ran at 17-03-2023
+Test description: Running brute force sequential
+Computational environment:  Common KVM processor with 4 GB of RAM running in Current operational system information: posix.uname_result(sysname='Linux', nodename='labic-vm-test', release='5.15.0-67-generic', version='#74-Ubuntu SMP Wed Feb 22 14:14:39 UTC 2023', machine='x86_64')
+Original binary file name: app_BF-SEQ
+Default arguments given: " "
+Default number of independent runs: 10 -- Default timelimit in seconds for each run: 10800 -- Default starting seed: 0
+Amount of instances in this test battery: 11
+Details about each failed run, overriden arguments, or repeated instances should be seen in the respective log file. You may also use the original json archived here for this same purpose.
+
++-----------------------+------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+|     Instance Name     |      Subdir      | #Successes/#TotalRuns | Avg running time (s) (MIN/MAX) [std_dev] | Avg stretch index (MIN/MAX) [std_dev] | #Vertex | #Edges | Lower Bound |
++-----------------------+------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+|  !grafos/grafo_10.txt | grafos/grafo_10/ |         10/10         |           0.0 (0.0/0.0) [0.0]            |             5 (5/5) [0.0]             |    10   |   13   |      4      |
+|  !grafos/grafo_11.txt | grafos/grafo_11/ |         10/10         |           0.0 (0.0/0.0) [0.0]            |             4 (4/4) [0.0]             |    11   |   15   |      4      |
+|  !grafos/grafo_12.txt | grafos/grafo_12/ |         10/10         |           0.1 (0.1/0.1) [0.0]            |             5 (5/5) [0.0]             |    12   |   17   |      4      |
+|  !grafos/grafo_13.txt | grafos/grafo_13/ |         10/10         |           0.2 (0.2/0.3) [0.0]            |             5 (5/5) [0.0]             |    13   |   19   |      4      |
+|  !grafos/grafo_14.txt | grafos/grafo_14/ |         10/10         |           4.1 (4.1/4.2) [0.0]            |             4 (4/4) [0.0]             |    14   |   24   |      3      |
+|  !grafos/grafo_15.txt | grafos/grafo_15/ |         10/10         |           0.0 (0.0/0.0) [0.0]            |             5 (5/5) [0.0]             |    15   |   23   |      5      |
+|  !grafos/grafo_16.txt | grafos/grafo_16/ |         10/10         |           3.5 (3.4/3.7) [0.1]            |             5 (5/5) [0.0]             |    16   |   25   |      4      |
+|  !grafos/grafo_17.txt | grafos/grafo_17/ |         10/10         |           1.4 (1.4/1.4) [0.0]            |             4 (4/4) [0.0]             |    17   |   29   |      4      |
+|  !grafos/grafo_18.txt | grafos/grafo_18/ |         10/10         |           0.9 (0.9/1.0) [0.0]            |             5 (5/5) [0.0]             |    18   |   29   |      5      |
+| !+grafos/grafo_19.txt | grafos/grafo_19/ |         10/10         |      2527.7 (2509.3/2551.6) [11.9]       |             5 (5/5) [0.0]             |    19   |   34   |      4      |
+| !+grafos/grafo_20.txt | grafos/grafo_20/ |         10/10         |          26.8 (26.7/27.0) [0.1]          |             4 (4/4) [0.0]             |    20   |   34   |      4      |
++-----------------------+------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+
+Legend:
+* -- signals that at least one run has an error.
++ -- signals that at least one solution was saved as new bks.
+! -- signals that the test battery used custom parameters to override defaults.
+# -- signals that the test battery was done with a instance that has appeared before in this summary.
+----------------
+
+Number of instances processed by this script: 11
+
+Number of instances reported as not found: 0
+
+Number of instances that has at least one run with error: 0
+

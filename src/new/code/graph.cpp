@@ -1118,8 +1118,6 @@ Graph Graph::buildenergytree2(
     std::vector<int> vertex_level(numvertices, -1);
     // int max_level = 0;
 
-
-
     //auto vertex_product = vertex_edge_product(edgeslist);
 
     //edgeslist = recalculate_edge_weights(
@@ -1133,14 +1131,13 @@ Graph Graph::buildenergytree2(
     //     max_level = 1;
     // }
 
-    // for(auto valor:edgeslist){
-    //     std::cout << "(" << valor.first.first << " , " << valor.first.second << ") : " << valor.second <<std::endl;
-    // }
-
     // Passos 2 e 3
     int u = edgeslist[0].first.first;
     int v = edgeslist[0].first.second;
     int root = -1;
+
+    std::cout << u << " " <<closeness[u].second << std::endl;
+    std::cout << v << " " <<closeness[v].second << std::endl;
 
     if (closeness[u].second > closeness[v].second)
     {
@@ -1154,8 +1151,8 @@ Graph Graph::buildenergytree2(
         vertex_level[v] = 0;
         root = v;
     }
-
-    std::cout << "Tentando adicionar aresta: " << u << "," << v << std::endl;
+    std::cout << "Selected root: " << root << std::endl;
+    std::cout << "Adicionando aresta inicial: " << u << "," << v << std::endl;
     tree.add_aresta(u, v);
 
     vertex_list[u] = true;
@@ -1164,11 +1161,19 @@ Graph Graph::buildenergytree2(
     // Passo 4
     edgeslist.erase(edgeslist.begin());
 
+    std::cout << "Listando as arestas a serem percorridas: " << u << "," << v << std::endl;
+    for(auto valor:edgeslist){
+         std::cout << "(" << valor.first.first << " , " << valor.first.second << ") : " << valor.second <<std::endl;
+    }
+
+    
+    std::cout << "Adicionando as arestas da raiz: " << std::endl;
     for (auto it = edgeslist.begin(); it != edgeslist.end(); ++it){
             u = it->first.first;
             v = it->first.second;
+            std::cout << "Aresta lida: " << u << "," << v << std::endl;
             if (root == u || root == v){
-                std::cout << "Tentando adicionar aresta: " << u << "," << v << std::endl;
+                std::cout << "Adicionando aresta ligada a raiz: " << u << "," << v << std::endl;
                 tree.add_aresta(u, v);
                 vertex_list[u] = true;
                 vertex_list[v] = true;
@@ -1182,11 +1187,13 @@ Graph Graph::buildenergytree2(
                     vertex_level[v] = 0;
                     vertex_level[u] = 1;
                 }
-     
                 edgeslist.erase(it);
+                break;
+
             }
     }
-
+    std::cout << "Arestas da raiz adicionadas: " << std::endl;
+    std::cout << "Adicionando as arestas pela ordem de entrada: " << std::endl;
     while (!edgeslist.empty())
     {
         bool alguma_aresta_processada = false;

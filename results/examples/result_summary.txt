@@ -1,0 +1,59 @@
+This is a test battery for tadmiss ran at 14-07-2025
+Test description: Running brute force parallel (adjacency list)
+Computational environment:  Intel(R) Core(TM) i3-10100T CPU @ 3.00GHz with 8 GB of RAM running in Current operational system information: posix.uname_result(sysname='Linux', nodename='DAE-187386', release='6.6.75.1-microsoft-standard-WSL2', version='#1 SMP PREEMPT_DYNAMIC Sat Feb  8 02:00:20 UTC 2025', machine='x86_64')
+Original binary file name: app_BF-ADJACENCY
+Default arguments given: " "
+Default number of independent runs: 1 -- Default timelimit in seconds for each run: 10800 -- Default starting seed: 0
+Amount of instances in this test battery: 32
+Details about each failed run, overriden arguments, or repeated instances should be seen in the respective log file. You may also use the original json archived here for this same purpose.              
+              
++---------------------------------------+--------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+----------------------+
+|             Instance Name             |                Subdir                | #Successes/#TotalRuns | Avg running time (s) (MIN/MAX) [std_dev] | Avg stretch index (MIN/MAX) [std_dev] | #Vertex | #Edges | Lower Bound | Total trees          |
++---------------------------------------+--------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+----------------------+
+|      !examples/2squaresBridge.in      |     examples/2squaresBridge.in/      |          1/1          |     0.000517 (0.000517/0.000517) [0]     |              3 (3/3) [0]              |    8    |   9    |      3      |      1               |
+|       !examples/G10_E11_edges.in      |      examples/G10_E11_edges.in/      |          1/1          |     0.000521 (0.000521/0.000521) [0]     |              6 (6/6) [0]              |    10   |   11   |      6      |      6               |
+|        !examples/G10_edges.csv        |       examples/G10_edges.csv/        |          1/1          |     0.001604 (0.001604/0.001604) [0]     |              5 (5/5) [0]              |    10   |   13   |      4      |     274              |
+|       !examples/G11_E13_edge.in       |      examples/G11_E13_edge.in/       |          1/1          |      0.00079 (0.00079/0.00079) [0]       |              6 (6/6) [0]              |    11   |   13   |      6      |      21              |
+|       !examples/G11_E14_edges.in      |      examples/G11_E14_edges.in/      |          1/1          |     0.001071 (0.001071/0.001071) [0]     |              5 (5/5) [0]              |    11   |   14   |      5      |     134              |
+|        !examples/G11_square.in        |       examples/G11_square.in/        |          1/1          |     0.001496 (0.001496/0.001496) [0]     |              3 (3/3) [0]              |    11   |   15   |      3      |     261              |
+|     !examples/G11_squaresplus5.in     |    examples/G11_squaresplus5.in/     |          1/1          |     0.005863 (0.005863/0.005863) [0]     |              4 (4/4) [0]              |    13   |   18   |      4      |     1378             |
+|       !examples/G12_E15_edge.in       |      examples/G12_E15_edge.in/       |          1/1          |     0.000705 (0.000705/0.000705) [0]     |              6 (6/6) [0]              |    12   |   16   |      6      |      72              |
+|     !examples/G12_articulation.in     |    examples/G12_articulation.in/     |          1/1          |     0.001027 (0.001027/0.001027) [0]     |              3 (3/3) [0]              |    12   |   14   |      3      |      1               |
+|     !examples/G12_paper_pag9adj.in    |    examples/G12_paper_pag9adj.in/    |          1/1          |     0.003631 (0.003631/0.003631) [0]     |              4 (4/4) [0]              |    12   |   17   |      4      |     999              |
+|     !+examples/G14_centrallity.in     |     examples/G14_centrallity.in/     |          1/1          |     0.000849 (0.000849/0.000849) [0]     |              2 (2/2) [0]              |    14   |   18   |      2      |      19              |
+|      !+examples/G16_E20_edges.in      |      examples/G16_E20_edges.in/      |          1/1          |     0.004494 (0.004494/0.004494) [0]     |              5 (5/5) [0]              |    16   |   20   |      5      |     460              |
+|      !+examples/G18_E25_edges.in      |      examples/G18_E25_edges.in/      |          1/1          |     0.000793 (0.000793/0.000793) [0]     |              5 (5/5) [0]              |    18   |   25   |      5      |      1               |
+|  !+examples/G18_lewiscarrolpuzzle.in  |  examples/G18_lewiscarrolpuzzle.in/  |          1/1          |     0.283823 (0.283823/0.283823) [0]     |              7 (7/7) [0]              |    18   |   24   |      5      |    28672             |
+|      !+examples/G4_FULL_edges.in      |      examples/G4_FULL_edges.in/      |          1/1          |     0.000532 (0.000532/0.000532) [0]     |              2 (2/2) [0]              |    4    |   6    |      2      |      1               |
+|          !+examples/G6_15a.in         |         examples/G6_15a.in/          |          1/1          |     0.005678 (0.005678/0.005678) [0]     |              4 (4/4) [0]              |    15   |   27   |      4      |     1217             |
+|       !+examples/G7_E9_edges.in       |       examples/G7_E9_edges.in/       |          1/1          |     0.000378 (0.000378/0.000378) [0]     |              4 (4/4) [0]              |    7    |   9    |      4      |      1               |
+|     !+examples/G7_luis_exemplo.in     |     examples/G7_luis_exemplo.in/     |          1/1          |     0.000893 (0.000893/0.000893) [0]     |              3 (3/3) [0]              |    7    |   11   |      3      |     162              |
+|       !+examples/G8_E10_edge.in       |       examples/G8_E10_edge.in/       |          1/1          |     0.000551 (0.000551/0.000551) [0]     |              3 (3/3) [0]              |    8    |   14   |      3      |      42              |
+|        !+examples/G8_diamond.in       |       examples/G8_diamond.in/        |          1/1          |     0.001117 (0.001117/0.001117) [0]     |              3 (3/3) [0]              |    8    |   13   |      3      |     185              |
+|     !+examples/G8_luis_exemplo.in     |     examples/G8_luis_exemplo.in/     |          1/1          |     0.001964 (0.001964/0.001964) [0]     |              4 (4/4) [0]              |    8    |   13   |      3      |     504              |
+|       !+examples/G8_stretch_5.in      |      examples/G8_stretch_5.in/       |          1/1          |     0.000657 (0.000657/0.000657) [0]     |              5 (5/5) [0]              |    8    |   9    |      5      |      1               |
+|       !+examples/G9_E10_edges.in      |      examples/G9_E10_edges.in/       |          1/1          |     0.000482 (0.000482/0.000482) [0]     |              5 (5/5) [0]              |    9    |   10   |      5      |      1               |
+| !+examples/G9_heuristic_paper_2023.in | examples/G9_heuristic_paper_2023.in/ |          1/1          |     0.001028 (0.001028/0.001028) [0]     |              3 (3/3) [0]              |    9    |   13   |      3      |      38              |
+|     !+examples/G9_luis_exemplo.in     |     examples/G9_luis_exemplo.in/     |          1/1          |     0.005937 (0.005937/0.005937) [0]     |              4 (4/4) [0]              |    9    |   15   |      2      |     1296             |
+|      !+examples/G9_paper_2023.in      |      examples/G9_paper_2023.in/      |          1/1          |     0.001007 (0.001007/0.001007) [0]     |              3 (3/3) [0]              |    9    |   13   |      3      |      21              |
+|      !+examples/G9_paper_pag4.in      |      examples/G9_paper_pag4.in/      |          1/1          |     0.000541 (0.000541/0.000541) [0]     |              4 (4/4) [0]              |    9    |   13   |      4      |      8               |
+|       !+examples/grafo_teste.in       |       examples/grafo_teste.in/       |          1/1          |     0.000394 (0.000394/0.000394) [0]     |              3 (3/3) [0]              |    5    |   6    |      3      |      5               |
+|          !+examples/luis.madj         |         examples/luis.madj/          |          1/1          |      1.26968 (1.26968/1.26968) [0]       |              3 (3/3) [0]              |    9    |   27   |      2      |    419904            |
+|     !+examples/G13_turan_graph.in     |     examples/G13_turan_graph.in/     |          1/1          |      853712 (853712/853712) [0]          |              3 (3/3) [0]              |    13   |   63   |      2      | 18446744068061532736 |
++---------------------------------------+--------------------------------------+-----------------------+------------------------------------------+---------------------------------------+---------+--------+-------------+----------------------+
+Legend:
+* -- signals that at least one run has an error.
++ -- signals that at least one solution was saved as new bks.
+! -- signals that the test battery used custom parameters to override defaults.
+# -- signals that the test battery was done with a instance that has appeared before in this summary.
+----------------
+
+Number of instances processed by this script: 32
+
+Number of instances reported as not found: 2
+../instances/examples/
+../instances/examples/
+
+Number of instances that has at least one run with error: 1
+../workspace/ct-bf-adjacency-14072025-01/examples/G13_turan_graph.in/
+

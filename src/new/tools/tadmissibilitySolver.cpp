@@ -137,6 +137,6 @@ int main(int argc, char** argv){
 
 	// OUTPUT - nothing - screen - file - debug
 	output_data(run_name, filename, global_output, best, lastExecutionTime, lower_limit, TreeT);
-    return 0;
+    return factor;
 };
 
