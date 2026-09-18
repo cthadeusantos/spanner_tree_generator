@@ -136,6 +136,7 @@ public:
         const std::vector<std::pair<std::pair<int,int>, double>>& edgeslist,
         const std::vector<std::pair<int,double>>& vertex_product);
 
+    bool has_vertex(int vertex);
     };
 
 #endif //GRAPH_HPP_

@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 
 	//TreeT = OpBasic::shortest_path_tree(graph, closeness, energy_closeness);
 
-	TreeT = graph.buildenergytree2(energy_closeness, closeness);
+	TreeT = graph.buildenergytree2(energy_closeness, closeness, graph);
 
 	//DEBUG std::cerr << "Normalized closeness centrality: " << global_closeness << std::endl;
 

@@ -1115,7 +1115,7 @@ Graph Graph::buildenergytree2(
         return tree;
 
     std::vector<bool> vertex_list(numvertices, false);
-    std::vector<int> vertex_level(numvertices, 0);
+    std::vector<int> vertex_level(numvertices, -1);
     // int max_level = 0;
 
 
@@ -1133,14 +1133,29 @@ Graph Graph::buildenergytree2(
     //     max_level = 1;
     // }
 
-    for(auto valor:edgeslist){
-        std::cout << "(" << valor.first.first << " , " << valor.first.second << ") : " << valor.second <<std::endl;
-    }
+    // for(auto valor:edgeslist){
+    //     std::cout << "(" << valor.first.first << " , " << valor.first.second << ") : " << valor.second <<std::endl;
+    // }
 
     // Passos 2 e 3
     int u = edgeslist[0].first.first;
     int v = edgeslist[0].first.second;
+    int root = -1;
 
+    if (closeness[u].second > closeness[v].second)
+    {
+        vertex_level[u] = 0;
+        vertex_level[v] = 1;
+        root = u;
+    }
+    else
+    {
+        vertex_level[u] = 1;
+        vertex_level[v] = 0;
+        root = v;
+    }
+
+    std::cout << "Tentando adicionar aresta: " << u << "," << v << std::endl;
     tree.add_aresta(u, v);
 
     vertex_list[u] = true;
@@ -1149,20 +1164,78 @@ Graph Graph::buildenergytree2(
     // Passo 4
     edgeslist.erase(edgeslist.begin());
 
+    for (auto it = edgeslist.begin(); it != edgeslist.end(); ++it){
+            u = it->first.first;
+            v = it->first.second;
+            if (root == u || root == v){
+                std::cout << "Tentando adicionar aresta: " << u << "," << v << std::endl;
+                tree.add_aresta(u, v);
+                vertex_list[u] = true;
+                vertex_list[v] = true;
+                if (root == u)
+                {
+                    vertex_level[u] = 0;
+                    vertex_level[v] = 1;
+                }
+                else
+                {
+                    vertex_level[v] = 0;
+                    vertex_level[u] = 1;
+                }
+     
+                edgeslist.erase(it);
+            }
+    }
+
     while (!edgeslist.empty())
     {
         bool alguma_aresta_processada = false;
 
         for (auto it = edgeslist.begin(); it != edgeslist.end(); ++it)
         {
+            bool reiniciar_for_externo = false;
             u = it->first.first;
             v = it->first.second;
 
             // possui pelo menos um vértice já na árvore?
-            if ((vertex_list[u] || vertex_list[v]) && !(vertex_list[u] && vertex_list[v]))
+            //if ((vertex_list[u] || vertex_list[v]) && !(vertex_list[u] && vertex_list[v]))
+            if ( (vertex_list[u] || vertex_list[v]) && !(vertex_list[u] && vertex_list[v]) )
             {
                 alguma_aresta_processada = true;
 
+                if (vertex_list[u] && !vertex_list[v])
+                {
+                    //std::cout << "IF" << u << " *,*" << v << vertex_list[u] << vertex_list[v]  << std::endl;
+
+                    for (int neighbor : graph.get_neighbors(v)){
+                        //std::cout << "neighbor != u && vertex_level[neighbor] < vertex_level[u] : " << neighbor << " != " << u << " && " << vertex_level[neighbor] << " < " << vertex_level[u] << std::endl;
+
+                        if ( vertex_level[neighbor]!=-1 && neighbor != u && vertex_level[neighbor] < vertex_level[u]){
+                            reiniciar_for_externo = true;
+                            break;
+                        }
+                    }
+                    if (reiniciar_for_externo)
+                        continue;
+                    vertex_level[v] = vertex_level[u] + 1;
+                }
+                else if (!vertex_list[u] && vertex_list[v])
+                {
+                    //std::cout << "IF" << u << " *,*" << v << vertex_list[u] << vertex_list[v]  << std::endl;
+
+                    for (int neighbor : graph.get_neighbors(u)){
+                        //std::cout << "neighbor != v && vertex_level[neighbor] < vertex_level[v] : " << neighbor << " != " << v << " && " << vertex_level[neighbor] << " < " << vertex_level[v] << std::endl;
+                        if (vertex_level[neighbor]!=-1 && neighbor != v && vertex_level[neighbor] < vertex_level[v]){
+                            reiniciar_for_externo = true;
+                            break;
+                        }
+                    }
+                    if (reiniciar_for_externo)
+                        continue;
+                    vertex_level[u] = vertex_level[v] + 1;
+                }
+
+                std::cout << "Tentando adicionar aresta: " << u << "," << v << std::endl;
                 tree.add_aresta(u, v);
 
                 bool has_cycle_var = false;
@@ -1176,6 +1249,7 @@ Graph Graph::buildenergytree2(
 
                 if (has_cycle_var)
                 {
+                    std::cout << u << ","<<v << " removido!"<<std::endl;
                     tree.remove_aresta(u, v);
                 }
                 else
@@ -1259,4 +1333,9 @@ Graph::recalculate_edge_weights(
     }
 
     return new_edges;
+}
+
+bool Graph::has_vertex(int vertex)
+{
+    return !this->adjList(vertex).empty() && this->get_num_vertices() > 0;
 }
